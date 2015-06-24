@@ -16,6 +16,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         Log.d("Test", "Prateek");
         Log.d("Test", "Gyan");
+        Log.d("Test", "Gyan from local to story_1");
     }
 
     @Override
