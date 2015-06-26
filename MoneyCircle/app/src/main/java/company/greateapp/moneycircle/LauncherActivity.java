@@ -48,6 +48,9 @@ public class LauncherActivity extends ActionBarActivity {
             startActivity(<your activity class>);
             break;
             */
+            case 2:
+                startActivity(new Intent(this,WelcomeActivity.class));
+                break;
             default :
                 String  itemValue    = (String) listView.getItemAtPosition(i);
                 Toast.makeText(getApplicationContext(),
