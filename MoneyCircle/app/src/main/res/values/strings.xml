@@ -4,4 +4,11 @@
     <string name="welcome">Welcome!</string>
     <string name="start">Start</string>
     <string name="activity_contact_us">ContactUs</string>
+    <string name="name">Name</string>
+    <string name="mobile">Mobile</string>
+    <string name="dob">DOB</string>
+    <string name="enter_date">Enter Date</string>
+    <string name="activity_register_and_SignIn">Register/SignIn</string>
+    <string name="google_plus">Google Plus</string>
+    <string name="facebook">Facebook</string>
 </resources>

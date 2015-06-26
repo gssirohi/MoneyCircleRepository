@@ -24,6 +24,10 @@
             android:name=".ContactUs"
             android:label="@string/activity_contact_us" >
         </activity>
+        <activity
+            android:name=".RegisterAndSignInActivity"
+            android:label="@string/activity_register_and_SignIn" >
+        </activity>
     </application>
 
 </manifest>

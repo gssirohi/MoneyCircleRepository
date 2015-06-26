@@ -49,6 +49,9 @@ public class LauncherActivity extends ActionBarActivity {
             startActivity(<your activity class>);
             break;
             */
+            case 1:
+                startActivity(new Intent(this,RegisterAndSignInActivity.class));
+                break;
             case 2:
                 startActivity(new Intent(this,WelcomeActivity.class));
                 break;
