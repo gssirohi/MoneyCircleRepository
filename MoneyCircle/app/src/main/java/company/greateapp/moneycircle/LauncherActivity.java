@@ -1,5 +1,6 @@
 package company.greateapp.moneycircle;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -50,6 +51,9 @@ public class LauncherActivity extends ActionBarActivity {
             */
             case 2:
                 startActivity(new Intent(this,WelcomeActivity.class));
+                break;
+            case 16:
+                startActivity(new Intent(this,ContactUs.class));
                 break;
             default :
                 String  itemValue    = (String) listView.getItemAtPosition(i);

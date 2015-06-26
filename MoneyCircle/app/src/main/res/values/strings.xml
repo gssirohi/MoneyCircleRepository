@@ -3,4 +3,5 @@
     <string name="action_settings">Settings</string>
     <string name="welcome">Welcome!</string>
     <string name="start">Start</string>
+    <string name="activity_contact_us">ContactUs</string>
 </resources>
