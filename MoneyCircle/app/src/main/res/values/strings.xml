@@ -1,6 +1,4 @@
 <resources>
     <string name="app_name">MoneyCircle</string>
-
-    <string name="hello_world">Hello Money Circle!</string>
     <string name="action_settings">Settings</string>
 </resources>
