@@ -13,4 +13,9 @@
     <string name="facebook">Facebook</string>
     <string name="title_activity_set_split_amount">Set Split Amount</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_manage_categories">Manage Categories</string>
+
+
+    <string name="category_group_id">group id</string>
+    <string name="category_child_id">child id</string>
 </resources>

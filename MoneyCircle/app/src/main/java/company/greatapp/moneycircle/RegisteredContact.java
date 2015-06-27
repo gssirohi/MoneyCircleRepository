@@ -1,4 +1,4 @@
-package company.greateapp.moneycircle;
+package company.greatapp.moneycircle;
 
 /**
  * Created by Gyanendrasingh on 26-06-2015.

@@ -1,4 +1,4 @@
-package company.greateapp.moneycircle;
+package company.greatapp.moneycircle;
 
 import android.content.Context;
 import android.content.Intent;
