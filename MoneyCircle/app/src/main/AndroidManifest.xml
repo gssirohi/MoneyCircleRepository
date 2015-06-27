@@ -28,6 +28,10 @@
             android:name=".RegisterAndSignInActivity"
             android:label="@string/activity_register_and_SignIn" >
         </activity>
+	<activity
+            android:name=".SetSplitAmount"
+            android:label="@string/title_activity_set_split_amount" >
+        </activity>
     </application>
 
 </manifest>
