@@ -1,4 +1,4 @@
-package company.greatapp.moneycircle;
+package company.greatapp.moneycircle.split;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -18,7 +18,10 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+
+import company.greatapp.moneycircle.R;
+import company.greatapp.moneycircle.RegisteredContact;
+import company.greatapp.moneycircle.split.SetSplitAmountAdapter;
 
 
 public class SetSplitAmount extends ActionBarActivity {

@@ -1,4 +1,4 @@
-package company.greatapp.moneycircle;
+package company.greatapp.moneycircle.split;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,10 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
-import company.greatapp.moneycircle.R;
-import company.greatapp.moneycircle.SetSplitAmountRowItemView;
 
 /**
  * Created by gyanendra.s.sirohi on 6/26/2015.

@@ -5,7 +5,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,6 +14,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import company.greatapp.moneycircle.categories.ManageCategories;
+import company.greatapp.moneycircle.split.SetSplitAmount;
 
 
 public class LauncherActivity extends ActionBarActivity {

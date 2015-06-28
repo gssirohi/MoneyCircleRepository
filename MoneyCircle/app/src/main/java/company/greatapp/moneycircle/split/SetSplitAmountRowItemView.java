@@ -1,4 +1,4 @@
-package company.greatapp.moneycircle;
+package company.greatapp.moneycircle.split;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +13,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.HashMap;
+import company.greatapp.moneycircle.R;
+import company.greatapp.moneycircle.RegisteredContact;
+import company.greatapp.moneycircle.split.SetSplitAmount;
 
 /**
  * Created by Gyanendrasingh on 26-06-2015.
