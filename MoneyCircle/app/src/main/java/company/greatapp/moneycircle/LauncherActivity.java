@@ -15,7 +15,6 @@ import java.util.ArrayList;
 
 import company.greatapp.moneycircle.categories.ManageCategoriesActivity;
 import company.greatapp.moneycircle.split.SetSplitAmountActivity;
-import company.greatapp.moneycircle.split.ViewAndEditProfile;
 
 
 public class LauncherActivity extends ActionBarActivity {

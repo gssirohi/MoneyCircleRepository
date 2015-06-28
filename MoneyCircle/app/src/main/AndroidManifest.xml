@@ -37,7 +37,7 @@
             android:label="@string/title_activity_manage_categories" >
         </activity>
         <activity
-            android:name=".split.ViewAndEditProfile"
+            android:name=".ViewAndEditProfile"
             android:label="@string/title_activity_view_and_edit_profle" >
         </activity>
     </application>
