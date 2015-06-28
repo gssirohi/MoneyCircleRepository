@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/llInfoEntryBlockId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="48dp"
+        android:weightSum="3"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/llNameId"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:padding="10dp"
+            android:layout_weight="1"
+            android:weightSum="3">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:text="@string/name"/>
+
+            <EditText
+                android:id="@+id/etNameId"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llPhoneId"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:weightSum="3">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:text="@string/mobile"/>
+
+            <EditText
+                android:id="@+id/etPhoneId"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:phoneNumber="true"
+                android:layout_weight="2"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llDobId"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="10dp"
+            android:weightSum="3">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:text="@string/dob"/>
+
+            <TextView
+                android:id="@+id/tvDobId"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="32sp"
+                android:hint="@string/enter_date"
+                android:layout_weight="2"
+                android:onClick="showDatePickerDialog"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llLoginButtonId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="32dp"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/btGooglePlusId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/google_plus"
+            android:layout_margin="5dp"/>
+
+        <Button
+            android:id="@+id/btFacbookLoginId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/facebook"
+            android:layout_margin="5dp"/>
+    </LinearLayout>
+</RelativeLayout>

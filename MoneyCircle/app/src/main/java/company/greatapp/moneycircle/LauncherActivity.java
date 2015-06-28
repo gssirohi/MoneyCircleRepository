@@ -1,11 +1,10 @@
-package company.greateapp.moneycircle;
+package company.greatapp.moneycircle;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,6 +12,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import company.greatapp.moneycircle.categories.ManageCategoriesActivity;
+import company.greatapp.moneycircle.split.SetSplitAmountActivity;
 
 
 public class LauncherActivity extends ActionBarActivity {
@@ -22,7 +24,7 @@ public class LauncherActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_launcher);
         listView = (ListView)findViewById(R.id.listView);
         ArrayList<String> list = new ArrayList<String>();
         initActivityList(list);
@@ -48,6 +50,21 @@ public class LauncherActivity extends ActionBarActivity {
             startActivity(<your activity class>);
             break;
             */
+            case 1:
+                startActivity(new Intent(this,RegisterAndSignInActivity.class));
+                break;
+            case 2:
+                startActivity(new Intent(this,WelcomeActivity.class));
+                break;
+            case 10:
+                startActivity(new Intent(this,SetSplitAmountActivity.class));
+                break;
+            case 14:
+                startActivity(new Intent(this,ManageCategoriesActivity.class));
+                break;
+            case 16:
+                startActivity(new Intent(this,ContactUsActivity.class));
+                break;
             default :
                 String  itemValue    = (String) listView.getItemAtPosition(i);
                 Toast.makeText(getApplicationContext(),
@@ -65,8 +82,8 @@ public class LauncherActivity extends ActionBarActivity {
         list.add("Activity5: Settings");
          */
         list.add("Activity0");
-        list.add("Activity1");
-        list.add("Activity2");
+        list.add("Activity1:Register And SignIn");
+        list.add("Activity2:Welcome");
         list.add("Activity3");
         list.add("Activity4");
         list.add("Activity5");
@@ -74,13 +91,13 @@ public class LauncherActivity extends ActionBarActivity {
         list.add("Activity7");
         list.add("Activity8");
         list.add("Activity9");
-        list.add("Activity10");
+        list.add("Activity10: SetSplitAmountActivity");
         list.add("Activity11");
         list.add("Activity12");
         list.add("Activity13");
-        list.add("Activity14");
+        list.add("Activity14:Manage Categories");
         list.add("Activity15");
-        list.add("Activity16");
+        list.add("Activity16:Contact Us");
     }
 
     @Override
