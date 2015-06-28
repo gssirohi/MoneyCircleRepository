@@ -14,8 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import company.greatapp.moneycircle.R;
-import company.greatapp.moneycircle.RegisteredContact;
-import company.greatapp.moneycircle.split.SetSplitAmount;
+import company.greatapp.moneycircle.model.RegisteredContact;
 
 /**
  * Created by Gyanendrasingh on 26-06-2015.
@@ -26,10 +25,10 @@ public class SetSplitAmountRowItemView extends LinearLayout {
     private final Button b_edit;
     private final EditText et_amount;
     private final TextView tv_amount;
-    private final SetSplitAmount.Participant participant;
+    private final SetSplitAmountActivity.Participant participant;
 
     public SetSplitAmountRowItemView(Context context, AttributeSet attrs,LayoutInflater infaltor,
-                                     SetSplitAmount.Participant participant) {
+                                     SetSplitAmountActivity.Participant participant) {
         super(context, attrs);
         this.participant = participant;
         ViewGroup viewGroup = (ViewGroup) infaltor.inflate(R.layout.set_split_amount_row_item, this, true);
@@ -81,13 +80,13 @@ public class SetSplitAmountRowItemView extends LinearLayout {
 
     private void sendRefreshAction() {
             Log.d("sender", "Broadcasting message");
-            Intent intent = new Intent(SetSplitAmount.ACTION_AMOUNT_REFRESH);
+            Intent intent = new Intent(SetSplitAmountActivity.ACTION_AMOUNT_REFRESH);
             // You can also include some extra data.
             intent.putExtra("message", "This is my message!");
             LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
 
-    public SetSplitAmount.Participant getParticipant(){
+    public SetSplitAmountActivity.Participant getParticipant(){
         return this.participant;
     }
 }

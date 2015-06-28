@@ -5,14 +5,11 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import android.app.Activity;
-import android.os.Bundle;
+
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
@@ -24,9 +21,9 @@ import android.widget.Toast;
 
 import company.greatapp.moneycircle.R;
 
-public class ManageCategories extends ActionBarActivity {
+public class ManageCategoriesActivity extends ActionBarActivity {
 
-    ExpandableListAdapter listAdapter;
+    CategoryExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
@@ -47,7 +44,7 @@ public class ManageCategories extends ActionBarActivity {
         // preparing list data
         prepareListData();
 
-        listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+        listAdapter = new CategoryExpandableListAdapter(this, listDataHeader, listDataChild);
 
         // setting list adapter
         expListView.setAdapter(listAdapter);

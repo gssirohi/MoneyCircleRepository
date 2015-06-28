@@ -1,4 +1,4 @@
-package company.greatapp.moneycircle;
+package company.greatapp.moneycircle.model;
 
 /**
  * Created by Gyanendrasingh on 26-06-2015.

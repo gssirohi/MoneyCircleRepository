@@ -13,8 +13,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import company.greatapp.moneycircle.categories.ManageCategories;
-import company.greatapp.moneycircle.split.SetSplitAmount;
+import company.greatapp.moneycircle.categories.ManageCategoriesActivity;
+import company.greatapp.moneycircle.split.SetSplitAmountActivity;
 
 
 public class LauncherActivity extends ActionBarActivity {
@@ -57,13 +57,13 @@ public class LauncherActivity extends ActionBarActivity {
                 startActivity(new Intent(this,WelcomeActivity.class));
                 break;
             case 10:
-                startActivity(new Intent(this,SetSplitAmount.class));
+                startActivity(new Intent(this,SetSplitAmountActivity.class));
                 break;
             case 14:
-                startActivity(new Intent(this,ManageCategories.class));
+                startActivity(new Intent(this,ManageCategoriesActivity.class));
                 break;
             case 16:
-                startActivity(new Intent(this,ContactUs.class));
+                startActivity(new Intent(this,ContactUsActivity.class));
                 break;
             default :
                 String  itemValue    = (String) listView.getItemAtPosition(i);
@@ -91,7 +91,7 @@ public class LauncherActivity extends ActionBarActivity {
         list.add("Activity7");
         list.add("Activity8");
         list.add("Activity9");
-        list.add("Activity10: SetSplitAmount");
+        list.add("Activity10: SetSplitAmountActivity");
         list.add("Activity11");
         list.add("Activity12");
         list.add("Activity13");

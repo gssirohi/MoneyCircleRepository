@@ -14,12 +14,12 @@ import java.util.ArrayList;
  */
 class SetSplitAmountAdapter extends BaseAdapter {
 
-    private final ArrayList<SetSplitAmount.Participant> participants;
+    private final ArrayList<SetSplitAmountActivity.Participant> participants;
     Context context;
     private static LayoutInflater inflater = null;
     private TextView tv_amount;
 
-    public SetSplitAmountAdapter(Context context, ArrayList<SetSplitAmount.Participant> participants) {
+    public SetSplitAmountAdapter(Context context, ArrayList<SetSplitAmountActivity.Participant> participants) {
         // TODO Auto-generated constructor stub
         this.context = context;
         this.participants = participants;
