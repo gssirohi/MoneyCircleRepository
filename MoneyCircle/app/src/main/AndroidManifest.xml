@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="company.greateapp.moneycircle" >
+    package="company.greatapp.moneycircle" >
 
     <application
         android:allowBackup="true"
@@ -21,16 +21,20 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".ContactUs"
+            android:name=".ContactUsActivity"
             android:label="@string/activity_contact_us" >
         </activity>
         <activity
             android:name=".RegisterAndSignInActivity"
             android:label="@string/activity_register_and_SignIn" >
         </activity>
-	<activity
-            android:name=".SetSplitAmount"
+        <activity
+            android:name=".split.SetSplitAmountActivity"
             android:label="@string/title_activity_set_split_amount" >
+        </activity>
+        <activity
+            android:name=".categories.ManageCategoriesActivity"
+            android:label="@string/title_activity_manage_categories" >
         </activity>
     </application>
 

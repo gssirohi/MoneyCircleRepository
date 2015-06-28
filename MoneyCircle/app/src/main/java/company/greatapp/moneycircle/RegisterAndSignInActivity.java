@@ -1,4 +1,4 @@
-package company.greateapp.moneycircle;
+package company.greatapp.moneycircle;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;

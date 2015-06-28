@@ -1,4 +1,4 @@
-package company.greateapp.moneycircle;
+package company.greatapp.moneycircle.split;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -18,10 +18,12 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+
+import company.greatapp.moneycircle.R;
+import company.greatapp.moneycircle.model.RegisteredContact;
 
 
-public class SetSplitAmount extends ActionBarActivity {
+public class SetSplitAmountActivity extends ActionBarActivity {
 
     public static final String ACTION_AMOUNT_REFRESH = "ACTION_AMOUNT_REFRESH";
     private ListView listview;
@@ -58,7 +60,7 @@ public class SetSplitAmount extends ActionBarActivity {
                 Participant participant = ((SetSplitAmountRowItemView) view).getParticipant();
                 Log.d("split", "Name : " + participant.member.getName());
                 Log.d("split", "Amount : " + participant.amount);
-                Toast.makeText(SetSplitAmount.this, "" + participant.member.getName() + " : " +
+                Toast.makeText(SetSplitAmountActivity.this, "" + participant.member.getName() + " : " +
                         participant.amount, Toast.LENGTH_SHORT).show();
             }
         });
