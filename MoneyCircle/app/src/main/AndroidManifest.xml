@@ -36,6 +36,10 @@
             android:name=".categories.ManageCategoriesActivity"
             android:label="@string/title_activity_manage_categories" >
         </activity>
+        <activity
+            android:name=".split.ViewAndEditProfile"
+            android:label="@string/title_activity_view_and_edit_profle" >
+        </activity>
     </application>
 
 </manifest>

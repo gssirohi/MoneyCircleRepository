@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import company.greatapp.moneycircle.categories.ManageCategoriesActivity;
 import company.greatapp.moneycircle.split.SetSplitAmountActivity;
+import company.greatapp.moneycircle.split.ViewAndEditProfile;
 
 
 public class LauncherActivity extends ActionBarActivity {
@@ -62,6 +63,9 @@ public class LauncherActivity extends ActionBarActivity {
             case 14:
                 startActivity(new Intent(this,ManageCategoriesActivity.class));
                 break;
+            case 15:
+                startActivity(new Intent(this, ViewAndEditProfile.class));
+                break;
             case 16:
                 startActivity(new Intent(this,ContactUsActivity.class));
                 break;
@@ -96,7 +100,7 @@ public class LauncherActivity extends ActionBarActivity {
         list.add("Activity12");
         list.add("Activity13");
         list.add("Activity14:Manage Categories");
-        list.add("Activity15");
+        list.add("Activity15:Edit Profile");
         list.add("Activity16:Contact Us");
     }
 
