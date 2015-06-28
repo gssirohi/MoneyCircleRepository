@@ -37,8 +37,12 @@
             android:label="@string/title_activity_manage_categories" >
         </activity>
         <activity
-            android:name=".ViewAndEditProfile"
+            android:name=".ViewAndEditProfileActivity"
             android:label="@string/title_activity_view_and_edit_profle" >
+        </activity>
+        <activity
+            android:name=".SetNewPasswordActivity"
+            android:label="@string/title_activity_set_new_password" >
         </activity>
     </application>
 

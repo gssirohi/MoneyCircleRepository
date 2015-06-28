@@ -59,11 +59,14 @@ public class LauncherActivity extends ActionBarActivity {
             case 10:
                 startActivity(new Intent(this,SetSplitAmountActivity.class));
                 break;
+            case 13:
+                startActivity(new Intent(this,SetNewPasswordActivity.class));
+                break;
             case 14:
                 startActivity(new Intent(this,ManageCategoriesActivity.class));
                 break;
             case 15:
-                startActivity(new Intent(this, ViewAndEditProfile.class));
+                startActivity(new Intent(this, ViewAndEditProfileActivity.class));
                 break;
             case 16:
                 startActivity(new Intent(this,ContactUsActivity.class));
@@ -97,7 +100,7 @@ public class LauncherActivity extends ActionBarActivity {
         list.add("Activity10: SetSplitAmountActivity");
         list.add("Activity11");
         list.add("Activity12");
-        list.add("Activity13");
+        list.add("Activity13:SetNewPasswordActivity");
         list.add("Activity14:Manage Categories");
         list.add("Activity15:Edit Profile");
         list.add("Activity16:Contact Us");

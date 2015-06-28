@@ -15,8 +15,10 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_manage_categories">Manage Categories</string>
     <string name="activity_View_And_Edit_Profile">Edit Profile</string>
+    <string name="activity_Set_new_password">Change Password</string>
 
     <string name="category_group_id">group id</string>
     <string name="category_child_id">child id</string>
     <string name="title_activity_view_and_edit_profle">Edit Profile</string>
+    <string name="title_activity_set_new_password">Change Password</string>
 </resources>

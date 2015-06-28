@@ -7,7 +7,7 @@ import android.view.MenuItem;
 
 import company.greatapp.moneycircle.R;
 
-public class ViewAndEditProfile extends ActionBarActivity {
+public class ViewAndEditProfileActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
