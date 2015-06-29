@@ -26,4 +26,5 @@
     <string name="password_setting"><big>Password</big>\n<small>Set password to secure your data</small></string>
     <string name="categories_setting"><big>Categories</big>\n<small>Manage your Categories</small></string>
     <string name="profile_setting"><big>Profile</big>\n<small>Manage your profile</small></string>
+    <string name="title_activity_split_tool">Split Tool</string>
 </resources>

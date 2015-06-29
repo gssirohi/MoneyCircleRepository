@@ -44,8 +44,13 @@
             android:name=".SetNewPasswordActivity"
             android:label="@string/title_activity_set_new_password" >
         </activity>
-        <activity android:name=".SettingActivity"
-            android:label="@string/activity_setting">
+        <activity
+            android:name=".SettingActivity"
+            android:label="@string/activity_setting" >
+        </activity>
+        <activity
+            android:name=".split.SplitToolActivity"
+            android:label="@string/title_activity_split_tool" >
         </activity>
     </application>
 
