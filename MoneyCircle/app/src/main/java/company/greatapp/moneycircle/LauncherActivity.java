@@ -14,6 +14,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import company.greatapp.moneycircle.categories.ManageCategoriesActivity;
+import company.greatapp.moneycircle.chooser.ChooserActivity;
 import company.greatapp.moneycircle.split.SetSplitAmountActivity;
 import company.greatapp.moneycircle.split.SplitToolActivity;
 
@@ -78,6 +79,9 @@ public class LauncherActivity extends ActionBarActivity {
             case 16:
                 startActivity(new Intent(this,ContactUsActivity.class));
                 break;
+            case 17:
+                startActivity(new Intent(this,ChooserActivity.class));
+                break;
             default :
                 String  itemValue    = (String) listView.getItemAtPosition(i);
                 Toast.makeText(getApplicationContext(),
@@ -111,6 +115,7 @@ public class LauncherActivity extends ActionBarActivity {
         list.add("Activity14:Manage Categories");
         list.add("Activity15:Edit Profile");
         list.add("Activity16:Contact Us");
+        list.add("Activity17:Chooser Activity");
     }
 
     @Override

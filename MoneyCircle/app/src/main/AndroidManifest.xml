@@ -52,6 +52,10 @@
             android:name=".split.SplitToolActivity"
             android:label="@string/title_activity_split_tool" >
         </activity>
+        <activity
+            android:name=".chooser.ChooserActivity"
+            android:label="@string/title_activity_chooser" >
+        </activity>
     </application>
 
 </manifest>
