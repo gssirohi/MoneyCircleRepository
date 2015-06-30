@@ -28,4 +28,9 @@
     <string name="profile_setting"><big>Profile</big>\n<small>Manage your profile</small></string>
     <string name="title_activity_split_tool">Split Tool</string>
     <string name="title_activity_chooser">Select</string>
+
+    <string name="activity_contact_and_circle">Contact &amp; Circle Activity</string>
+    <string name="categories">Category</string>
+    <string name="invite_contact">Invite Contacts</string>
+    <string name="create_new_circle">Create New Circle</string>
 </resources>

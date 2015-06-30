@@ -58,6 +58,9 @@ public class LauncherActivity extends ActionBarActivity {
             case 2:
                 startActivity(new Intent(this,WelcomeActivity.class));
                 break;
+            case 4:
+                startActivity(new Intent(this,ContactAndCircleActivity.class));
+                break;
             case 5:
                 startActivity(new Intent(this,SettingActivity.class));
                 break;
@@ -102,7 +105,7 @@ public class LauncherActivity extends ActionBarActivity {
         list.add("Activity1:Register And SignIn");
         list.add("Activity2:Welcome");
         list.add("Activity3");
-        list.add("Activity4");
+        list.add("Activity4:Contact & Circle Activity");
         list.add("Activity5:Settings");
         list.add("Activity6");
         list.add("Activity7");
