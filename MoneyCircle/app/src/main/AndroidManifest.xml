@@ -36,6 +36,29 @@
             android:name=".categories.ManageCategoriesActivity"
             android:label="@string/title_activity_manage_categories" >
         </activity>
+        <activity
+            android:name=".ViewAndEditProfileActivity"
+            android:label="@string/title_activity_view_and_edit_profle" >
+        </activity>
+        <activity
+            android:name=".SetNewPasswordActivity"
+            android:label="@string/title_activity_set_new_password" >
+        </activity>
+        <activity
+            android:name=".SettingActivity"
+            android:label="@string/activity_setting" >
+        </activity>
+        <activity
+            android:name=".split.SplitToolActivity"
+            android:label="@string/title_activity_split_tool" >
+        </activity>
+        <activity
+            android:name=".chooser.ChooserActivity"
+            android:label="@string/title_activity_chooser" >
+        </activity>
+        <activity android:name=".ContactAndCircleActivity"
+            android:label="@string/activity_contact_and_circle">
+        </activity>
     </application>
 
 </manifest>

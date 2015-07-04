@@ -39,7 +39,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         mDateSetter.setDate(year, monthOfYear, dayOfMonth);
     }
 
-    interface DateSetter {
+    public interface DateSetter {
         public void setDate(int year, int monthOfYear, int dayOfMonth);
     }
 }

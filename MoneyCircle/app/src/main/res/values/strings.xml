@@ -14,8 +14,23 @@
     <string name="title_activity_set_split_amount">Set Split Amount</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_manage_categories">Manage Categories</string>
-
+    <string name="activity_View_And_Edit_Profile">Edit Profile</string>
+    <string name="activity_Set_new_password">Change Password</string>
 
     <string name="category_group_id">group id</string>
     <string name="category_child_id">child id</string>
+    <string name="title_activity_view_and_edit_profle">Edit Profile</string>
+    <string name="title_activity_set_new_password">Change Password</string>
+    <string name="activity_setting">Settings</string>
+    <string name="daily_reminder_setting"><big>Daily Reminder</big>\n<small>Set a schedule to remind for entry</small></string>
+    <string name="password_setting"><big>Password</big>\n<small>Set password to secure your data</small></string>
+    <string name="categories_setting"><big>Categories</big>\n<small>Manage your Categories</small></string>
+    <string name="profile_setting"><big>Profile</big>\n<small>Manage your profile</small></string>
+    <string name="title_activity_split_tool">Split Tool</string>
+    <string name="title_activity_chooser">Select</string>
+
+    <string name="activity_contact_and_circle">Contact &amp; Circle Activity</string>
+    <string name="categories">Category</string>
+    <string name="invite_contact">Invite Contacts</string>
+    <string name="create_new_circle">Create New Circle</string>
 </resources>
