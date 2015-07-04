@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import company.greatapp.moneycircle.manager.ContactManager;
+
 /**
  * Created by prateek02.arora on 30-06-2015.
  */
@@ -23,8 +25,8 @@ public class ContactsViewFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_contact_viewer, container, false);
         ListView listView = (ListView)view.findViewById(R.id.lvContactViewId);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1, names);
+        ContactManager cm = new ContactManager(getActivity().getBaseContext());
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1, cm.getItemNameList());
         listView.setAdapter(adapter);
 
         return view;

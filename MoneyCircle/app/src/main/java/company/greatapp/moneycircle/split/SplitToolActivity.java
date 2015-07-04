@@ -18,6 +18,7 @@ import company.greatapp.moneycircle.DatePickerFragment;
 import company.greatapp.moneycircle.DatePickerFragment.DateSetter;
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.chooser.ChooserActivity;
+import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.view.TagItemView;
 
 public class SplitToolActivity extends ActionBarActivity implements DateSetter{
@@ -43,19 +44,19 @@ public class SplitToolActivity extends ActionBarActivity implements DateSetter{
         b_contacts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startItemSelection(ChooserActivity.REQUEST_CODE_REGISTERED_CONTACTS);
+                startItemSelection(C.REQUEST_CODE_CONTACTS);
             }
         });
         b_category.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startItemSelection(ChooserActivity.REQUEST_CODE_CATEGORIES);
+                startItemSelection(C.REQUEST_CODE_CATEGORIES);
             }
         });
         b_circle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startItemSelection(ChooserActivity.REQUEST_CODE_CIRCLES);
+                startItemSelection(C.REQUEST_CODE_CIRCLES);
             }
         });
         tv_date = (TextView)findViewById(R.id.tv_date);
@@ -79,7 +80,7 @@ public class SplitToolActivity extends ActionBarActivity implements DateSetter{
     }
     private void startItemSelection(int requestCode){
         Intent i = new Intent(this, ChooserActivity.class);
-        i.putExtra("request",requestCode);
+        i.putExtra(C.CHOOSER_REQUEST,requestCode);
         startActivityForResult(i, requestCode);
     }
 
@@ -102,17 +103,21 @@ public class SplitToolActivity extends ActionBarActivity implements DateSetter{
         LinearLayout ll = null;
         Button b = null;
         switch(type) {
-            case ChooserActivity.REQUEST_CODE_REGISTERED_CONTACTS:
+            case C.REQUEST_CODE_REGISTERED_CONTACTS:
                 ll = ll_contacts;
                 b = b_contacts;
                 break;
-            case ChooserActivity.REQUEST_CODE_CATEGORIES:
+            case C.REQUEST_CODE_CATEGORIES:
                 ll = ll_category;
                 b = b_category;
                 break;
-            case ChooserActivity.REQUEST_CODE_CIRCLES:
+            case C.REQUEST_CODE_CIRCLES:
                 ll = ll_circle;
                 b = b_circle;
+                break;
+            case C.REQUEST_CODE_CONTACTS:
+                ll = ll_contacts;
+                b = b_contacts;
                 break;
         }
         if(ll == null || b == null) return;

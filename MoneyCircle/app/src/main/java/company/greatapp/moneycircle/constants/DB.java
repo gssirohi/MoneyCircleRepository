@@ -33,6 +33,9 @@ public class DB {
     public static final String SERVER_ID = "serverId";
 
     public static final Uri CONTACT_TABLE_URI = Uri.parse("content://"+DB_AUTHORITY+"/" + CONTACT_TABLE_NAME);
+    public static final String[] CONTACT_TABLE_PROJECTION = new String[]{
+            DB_ID,UID,NAME,PHONE_NUMBER,IMAGE_URI,EMAIL,REGISTERED,
+            CIRCLE_COUNT,CIRCLE_JSON_STRING,SERVER_NAME,SERVER_ID};
 //----------------------------------------------------------------//
 
 

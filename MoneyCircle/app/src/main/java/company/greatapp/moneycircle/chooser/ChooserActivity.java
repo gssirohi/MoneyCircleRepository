@@ -20,14 +20,13 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import company.greatapp.moneycircle.R;
+import company.greatapp.moneycircle.constants.C;
+import company.greatapp.moneycircle.manager.ContactManager;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.Contact;
 
 public class ChooserActivity extends Activity {
-    public static final int REQUEST_CODE_CONTACTS = 1;
-    public static final int REQUEST_CODE_REGISTERED_CONTACTS = 2;
-    public static final int REQUEST_CODE_CIRCLES = 3;
-    public static final int REQUEST_CODE_CATEGORIES = 4;
+
     private AbsListView.MultiChoiceModeListener actionModeCallBack;
     private ChooserAdapter adapter;
     private ListView chooserList;
@@ -38,7 +37,7 @@ public class ChooserActivity extends Activity {
         setContentView(R.layout.activity_chooser);
         chooserList = (ListView)findViewById(R.id.lv_chooser_items);
         TextView title = (TextView)findViewById(R.id.tv_chooser_item_title);
-        int requestCode  = getIntent().getIntExtra("request",REQUEST_CODE_REGISTERED_CONTACTS);
+        int requestCode  = getIntent().getIntExtra(C.CHOOSER_REQUEST,C.REQUEST_CODE_CONTACTS);
         title.setText(getChooserTitle(requestCode));
         adapter = new ChooserAdapter(this,0,getItemList(requestCode));
         chooserList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -71,16 +70,16 @@ public class ChooserActivity extends Activity {
     private String getChooserTitle(int requestCode) {
         String title = "";
         switch(requestCode) {
-            case REQUEST_CODE_REGISTERED_CONTACTS:
+            case C.REQUEST_CODE_REGISTERED_CONTACTS:
                 title = "Select Registered Contacts";
                 break;
-            case REQUEST_CODE_CONTACTS:
+            case C.REQUEST_CODE_CONTACTS:
                 title = "Select Contacts";
                 break;
-            case REQUEST_CODE_CIRCLES:
+            case C.REQUEST_CODE_CIRCLES:
                 title = "Select Circles";
                 break;
-            case REQUEST_CODE_CATEGORIES:
+            case C.REQUEST_CODE_CATEGORIES:
                 title = "Select Categories";
                 break;
             default:
@@ -148,7 +147,7 @@ public class ChooserActivity extends Activity {
             Log.d("split", "checking values at "+i);
             int position = checked.keyAt(i);
             if (checked.valueAt(i)) {
-                Log.d("split", "FOUND checked values at : "+i);
+                Log.d("split", "FOUND checked values at : "+position);
                 selectedItems.add(((Contact) adapter.getItem(position)).getContactName());
             }
         }
@@ -183,27 +182,19 @@ public class ChooserActivity extends Activity {
     private ArrayList<Model> getItemList(int code) {
         ArrayList<Model> list = new ArrayList<Model>();
         switch(code) {
-            case REQUEST_CODE_CATEGORIES:
-
-            case REQUEST_CODE_CIRCLES:
-
-            case REQUEST_CODE_REGISTERED_CONTACTS:
-                list.add(new Contact("Salmaan"));
-                list.add(new Contact("Sahrukh"));
-                list.add(new Contact("Aamir"));
-                list.add(new Contact("Amitaabh"));
-                list.add(new Contact("Emraan Hashmi"));
-                list.add(new Contact("Faizal"));
-                list.add(new Contact("Raamadheer"));
-                list.add(new Contact("Sultaan"));
-                list.add(new Contact("Shamsaad"));
-                list.add(new Contact("Definit"));
-                list.add(new Contact("Sardaar"));
+            case C.REQUEST_CODE_CATEGORIES:
+                break;
+            case C.REQUEST_CODE_CIRCLES:
+                break;
+            case C.REQUEST_CODE_REGISTERED_CONTACTS:
+                break;
+            case C.REQUEST_CODE_CONTACTS:
+                ContactManager cm = new ContactManager(this);
+                list = cm.getItemList();
                 break;
 
         }
-        Contact rc = new Contact("test rc");
-        Toast.makeText(this,"UID: "+rc.getUID(),Toast.LENGTH_SHORT).show();
+
         return list;
     }
 

@@ -10,6 +10,7 @@ import android.text.TextUtils;
 
 import java.util.ArrayList;
 
+import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Model;
@@ -20,10 +21,12 @@ import company.greatapp.moneycircle.tools.Tools;
  */
 public class ContactManager extends BaseModelManager {
     Context context;
-    ArrayList<Contact> contacts;
+    ArrayList<Model> contacts = new ArrayList<Model>();
+    ArrayList<String> titles = new ArrayList<String>();
 
     public ContactManager(Context context) {
         this.context = context;
+        loadItemsFromDB();
     }
 
     @Override
@@ -65,12 +68,34 @@ public class ContactManager extends BaseModelManager {
 
     @Override
     protected void loadItemsFromDB() {
-
+        contacts.clear();
+        titles.clear();
+        Cursor c = context.getContentResolver().query(DB.CONTACT_TABLE_URI,
+                DB.CONTACT_TABLE_PROJECTION, null, null, null);
+        if(c != null && c.getCount() > 0) {
+            c.moveToFirst();
+            while(!c.isAfterLast()) {
+                Model model = createItemFromCursor(c);
+                if(((Contact)model).getRegistered() == C.REGISTERED_ON_MONEY_CIRCLE){
+                    contacts.add(0, model);
+                    titles.add(model.getTitle());
+                } else {
+                    contacts.add(model);
+                    titles.add(model.getTitle());
+                }
+                c.moveToNext();
+            }
+            c.close();
+        }
     }
 
     @Override
     public ArrayList<Model> getItemList() {
-        return null;
+        return this.contacts;
+    }
+
+    public ArrayList<String> getItemNameList() {
+        return this.titles;
     }
 
     @Override
@@ -80,7 +105,12 @@ public class ContactManager extends BaseModelManager {
 
     @Override
     public void insertItemInDB(Model model) {
-
+        Contact contact = (Contact)model;
+        String uid = contact.getUID();
+        uid = uid.replaceAll("NEW","DB");
+        contact.setUID(uid);
+        ContentValues values = contact.getContentValues();
+        context.getContentResolver().insert(DB.CONTACT_TABLE_URI, values);
     }
 
     @Override
@@ -115,8 +145,7 @@ public class ContactManager extends BaseModelManager {
                 Number = Tools.getFormatedNumber(Number);
                 if(TextUtils.isEmpty(Number)) continue;
                 Contact contact = new Contact(Name, Number);
-                ContentValues values = contact.getContentValues();
-                context.getContentResolver().insert(DB.CONTACT_TABLE_URI, values);
+                insertItemInDB(contact);
                 if(phones.isLast()) {
                     break;
                 }

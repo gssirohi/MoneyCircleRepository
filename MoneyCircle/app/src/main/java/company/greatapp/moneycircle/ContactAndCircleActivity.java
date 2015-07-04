@@ -35,11 +35,11 @@ public class ContactAndCircleActivity extends AppCompatActivity implements Actio
         mActionBar.setHomeButtonEnabled(false);
         mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        for (int i = 0; i < TOTAL_TABS; i++) {
+       // for (int i = 0; i < TOTAL_TABS; i++) {
             mActionBar.addTab(mActionBar.newTab().setText("Registered Contact").setTabListener(this));
             mActionBar.addTab(mActionBar.newTab().setText("Contacts").setTabListener(this));
             mActionBar.addTab(mActionBar.newTab().setText("Circles").setTabListener(this));
-        }
+       // }
 
         setPageChangeListener();
     }

@@ -1,6 +1,7 @@
 package company.greatapp.moneycircle;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,7 +16,9 @@ import java.util.ArrayList;
 
 import company.greatapp.moneycircle.categories.ManageCategoriesActivity;
 import company.greatapp.moneycircle.chooser.ChooserActivity;
+import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.manager.ContactManager;
+import company.greatapp.moneycircle.manager.PreferenceManager;
 import company.greatapp.moneycircle.split.SetSplitAmountActivity;
 import company.greatapp.moneycircle.split.SplitToolActivity;
 
@@ -38,12 +41,20 @@ public class LauncherActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 // ListView Clicked item index
-                int itemPosition     = i;
+                int itemPosition = i;
                 startNewActivity(i);
             }
         });
-      //  ContactManager cm = new ContactManager(this);
-       // cm.retriveContactsFromDevice();//contact initialization
+
+        PreferenceManager pm = new PreferenceManager(this);
+        if(!pm.isDeviceContactsRetrived()) {
+             ContactManager cm = new ContactManager(this);
+             cm.retriveContactsFromDevice();//contact initialization
+             SharedPreferences.Editor et =  pm.getEditor();
+             et.putBoolean(C.PREF_CONTACTS_RETRIVED, true);
+             et.commit();
+        }
+
     }
 
     private void startNewActivity(int i) {
@@ -86,7 +97,9 @@ public class LauncherActivity extends ActionBarActivity {
                 startActivity(new Intent(this,ContactUsActivity.class));
                 break;
             case 17:
-                startActivity(new Intent(this,ChooserActivity.class));
+                Intent intent = new Intent(this,ChooserActivity.class);
+                intent.putExtra(C.CHOOSER_REQUEST,C.REQUEST_CODE_CONTACTS);
+                startActivity(intent);
                 break;
             default :
                 String  itemValue    = (String) listView.getItemAtPosition(i);

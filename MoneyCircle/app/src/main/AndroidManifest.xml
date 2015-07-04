@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="company.greatapp.moneycircle" >
-
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -59,6 +59,12 @@
         <activity android:name=".ContactAndCircleActivity"
             android:label="@string/activity_contact_and_circle">
         </activity>
+
+
+        <provider
+            android:name=".db.MoneyCircleProvider"
+            android:authorities="company.greatapp.moneycircle.db"
+            android:exported="false" />
     </application>
 
 </manifest>

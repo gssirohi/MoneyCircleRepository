@@ -15,20 +15,20 @@ import company.greatapp.moneycircle.tools.Tools;
  * Created by Gyanendrasingh on 26-06-2015.
  */
 public class Contact extends Model {
-    String contactName;//name as in contact list
-    String phone;//phone number in contact list
-    String email;
+    String contactName = "";//name as in contact list
+    String phone = "";//phone number in contact list
+    String email = "";
     Bitmap imageBitmap;
-    Uri imageUri;
-    String serverName;// Name choosen by user while registering
-    String serverId;//id provided by 3rd party server
+    Uri imageUri ;
+    String serverName = "";// Name choosen by user while registering
+    String serverId = "";//id provided by 3rd party server
     JSONObject jsonCircles;
     int registered;
     int circleCount;
-    String circlesJsonString;
+    String circlesJsonString = "";
     ArrayList<Circle> circles;
-    private String uid;
-    private String title;
+    private String uid = "";
+    private String title = "";
     private int modelType;
     private int dbId;
 
@@ -203,7 +203,7 @@ public class Contact extends Model {
         row.put(DB.SERVER_NAME , getServerName());
         row.put(DB.SERVER_ID, getServerId());
         row.put(DB.PHONE_NUMBER , getPhone());
-        row.put(DB.IMAGE_URI , getImageUri().toString());
+        row.put(DB.IMAGE_URI , ""+getImageUri());
         row.put(DB.EMAIL , getEmail());
         row.put(DB.REGISTERED ,getRegistered());
         row.put(DB.CIRCLE_COUNT , getCircleCount());
