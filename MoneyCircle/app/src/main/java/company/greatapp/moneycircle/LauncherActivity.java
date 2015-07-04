@@ -14,7 +14,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import company.greatapp.moneycircle.categories.ManageCategoriesActivity;
+import company.greatapp.moneycircle.chooser.ChooserActivity;
 import company.greatapp.moneycircle.split.SetSplitAmountActivity;
+import company.greatapp.moneycircle.split.SplitToolActivity;
 
 
 public class LauncherActivity extends ActionBarActivity {
@@ -56,14 +58,32 @@ public class LauncherActivity extends ActionBarActivity {
             case 2:
                 startActivity(new Intent(this,WelcomeActivity.class));
                 break;
+            case 4:
+                startActivity(new Intent(this,ContactAndCircleActivity.class));
+                break;
+            case 5:
+                startActivity(new Intent(this,SettingActivity.class));
+                break;
+            case 9:
+                startActivity(new Intent(this,SplitToolActivity.class));
+                break;
             case 10:
                 startActivity(new Intent(this,SetSplitAmountActivity.class));
+                break;
+            case 13:
+                startActivity(new Intent(this,SetNewPasswordActivity.class));
                 break;
             case 14:
                 startActivity(new Intent(this,ManageCategoriesActivity.class));
                 break;
+            case 15:
+                startActivity(new Intent(this, ViewAndEditProfileActivity.class));
+                break;
             case 16:
                 startActivity(new Intent(this,ContactUsActivity.class));
+                break;
+            case 17:
+                startActivity(new Intent(this,ChooserActivity.class));
                 break;
             default :
                 String  itemValue    = (String) listView.getItemAtPosition(i);
@@ -85,19 +105,20 @@ public class LauncherActivity extends ActionBarActivity {
         list.add("Activity1:Register And SignIn");
         list.add("Activity2:Welcome");
         list.add("Activity3");
-        list.add("Activity4");
-        list.add("Activity5");
+        list.add("Activity4:Contact & Circle Activity");
+        list.add("Activity5:Settings");
         list.add("Activity6");
         list.add("Activity7");
         list.add("Activity8");
-        list.add("Activity9");
+        list.add("Activity9:SplitToolActivity");
         list.add("Activity10: SetSplitAmountActivity");
         list.add("Activity11");
         list.add("Activity12");
-        list.add("Activity13");
+        list.add("Activity13:SetNewPasswordActivity");
         list.add("Activity14:Manage Categories");
-        list.add("Activity15");
+        list.add("Activity15:Edit Profile");
         list.add("Activity16:Contact Us");
+        list.add("Activity17:Chooser Activity");
     }
 
     @Override

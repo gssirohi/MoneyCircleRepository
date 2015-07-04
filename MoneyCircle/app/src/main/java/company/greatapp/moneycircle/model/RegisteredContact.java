@@ -3,7 +3,7 @@ package company.greatapp.moneycircle.model;
 /**
  * Created by Gyanendrasingh on 26-06-2015.
  */
-public class RegisteredContact {
+public class RegisteredContact extends Model {
     String name;
 
     public String getName() {

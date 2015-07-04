@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dull_white"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tv_dailyReminderId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/daily_reminder_setting"
+        android:background="@color/white"
+        android:padding="12dp"
+        android:drawableEnd="@drawable/ic_forward"
+        android:drawableRight="@drawable/ic_forward"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/tv_passwordId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/password_setting"
+        android:background="@color/white"
+        android:padding="12dp"
+        android:drawableEnd="@drawable/ic_forward"
+        android:drawableRight="@drawable/ic_forward"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/tv_categoriesId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/categories_setting"
+        android:background="@color/white"
+        android:padding="12dp"
+        android:drawableEnd="@drawable/ic_forward"
+        android:drawableRight="@drawable/ic_forward"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:id="@+id/tv_profileId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/profile_setting"
+        android:background="@color/white"
+        android:padding="12dp"
+        android:drawableEnd="@drawable/ic_forward"
+        android:drawableRight="@drawable/ic_forward"
+        android:layout_marginBottom="16dp"/>
+
+</LinearLayout>
