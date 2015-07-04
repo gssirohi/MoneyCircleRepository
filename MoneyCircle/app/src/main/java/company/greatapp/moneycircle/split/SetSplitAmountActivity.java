@@ -20,7 +20,7 @@ import android.widget.ToggleButton;
 import java.util.ArrayList;
 
 import company.greatapp.moneycircle.R;
-import company.greatapp.moneycircle.model.RegisteredContact;
+import company.greatapp.moneycircle.model.Contact;
 
 
 public class SetSplitAmountActivity extends ActionBarActivity {
@@ -58,9 +58,9 @@ public class SetSplitAmountActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Participant participant = ((SetSplitAmountRowItemView) view).getParticipant();
-                Log.d("split", "Name : " + participant.member.getName());
+                Log.d("split", "Name : " + participant.member.getContactName());
                 Log.d("split", "Amount : " + participant.amount);
-                Toast.makeText(SetSplitAmountActivity.this, "" + participant.member.getName() + " : " +
+                Toast.makeText(SetSplitAmountActivity.this, "" + participant.member.getContactName() + " : " +
                         participant.amount, Toast.LENGTH_SHORT).show();
             }
         });
@@ -115,17 +115,17 @@ public class SetSplitAmountActivity extends ActionBarActivity {
 
     private void printParticipants() {
         for (Participant p : list) {
-            Log.d("split", "name : " + p.member.getName());
+            Log.d("split", "name : " + p.member.getContactName());
             Log.d("split", "name : " + p.amount);
         }
     }
 
     public class Participant {
-        RegisteredContact member;
+        Contact member;
         int amount;
 
         public Participant(String name) {
-            member = new RegisteredContact(name);
+            member = new Contact(name);
         }
     }
 
@@ -146,7 +146,7 @@ public class SetSplitAmountActivity extends ActionBarActivity {
     private int getDividedAmount() {
         int amount = 0;
         for (Participant p : list) {
-            Log.d("split", "name : " + p.member.getName() + " amount : " + p.amount);
+            Log.d("split", "name : " + p.member.getContactName() + " amount : " + p.amount);
             amount = amount + p.amount;
         }
         return amount;

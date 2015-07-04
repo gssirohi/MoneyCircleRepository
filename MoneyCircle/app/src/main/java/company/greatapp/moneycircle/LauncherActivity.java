@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import company.greatapp.moneycircle.categories.ManageCategoriesActivity;
 import company.greatapp.moneycircle.chooser.ChooserActivity;
+import company.greatapp.moneycircle.manager.ContactManager;
 import company.greatapp.moneycircle.split.SetSplitAmountActivity;
 import company.greatapp.moneycircle.split.SplitToolActivity;
 
@@ -41,6 +42,8 @@ public class LauncherActivity extends ActionBarActivity {
                 startNewActivity(i);
             }
         });
+      //  ContactManager cm = new ContactManager(this);
+       // cm.retriveContactsFromDevice();//contact initialization
     }
 
     private void startNewActivity(int i) {

@@ -9,7 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
 
-import company.greatapp.moneycircle.model.RegisteredContact;
+import company.greatapp.moneycircle.model.Contact;
+
 
 /**
  * Created by prateek02.arora on 30-06-2015.
@@ -17,7 +18,7 @@ import company.greatapp.moneycircle.model.RegisteredContact;
 public class RegisteredContactsViewFragment extends Fragment {
 
     ListView mListView;
-    RegisteredContact[] mRegisteredContactList = null;
+    Contact[] mRegisteredContactList = null;
 
     @Nullable
     @Override

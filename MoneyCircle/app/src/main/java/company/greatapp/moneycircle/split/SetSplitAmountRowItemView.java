@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import company.greatapp.moneycircle.R;
-import company.greatapp.moneycircle.model.RegisteredContact;
+import company.greatapp.moneycircle.model.Contact;
 
 /**
  * Created by Gyanendrasingh on 26-06-2015.
@@ -40,9 +40,9 @@ public class SetSplitAmountRowItemView extends LinearLayout {
         et_amount.setVisibility(View.GONE);
         b_ok.setVisibility(View.GONE);
         TextView text = (TextView) viewGroup.findViewById(R.id.tv_name);
-        RegisteredContact member = participant.member;
+        Contact member = participant.member;
         int amount  = participant.amount;
-        text.setText(member.getName());
+        text.setText(member.getContactName());
         tv_amount.setText(""+amount);
         et_amount.setText(""+amount);
 
