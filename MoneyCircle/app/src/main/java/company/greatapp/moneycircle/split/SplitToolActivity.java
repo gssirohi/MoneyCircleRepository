@@ -132,6 +132,7 @@ public class SplitToolActivity extends ActionBarActivity implements DateSetter{
         }
         ll.addView(b);
         Toast.makeText(this,out,Toast.LENGTH_SHORT).show();
+
     }
 
     @Override

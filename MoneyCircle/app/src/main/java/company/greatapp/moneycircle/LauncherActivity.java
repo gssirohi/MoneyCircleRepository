@@ -78,6 +78,11 @@ public class LauncherActivity extends ActionBarActivity {
             case 5:
                 startActivity(new Intent(this,SettingActivity.class));
                 break;
+            case 8:
+                Intent intent = new Intent(this,AddNewEntryActivity.class);
+                intent.putExtra(C.ENTRY_TYPE,C.ENTRY_TYPE_INCOME);
+                startActivity(intent);
+                break;
             case 9:
                 startActivity(new Intent(this,SplitToolActivity.class));
                 break;
@@ -97,8 +102,23 @@ public class LauncherActivity extends ActionBarActivity {
                 startActivity(new Intent(this,ContactUsActivity.class));
                 break;
             case 17:
-                Intent intent = new Intent(this,ChooserActivity.class);
+                intent = new Intent(this,ChooserActivity.class);
                 intent.putExtra(C.CHOOSER_REQUEST,C.REQUEST_CODE_CONTACTS);
+                startActivity(intent);
+                break;
+            case 18:
+                 intent = new Intent(this,AddNewEntryActivity.class);
+                intent.putExtra(C.ENTRY_TYPE,C.ENTRY_TYPE_EXPENSE);
+                startActivity(intent);
+                break;
+            case 19:
+                 intent = new Intent(this,AddNewEntryActivity.class);
+                intent.putExtra(C.ENTRY_TYPE,C.ENTRY_TYPE_BORROW);
+                startActivity(intent);
+                break;
+            case 20:
+                 intent = new Intent(this,AddNewEntryActivity.class);
+                intent.putExtra(C.ENTRY_TYPE,C.ENTRY_TYPE_LENDED);
                 startActivity(intent);
                 break;
             default :
@@ -125,7 +145,7 @@ public class LauncherActivity extends ActionBarActivity {
         list.add("Activity5:Settings");
         list.add("Activity6");
         list.add("Activity7");
-        list.add("Activity8");
+        list.add("Activity8: Add Entry[INCOME]");
         list.add("Activity9:SplitToolActivity");
         list.add("Activity10: SetSplitAmountActivity");
         list.add("Activity11");
@@ -135,6 +155,9 @@ public class LauncherActivity extends ActionBarActivity {
         list.add("Activity15:Edit Profile");
         list.add("Activity16:Contact Us");
         list.add("Activity17:Chooser Activity");
+        list.add("Activity18:Add Entry[EXPENSE]");
+        list.add("Activity19:Add Entry[BORROW]");
+        list.add("Activity20:Add Entry[LENDED]");
     }
 
     @Override

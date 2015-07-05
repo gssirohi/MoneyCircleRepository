@@ -30,6 +30,7 @@ public class ChooserActivity extends Activity {
     private AbsListView.MultiChoiceModeListener actionModeCallBack;
     private ChooserAdapter adapter;
     private ListView chooserList;
+    private boolean isDonePressed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,8 +112,8 @@ public class ChooserActivity extends Activity {
             public boolean onActionItemClicked(android.view.ActionMode mode, MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.select:
-                        mode.finish();
                         onClickDone();
+                        mode.finish();
                         return true;
                     default:
                         return false;
@@ -121,7 +122,8 @@ public class ChooserActivity extends Activity {
 
             @Override
             public void onDestroyActionMode(android.view.ActionMode mode) {
-                adapter.removeSelection();
+                    adapter.removeSelection();
+                    chooserList.clearChoices();
             }
 
             @Override

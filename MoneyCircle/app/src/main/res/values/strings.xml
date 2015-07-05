@@ -33,4 +33,5 @@
     <string name="categories">Category</string>
     <string name="invite_contact">Invite Contacts</string>
     <string name="create_new_circle">Create New Circle</string>
+    <string name="title_activity_add_new_entry">New Entry</string>
 </resources>

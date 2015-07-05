@@ -20,4 +20,11 @@ public class C {
     public static final int REQUEST_CODE_REGISTERED_CONTACTS = 2;
     public static final int REQUEST_CODE_CIRCLES = 3;
     public static final int REQUEST_CODE_CATEGORIES = 4;
+
+    public static final String ENTRY_TYPE = "entryType";
+    public static final int ENTRY_TYPE_INCOME = 1;
+    public static final int ENTRY_TYPE_EXPENSE = 2;
+    public static final int ENTRY_TYPE_BORROW = 3;
+    public static final int ENTRY_TYPE_LENDED = 4;
+
 }
