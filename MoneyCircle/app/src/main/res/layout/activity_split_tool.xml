@@ -1,135 +1,203 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="company.greatapp.moneycircle.split.SplitToolActivity"
-    android:background="@color/accent_material_dark"
-    android:id="@+id/rl">
+    tools:context="company.greatapp.moneycircle.AddNewEntryActivity"
+    android:padding="2dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="S P L I T  E X P E N S E"
+        android:id="@+id/tv_new_title"
+        android:layout_gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/scrollView" >
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView2"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/tv_new_title"
+        android:layout_marginTop="10dp">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/tv_new_title"
+            android:layout_toEndOf="@+id/tv_new_title"
+            android:id="@+id/ll">
 
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="TITLE"
-                    android:id="@+id/tv_title"
-                    android:layout_weight="1" />
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/et_title"
-                    android:layout_weight="1" />
-            </LinearLayout>
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="AMOUNT"
-                    android:id="@+id/tv_amount"
-                    android:layout_weight="1" />
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/et_amount"
-                    android:layout_weight="1" />
-            </LinearLayout>
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="DESCRIPTION"
-                    android:id="@+id/tv_description"
-                    android:layout_weight="1" />
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/et_description"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="DATE"
-                    android:id="@+id/tv_date_title"
-                    android:layout_weight="1" />
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="select date"
-                    android:id="@+id/tv_date"
-                    android:layout_weight="0.18" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="I would like to SHARE AN EXPENSE of worth"
+                    android:id="@+id/tv_new_type"
+                    android:layout_gravity="center_horizontal" />
 
             </LinearLayout>
 
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Rs."
+                    android:id="@+id/tv_new_currency"
+                    android:layout_gravity="center_vertical" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/et_new_amount"
+                    android:textSize="@dimen/abc_text_size_display_2_material"
+                    android:hint="00.00" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="of category type"
+                android:id="@+id/tv_new_category"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="2dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Salary"
+                android:id="@+id/b_new_category"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="2dp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="with"
+                android:id="@+id/textView4"
+                android:layout_gravity="center_horizontal" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Myself (I am included too) and"
+                android:id="@+id/cb_new_include_me"
+                android:layout_gravity="center_horizontal"
+                android:checked="true" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="INCLUDE CIRCLES"
+                android:id="@+id/b_new_add_circles"
+                android:layout_gravity="center_horizontal" />
             <HorizontalScrollView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/horizontalScrollView1" >
+                android:id="@+id/hsv_new_circles"
+                android:layout_gravity="center_horizontal">
 
                 <LinearLayout
+                    android:id="@+id/ll_new_circles"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/ll_split_categories">
+                    android:layout_height="match_parent">
 
-                    <Button
-                        style="?android:attr/buttonStyleSmall"
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="CATEGORY"
-                        android:id="@+id/b_split_category" />
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="no circles selected"
+                        android:id="@+id/tv_new_total_me"
+                        android:layout_marginBottom="5dp" />
+
                 </LinearLayout>
             </HorizontalScrollView>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="and"
+                android:id="@+id/tv_new_member_add"
+                android:layout_gravity="center_horizontal" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="INCLUDE CONTACTS"
+                android:id="@+id/b_new_member_add"
+                android:layout_gravity="center_horizontal" />
             <HorizontalScrollView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/horizontalScrollView2" >
+                android:id="@+id/hsv_new_contacts"
+                android:layout_gravity="center_horizontal"
+                android:fillViewport="false">
 
                 <LinearLayout
+                    android:id="@+id/ll_new_contacts"
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/ll_split_circle"
-                    android:gravity="end|right">
+                    android:layout_height="match_parent">
 
-                    <Button
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="92dp"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="CIRCLE"
-                        android:id="@+id/b_split_circle" />
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="no contacts selected"
+                        android:id="@+id/tv_new_tot"
+                        android:layout_marginBottom="5dp" />
+
                 </LinearLayout>
             </HorizontalScrollView>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="and I want to "
+                    android:id="@+id/textView5" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="EQUALLY"
+                    android:id="@+id/b_new_distribution_type" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="distribute this"
+                    android:id="@+id/textView6" />
+            </LinearLayout>
+
             <HorizontalScrollView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -138,48 +206,79 @@
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/ll_split_contacts">
+                    android:layout_height="match_parent">
 
-                    <Button
-                        style="?android:attr/buttonStyleSmall"
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="CONTACTS"
-                        android:id="@+id/b_split_contacts" />
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Total Member 0(excluding you) and "
+                        android:id="@+id/tv_new_total_members"
+                        android:layout_marginBottom="5dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Your contribution is Rs. 0 and Each member owes you Rs. 0 "
+                        android:id="@+id/tv_new_distribution_details"
+                        android:layout_marginBottom="5dp" />
                 </LinearLayout>
             </HorizontalScrollView>
 
-            <CheckBox
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="You are included"
-                android:id="@+id/cb_you_included"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="for the purpose of"
+                android:id="@+id/tv_new_item"
                 android:layout_gravity="center_horizontal"
-                android:checked="false" />
+                android:layout_margin="10dp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/et_new_item"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="2dp"
+                android:hint="e.g: Goa trip with friends" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="on Date"
+                android:id="@+id/textView9"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="2dp" />
 
             <Button
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="SET SPLIT AMOUNT"
-                android:id="@+id/b_set_split_amount"
-                android:layout_above="@+id/b_split_done"
-                android:layout_alignLeft="@+id/b_split_done"
-                android:layout_alignStart="@+id/b_split_done"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
+                android:text="5 July 2015"
+                android:id="@+id/b_new_date"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="2dp" />
 
-            <Button
-                android:layout_width="match_parent"
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="SPLIT NOW"
-                android:id="@+id/b_split_done"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:layout_gravity="center_horizontal" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="and want to include below note"
+                android:id="@+id/tv_new_note"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="2dp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/et_new_note"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="2dp"
+                android:hint="I would like to add it later" />
+
         </LinearLayout>
-
     </ScrollView>
 
 </RelativeLayout>

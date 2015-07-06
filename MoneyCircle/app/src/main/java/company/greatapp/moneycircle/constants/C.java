@@ -16,10 +16,10 @@ public class C {
 
     public static final String CHOOSER_REQUEST = "chooserRequest";
 
-    public static final int REQUEST_CODE_CONTACTS = 1;
-    public static final int REQUEST_CODE_REGISTERED_CONTACTS = 2;
-    public static final int REQUEST_CODE_CIRCLES = 3;
-    public static final int REQUEST_CODE_CATEGORIES = 4;
+    public static final int TAG_CONTACTS = 1;
+    public static final int TAG_REGISTERED_CONTACTS = 2;
+    public static final int TAG_CIRCLES = 3;
+    public static final int TAG_CATEGORIES = 4;
 
     public static final String ENTRY_TYPE = "entryType";
     public static final int ENTRY_TYPE_INCOME = 1;

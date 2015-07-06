@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.chooser.ChooserActivity;
+import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.split.SetSplitAmountActivity;
 
 /**
@@ -27,8 +28,14 @@ public class TagItemView extends LinearLayout {
             ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.tag_item_layout, this, true);
             Button b = (Button)viewGroup.findViewById(R.id.b_tag_item);
             b.setText(title);
-            if(type == TYPE_REGISTERED_CONTACT) {
+            if(type == C.TAG_REGISTERED_CONTACTS) {
                 b.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
+            } else if(type == C.TAG_CONTACTS) {
+                b.setBackgroundColor(getResources().getColor(R.color.material_deep_teal_200));
+            } else if(type == C.TAG_CIRCLES) {
+                b.setBackgroundColor(getResources().getColor(R.color.material_blue_grey_800));
+            } else if(type == C.TAG_CATEGORIES) {
+                b.setBackgroundColor(getResources().getColor(R.color.accent_material_light));
             }
         }
     }

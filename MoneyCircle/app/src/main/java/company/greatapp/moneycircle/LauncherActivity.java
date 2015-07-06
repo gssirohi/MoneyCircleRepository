@@ -103,7 +103,7 @@ public class LauncherActivity extends ActionBarActivity {
                 break;
             case 17:
                 intent = new Intent(this,ChooserActivity.class);
-                intent.putExtra(C.CHOOSER_REQUEST,C.REQUEST_CODE_CONTACTS);
+                intent.putExtra(C.CHOOSER_REQUEST,C.TAG_CONTACTS);
                 startActivity(intent);
                 break;
             case 18:

@@ -1,9 +1,7 @@
 package company.greatapp.moneycircle.chooser;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -38,7 +36,7 @@ public class ChooserActivity extends Activity {
         setContentView(R.layout.activity_chooser);
         chooserList = (ListView)findViewById(R.id.lv_chooser_items);
         TextView title = (TextView)findViewById(R.id.tv_chooser_item_title);
-        int requestCode  = getIntent().getIntExtra(C.CHOOSER_REQUEST,C.REQUEST_CODE_CONTACTS);
+        int requestCode  = getIntent().getIntExtra(C.CHOOSER_REQUEST,C.TAG_CONTACTS);
         title.setText(getChooserTitle(requestCode));
         adapter = new ChooserAdapter(this,0,getItemList(requestCode));
         chooserList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -71,16 +69,16 @@ public class ChooserActivity extends Activity {
     private String getChooserTitle(int requestCode) {
         String title = "";
         switch(requestCode) {
-            case C.REQUEST_CODE_REGISTERED_CONTACTS:
+            case C.TAG_REGISTERED_CONTACTS:
                 title = "Select Registered Contacts";
                 break;
-            case C.REQUEST_CODE_CONTACTS:
+            case C.TAG_CONTACTS:
                 title = "Select Contacts";
                 break;
-            case C.REQUEST_CODE_CIRCLES:
+            case C.TAG_CIRCLES:
                 title = "Select Circles";
                 break;
-            case C.REQUEST_CODE_CATEGORIES:
+            case C.TAG_CATEGORIES:
                 title = "Select Categories";
                 break;
             default:
@@ -184,13 +182,13 @@ public class ChooserActivity extends Activity {
     private ArrayList<Model> getItemList(int code) {
         ArrayList<Model> list = new ArrayList<Model>();
         switch(code) {
-            case C.REQUEST_CODE_CATEGORIES:
+            case C.TAG_CATEGORIES:
                 break;
-            case C.REQUEST_CODE_CIRCLES:
+            case C.TAG_CIRCLES:
                 break;
-            case C.REQUEST_CODE_REGISTERED_CONTACTS:
+            case C.TAG_REGISTERED_CONTACTS:
                 break;
-            case C.REQUEST_CODE_CONTACTS:
+            case C.TAG_CONTACTS:
                 ContactManager cm = new ContactManager(this);
                 list = cm.getItemList();
                 break;
