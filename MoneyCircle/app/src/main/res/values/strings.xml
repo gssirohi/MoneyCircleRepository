@@ -39,4 +39,38 @@
     <string name="invite_contact">Invite Contacts</string>
     <string name="create_new_circle">Create New Circle</string>
     <string name="title_activity_add_new_entry">New Entry</string>
+    	<!--Diary Related Strings-->
+    <string name="income">Income</string>
+    <string name="expense">Expense</string>
+    <string name="borrowed">Borrowed</string>
+    <string name="lended">Lended</string>
+    <string name="split">Split</string>
+    <string name="action_add">Add</string>
+    <string name="diary">Personal Diary</string>
+
+    	<!--Drawer Related Strings-->
+
+    <string name="profile">Profile</string>
+    <string name="contact_and_circle">Contact &amp; Circles</string>
+    <string name="report">Report</string>
+    <string name="share">Share</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="activity_home">Home Activity</string>
+
+    <array name="drawer_list">
+        <item>@string/diary</item>
+        <item>@string/income</item>
+        <item>@string/expense</item>
+        <item>@string/borrowed</item>
+        <item>@string/lended</item>
+        <item>@string/contact_and_circle</item>
+        <item>@string/action_settings</item>
+        <item>@string/profile</item>
+        <item>@string/report</item>
+        <item>@string/share</item>
+        <item>@string/activity_contact_us</item>
+    </array>
+
 </resources>

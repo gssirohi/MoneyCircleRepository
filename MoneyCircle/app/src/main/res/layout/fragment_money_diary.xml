@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/llHomeFragmentId"
+    android:background="@color/background_floating_material_light"
+    android:padding="16dp"
+    android:weightSum="3">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_weight="1"
+        android:layout_marginBottom="32dp">
+
+        <LinearLayout
+            android:id="@+id/llIncomeId"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:weightSum="3"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@string/income"
+                android:textAppearance="@android:style/TextAppearance.Large"
+                android:gravity="center"
+                android:background="@color/accent_material_light" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:text="Amount :"
+                android:textAppearance="@android:style/TextAppearance.Small"
+                android:gravity="center"
+                android:background="@color/highlighted_text_material_light"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llExpenseId"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:weightSum="3"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@string/expense"
+                android:textAppearance="@android:style/TextAppearance.Large"
+                android:gravity="center"
+                android:background="@color/accent_material_light" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:text="Amount :"
+                android:textAppearance="@android:style/TextAppearance.Small"
+                android:gravity="center"
+                android:background="@color/highlighted_text_material_light"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_weight="1"
+        android:layout_marginBottom="32dp">
+
+        <LinearLayout
+            android:id="@+id/llBorrowId"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:weightSum="3"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@string/borrowed"
+                android:textAppearance="@android:style/TextAppearance.Large"
+                android:gravity="center"
+                android:background="@color/accent_material_light" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:text="Amount :"
+                android:textAppearance="@android:style/TextAppearance.Small"
+                android:gravity="center"
+                android:background="@color/highlighted_text_material_light"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llLendedId"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:weightSum="3"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@string/lended"
+                android:textAppearance="@android:style/TextAppearance.Large"
+                android:gravity="center"
+                android:background="@color/accent_material_light" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:text="Amount :"
+                android:textAppearance="@android:style/TextAppearance.Small"
+                android:gravity="center"
+                android:background="@color/highlighted_text_material_light"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llSplitId"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:weightSum="3"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="@string/split"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:gravity="center"
+            android:background="@color/accent_material_light" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:text="Amount :"
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:gravity="center"
+            android:background="@color/highlighted_text_material_light"/>
+
+    </LinearLayout>
+
+</LinearLayout>
