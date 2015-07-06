@@ -60,6 +60,33 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llEmailId"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="10dp"
+            android:weightSum="3">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:text="@string/email"/>
+
+            <TextView
+                android:id="@+id/tvEmailid"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:layout_weight="2"
+                android:onClick="showDatePickerDialog"/>
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/llDobId"
             android:layout_width="match_parent"
             android:layout_height="60dp"
@@ -76,6 +103,7 @@
                 android:layout_weight="1"
                 android:text="@string/dob"/>
 
+            <!--TODO need to check how this onClick will work-->
             <TextView
                 android:id="@+id/tvDobId"
                 android:layout_width="0dp"
@@ -88,28 +116,15 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/llLoginButtonId"
+    <Button
+        android:id="@+id/bt_continue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Continue"
+        android:background="@color/blue"
+        android:textColor="@color/white"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="32dp"
-        android:weightSum="2">
-
-        <Button
-            android:id="@+id/btGooglePlusId"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/google_plus"
-            android:layout_margin="5dp"/>
-
-        <Button
-            android:id="@+id/btFacbookLoginId"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/facebook"
-            android:layout_margin="5dp"/>
-    </LinearLayout>
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="32dp"/>
 </RelativeLayout>

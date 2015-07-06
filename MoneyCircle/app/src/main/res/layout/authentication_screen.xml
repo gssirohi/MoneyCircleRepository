@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_authenticationId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/authentication_text"
+        android:padding="12dp"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"/>
+
+    <!--TODO Remove those 2 dummy buttons and make the original button visible-->
+    <Button
+        android:id="@+id/dummyGooglePlusLoginButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Google+"
+        android:gravity="center"
+        android:layout_above="@+id/dummyFacebookLoginButton"/>
+
+    <Button
+        android:id="@+id/dummyFacebookLoginButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Facebook"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>
