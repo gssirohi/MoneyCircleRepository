@@ -31,7 +31,6 @@ public class HomeActivity extends ActionBarActivity
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
-        Log.d("Prateek", "[HomeActivity] [onCreate] mTitle : "+mTitle);
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
@@ -53,7 +52,6 @@ public class HomeActivity extends ActionBarActivity
                         .commit();
                 break;
             case 1 :
-                mTitle = array[position];
                 ViewerScreenFragment incomeViewerFragment = new ViewerScreenFragment();
                 bundle = new Bundle();
                 bundle.putString(ViewerScreenFragment.MODEL_TYPE, "Income");
@@ -61,7 +59,6 @@ public class HomeActivity extends ActionBarActivity
                 fragmentManager.beginTransaction().replace(R.id.homeContainerId, incomeViewerFragment, "Income ViewerFragment").commit();
                 break;
             case 2 :
-                mTitle = array[position];
                 ViewerScreenFragment expenseViewerFragment = new ViewerScreenFragment();
                 bundle = new Bundle();
                 bundle.putString(ViewerScreenFragment.MODEL_TYPE, "Expense");
@@ -69,7 +66,6 @@ public class HomeActivity extends ActionBarActivity
                 fragmentManager.beginTransaction().replace(R.id.homeContainerId, expenseViewerFragment, "Expense ViewerFragment").commit();
                 break;
             case 3 :
-                mTitle = array[position];
                 ViewerScreenFragment borrowViewerFragment = new ViewerScreenFragment();
                 bundle = new Bundle();
                 bundle.putString(ViewerScreenFragment.MODEL_TYPE, "Borrowed");
@@ -77,7 +73,6 @@ public class HomeActivity extends ActionBarActivity
                 fragmentManager.beginTransaction().replace(R.id.homeContainerId, borrowViewerFragment, "Borrowed ViewerFragment").commit();
                 break;
             case 4 :
-                mTitle = array[position];
                 ViewerScreenFragment lendedViewerFragment = new ViewerScreenFragment();
                 bundle = new Bundle();
                 bundle.putString(ViewerScreenFragment.MODEL_TYPE, "Lended");
@@ -85,27 +80,21 @@ public class HomeActivity extends ActionBarActivity
                 fragmentManager.beginTransaction().replace(R.id.homeContainerId, lendedViewerFragment, "Lended ViewerFragment").commit();
                 break;
             case 5 :
-                mTitle = array[position];
                 Toast.makeText(this, "No View is attached", Toast.LENGTH_SHORT).show();
                 break;
             case 6 :
-                mTitle = array[position];
                 Toast.makeText(this, "No View is attached", Toast.LENGTH_SHORT).show();
                 break;
             case 7 :
-                mTitle = array[position];
                 Toast.makeText(this, "No View is attached", Toast.LENGTH_SHORT).show();
                 break;
             case 8 :
-                mTitle = array[position];
                 Toast.makeText(this, "No View is attached", Toast.LENGTH_SHORT).show();
                 break;
             case 9 :
-                mTitle = array[position];
                 Toast.makeText(this, "No View is attached", Toast.LENGTH_SHORT).show();
                 break;
             case 10 :
-                mTitle = array[position];
                 Toast.makeText(this, "No View is attached", Toast.LENGTH_SHORT).show();
                 break;
             default:
@@ -118,18 +107,7 @@ public class HomeActivity extends ActionBarActivity
 
     public void onSectionAttached(int number) {
         String[] array = getResources().getStringArray(R.array.drawer_list);
-        mTitle = array[number-1];
-        /*switch (number) {
-            case 1:
-                mTitle = array[0];
-                break;
-            case 2:
-                mTitle = getString(R.string.title_section2);
-                break;
-            case 3:
-                mTitle = getString(R.string.title_section3);
-                break;
-        }*/
+        mTitle = array[number];
     }
 
     public void restoreActionBar() {
@@ -167,45 +145,5 @@ public class HomeActivity extends ActionBarActivity
 
         return super.onOptionsItemSelected(item);
     }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     *//*
-    public static class PlaceholderFragment extends Fragment {
-        *//**
-         * The fragment argument representing the section number for this
-         * fragment.
-         *//*
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        *//**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         *//*
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_sample, container, false);
-            return rootView;
-        }
-
-        @Override
-        public void onAttach(Activity activity) {
-            super.onAttach(activity);
-            ((HomeActivity) activity).onSectionAttached(
-                    getArguments().getInt(ARG_SECTION_NUMBER));
-        }
-    }*/
 
 }

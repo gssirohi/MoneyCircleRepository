@@ -1,14 +1,19 @@
 package company.greatapp.moneycircle;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+
+import company.greatapp.moneycircle.constants.C;
 
 /**
  * Created by prateek02.arora on 30-06-2015.
@@ -16,7 +21,8 @@ import android.widget.Spinner;
 public class ViewerScreenFragment extends Fragment {
 
     public static String MODEL_TYPE;
-    public static String MODEL_CATEGORIES;
+
+    private int SECTION_ARGUMENT;
 
     private String modelType;
     private String[] mCategories;
@@ -25,6 +31,17 @@ public class ViewerScreenFragment extends Fragment {
     private Spinner mSpinner;
 
     private FragmentTabHost mTabHost;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        Bundle bundle = getArguments();
+        modelType = bundle.getString(MODEL_TYPE);
+        getCategories();
+
+        ((HomeActivity)activity).onSectionAttached(SECTION_ARGUMENT);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,11 +53,6 @@ public class ViewerScreenFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.viewer_screen, container, false);
-
-        Bundle bundle = getArguments();
-        modelType = bundle.getString(MODEL_TYPE);
-        getCategories();
-        //mCategories = bundle.getStringArray(MODEL_CATEGORIES);
 
         mTabHost = (FragmentTabHost)view.findViewById(R.id.tabhostId);
         mTabHost.setup(getActivity(), getChildFragmentManager(), android.R.id.tabcontent);
@@ -88,19 +100,38 @@ public class ViewerScreenFragment extends Fragment {
             }
         });*/
 
-    //    ((HomeActivity)getActivity()).getSupportActionBar().setTitle("Income");
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.action_addId) {
+            startNewEntryScreen();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void getCategories() {
         if (modelType == "Income") {
+            SECTION_ARGUMENT = C.ENTRY_TYPE_INCOME;
             mCategories = new String[]{"All", "Salary", "Share", "RD", "FD"};
         } else if (modelType == "Expense") {
+            SECTION_ARGUMENT = C.ENTRY_TYPE_EXPENSE;
             mCategories = new String[]{"Entertainment", "Bills", "Clothing", "Food", "Trip", "Travel"};
         } else if (modelType == "Borrowed") {
+            SECTION_ARGUMENT = C.ENTRY_TYPE_BORROW;
             mCategories = new String[]{"Bank Loan", "Credit Card", "From Friends", "From Family"};
         } else if (modelType == "Lended") {
+            SECTION_ARGUMENT = C.ENTRY_TYPE_LENDED;
             mCategories = new String[]{"To Family", "To Friends", "To Others"};
         }
+    }
+
+    private void startNewEntryScreen() {
+
+        Intent intent = new Intent(getActivity(), AddNewEntryActivity.class);
+        intent.putExtra(C.ENTRY_TYPE,SECTION_ARGUMENT);
+        startActivity(intent);
     }
 }

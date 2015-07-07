@@ -47,6 +47,14 @@
     <string name="split">Split</string>
     <string name="action_add">Add</string>
     <string name="diary">Personal Diary</string>
+    
+    <array name="list_add_new_entry">
+        <item>@string/income</item>
+        <item>@string/expense</item>
+        <item>@string/borrowed</item>
+        <item>@string/lended</item>
+        <item>@string/split</item>
+    </array>
 
     	<!--Drawer Related Strings-->
 

@@ -23,8 +23,8 @@ public class SetSplitAmountRowItemView extends LinearLayout {
     private final TextView tv_name;
     private final Button b_ok;
     private final Button b_edit;
-    private final EditText et_amount;
-    private final TextView tv_amount;
+    private final EditText et_editableValue;
+    private final TextView tv_editableValue;
     private final SetSplitAmountActivity.Participant participant;
 
     public SetSplitAmountRowItemView(Context context, AttributeSet attrs,LayoutInflater infaltor,
@@ -35,16 +35,16 @@ public class SetSplitAmountRowItemView extends LinearLayout {
         tv_name = (TextView) viewGroup.findViewById(R.id.tv_name);
         b_ok = (Button) viewGroup.findViewById(R.id.b_ok);
         b_edit = (Button) viewGroup.findViewById(R.id.b_edit);
-        et_amount = (EditText) viewGroup.findViewById(R.id.et_amount);
-        tv_amount = (TextView) viewGroup.findViewById(R.id.tv_amount);
-        et_amount.setVisibility(View.GONE);
+        et_editableValue = (EditText) viewGroup.findViewById(R.id.et_amount);
+        tv_editableValue = (TextView) viewGroup.findViewById(R.id.tv_amount);
+        et_editableValue.setVisibility(View.GONE);
         b_ok.setVisibility(View.GONE);
         TextView text = (TextView) viewGroup.findViewById(R.id.tv_name);
         Contact member = participant.member;
-        int amount  = participant.amount;
+        float amount  = participant.amount;
         text.setText(member.getContactName());
-        tv_amount.setText(""+amount);
-        et_amount.setText(""+amount);
+        tv_editableValue.setText("" + amount);
+        et_editableValue.setText("" + amount);
 
         b_ok.setOnClickListener(new OnClickListener() {
             @Override
@@ -61,18 +61,18 @@ public class SetSplitAmountRowItemView extends LinearLayout {
     }
 
     private void onClickEDIT() {
-        et_amount.setText(""+participant.amount);
-        et_amount.setVisibility(View.VISIBLE);
-        tv_amount.setVisibility(View.GONE);
+        et_editableValue.setText("" + participant.amount);
+        et_editableValue.setVisibility(View.VISIBLE);
+        tv_editableValue.setVisibility(View.GONE);
         b_edit.setVisibility(View.GONE);
         b_ok.setVisibility(View.VISIBLE);
     }
 
     private void onClickOK() {
-        participant.amount = Integer.parseInt(et_amount.getText().toString());
-        tv_amount.setText(""+participant.amount);
-        et_amount.setVisibility(View.GONE);
-        tv_amount.setVisibility(View.VISIBLE);
+        participant.editableValue = Float.parseFloat(et_editableValue.getText().toString());
+        tv_editableValue.setText("" + participant.amount);
+        et_editableValue.setVisibility(View.GONE);
+        tv_editableValue.setVisibility(View.VISIBLE);
         b_ok.setVisibility(View.GONE);
         b_edit.setVisibility(View.VISIBLE);
         sendRefreshAction();
