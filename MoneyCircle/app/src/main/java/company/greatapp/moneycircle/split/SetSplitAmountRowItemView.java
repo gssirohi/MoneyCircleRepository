@@ -13,8 +13,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
+
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.model.Contact;
+import company.greatapp.moneycircle.model.Participant;
 
 /**
  * Created by Gyanendrasingh on 26-06-2015.
@@ -24,11 +27,11 @@ public class SetSplitAmountRowItemView extends LinearLayout {
     private final Button b_ok;
     private final Button b_edit;
     private final EditText et_editableValue;
-    private final TextView tv_editableValue;
-    private final SetSplitAmountActivity.Participant participant;
+    private final Participant participant;
+    private final LinearLayout ll_display;
 
     public SetSplitAmountRowItemView(Context context, AttributeSet attrs,LayoutInflater infaltor,
-                                     SetSplitAmountActivity.Participant participant) {
+                                     Participant participant) {
         super(context, attrs);
         this.participant = participant;
         ViewGroup viewGroup = (ViewGroup) infaltor.inflate(R.layout.set_split_amount_row_item, this, true);
@@ -36,15 +39,12 @@ public class SetSplitAmountRowItemView extends LinearLayout {
         b_ok = (Button) viewGroup.findViewById(R.id.b_ok);
         b_edit = (Button) viewGroup.findViewById(R.id.b_edit);
         et_editableValue = (EditText) viewGroup.findViewById(R.id.et_amount);
-        tv_editableValue = (TextView) viewGroup.findViewById(R.id.tv_amount);
+        ll_display = (LinearLayout)findViewById(R.id.ll_display);
+
         et_editableValue.setVisibility(View.GONE);
         b_ok.setVisibility(View.GONE);
-        TextView text = (TextView) viewGroup.findViewById(R.id.tv_name);
-        Contact member = participant.member;
-        float amount  = participant.amount;
-        text.setText(member.getContactName());
-        tv_editableValue.setText("" + amount);
-        et_editableValue.setText("" + amount);
+
+        setDisplay(participant);
 
         b_ok.setOnClickListener(new OnClickListener() {
             @Override
@@ -60,19 +60,38 @@ public class SetSplitAmountRowItemView extends LinearLayout {
         });
     }
 
+    private void setDisplay(Participant participant) {
+        String memberName = participant.memberName;
+        float amount  = participant.amount;
+        float percent = participant.percent;
+        float shares = participant.share;
+        TextView tv_amount = (TextView)ll_display.findViewById(R.id.tv_amount);
+        TextView tv_percent = (TextView)ll_display.findViewById(R.id.tv_percent);
+        TextView tv_share = (TextView)ll_display.findViewById(R.id.tv_shares);
+
+        tv_name.setText(memberName);
+
+        tv_amount.setText("" + new DecimalFormat("##.##").format(amount));
+        tv_percent.setText("" + new DecimalFormat("##.##").format(percent));
+        tv_share.setText("" + new DecimalFormat("##.##").format(shares));
+
+        et_editableValue.setText("00");
+
+    }
+
     private void onClickEDIT() {
         et_editableValue.setText("" + participant.amount);
         et_editableValue.setVisibility(View.VISIBLE);
-        tv_editableValue.setVisibility(View.GONE);
+        ll_display.setVisibility(View.GONE);
         b_edit.setVisibility(View.GONE);
         b_ok.setVisibility(View.VISIBLE);
     }
 
     private void onClickOK() {
-        participant.editableValue = Float.parseFloat(et_editableValue.getText().toString());
-        tv_editableValue.setText("" + participant.amount);
+        String value = et_editableValue.getText().toString();
+        participant.editableValue = Float.parseFloat(value);
         et_editableValue.setVisibility(View.GONE);
-        tv_editableValue.setVisibility(View.VISIBLE);
+        ll_display.setVisibility(View.VISIBLE);
         b_ok.setVisibility(View.GONE);
         b_edit.setVisibility(View.VISIBLE);
         sendRefreshAction();
@@ -86,7 +105,7 @@ public class SetSplitAmountRowItemView extends LinearLayout {
             LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
 
-    public SetSplitAmountActivity.Participant getParticipant(){
+    public Participant getParticipant(){
         return this.participant;
     }
 }

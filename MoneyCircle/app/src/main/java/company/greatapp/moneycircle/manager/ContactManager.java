@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -100,6 +101,12 @@ public class ContactManager extends BaseModelManager {
 
     @Override
     public Model getItemFromListByUID(String uid) {
+        Log.d("split","required uid: "+uid);
+        for(Model m : contacts) {
+            Log.d("split", "checking uid: " + m.getUID());
+            if(uid.equals(m.getUID()))
+                return m;
+        }
         return null;
     }
 

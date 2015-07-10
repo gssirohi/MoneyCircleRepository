@@ -1,13 +1,17 @@
 package company.greatapp.moneycircle.split;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,9 +24,21 @@ import company.greatapp.moneycircle.DatePickerFragment.DateSetter;
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.chooser.ChooserActivity;
 import company.greatapp.moneycircle.constants.C;
+import company.greatapp.moneycircle.manager.ContactManager;
+import company.greatapp.moneycircle.model.Circle;
+import company.greatapp.moneycircle.model.Contact;
+import company.greatapp.moneycircle.model.Participant;
 import company.greatapp.moneycircle.view.TagItemView;
 
 public class SplitToolActivity extends ActionBarActivity implements DateSetter{
+
+    public static final int SPLIT_AMOUNT_REQUEST = 33;
+    private ArrayList<Participant> participants = new ArrayList<Participant>();
+    private ArrayList<Contact> memberContacts = new ArrayList<Contact>();
+    private Circle memberCircle;
+    //TODO: ucomment it for circle
+    //private CircleManager circleManager;
+    private ContactManager contactManager;
 
     private TextView tv_new_title;
     private TextView tv_new_before_type;
@@ -44,6 +60,10 @@ public class SplitToolActivity extends ActionBarActivity implements DateSetter{
     private Button b_new_circles_add;
     private Button b_new_date;
     private LinearLayout ll_new_contacts;
+    private CheckBox cb_include_me;
+    private boolean isUserIncluded;
+    private Button b_distribution_type;
+    private boolean isEqually;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +80,13 @@ public class SplitToolActivity extends ActionBarActivity implements DateSetter{
         tv_new_item = (TextView)findViewById(R.id.tv_new_item);
         tv_new_member_add = (TextView)findViewById(R.id.tv_new_member_add);
         tv_new_note = (TextView)findViewById(R.id.tv_new_note);
-
+        cb_include_me = (CheckBox)findViewById(R.id.cb_new_include_me);
+        isUserIncluded = cb_include_me.isChecked();
         et_new_amount = (EditText)findViewById(R.id.et_new_amount);
         et_new_item = (EditText)findViewById(R.id.et_new_item);
         et_new_note = (EditText)findViewById(R.id.et_new_note);
 
+        b_distribution_type = (Button)findViewById(R.id.b_new_distribution_type);
         b_new_category = (Button)findViewById(R.id.b_new_category);
         b_new_members_add = (Button)findViewById(R.id.b_new_member_add);
         b_new_circles_add = (Button)findViewById(R.id.b_new_add_circles);
@@ -94,7 +116,39 @@ public class SplitToolActivity extends ActionBarActivity implements DateSetter{
                 showDatePickerDialog();
             }
         });
+        cb_include_me.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isUserIncluded = isChecked;
+            }
+        });
+        isEqually = true;
+        b_distribution_type.setText("EQUALLY");
+        b_distribution_type.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleDistributionTypeButton(v);
+            }
+        });
+
+        contactManager = new ContactManager(this);
+        //TODO: ucomment it for circle
+        //circleManager = new CircleManager(this);
     }
+
+    private void handleDistributionTypeButton(View v) {
+        String amount = et_new_amount.getText().toString();
+        if(TextUtils.isEmpty(amount)){
+            //TODO: Put all the conditons before starting SetSplitAMountActivity
+            return;
+        }
+        Intent intent = new Intent(this,SetSplitAmountActivity.class);
+        float total_amount = Float.parseFloat(amount);
+        intent.putExtra("total_amount", total_amount);
+        intent.putParcelableArrayListExtra("participants", participants);
+        startActivityForResult(intent, SPLIT_AMOUNT_REQUEST);
+    }
+
     public void showDatePickerDialog() {
         DatePickerFragment datePickerFragment = new DatePickerFragment();
         datePickerFragment.setListener(this);
@@ -115,15 +169,59 @@ public class SplitToolActivity extends ActionBarActivity implements DateSetter{
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         Log.d("split", "onActivityResult : requestCode:" + requestCode + "  resultCode:" + resultCode);
-       //if (requestCode == ChooserActivity.TAG_REGISTERED_CONTACTS) {
+       if (requestCode == C.TAG_CONTACTS
+               || requestCode == C.TAG_REGISTERED_CONTACTS
+               || requestCode == C.TAG_CIRCLES) {
             if (resultCode == RESULT_OK) {
                 ArrayList<String> returnedResult = data.getStringArrayListExtra("uids");
-                addTagViews(requestCode, returnedResult);
+                addParticipants(C.TAG_CONTACTS, returnedResult);
+                addTagViews(requestCode);
             }
-        //}
+        } else if(requestCode == SPLIT_AMOUNT_REQUEST) {
+           if (resultCode == RESULT_OK) {
+               participants = data.getParcelableArrayListExtra("participants");
+               isEqually = data.getBooleanExtra("isEqually",false);
+               b_distribution_type.setText(isEqually ? "EQUALLY" : "UNEQUALLY");
+           }
+       }
     }
 
-    private void addTagViews(int type, ArrayList<String> returnedResult) {
+    private void addParticipants(int tag, ArrayList<String> returnedResult) {
+        Log.d("SPLIT", "addParticipants");
+        switch(tag){
+            case C.TAG_CONTACTS:
+
+                memberContacts.clear();
+                for (String uid : returnedResult) {
+                    Log.d("SPLIT","querying from contact manager");
+                    memberContacts.add((Contact)contactManager.getItemFromListByUID(uid));
+                }
+                break;
+            case C.TAG_CIRCLES:
+                //TODO: ucomment it for circle
+//                memberCircle = null;
+//                String uid = returnedResult.get(0);
+//                    memberCircle = circleManager.getCircleByUID(uid);
+//                break;
+        }
+        participants.clear();
+        if(isUserIncluded) {
+            //TODO: include user also
+            //participants.add(new Participant(new Contact("You")))
+        }
+        for (Contact c : memberContacts) {
+            participants.add(new Participant(c));
+        }
+
+        //TODO: ucomment it for circle
+//        for (Contact c :memberCircle.getMemberList()) {
+//            participants.add(new Participant(c));
+//        }
+    }
+
+
+
+    private void addTagViews(int type) {
         /*TODO returned Result will be uids finally not the String
         so we need to get names/titles of the item from manager classes using these uids
         */
@@ -148,9 +246,9 @@ public class SplitToolActivity extends ActionBarActivity implements DateSetter{
         int count = ll.getChildCount();
         ll.removeAllViews();
 
-        for (String s : returnedResult) {
-            ll.addView(new TagItemView(this,type, s));
-            out = out+s+",";
+        for (Contact c : memberContacts) {
+            ll.addView(new TagItemView(this,type, c.getContactName()));
+            out = out+c.getContactName()+",";
         }
         Toast.makeText(this,out,Toast.LENGTH_SHORT).show();
 
@@ -174,5 +272,9 @@ public class SplitToolActivity extends ActionBarActivity implements DateSetter{
     @Override
     public void setDate(int year, int monthOfYear, int dayOfMonth) {
         b_new_date.setText(String.format("%d/%d/%d", dayOfMonth, monthOfYear, year));
+    }
+
+    private ArrayList<Participant> getParticipants() {
+        return participants;
     }
 }

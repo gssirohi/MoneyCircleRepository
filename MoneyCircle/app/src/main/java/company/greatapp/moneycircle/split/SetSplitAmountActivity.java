@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Parcelable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -13,16 +14,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import company.greatapp.moneycircle.R;
+import company.greatapp.moneycircle.manager.ContactManager;
 import company.greatapp.moneycircle.model.Contact;
+import company.greatapp.moneycircle.model.Participant;
 
 
 public class SetSplitAmountActivity extends ActionBarActivity {
@@ -33,10 +38,8 @@ public class SetSplitAmountActivity extends ActionBarActivity {
     private static final int PERCENT = 2;
     private static final int SHARES = 3;
     private ListView listview;
-    private ArrayList<Participant> participantsList;
     private TextView tv_divided_amount;
     private ToggleButton tb_equally;
-    private boolean isUserIncluded;
     private SetSplitAmountAdapter adapter;
     private Spinner spinner;
 
@@ -45,28 +48,38 @@ public class SetSplitAmountActivity extends ActionBarActivity {
     private float total_amount;
 
     private int mDistributionMode;
+    private TextView tv_total_shares;
+    private ArrayList<Participant> participantsList = new ArrayList<Participant>();
+    private Button b_done;
+    private boolean isEqually;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_split_amount);
-
+        Intent intent = getIntent();
         //get below values from the intent
-        total_amount = 5000;
-        isUserIncluded = true;
+        total_amount = intent.getFloatExtra("total_amount", 0);
+        participantsList = intent.getParcelableArrayListExtra("participants");
+
+        total_shares = participantsList.size();
+        perShareValue = total_amount/total_shares;
 
         //String[] memberList = {"member1","member2","member3","member4","member5","member6","member7","member8","member9"};
         tv_divided_amount = (TextView) findViewById(R.id.tv_divide_amount);
+        tv_total_shares = (TextView) findViewById(R.id.tv_total_shares);
         tb_equally = (ToggleButton) findViewById(R.id.tb_equally);
         TextView tv_total_amount = (TextView) findViewById(R.id.tv_total_amount);
+        tv_total_amount.setText(floatstr(total_amount));
         listview = (ListView) findViewById(R.id.listView2);
+        b_done = (Button)findViewById(R.id.b_set_split_amount_done);
         spinner = (Spinner)findViewById(R.id.sp_split_amount_mode);
         String[] distribution_modes = new String[] {"equally","unequally","percent","shares"};
         spinner.setAdapter(new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, distribution_modes));
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                handleSpinnerItemClick(parent,view,position,id);
+                handleSpinnerItemClick(parent, view, position, id);
             }
 
             @Override
@@ -74,7 +87,7 @@ public class SetSplitAmountActivity extends ActionBarActivity {
 
             }
         });
-        participantsList = getParticipants();
+
         adapter = new SetSplitAmountAdapter(this, participantsList);
         listview.setAdapter(adapter);
         listview.setFocusable(true);
@@ -84,14 +97,32 @@ public class SetSplitAmountActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Participant participant = ((SetSplitAmountRowItemView) view).getParticipant();
-                Log.d("split", "Name : " + participant.member.getContactName());
+                Log.d("split", "Name : " + participant.memberName);
                 Log.d("split", "Amount : " + participant.amount);
-                Toast.makeText(SetSplitAmountActivity.this, "" + participant.member.getContactName() + " : " +
+                Toast.makeText(SetSplitAmountActivity.this, "" + participant.memberName + " : " +
                         participant.amount, Toast.LENGTH_SHORT).show();
             }
         });
         LocalBroadcastManager.getInstance(this).registerReceiver(mAmountRefreshReceiver,
                 new IntentFilter(ACTION_AMOUNT_REFRESH));
+
+        tv_total_shares.setText("" + floatstr(total_shares) + " (" + floatstr(perShareValue) + " per share)");
+
+        b_done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleDone();
+            }
+        });
+    }
+
+    private void handleDone() {
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("isEqually",isEqually);
+        resultIntent.putParcelableArrayListExtra("participants",participantsList);
+
+        setResult(RESULT_OK, resultIntent);
+        finish();
     }
 
     private void handleSpinnerItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -104,24 +135,14 @@ public class SetSplitAmountActivity extends ActionBarActivity {
         mDistributionMode = mode;
     }
 
-    private ArrayList<Participant> getParticipants() {
-        ArrayList<Participant> list = new ArrayList<Participant>();
-        if (isUserIncluded)
-            list.add(new Participant("YOU"));
-        list.add(new Participant("SuperMan"));
-        list.add(new Participant("IronMan"));
-        list.add(new Participant("BatMan"));
-        list.add(new Participant("Hulk"));
-        list.add(new Participant("Thor"));
-        list.add(new Participant("Caption America"));
-        list.add(new Participant("SpiderMan"));
-        return list;
-    }
+
 
     public void toggleclick(View v) {
         if (tb_equally.isChecked()) {
+            isEqually = true;
             setDividedAmountEqually();
         } else {
+            isEqually = false;
             // Toast.makeText(TestActivity.this, "OFF", Toast.LENGTH_SHORT).show();
         }
     }
@@ -151,43 +172,35 @@ public class SetSplitAmountActivity extends ActionBarActivity {
 
     private void printParticipants() {
         for (Participant p : participantsList) {
-            Log.d("split", "name : " + p.member.getContactName());
+            Log.d("split", "name : " + p.memberName);
             Log.d("split", "amount : " + p.amount);
             Log.d("split", "percent : " + p.percent);
             Log.d("split", "share : " + p.share);
         }
     }
 
-    public class Participant {
-        Contact member;
-        float editableValue;
-        float amount;
-        float percent;
-        float share;
 
-        public Participant(String name) {
-            member = new Contact(name);
-        }
-    }
 
     private BroadcastReceiver mAmountRefreshReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d("receiver", "Amount Refresh Intent action received");
             tb_equally.setChecked(false);
+            isEqually = false;
             calculateParticipantsData();
         }
     };
 
     private void refreshAmount() {
-        tv_divided_amount.setText("" + getDividedAmount());
+        tv_divided_amount.setText(floatstr(getDividedAmount()));
+        tv_total_shares.setText("" + floatstr(total_shares)+" ("+floatstr(perShareValue)+" per share)");
         printParticipants();
     }
 
     private float getDividedAmount() {
         float amount = 0;
         for (Participant p : participantsList) {
-            Log.d("split", "name : " + p.member.getContactName() + " amount : " + p.amount);
+            Log.d("split", "name : " + p.memberName + " amount : " + p.amount);
             amount = amount + p.amount;
         }
         return amount;
@@ -261,11 +274,12 @@ public class SetSplitAmountActivity extends ActionBarActivity {
 
 
     private float getTotalShares(){
-        total_shares = 0;
+       float total = 0;
         for (int i = 0; i< participantsList.size();i++) {
-            total_shares = total_shares + participantsList.get(i).share;
+            total = total + participantsList.get(i).share;
         }
-        return total_shares;
+        total_shares = total;
+        return total;
     }
     private void updateDataFromShares() {
         perShareValue = total_amount/getTotalShares();
@@ -277,17 +291,18 @@ public class SetSplitAmountActivity extends ActionBarActivity {
     }
 
     private void updateDataFromPercent() {
-        total_shares = 100;//default
+       // total_shares = 100;//default
         perShareValue = total_amount/total_shares;
         for (int i = 0; i< participantsList.size();i++) {
             float percent = participantsList.get(i).percent;
-            participantsList.get(i).amount = (total_amount * percent)/100;
-            participantsList.get(i).share = total_amount/perShareValue;
+            float amount = (total_amount * percent)/100;
+            participantsList.get(i).amount = amount;
+            participantsList.get(i).share = amount/perShareValue;
         }
     }
 
     private void updateDataFromAmount() {
-        total_shares = 100;//default
+        //total_shares = 100;//default
         perShareValue = total_amount/total_shares;
         for (int i = 0; i< participantsList.size();i++) {
             float percent = participantsList.get(i).percent;
@@ -295,6 +310,10 @@ public class SetSplitAmountActivity extends ActionBarActivity {
             participantsList.get(i).share = amount/perShareValue;
             participantsList.get(i).percent = (amount * 100)/total_amount;
         }
+    }
+
+    private String floatstr(float value) {
+        return new DecimalFormat("##.##").format(value);
     }
 
 }

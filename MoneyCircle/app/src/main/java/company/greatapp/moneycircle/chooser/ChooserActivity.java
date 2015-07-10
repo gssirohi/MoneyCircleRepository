@@ -148,7 +148,7 @@ public class ChooserActivity extends Activity {
             int position = checked.keyAt(i);
             if (checked.valueAt(i)) {
                 Log.d("split", "FOUND checked values at : "+position);
-                selectedItems.add(((Contact) adapter.getItem(position)).getContactName());
+                selectedItems.add(((Contact) adapter.getItem(position)).getUID());
             }
         }
         Intent data = new Intent();
