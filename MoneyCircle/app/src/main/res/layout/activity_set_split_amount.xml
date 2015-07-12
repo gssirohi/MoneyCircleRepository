@@ -17,7 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:id="@+id/ll_1">
+            android:id="@+id/ll_1"
+            android:layout_margin="5dp">
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -42,7 +43,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:id="@+id/ll2">
+            android:id="@+id/ll2"
+            android:layout_margin="5dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -68,7 +70,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:id="@+id/ll3">
+            android:id="@+id/ll3"
+            android:layout_margin="5dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -89,6 +92,22 @@
 
 
         </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="remaining : "
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/b_set_split_amount_done"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/tv_remaining"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#ffff2037" />
+
         <ToggleButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -115,6 +134,9 @@
             android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
+
+
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -122,4 +144,5 @@
         android:id="@+id/b_set_split_amount_done"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"/>
+
 </RelativeLayout>

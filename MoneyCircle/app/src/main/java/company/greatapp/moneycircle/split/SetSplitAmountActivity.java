@@ -33,10 +33,9 @@ import company.greatapp.moneycircle.model.Participant;
 public class SetSplitAmountActivity extends ActionBarActivity {
 
     public static final String ACTION_AMOUNT_REFRESH = "ACTION_AMOUNT_REFRESH";
-    private static final int EQUAL = 0;
-    private static final int UNEQUAL = 1;
-    private static final int PERCENT = 2;
-    private static final int SHARES = 3;
+    private static final int AMOUNT = 0;
+    private static final int PERCENT = 1;
+    private static final int SHARES = 2;
     private ListView listview;
     private TextView tv_divided_amount;
     private ToggleButton tb_equally;
@@ -46,12 +45,15 @@ public class SetSplitAmountActivity extends ActionBarActivity {
     private float perShareValue;
     private float total_shares;
     private float total_amount;
+    private float divided_amount;
+    private float remaining_amount;
 
     private int mDistributionMode;
     private TextView tv_total_shares;
     private ArrayList<Participant> participantsList = new ArrayList<Participant>();
     private Button b_done;
     private boolean isEqually;
+    private TextView tv_remaining;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +63,11 @@ public class SetSplitAmountActivity extends ActionBarActivity {
         //get below values from the intent
         total_amount = intent.getFloatExtra("total_amount", 0);
         participantsList = intent.getParcelableArrayListExtra("participants");
-
+        isEqually = intent.getBooleanExtra("isEqually", false);
         total_shares = participantsList.size();
         perShareValue = total_amount/total_shares;
 
-        //String[] memberList = {"member1","member2","member3","member4","member5","member6","member7","member8","member9"};
+        tv_remaining = (TextView) findViewById(R.id.tv_remaining);
         tv_divided_amount = (TextView) findViewById(R.id.tv_divide_amount);
         tv_total_shares = (TextView) findViewById(R.id.tv_total_shares);
         tb_equally = (ToggleButton) findViewById(R.id.tb_equally);
@@ -74,7 +76,7 @@ public class SetSplitAmountActivity extends ActionBarActivity {
         listview = (ListView) findViewById(R.id.listView2);
         b_done = (Button)findViewById(R.id.b_set_split_amount_done);
         spinner = (Spinner)findViewById(R.id.sp_split_amount_mode);
-        String[] distribution_modes = new String[] {"equally","unequally","percent","shares"};
+        String[] distribution_modes = new String[] {"amount","percent","shares"};
         spinner.setAdapter(new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, distribution_modes));
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -88,7 +90,7 @@ public class SetSplitAmountActivity extends ActionBarActivity {
             }
         });
 
-        adapter = new SetSplitAmountAdapter(this, participantsList);
+        adapter = new SetSplitAmountAdapter(this, participantsList,mDistributionMode);
         listview.setAdapter(adapter);
         listview.setFocusable(true);
         adapter.notifyDataSetChanged();
@@ -114,6 +116,18 @@ public class SetSplitAmountActivity extends ActionBarActivity {
                 handleDone();
             }
         });
+
+        tb_equally.setChecked(isEqually);
+        if(isEqually) {
+            setDividedAmountEqually();
+            tv_remaining.setVisibility(View.GONE);
+            b_done.setVisibility(View.VISIBLE);
+        } else {
+            tv_remaining.setVisibility(View.VISIBLE);
+            b_done.setVisibility(View.GONE);
+        }
+
+
     }
 
     private void handleDone() {
@@ -192,7 +206,24 @@ public class SetSplitAmountActivity extends ActionBarActivity {
     };
 
     private void refreshAmount() {
-        tv_divided_amount.setText(floatstr(getDividedAmount()));
+        divided_amount = getDividedAmount();
+        remaining_amount = total_amount - divided_amount;
+        tv_divided_amount.setText(floatstr(divided_amount));
+        if((remaining_amount < 1 && remaining_amount > -1)) {
+            tv_remaining.setVisibility(View.GONE);
+            b_done.setVisibility(View.VISIBLE);
+        }
+
+        else if(remaining_amount < 0) {
+            tv_remaining.setText(floatstr(remaining_amount) + " exceeded");
+            tv_remaining.setVisibility(View.VISIBLE);
+            b_done.setVisibility(View.GONE);
+        }
+        else if(remaining_amount > 0) {
+            tv_remaining.setText(floatstr(remaining_amount) + " remaining");
+            tv_remaining.setVisibility(View.VISIBLE);
+            b_done.setVisibility(View.GONE);
+        }
         tv_total_shares.setText("" + floatstr(total_shares)+" ("+floatstr(perShareValue)+" per share)");
         printParticipants();
     }
@@ -213,7 +244,7 @@ public class SetSplitAmountActivity extends ActionBarActivity {
         }
         updateDataFromAmount();
         adapter = null;
-        adapter = new SetSplitAmountAdapter(this, participantsList);
+        adapter = new SetSplitAmountAdapter(this, participantsList,mDistributionMode);
         listview.setAdapter(adapter);
         refreshAmount();
     }
@@ -225,7 +256,7 @@ public class SetSplitAmountActivity extends ActionBarActivity {
             participantsList.get(i).share = 0;
         }
         adapter = null;
-        adapter = new SetSplitAmountAdapter(this, participantsList);
+        adapter = new SetSplitAmountAdapter(this, participantsList,mDistributionMode);
         listview.setAdapter(adapter);
         refreshAmount();
     }
@@ -233,10 +264,7 @@ public class SetSplitAmountActivity extends ActionBarActivity {
     private void updateLatestValueFromEditable() {
         for (int i = 0; i< participantsList.size();i++) {
               switch(mDistributionMode) {
-                  case EQUAL:
-                      participantsList.get(i).amount = participantsList.get(i).editableValue;
-                      break;
-                  case UNEQUAL:
+                  case AMOUNT:
                       participantsList.get(i).amount = participantsList.get(i).editableValue;
                       break;
                   case PERCENT:
@@ -252,10 +280,7 @@ public class SetSplitAmountActivity extends ActionBarActivity {
         updateLatestValueFromEditable();
         int total;
         switch(mDistributionMode) {
-            case EQUAL:
-                updateDataFromAmount();
-                break;
-            case UNEQUAL:
+            case AMOUNT:
                 updateDataFromAmount();
                 break;
             case PERCENT:
@@ -267,7 +292,7 @@ public class SetSplitAmountActivity extends ActionBarActivity {
         }
 
         adapter = null;
-        adapter = new SetSplitAmountAdapter(this, participantsList);
+        adapter = new SetSplitAmountAdapter(this, participantsList,mDistributionMode);
         listview.setAdapter(adapter);
         refreshAmount();
     }

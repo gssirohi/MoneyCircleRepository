@@ -64,6 +64,8 @@ public class SplitToolActivity extends ActionBarActivity implements DateSetter{
     private boolean isUserIncluded;
     private Button b_distribution_type;
     private boolean isEqually;
+    private TextView tv_distribution_details;
+    private TextView tv_total_members;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,7 +87,8 @@ public class SplitToolActivity extends ActionBarActivity implements DateSetter{
         et_new_amount = (EditText)findViewById(R.id.et_new_amount);
         et_new_item = (EditText)findViewById(R.id.et_new_item);
         et_new_note = (EditText)findViewById(R.id.et_new_note);
-
+        tv_total_members = (TextView)findViewById(R.id.tv_new_total_members);
+        tv_distribution_details = (TextView)findViewById(R.id.tv_new_distribution_details);
         b_distribution_type = (Button)findViewById(R.id.b_new_distribution_type);
         b_new_category = (Button)findViewById(R.id.b_new_category);
         b_new_members_add = (Button)findViewById(R.id.b_new_member_add);
@@ -120,6 +123,7 @@ public class SplitToolActivity extends ActionBarActivity implements DateSetter{
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 isUserIncluded = isChecked;
+                refreshParticipants();
             }
         });
         isEqually = true;
@@ -137,14 +141,15 @@ public class SplitToolActivity extends ActionBarActivity implements DateSetter{
     }
 
     private void handleDistributionTypeButton(View v) {
-        String amount = et_new_amount.getText().toString();
-        if(TextUtils.isEmpty(amount)){
+        String amount = getAmountFromBox();
+        if(amount.equals("0") || participants.size() < 2 ){
             //TODO: Put all the conditons before starting SetSplitAMountActivity
             return;
         }
         Intent intent = new Intent(this,SetSplitAmountActivity.class);
         float total_amount = Float.parseFloat(amount);
         intent.putExtra("total_amount", total_amount);
+        intent.putExtra("isEqually", isEqually);
         intent.putParcelableArrayListExtra("participants", participants);
         startActivityForResult(intent, SPLIT_AMOUNT_REQUEST);
     }
@@ -180,10 +185,21 @@ public class SplitToolActivity extends ActionBarActivity implements DateSetter{
         } else if(requestCode == SPLIT_AMOUNT_REQUEST) {
            if (resultCode == RESULT_OK) {
                participants = data.getParcelableArrayListExtra("participants");
-               isEqually = data.getBooleanExtra("isEqually",false);
+               isEqually = data.getBooleanExtra("isEqually", false);
                b_distribution_type.setText(isEqually ? "EQUALLY" : "UNEQUALLY");
+               setDistributedAmountView();
            }
        }
+    }
+
+    private void setDistributedAmountView() {
+        int total = participants.size();
+        String details = "";
+        for (Participant p : participants) {
+            details =  details +"["+ p.memberName+":"+p.amount+"]";
+        }
+        tv_total_members.setText("TOTAL:"+total);
+        tv_distribution_details.setText(details);
     }
 
     private void addParticipants(int tag, ArrayList<String> returnedResult) {
@@ -206,8 +222,7 @@ public class SplitToolActivity extends ActionBarActivity implements DateSetter{
         }
         participants.clear();
         if(isUserIncluded) {
-            //TODO: include user also
-            //participants.add(new Participant(new Contact("You")))
+            participants.add(new Participant("You","user"));
         }
         for (Contact c : memberContacts) {
             participants.add(new Participant(c));
@@ -217,9 +232,57 @@ public class SplitToolActivity extends ActionBarActivity implements DateSetter{
 //        for (Contact c :memberCircle.getMemberList()) {
 //            participants.add(new Participant(c));
 //        }
+
+        setDividedAmountEqually();
     }
 
+    private void refreshParticipants() {
+        Log.d("SPLIT", "refreshParticipants");
 
+        //use existed values to set the participants
+
+        participants.clear();
+        if(isUserIncluded) {
+            participants.add(new Participant("You","user"));
+        }
+        for (Contact c : memberContacts) {
+            participants.add(new Participant(c));
+        }
+
+        //TODO: ucomment it for circle
+//        for (Contact c :memberCircle.getMemberList()) {
+//            participants.add(new Participant(c));
+//        }
+
+        setDividedAmountEqually();
+    }
+
+    private void setDividedAmountEqually() {
+        int memberCount = participants.size();
+        if(memberCount == 0) return;
+        float total = Float.parseFloat(getAmountFromBox());
+        float amount = total / memberCount;
+        float percent = 100/ memberCount;
+        float share = 1;//assuming total share equals to number of participants
+        for (int i = 0; i< participants.size();i++) {
+            participants.get(i).amount = amount;
+            participants.get(i).percent = percent;
+            participants.get(i).share = share;
+
+        }
+        setDistributedAmountView();
+    }
+
+    private String getAmountFromBox() {
+        String value = et_new_amount.getText().toString();
+        if(TextUtils.isEmpty(value)){
+            value = "0";
+        }else if(!TextUtils.isDigitsOnly(value)) {
+            value = "0";
+            Toast.makeText(this,"WRONG FORMAT",Toast.LENGTH_SHORT).show();
+        }
+        return value;
+    }
 
     private void addTagViews(int type) {
         /*TODO returned Result will be uids finally not the String

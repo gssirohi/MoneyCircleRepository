@@ -21,6 +21,11 @@ public class Participant implements Parcelable{
         memberUID = contact.getUID();
     }
 
+    public Participant(String name, String uid) {
+        memberName = name;
+        memberUID = uid;
+    }
+
     // Parcelling part
     public Participant(Parcel in){
         String[] data = new String[6];
