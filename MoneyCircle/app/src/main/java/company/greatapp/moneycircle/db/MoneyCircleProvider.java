@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
 import company.greatapp.moneycircle.constants.DB;
 
@@ -32,11 +33,27 @@ public class MoneyCircleProvider extends ContentProvider{
 
 	static UriMatcher uriMatcher;
 	static int CONTACT_TABLE_INDEX = 1;
+	static int INCOME_TABLE_INDEX = 2;
+    static int EXPENSE_TABLE_INDEX = 3;
+    static int BORROW_TABLE_INDEX = 4;
+    static int LENDED_TABLE_INDEX = 5;
+    static int CATEGORY_TABLE_INDEX = 6;
+    static int CIRCLE_TABLE_INDEX = 7;
+    static int NOTIFICATION_TABLE_INDEX = 8;
+    static int COMMON_TABLE_INDEX = 9;
 
 	static {
 	    uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
 	    uriMatcher.addURI(DB.DB_AUTHORITY, DB.CONTACT_TABLE_NAME, CONTACT_TABLE_INDEX);
+		uriMatcher.addURI(DB.DB_AUTHORITY,DB.INCOME_TABLE_NAME, INCOME_TABLE_INDEX);
+        uriMatcher.addURI(DB.DB_AUTHORITY,DB.EXPENSE_TABLE_NAME, EXPENSE_TABLE_INDEX);
+        uriMatcher.addURI(DB.DB_AUTHORITY,DB.BORROW_TABLE_NAME, BORROW_TABLE_INDEX);
+        uriMatcher.addURI(DB.DB_AUTHORITY,DB.LENDED_TABLE_NAME, LENDED_TABLE_INDEX);
+        uriMatcher.addURI(DB.DB_AUTHORITY,DB.CATEGORY_TABLE_NAME, CATEGORY_TABLE_INDEX);
+        uriMatcher.addURI(DB.DB_AUTHORITY,DB.CIRCLE_TABLE_NAME, CIRCLE_TABLE_INDEX);
+        uriMatcher.addURI(DB.DB_AUTHORITY,DB.NOTIFICATION_TABLE_NAME, NOTIFICATION_TABLE_INDEX);
+        uriMatcher.addURI(DB.DB_AUTHORITY,DB.COMMON_TABLE_NAME, COMMON_TABLE_INDEX);
 
 	}
 	
@@ -61,6 +78,110 @@ public class MoneyCircleProvider extends ContentProvider{
 			    }
 				break;
 			}
+            case 2:
+
+            {
+                long rowId = qpinionDBinstance.insert(DB.INCOME_TABLE_NAME, null, newRow);
+            //    Toast.makeText(getContext(),"Inserted in Income Table",Toast.LENGTH_SHORT).show();
+
+                if(rowId > 0) {
+                    Log.d("in cp","inserted in "+DB.INCOME_TABLE_NAME);
+                    Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                    getContext().getContentResolver().notifyChange(objUri, null);
+                }
+                break;
+            }
+
+            case 3:
+            {
+                //this method will accept a row(values) and and insert into the table
+                long rowId = qpinionDBinstance.insert(DB.EXPENSE_TABLE_NAME, null, newRow);
+                //Toast.makeText(getContext(), "Inserted", Toast.LENGTH_SHORT).show();
+                if (rowId > 0) {
+                    Log.d("in cp","inserted in "+DB.EXPENSE_TABLE_NAME);
+                    Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                    getContext().getContentResolver().notifyChange(objUri, null);
+                }
+                break;
+            }
+            case 4:
+            {
+                //this method will accept a row(values) and and insert into the table
+                long rowId = qpinionDBinstance.insert(DB.BORROW_TABLE_NAME, null, newRow);
+                //Toast.makeText(getContext(), "Inserted", Toast.LENGTH_SHORT).show();
+                if (rowId > 0) {
+                    Log.d("in cp","inserted in "+DB.BORROW_TABLE_NAME);
+                    Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                    getContext().getContentResolver().notifyChange(objUri, null);
+                }
+                break;
+            }
+
+            case 5:
+            {
+                //this method will accept a row(values) and and insert into the table
+                long rowId = qpinionDBinstance.insert(DB.LENDED_TABLE_NAME, null, newRow);
+                //Toast.makeText(getContext(), "Inserted", Toast.LENGTH_SHORT).show();
+                if (rowId > 0) {
+                    Log.d("in cp","inserted in "+DB.LENDED_TABLE_NAME);
+                    Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                    getContext().getContentResolver().notifyChange(objUri, null);
+                }
+                break;
+            }
+
+            case 6:
+            {
+                //this method will accept a row(values) and and insert into the table
+                long rowId = qpinionDBinstance.insert(DB.CATEGORY_TABLE_NAME, null, newRow);
+                //Toast.makeText(getContext(), "Inserted", Toast.LENGTH_SHORT).show();
+                if (rowId > 0) {
+                    Log.d("in cp","inserted in "+DB.CATEGORY_TABLE_NAME);
+                    Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                    getContext().getContentResolver().notifyChange(objUri, null);
+                }
+                break;
+            }
+
+            case 7:
+            {
+                //this method will accept a row(values) and and insert into the table
+                long rowId = qpinionDBinstance.insert(DB.CIRCLE_TABLE_NAME, null, newRow);
+                //Toast.makeText(getContext(), "Inserted", Toast.LENGTH_SHORT).show();
+                if (rowId > 0) {
+                    Log.d("in cp","inserted in "+DB.CIRCLE_TABLE_NAME);
+                    Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                    getContext().getContentResolver().notifyChange(objUri, null);
+                }
+                break;
+            }
+
+            case 8:
+            {
+                //this method will accept a row(values) and and insert into the table
+                long rowId = qpinionDBinstance.insert(DB.NOTIFICATION_TABLE_NAME, null, newRow);
+                //Toast.makeText(getContext(), "Inserted", Toast.LENGTH_SHORT).show();
+                if (rowId > 0) {
+                    Log.d("in cp","inserted in "+DB.NOTIFICATION_TABLE_NAME);
+                    Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                    getContext().getContentResolver().notifyChange(objUri, null);
+                }
+                break;
+            }
+
+            case 9:
+            {
+                //this method will accept a row(values) and and insert into the table
+                long rowId = qpinionDBinstance.insert(DB.COMMON_TABLE_NAME, null, newRow);
+                //Toast.makeText(getContext(), "Inserted", Toast.LENGTH_SHORT).show();
+                if (rowId > 0) {
+                    Log.d("in cp","inserted in "+DB.COMMON_TABLE_NAME);
+                    Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                    getContext().getContentResolver().notifyChange(objUri, null);
+                }
+                break;
+            }
+
 
 		default:
 			Log.e("in cp","URI NOT MATCHED for Inserting!!!");
@@ -87,6 +208,86 @@ public class MoneyCircleProvider extends ContentProvider{
 				return c;
 			
 			}
+
+            case 2:
+
+        {
+            Log.d("in cp","Quering data from "+DB.INCOME_TABLE_NAME);
+            c = qpinionDBinstance.query(DB.INCOME_TABLE_NAME, projection, selection, selectionArgs, null, null, null);
+            Log.d("in CP", "cursor returned from " + DB.INCOME_TABLE_NAME);
+            c.setNotificationUri(getContext().getContentResolver(),uri);
+            return c;
+        }
+
+            case 3:
+
+            {
+                Log.d("in cp","Quering data from "+DB.EXPENSE_TABLE_NAME);
+                c = qpinionDBinstance.query(DB.EXPENSE_TABLE_NAME, projection, selection, selectionArgs, null, null, null);
+                Log.d("in CP", "cursor returned from " + DB.EXPENSE_TABLE_NAME);
+                c.setNotificationUri(getContext().getContentResolver(),uri);
+                return c;
+            }
+
+            case 4:
+
+            {
+                Log.d("in cp","Quering data from "+DB.BORROW_TABLE_NAME);
+                c = qpinionDBinstance.query(DB.BORROW_TABLE_NAME, projection, selection, selectionArgs, null, null, null);
+                Log.d("in CP", "cursor returned from " + DB.BORROW_TABLE_NAME);
+                c.setNotificationUri(getContext().getContentResolver(),uri);
+                return c;
+            }
+
+            case 5:
+
+            {
+                Log.d("in cp","Quering data from "+DB.LENDED_TABLE_NAME);
+                c = qpinionDBinstance.query(DB.LENDED_TABLE_NAME, projection, selection, selectionArgs, null, null, null);
+                Log.d("in CP", "cursor returned from " + DB.LENDED_TABLE_NAME);
+                c.setNotificationUri(getContext().getContentResolver(),uri);
+                return c;
+            }
+
+            case 6:
+
+            {
+                Log.d("in cp","Quering data from "+DB.CATEGORY_TABLE_NAME);
+                c = qpinionDBinstance.query(DB.CATEGORY_TABLE_NAME, projection, selection, selectionArgs, null, null, null);
+                Log.d("in CP", "cursor returned from " + DB.CATEGORY_TABLE_NAME);
+                c.setNotificationUri(getContext().getContentResolver(),uri);
+                return c;
+            }
+
+            case 7:
+
+            {
+                Log.d("in cp","Quering data from "+DB.CIRCLE_TABLE_NAME);
+                c = qpinionDBinstance.query(DB.CIRCLE_TABLE_NAME, projection, selection, selectionArgs, null, null, null);
+                Log.d("in CP", "cursor returned from " + DB.CIRCLE_TABLE_NAME);
+                c.setNotificationUri(getContext().getContentResolver(),uri);
+                return c;
+            }
+
+            case 8:
+
+            {
+                Log.d("in cp","Quering data from "+DB.NOTIFICATION_TABLE_NAME);
+                c = qpinionDBinstance.query(DB.NOTIFICATION_TABLE_NAME, projection, selection, selectionArgs, null, null, null);
+                Log.d("in CP", "cursor returned from " + DB.NOTIFICATION_TABLE_NAME);
+                c.setNotificationUri(getContext().getContentResolver(),uri);
+                return c;
+            }
+
+            case 9:
+
+            {
+                Log.d("in cp","Quering data from "+DB.COMMON_TABLE_NAME);
+                c = qpinionDBinstance.query(DB.COMMON_TABLE_NAME, projection, selection, selectionArgs, null, null, null);
+                Log.d("in CP", "cursor returned from " + DB.COMMON_TABLE_NAME);
+                c.setNotificationUri(getContext().getContentResolver(),uri);
+                return c;
+            }
 
 		default:
 			Log.e("in cp","URI NOT MATCHED for Quering data!!!");
@@ -116,6 +317,127 @@ public class MoneyCircleProvider extends ContentProvider{
 			    }
 				break;
 			}
+        case 2:
+           {
+               long rowId = qpinionDBinstance.update(DB.INCOME_TABLE_NAME, values, selection, selectionArgs);
+               Toast.makeText(getContext(),"Inserted", Toast.LENGTH_SHORT).show();
+
+               if(rowId > 0) {
+
+                   Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                   getContext().getContentResolver().notifyChange(objUri , null);
+                   Log.d("in cp","updated :"+DB.INCOME_TABLE_NAME);
+               }
+               break;
+
+           }
+
+            case 3:
+            {
+                long rowId = qpinionDBinstance.update(DB.EXPENSE_TABLE_NAME, values, selection, selectionArgs);
+                Toast.makeText(getContext(),"Inserted", Toast.LENGTH_SHORT).show();
+
+                if(rowId > 0) {
+
+                    Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                    getContext().getContentResolver().notifyChange(objUri , null);
+                    Log.d("in cp","updated :"+DB.EXPENSE_TABLE_NAME);
+                }
+                break;
+
+            }
+
+            case 4:
+            {
+                long rowId = qpinionDBinstance.update(DB.BORROW_TABLE_NAME, values, selection, selectionArgs);
+                Toast.makeText(getContext(),"Inserted", Toast.LENGTH_SHORT).show();
+
+                if(rowId > 0) {
+
+                    Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                    getContext().getContentResolver().notifyChange(objUri , null);
+                    Log.d("in cp","updated :"+DB.BORROW_TABLE_NAME);
+                }
+                break;
+
+            }
+
+            case 5:
+            {
+                long rowId = qpinionDBinstance.update(DB.LENDED_TABLE_NAME, values, selection, selectionArgs);
+                Toast.makeText(getContext(),"Inserted", Toast.LENGTH_SHORT).show();
+
+                if(rowId > 0) {
+
+                    Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                    getContext().getContentResolver().notifyChange(objUri , null);
+                    Log.d("in cp","updated :"+DB.LENDED_TABLE_NAME);
+                }
+                break;
+
+            }
+
+            case 6:
+            {
+                long rowId = qpinionDBinstance.update(DB.CATEGORY_TABLE_NAME, values, selection, selectionArgs);
+                Toast.makeText(getContext(),"Inserted", Toast.LENGTH_SHORT).show();
+
+                if(rowId > 0) {
+
+                    Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                    getContext().getContentResolver().notifyChange(objUri , null);
+                    Log.d("in cp","updated :"+DB.CATEGORY_TABLE_NAME);
+                }
+                break;
+
+            }
+
+            case 7:
+            {
+                long rowId = qpinionDBinstance.update(DB.CIRCLE_TABLE_NAME, values, selection, selectionArgs);
+                Toast.makeText(getContext(),"Inserted", Toast.LENGTH_SHORT).show();
+
+                if(rowId > 0) {
+
+                    Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                    getContext().getContentResolver().notifyChange(objUri , null);
+                    Log.d("in cp","updated :"+DB.CIRCLE_TABLE_NAME);
+                }
+                break;
+
+            }
+
+            case 8:
+            {
+                long rowId = qpinionDBinstance.update(DB.NOTIFICATION_TABLE_NAME, values, selection, selectionArgs);
+                Toast.makeText(getContext(),"Inserted", Toast.LENGTH_SHORT).show();
+
+                if(rowId > 0) {
+
+                    Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                    getContext().getContentResolver().notifyChange(objUri , null);
+                    Log.d("in cp","updated :"+DB.NOTIFICATION_TABLE_NAME);
+                }
+                break;
+
+            }
+
+            case 9:
+            {
+                long rowId = qpinionDBinstance.update(DB.COMMON_TABLE_NAME, values, selection, selectionArgs);
+                Toast.makeText(getContext(),"Inserted", Toast.LENGTH_SHORT).show();
+
+                if(rowId > 0) {
+
+                    Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                    getContext().getContentResolver().notifyChange(objUri , null);
+                    Log.d("in cp","updated :"+DB.COMMON_TABLE_NAME);
+                }
+                break;
+
+            }
+
+
 		default:
 			Log.e("in cp","URI NOT MATCHED for Updating data!!!");
 		
@@ -136,11 +458,122 @@ public class MoneyCircleProvider extends ContentProvider{
 		    if (rowId > 0) {
 		        Uri objUri = ContentUris.withAppendedId(uri, rowId);
 		        getContext().getContentResolver().notifyChange(objUri, null);
-				Log.d("in CP","item deleted from db");
+                Log.d("in CP", "item deleted from db");
 		    }
 			return 0;
 		
 		}
+        case 2:
+
+        {
+            Log.d("in cp","Deleting data from "+DB.INCOME_TABLE_NAME);
+            long rowId = qpinionDBinstance.delete(DB.INCOME_TABLE_NAME, selection, selectionArgs);
+
+            if(rowId > 0) {
+                Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                getContext().getContentResolver().notifyChange(objUri, null);
+                Log.d("in CP", "item deleted from db");
+            }
+            return 0;
+        }
+
+        case 3:
+
+        {
+            Log.d("in cp","Deleting data from "+DB.EXPENSE_TABLE_NAME);
+            long rowId = qpinionDBinstance.delete(DB.EXPENSE_TABLE_NAME, selection, selectionArgs);
+
+            if(rowId > 0) {
+                Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                getContext().getContentResolver().notifyChange(objUri, null);
+                Log.d("in CP", "item deleted from db");
+            }
+            return 0;
+        }
+
+        case 4:
+
+        {
+            Log.d("in cp","Deleting data from "+DB.BORROW_TABLE_NAME);
+            long rowId = qpinionDBinstance.delete(DB.BORROW_TABLE_NAME, selection, selectionArgs);
+
+            if(rowId > 0) {
+                Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                getContext().getContentResolver().notifyChange(objUri, null);
+                Log.d("in CP", "item deleted from db");
+            }
+            return 0;
+        }
+
+        case 5:
+
+        {
+            Log.d("in cp","Deleting data from "+DB.LENDED_TABLE_NAME);
+            long rowId = qpinionDBinstance.delete(DB.LENDED_TABLE_NAME, selection, selectionArgs);
+
+            if(rowId > 0) {
+                Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                getContext().getContentResolver().notifyChange(objUri, null);
+                Log.d("in CP", "item deleted from db");
+            }
+            return 0;
+        }
+
+        case 6:
+
+        {
+            Log.d("in cp","Deleting data from "+DB.CATEGORY_TABLE_NAME);
+            long rowId = qpinionDBinstance.delete(DB.CATEGORY_TABLE_NAME, selection, selectionArgs);
+
+            if(rowId > 0) {
+                Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                getContext().getContentResolver().notifyChange(objUri, null);
+                Log.d("in CP", "item deleted from db");
+            }
+            return 0;
+        }
+
+        case 7:
+
+        {
+            Log.d("in cp","Deleting data from "+DB.CIRCLE_TABLE_NAME);
+            long rowId = qpinionDBinstance.delete(DB.CIRCLE_TABLE_NAME, selection, selectionArgs);
+
+            if(rowId > 0) {
+                Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                getContext().getContentResolver().notifyChange(objUri, null);
+                Log.d("in CP", "item deleted from db");
+            }
+            return 0;
+        }
+
+        case 8:
+
+        {
+            Log.d("in cp","Deleting data from "+DB.NOTIFICATION_TABLE_NAME);
+            long rowId = qpinionDBinstance.delete(DB.NOTIFICATION_TABLE_NAME, selection, selectionArgs);
+
+            if(rowId > 0) {
+                Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                getContext().getContentResolver().notifyChange(objUri, null);
+                Log.d("in CP", "item deleted from db");
+            }
+            return 0;
+        }
+
+        case 9:
+
+        {
+            Log.d("in cp","Deleting data from "+DB.COMMON_TABLE_NAME);
+            long rowId = qpinionDBinstance.delete(DB.COMMON_TABLE_NAME, selection, selectionArgs);
+
+            if(rowId > 0) {
+                Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                getContext().getContentResolver().notifyChange(objUri, null);
+                Log.d("in CP", "item deleted from db");
+            }
+            return 0;
+        }
 	default:
 		Log.e("in cp","URI NOT MATCHED for Deleting data!!!");
 	
