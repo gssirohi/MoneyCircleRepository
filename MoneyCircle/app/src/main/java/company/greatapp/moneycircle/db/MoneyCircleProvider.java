@@ -49,7 +49,7 @@ public class MoneyCircleProvider extends ContentProvider{
 		uriMatcher.addURI(DB.DB_AUTHORITY,DB.INCOME_TABLE_NAME, INCOME_TABLE_INDEX);
         uriMatcher.addURI(DB.DB_AUTHORITY,DB.EXPENSE_TABLE_NAME, EXPENSE_TABLE_INDEX);
         uriMatcher.addURI(DB.DB_AUTHORITY,DB.BORROW_TABLE_NAME, BORROW_TABLE_INDEX);
-        uriMatcher.addURI(DB.DB_AUTHORITY,DB.LENDED_TABLE_NAME, LENDED_TABLE_INDEX);
+        uriMatcher.addURI(DB.DB_AUTHORITY,DB.LENT_TABLE_NAME, LENDED_TABLE_INDEX);
         uriMatcher.addURI(DB.DB_AUTHORITY,DB.CATEGORY_TABLE_NAME, CATEGORY_TABLE_INDEX);
         uriMatcher.addURI(DB.DB_AUTHORITY,DB.CIRCLE_TABLE_NAME, CIRCLE_TABLE_INDEX);
         uriMatcher.addURI(DB.DB_AUTHORITY,DB.NOTIFICATION_TABLE_NAME, NOTIFICATION_TABLE_INDEX);
@@ -120,10 +120,10 @@ public class MoneyCircleProvider extends ContentProvider{
             case 5:
             {
                 //this method will accept a row(values) and and insert into the table
-                long rowId = qpinionDBinstance.insert(DB.LENDED_TABLE_NAME, null, newRow);
+                long rowId = qpinionDBinstance.insert(DB.LENT_TABLE_NAME, null, newRow);
                 //Toast.makeText(getContext(), "Inserted", Toast.LENGTH_SHORT).show();
                 if (rowId > 0) {
-                    Log.d("in cp","inserted in "+DB.LENDED_TABLE_NAME);
+                    Log.d("in cp","inserted in "+DB.LENT_TABLE_NAME);
                     Uri objUri = ContentUris.withAppendedId(uri, rowId);
                     getContext().getContentResolver().notifyChange(objUri, null);
                 }
@@ -242,9 +242,9 @@ public class MoneyCircleProvider extends ContentProvider{
             case 5:
 
             {
-                Log.d("in cp","Quering data from "+DB.LENDED_TABLE_NAME);
-                c = qpinionDBinstance.query(DB.LENDED_TABLE_NAME, projection, selection, selectionArgs, null, null, null);
-                Log.d("in CP", "cursor returned from " + DB.LENDED_TABLE_NAME);
+                Log.d("in cp","Quering data from "+DB.LENT_TABLE_NAME);
+                c = qpinionDBinstance.query(DB.LENT_TABLE_NAME, projection, selection, selectionArgs, null, null, null);
+                Log.d("in CP", "cursor returned from " + DB.LENT_TABLE_NAME);
                 c.setNotificationUri(getContext().getContentResolver(),uri);
                 return c;
             }
@@ -364,14 +364,14 @@ public class MoneyCircleProvider extends ContentProvider{
 
             case 5:
             {
-                long rowId = qpinionDBinstance.update(DB.LENDED_TABLE_NAME, values, selection, selectionArgs);
+                long rowId = qpinionDBinstance.update(DB.LENT_TABLE_NAME, values, selection, selectionArgs);
                 Toast.makeText(getContext(),"Inserted", Toast.LENGTH_SHORT).show();
 
                 if(rowId > 0) {
 
                     Uri objUri = ContentUris.withAppendedId(uri, rowId);
                     getContext().getContentResolver().notifyChange(objUri , null);
-                    Log.d("in cp","updated :"+DB.LENDED_TABLE_NAME);
+                    Log.d("in cp","updated :"+DB.LENT_TABLE_NAME);
                 }
                 break;
 
@@ -508,8 +508,8 @@ public class MoneyCircleProvider extends ContentProvider{
         case 5:
 
         {
-            Log.d("in cp","Deleting data from "+DB.LENDED_TABLE_NAME);
-            long rowId = qpinionDBinstance.delete(DB.LENDED_TABLE_NAME, selection, selectionArgs);
+            Log.d("in cp","Deleting data from "+DB.LENT_TABLE_NAME);
+            long rowId = qpinionDBinstance.delete(DB.LENT_TABLE_NAME, selection, selectionArgs);
 
             if(rowId > 0) {
                 Uri objUri = ContentUris.withAppendedId(uri, rowId);

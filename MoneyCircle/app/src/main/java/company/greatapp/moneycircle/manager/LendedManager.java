@@ -63,8 +63,8 @@ public class LendedManager extends BaseModelManager  {
 
         lended.clear();
 
-        Cursor c = context.getContentResolver().query(DB.LENDED_TABLE_URI,
-                DB.LENDED_TABLE_PROJECTION, null, null, null);
+        Cursor c = context.getContentResolver().query(DB.LENT_TABLE_URI,
+                DB.LENT_TABLE_PROJECTION, null, null, null);
         if(c != null && c.getCount() > 0) {
             c.moveToFirst();
 //           TODO
@@ -91,7 +91,7 @@ public class LendedManager extends BaseModelManager  {
         uid = uid.replaceAll("NEW","DB");
         lended.setUID(uid);
         ContentValues values = lended.getContentValues();
-        context.getContentResolver().insert(DB.LENDED_TABLE_URI, values);
+        context.getContentResolver().insert(DB.LENT_TABLE_URI, values);
 
     }
 

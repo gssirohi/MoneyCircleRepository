@@ -1,8 +1,11 @@
 package company.greatapp.moneycircle;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +15,7 @@ import android.widget.Toast;
 /**
  * Created by Prateek on 30-06-2015.
  */
-public class TabFragment extends Fragment implements View.OnClickListener{
+public class TabFragment extends Fragment implements View.OnClickListener,LoaderManager.LoaderCallbacks<Cursor>{
 
     private String mTabType = null;
 
@@ -64,5 +67,20 @@ public class TabFragment extends Fragment implements View.OnClickListener{
             default:
                 break;
         }
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }

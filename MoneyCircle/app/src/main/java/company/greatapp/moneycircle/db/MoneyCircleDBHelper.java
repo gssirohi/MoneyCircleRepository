@@ -95,7 +95,7 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
 
 
 
-            db.execSQL("create table " + DB.LENDED_TABLE_NAME + "("
+            db.execSQL("create table " + DB.LENT_TABLE_NAME + "("
 
                             + DB.DB_ID + " Integer primary key ,"
                             + DB.UID + " text,"
@@ -109,7 +109,7 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
 
 
             );
-            Log.d("DBhelper", "query sent for" + DB.LENDED_TABLE_NAME);
+            Log.d("DBhelper", "query sent for" + DB.LENT_TABLE_NAME);
 
 
 
