@@ -12,7 +12,7 @@ public class C {
 
     public static final int REGISTERED_ON_MONEY_CIRCLE = 11;
 
-
+    public static final String DIVIDER = "||";
 
     public static final String CHOOSER_REQUEST = "chooserRequest";
 

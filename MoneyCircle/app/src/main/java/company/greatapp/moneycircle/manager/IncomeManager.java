@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.content.ContentValues;
+import android.net.Uri;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -17,24 +19,12 @@ import company.greatapp.moneycircle.model.Model;
  */
 public class IncomeManager extends BaseModelManager{
     Context context;
-    ArrayList<Model> income = new ArrayList<Model>();
+    ArrayList<Model> incomes = new ArrayList<Model>();
     ArrayList<String> titles = new ArrayList<String>();
 
     public ArrayList<String> getTitles() {
         return this.titles;
     }
-
-
-
-    public ArrayList<Model> getIncome() {
-        return income;
-    }
-
-    public void setIncome(ArrayList<Model> income) {
-        this.income = income;
-    }
-
-
 
     public IncomeManager(Context context){
         this.context = context;
@@ -44,37 +34,33 @@ public class IncomeManager extends BaseModelManager{
 
     @Override
     public Model createItemFromCursor(Cursor cursor) {
-
         if(cursor == null) return null;
+
         int dbId               =cursor.getInt(cursor.getColumnIndex(DB.DB_ID));
         String uid             = cursor.getString(cursor.getColumnIndex(DB.UID));
-        String name            = cursor.getString(cursor.getColumnIndex(DB.NAME));
-        String phone           = cursor.getString(cursor.getColumnIndex(DB.PHONE_NUMBER));
-        String incomeType      = cursor.getString(cursor.getColumnIndex(DB.INCOME_TYPE));
-        String incomeCategory  = cursor.getString(cursor.getColumnIndex(DB.INCOME_CATEGORY));
-        int amount             = cursor.getInt(cursor.getColumnIndex(DB.INCOME_AMOUNT));
-        String incomeJsonString = cursor.getString(cursor.getColumnIndex(DB.INCOME_JSON_STRING));
-        String incomeDate       = cursor.getString(cursor.getColumnIndex(DB.INCOME_DATE));
-        String incomeDescription= cursor.getString(cursor.getColumnIndex(DB.INCOME_DESCRIPTION));
+        String title            = cursor.getString(cursor.getColumnIndex(DB.TITLE));
+        int category           = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY));
+        int amount             = cursor.getInt(cursor.getColumnIndex(DB.AMOUNT));
+        String description     = cursor.getString(cursor.getColumnIndex(DB.DESCRIPTION));
+        String json_string     = cursor.getString(cursor.getColumnIndex(DB.JSON_STRING));
+        String date_string       = cursor.getString(cursor.getColumnIndex(DB.DATE_STRING));
+        int date             = cursor.getInt(cursor.getColumnIndex(DB.DATE));
+        int dom             = cursor.getInt(cursor.getColumnIndex(DB.DAY_OF_MONTH));
+        int wom             = cursor.getInt(cursor.getColumnIndex(DB.WEEK_OF_MONTH));
+        int m             = cursor.getInt(cursor.getColumnIndex(DB.MONTH));
+        int y             = cursor.getInt(cursor.getColumnIndex(DB.YEAR));
+
 
         Income income =new Income();
         income.setDbId(dbId);
         income.setUID(uid);
-        income.setTitle(name);
-        income.setContactName(name);
-        income.setPhone(phone);
-        income.setIncomeType(incomeType);
-        income.setCategory(incomeCategory);
+        income.setTitle(title);
+        income.setCategory(category);
         income.setAmount(amount);
-        income.setIncomeJson(incomeJsonString);
-        income.setDate(incomeDate);
-        income.setDescription(incomeDescription);
-
+        income.setDescription(description);
+        income.setDateString(date_string);
+        income.setJsonString(json_string);
         return income;
-
-
-
-
     }
 
     @Override
@@ -84,56 +70,39 @@ public class IncomeManager extends BaseModelManager{
 
     @Override
     protected void loadItemsFromDB() {
-        income.clear();
+        incomes.clear();
         titles.clear();
         Cursor c = context.getContentResolver().query(DB.INCOME_TABLE_URI,
                 DB.INCOME_TABLE_PROJECTION, null, null, null);
         if(c != null && c.getCount() > 0) {
             c.moveToFirst();
-//           TODO
+            while(!c.isAfterLast()) {
+                Model model = createItemFromCursor(c);
+                incomes.add(model);
+                titles.add(model.getTitle());
+                c.moveToNext();
+            }
             c.close();
-        }
+        }}
 
+    @Override
+    protected Context getContext() {
+        return context;
+    }
+
+    @Override
+    protected Uri getTableUri() {
+        return DB.INCOME_TABLE_URI;
+    }
+
+    @Override
+    protected int getModelType() {
+        return Model.MODEL_TYPE_INCOME;
     }
 
     @Override
     public ArrayList<Model> getItemList() {
-        return this.income;
+        return this.incomes;
     }
 
-    @Override
-    public Model getItemFromListByUID(String uid) {
-        return null;
-    }
-
-    @Override
-    public void insertItemInDB(Model model) {
-        Income income = (Income)model;
-        String uid = income.getUID();
-        uid = uid.replaceAll("NEW","DB");
-        income.setUID(uid);
-        ContentValues values = income.getContentValues();
-        context.getContentResolver().insert(DB.INCOME_TABLE_URI, values);
-
-    }
-
-    @Override
-    public void updateItemInDB(Model model) {
-
-    }
-
-    @Override
-    public void deleteItemFromDB(Model model) {
-
-    }
-
-    @Override
-    public boolean isItemExistInDb(Model model) {
-        return false;
-    }
-
-    @Override
-    public void printManagerData() {
-
-    }
 }

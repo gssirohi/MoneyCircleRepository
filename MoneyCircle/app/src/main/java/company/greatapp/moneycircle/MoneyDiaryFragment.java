@@ -96,9 +96,9 @@ public class MoneyDiaryFragment extends Fragment implements View.OnClickListener
             case R.id.llLendedId:
                 fragment = new ViewerScreenFragment();
                 bundle = new Bundle();
-                bundle.putString(ViewerScreenFragment.MODEL_TYPE, "Lended");
+                bundle.putString(ViewerScreenFragment.MODEL_TYPE, "Lent");
                 fragment.setArguments(bundle);
-                getFragmentManager().beginTransaction().replace(R.id.homeContainerId, fragment, "Lended ViewerFragment").commit();
+                getFragmentManager().beginTransaction().replace(R.id.homeContainerId, fragment, "Lent ViewerFragment").commit();
                 break;
             case R.id.llSplitId:
                 Toast.makeText(getActivity(), "No Split Fragment is attached", Toast.LENGTH_SHORT).show();
@@ -127,7 +127,7 @@ public class MoneyDiaryFragment extends Fragment implements View.OnClickListener
         // 1 -> Income
         // 2 -> Expense
         // 3 -> Borrowed
-        // 4 -> Lended
+        // 4 -> Lent
         // 5 -> Split
         switch (entryType) {
             case 1:

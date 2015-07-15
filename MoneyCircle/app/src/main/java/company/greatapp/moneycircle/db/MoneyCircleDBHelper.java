@@ -25,121 +25,150 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
 		@Override
 		public void onCreate(SQLiteDatabase db) {
 			Log.d("DBhelper", "Creating Tables...");
-
+         //=========================================================================//
 			db.execSQL("create table " + DB.CONTACT_TABLE_NAME + "("
 
                             + DB.DB_ID + " Integer primary key ,"
                             + DB.UID + " text,"
                             + DB.NAME + " text,"
-                            + DB.SERVER_ID + " text,"
-                            + DB.SERVER_NAME + " text,"
                             + DB.PHONE_NUMBER + " text,"
                             + DB.EMAIL + " text,"
-                            + DB.CIRCLE_COUNT + " int,"
-                            + DB.IMAGE_URI + " text,"
+                            + DB.CONTACT_IMAGE_URI + " text,"
                             + DB.REGISTERED + " int,"
-                            + DB.CIRCLE_JSON_STRING + " text);"
+                            + DB.SERVER_NAME + " text,"
+                            + DB.SERVER_ID + " text,"
+                            + DB.JSON_STRING + " text);"
 
             );
 			Log.d("DBhelper", "query sent for" + DB.CONTACT_TABLE_NAME);
-
-			db.execSQL("create table " + DB.INCOME_TABLE_NAME + "("
-
-                            + DB.DB_ID + " Integer primary key ,"
-                            + DB.UID + " text,"
-                            + DB.NAME + " text,"
-                            + DB.PHONE_NUMBER + " text, "
-                            + DB.INCOME_JSON_STRING + " text, "
-                            + DB.INCOME_TYPE + " text, "
-                            + DB.INCOME_CATEGORY + " text, "
-                            + DB.INCOME_AMOUNT + " int, "
-                            + DB.INCOME_DATE + " text, "
-                            + DB.INCOME_DESCRIPTION + " text );"
-
-
-            );
-
-            Log.d("DBhelper", "query sent for" + DB.INCOME_TABLE_NAME);
-
-            db.execSQL("create table " + DB.EXPENSE_TABLE_NAME + "("
-
-                            + DB.DB_ID + " Integer primary key ,"
-                            + DB.UID + " text,"
-                            + DB.NAME + " text,"
-                            + DB.PHONE_NUMBER + " text, "
-                            +DB.EXPENSE_DATE + " text, "
-                            +DB.EXPENSE_AMOUNT + " int,"
-                            +DB.EXPENSE_CATEGORY + " text, "
-                            + DB.EXPENSE_DESCRIPTION + " text );"
-
-
-            );
-            Log.d("DBhelper", "query sent for" + DB.EXPENSE_TABLE_NAME);
-
-            db.execSQL("create table " + DB.BORROW_TABLE_NAME + "("
-
-                            + DB.DB_ID + " Integer primary key ,"
-                            + DB.UID + " text,"
-                            + DB.NAME + " text,"
-                            + DB.PHONE_NUMBER + " text, "
-                            +DB.BORROW_TYPE + " text, "
-                            +DB.BORROW_CATEGORY + " text,"
-                            +DB.BORROW_AMOUNT + " int, "
-                            +DB.BORROW_DATE + " text, "
-                            +DB.BORROW_DUE_DATE + " text, "
-                            + DB.BORROW_DESCRIPTION + " text );"
-
-
-            );
-            Log.d("DBhelper", "query sent for" + DB.BORROW_TABLE_NAME);
-
-
-
-            db.execSQL("create table " + DB.LENT_TABLE_NAME + "("
-
-                            + DB.DB_ID + " Integer primary key ,"
-                            + DB.UID + " text,"
-                            + DB.NAME + " text,"
-                            + DB.PHONE_NUMBER + " text, "
-                            + DB.LENDED_TYPE + " text, "
-                            +DB.LENDED_CATEGORY + " text, "
-                            + DB.LENDED_AMOUNT + " int, "
-                            + DB.LENDED_DATE + " text, "
-                            + DB.LENDED_DESCRIPTION + " text );"
-
-
-            );
-            Log.d("DBhelper", "query sent for" + DB.LENT_TABLE_NAME);
-
-
-
-            db.execSQL("create table " + DB.CATEGORY_TABLE_NAME + "("
-
-                            + DB.DB_ID + " Integer primary key ,"
-                            + DB.UID + " text,"
-                            + DB.CATEGORY_TYPE + " text, "
-                             +DB.CATEGORY_DESCRIPTION + " text  );"
-
-
-            );
-            Log.d("DBhelper", "query sent for" + DB.CATEGORY_TABLE_NAME);
-
-
-
+     //=========================================================================//
             db.execSQL("create table " + DB.CIRCLE_TABLE_NAME + "("
 
                             + DB.DB_ID + " Integer primary key ,"
                             + DB.UID + " text,"
-                            + DB.NAME + " text,"
-                             +DB.CIRCLE_NAME + "text, "
-                            +DB.CIRCLE_JSON_STRING + "text );"
-
-
+                            + DB.CIRCLE_NAME + "text, "
+                            + DB.CIRCLE_CONTACTS_JSON + "text, "
+                            + DB.JSON_STRING + "text );"
             );
             Log.d("DBhelper","query sent for"+DB.CIRCLE_TABLE_NAME);
+    //=========================================================================//
+            db.execSQL("create table " + DB.INCOME_TABLE_NAME + "("
 
+                            + DB.DB_ID + " Integer primary key ,"
+                            + DB.UID + " text,"
+                            + DB.TITLE + " text,"
+                            + DB.CATEGORY + " int,"
+                            + DB.DESCRIPTION + " text,"
+                            + DB.AMOUNT + " text, "
+                            + DB.DATE_STRING + " text, "
+                            + DB.DATE + " int,"
+                            + DB.DAY_OF_MONTH + " int,"
+                            + DB.WEEK_OF_MONTH + " int,"
+                            + DB.MONTH + " int,"
+                            + DB.YEAR + " int,"
+                            + DB.JSON_STRING + " text );"
 
+            );
 
+            Log.d("DBhelper", "query sent for" + DB.INCOME_TABLE_NAME);
+    //=========================================================================//
+            db.execSQL("create table " + DB.EXPENSE_TABLE_NAME + "("
+
+                            + DB.DB_ID + " Integer primary key ,"
+                            + DB.UID + " text,"
+                            + DB.TITLE + " text,"
+                            + DB.CATEGORY + " int,"
+                            + DB.DESCRIPTION + " text,"
+                            + DB.AMOUNT + " text, "
+                            + DB.IS_LINKED_WITH_SPLIT + " int,"
+                            + DB.LINKED_SPLIT_JSON + " text, "
+                            + DB.DATE_STRING + " text, "
+                            + DB.DATE + " int,"
+                            + DB.DAY_OF_MONTH + " int,"
+                            + DB.WEEK_OF_MONTH + " int,"
+                            + DB.MONTH + " int,"
+                            + DB.YEAR + " int,"
+                            + DB.JSON_STRING + " text );"
+
+            );
+            Log.d("DBhelper", "query sent for" + DB.EXPENSE_TABLE_NAME);
+     //=========================================================================//
+            db.execSQL("create table " + DB.BORROW_TABLE_NAME + "("
+
+                            + DB.DB_ID + " Integer primary key ,"
+                            + DB.UID + " text,"
+                            + DB.TITLE + " text,"
+                            + DB.CATEGORY + " int,"
+                            + DB.DESCRIPTION + " text,"
+                            + DB.AMOUNT + " text, "
+                            + DB.LINKED_CONTACT_JSON + " text, "
+                            + DB.DUE_DATE_STRING + " text, "
+                            + DB.DATE_STRING + " text, "
+                            + DB.DATE + " int,"
+                            + DB.DAY_OF_MONTH + " int,"
+                            + DB.WEEK_OF_MONTH + " int,"
+                            + DB.MONTH + " int,"
+                            + DB.YEAR + " int,"
+                            + DB.JSON_STRING + " text );"
+
+            );
+            Log.d("DBhelper", "query sent for" + DB.BORROW_TABLE_NAME);
+    //=========================================================================//
+            db.execSQL("create table " + DB.LENT_TABLE_NAME + "("
+
+                            + DB.DB_ID + " Integer primary key ,"
+                            + DB.UID + " text,"
+                            + DB.TITLE + " text,"
+                            + DB.CATEGORY + " int,"
+                            + DB.DESCRIPTION + " text,"
+                            + DB.AMOUNT + " text, "
+                            + DB.DUE_DATE_STRING + " text, "
+                            + DB.LINKED_CONTACT_JSON + " text, "
+                            + DB.IS_LINKED_WITH_SPLIT + " int,"
+                            + DB.LINKED_SPLIT_JSON + " text, "
+                            + DB.DATE_STRING + " text, "
+                            + DB.DATE + " int,"
+                            + DB.DAY_OF_MONTH + " int,"
+                            + DB.WEEK_OF_MONTH + " int,"
+                            + DB.MONTH + " int,"
+                            + DB.YEAR + " int,"
+                            + DB.JSON_STRING + " text );"
+            );
+            Log.d("DBhelper", "query sent for" + DB.LENT_TABLE_NAME);
+    //=========================================================================//
+            db.execSQL("create table " + DB.SPLIT_TABLE_NAME + "("
+
+                            + DB.DB_ID + " Integer primary key ,"
+                            + DB.UID + " text,"
+                            + DB.TITLE + " text,"
+                            + DB.CATEGORY + " int,"
+                            + DB.DESCRIPTION + " text,"
+                            + DB.AMOUNT + " text, "
+                            + DB.DUE_DATE_STRING + " text, "
+                            + DB.SPLIT_TOTAL_PARTICIPANTS + " int,"
+                            + DB.SPLIT_LINKED_CONTACTS_JSON + " text, "
+                            + DB.SPLIT_LINKED_EXPENSE_JSON + " text, "
+                            + DB.SPLIT_LINKED_LENTS_JSON + " text,"
+                            + DB.DATE_STRING + " text, "
+                            + DB.DATE + " int,"
+                            + DB.DAY_OF_MONTH + " int,"
+                            + DB.WEEK_OF_MONTH + " int,"
+                            + DB.MONTH + " int,"
+                            + DB.YEAR + " int,"
+                            + DB.JSON_STRING + " text );"
+            );
+            Log.d("DBhelper", "query sent for" + DB.SPLIT_TABLE_NAME);
+
+    //=========================================================================//
+            db.execSQL("create table " + DB.CATEGORY_TABLE_NAME + "("
+
+                            + DB.DB_ID + " Integer primary key ,"
+                            + DB.UID + " text,"
+                            + DB.CATEGORY_NAME + " text, "
+                             +DB.CATEGORY_TYPE + " text  );"
+            );
+            Log.d("DBhelper", "query sent for" + DB.CATEGORY_TABLE_NAME);
+    //=========================================================================//
             db.execSQL(     "create table "     + DB.NOTIFICATION_TABLE_NAME + "("
 
                             + DB.DB_ID + " Integer primary key ,"
@@ -149,10 +178,9 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
                             + DB.NOTIFICATION_JSON_STRING + " text, "
                             + DB.NOTIFICATION_TYPE + " text, "
                             + DB.NOTIFICATION_DESCRIPTION + " text );"
-
-
             );
             Log.d("DBhelper","query sent for"+DB.NOTIFICATION_TABLE_NAME);
+    //=========================================================================//
 
             db.execSQL(     "create table "     + DB.COMMON_TABLE_NAME + "("
 
@@ -160,15 +188,9 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
                             + DB.UID + " text,"
                             + DB.NAME + " text,"
                             + DB.PHONE_NUMBER + " text );"
-
-
             );
             Log.d("DBhelper","query sent for"+DB.COMMON_TABLE_NAME);
-
-
-
-
-
+    //=========================================================================//
 		}
 
 

@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -11,16 +13,20 @@ import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.model.Circle;
 
 import company.greatapp.moneycircle.model.Model;
+import company.greatapp.moneycircle.tools.GreatJSON;
 
 /**
  * Created by Ashish on 10-07-2015.
  */
 public class CircleManager extends BaseModelManager  {
+    private final ContactManager mContactManager;
     Context context;
-    ArrayList<Model> circle = new ArrayList<Model>();
+    ArrayList<Model> circles = new ArrayList<Model>();
+    ArrayList<String> titles = new ArrayList<String>();
 
     public CircleManager(Context context) {
         this.context = context;
+        mContactManager = new ContactManager(context);
         loadItemsFromDB();
     }
     @Override
@@ -31,13 +37,17 @@ public class CircleManager extends BaseModelManager  {
         int dbId               = cursor.getInt(cursor.getColumnIndex(DB.DB_ID));
         String uid             = cursor.getString(cursor.getColumnIndex(DB.UID));
         String circlename      = cursor.getString(cursor.getColumnIndex(DB.CIRCLE_NAME));
-        String circleJsonStrin = cursor.getString(cursor.getColumnIndex(DB.CIRCLE_JSON_STRING));
+        String jsonString      = cursor.getString(cursor.getColumnIndex(DB.JSON_STRING));
+        String contactJson     = cursor.getString(cursor.getColumnIndex(DB.CIRCLE_CONTACTS_JSON));
 
         Circle circle = new Circle();
         circle.setDbId(dbId);
         circle.setUID(uid);
-        circle.setName(circlename);
-        circle.setJsonMembers(circleJsonStrin);
+        circle.setCircleName(circlename);
+        circle.setContactsJson(contactJson);
+        circle.setJsonString(jsonString);
+        circle.setContacts(GreatJSON.getContactListFromJsonString(contactJson,mContactManager));
+        
         return circle;
     }
 
@@ -49,57 +59,44 @@ public class CircleManager extends BaseModelManager  {
     @Override
     protected void loadItemsFromDB() {
 
-        circle.clear();
-
+        circles.clear();
+        titles.clear();
         Cursor c = context.getContentResolver().query(DB.CIRCLE_TABLE_URI,
                 DB.CIRCLE_TABLE_PROJECTION, null, null, null);
         if(c != null && c.getCount() > 0) {
             c.moveToFirst();
-//           TODO
+            while(!c.isAfterLast()) {
+                Model model = createItemFromCursor(c);
+                circles.add(model);
+                titles.add(model.getTitle());
+                c.moveToNext();
+            }
             c.close();
         }
+    }
 
+    @Override
+    protected Context getContext() {
+        return context;
+    }
+
+    @Override
+    protected Uri getTableUri() {
+        return DB.CIRCLE_TABLE_URI;
+    }
+
+    @Override
+    protected int getModelType() {
+        return Model.MODEL_TYPE_CIRCLE;
     }
 
     @Override
     public ArrayList<Model> getItemList() {
-        return null;
+        return circles;
     }
 
-    @Override
-    public Model getItemFromListByUID(String uid) {
-        return null;
+    public ArrayList<String> getItemNameList() {
+        return titles;
     }
 
-    @Override
-    public void insertItemInDB(Model model) {
-
-        Circle circle = (Circle)model;
-        String uid = circle.getUID();
-        uid = uid.replaceAll("NEW","DB");
-        circle.setUID(uid);
-        ContentValues values = circle.getContentValues();
-        context.getContentResolver().insert(DB.CIRCLE_TABLE_URI, values);
-
-    }
-
-    @Override
-    public void updateItemInDB(Model model) {
-
-    }
-
-    @Override
-    public void deleteItemFromDB(Model model) {
-
-    }
-
-    @Override
-    public boolean isItemExistInDb(Model model) {
-        return false;
-    }
-
-    @Override
-    public void printManagerData() {
-
-    }
 }

@@ -122,7 +122,7 @@ public class ViewerScreenFragment extends Fragment {
         } else if (modelType == "Borrowed") {
             SECTION_ARGUMENT = C.ENTRY_TYPE_BORROW;
             mCategories = new String[]{"Bank Loan", "Credit Card", "From Friends", "From Family"};
-        } else if (modelType == "Lended") {
+        } else if (modelType == "Lent") {
             SECTION_ARGUMENT = C.ENTRY_TYPE_LENDED;
             mCategories = new String[]{"To Family", "To Friends", "To Others"};
         }

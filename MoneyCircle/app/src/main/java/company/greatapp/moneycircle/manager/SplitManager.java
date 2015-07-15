@@ -8,23 +8,22 @@ import android.net.Uri;
 import java.util.ArrayList;
 
 import company.greatapp.moneycircle.constants.DB;
-import company.greatapp.moneycircle.model.Borrow;
-
+import company.greatapp.moneycircle.model.Split;
 import company.greatapp.moneycircle.model.Model;
 
 /**
- * Created by Ashish on 09-07-2015.
+ * Created by gyanendra.sirohi on 7/15/2015.
  */
-public class BorrowManager extends BaseModelManager  {
+public class SplitManager extends BaseModelManager {
     Context context;
-    ArrayList<Model> borrows = new ArrayList<Model>();
+    ArrayList<Model> splits = new ArrayList<Model>();
     ArrayList<String> titles = new ArrayList<String>();
 
     public ArrayList<String> getTitles() {
         return this.titles;
     }
 
-    public BorrowManager(Context context){
+    public SplitManager(Context context){
         this.context = context;
         loadItemsFromDB();
     }
@@ -41,7 +40,11 @@ public class BorrowManager extends BaseModelManager  {
         int amount             = cursor.getInt(cursor.getColumnIndex(DB.AMOUNT));
         String description     = cursor.getString(cursor.getColumnIndex(DB.DESCRIPTION));
         String dueDateString     = cursor.getString(cursor.getColumnIndex(DB.DUE_DATE_STRING));
-        String linkedContactJson     = cursor.getString(cursor.getColumnIndex(DB.LINKED_CONTACT_JSON));
+
+        String linkedContactsJson     = cursor.getString(cursor.getColumnIndex(DB.SPLIT_LINKED_CONTACTS_JSON));
+        String linkedExpenseJson     = cursor.getString(cursor.getColumnIndex(DB.SPLIT_LINKED_EXPENSE_JSON));
+        String linkedLentsJson     = cursor.getString(cursor.getColumnIndex(DB.SPLIT_LINKED_LENTS_JSON));
+
         String json_string     = cursor.getString(cursor.getColumnIndex(DB.JSON_STRING));
         String date_string     = cursor.getString(cursor.getColumnIndex(DB.DATE_STRING));
         int date               = cursor.getInt(cursor.getColumnIndex(DB.DATE));
@@ -51,18 +54,22 @@ public class BorrowManager extends BaseModelManager  {
         int y                  = cursor.getInt(cursor.getColumnIndex(DB.YEAR));
 
 
-        Borrow borrow =new Borrow();
-        borrow.setDbId(dbId);
-        borrow.setUID(uid);
-        borrow.setTitle(title);
-        borrow.setCategory(category);
-        borrow.setAmount(amount);
-        borrow.setDescription(description);
-        borrow.setDueDateString(dueDateString);
-        borrow.setLinkedContactJson(linkedContactJson);
-        borrow.setDateString(date_string);
-        borrow.setJsonString(json_string);
-        return borrow;
+        Split split =new Split();
+        split.setDbId(dbId);
+        split.setUID(uid);
+        split.setTitle(title);
+        split.setCategory(category);
+        split.setAmount(amount);
+        split.setDescription(description);
+        split.setDueDateString(dueDateString);
+
+        split.setLinkedContactsJson(linkedContactsJson);
+        split.setLinkedExpenseJson(linkedExpenseJson);
+        split.setLinkedLentsJson(linkedLentsJson);
+
+        split.setDateString(date_string);
+        split.setJsonString(json_string);
+        return split;
     }
 
     @Override
@@ -72,15 +79,15 @@ public class BorrowManager extends BaseModelManager  {
 
     @Override
     protected void loadItemsFromDB() {
-        borrows.clear();
+        splits.clear();
         titles.clear();
-        Cursor c = context.getContentResolver().query(DB.BORROW_TABLE_URI,
-                DB.BORROW_TABLE_PROJECTION, null, null, null);
+        Cursor c = context.getContentResolver().query(DB.SPLIT_TABLE_URI,
+                DB.SPLIT_TABLE_PROJECTION, null, null, null);
         if(c != null && c.getCount() > 0) {
             c.moveToFirst();
             while(!c.isAfterLast()) {
                 Model model = createItemFromCursor(c);
-                borrows.add(model);
+                splits.add(model);
                 titles.add(model.getTitle());
                 c.moveToNext();
             }
@@ -94,17 +101,17 @@ public class BorrowManager extends BaseModelManager  {
 
     @Override
     protected Uri getTableUri() {
-        return DB.BORROW_TABLE_URI;
+        return DB.SPLIT_TABLE_URI;
     }
 
     @Override
     protected int getModelType() {
-        return Model.MODEL_TYPE_BORROW;
+        return Model.MODEL_TYPE_SPLIT;
     }
 
     @Override
     public ArrayList<Model> getItemList() {
-        return this.borrows;
+        return this.splits;
     }
 
 }

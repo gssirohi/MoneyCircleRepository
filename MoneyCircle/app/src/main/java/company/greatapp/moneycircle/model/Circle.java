@@ -6,95 +6,109 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import company.greatapp.moneycircle.constants.DB;
+
 /**
  * Created by gyanendra.sirohi on 7/1/2015.
  */
 public class Circle extends Model  {
-    String name;
+    //=====COMMON==============//
+    private int dbId;
+    private String uid = "";
+    private String title = "";
+    private int modelType;
+    private String jsonString = "";
+//--------------------------------//
+//=====SPECIFIC==============//
+private String circleName = "";
+    private String contactsJson;
+    private ArrayList<Contact> contacts = new ArrayList<Contact>();
+    //--------------------------------//
 
-    public String getMemberCount() {
-        return memberCount;
+    public String getCircleName() {
+        return circleName;
     }
 
-    public void setMemberCount(String memberCount) {
-        this.memberCount = memberCount;
+    public void setCircleName(String circleName) {
+        this.circleName = circleName;
     }
 
-    public String getName() {
-        return name;
+    public String getContactsJson() {
+        return contactsJson;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setContactsJson(String contactsJson) {
+        this.contactsJson = contactsJson;
     }
 
-    public ArrayList<Contact> getMemberList() {
-        return memberList;
+    public ArrayList<Contact> getContacts() {
+        return contacts;
     }
 
-    public void setMemberList(ArrayList<Contact> memberList) {
-        this.memberList = memberList;
+    public void setContacts(ArrayList<Contact> contacts) {
+        this.contacts = contacts;
     }
 
-    public String getJsonMembers() {
-        return jsonMembers;
-    }
-
-    public void setJsonMembers(String jsonMembers) {
-        this.jsonMembers = jsonMembers;
-    }
-
-    String memberCount;
-    ArrayList<Contact> memberList;
-    String jsonMembers;
 
     @Override
     public void setTitle(String title) {
-
+        this.title = title;
     }
 
     @Override
     public void setModelType(int modelType) {
-
+      this.modelType = modelType;
     }
 
     @Override
     public void setDbId(int dbId) {
-
+      this.dbId = dbId;
     }
 
     @Override
     public void setUID(String uid) {
-
+       this.uid = uid;
     }
 
     @Override
     public String getTitle() {
-        return null;
+        return title;
     }
 
     @Override
     public int getModelType() {
-        return 0;
+        return modelType;
     }
 
     @Override
     public String getUID() {
-        return null;
+        return uid;
     }
 
     @Override
     public int getDbId() {
-        return 0;
+        return dbId;
     }
 
     @Override
     public ContentValues getContentValues() {
-        return null;
+        ContentValues row = new ContentValues();
+        row.put(DB.UID,getUID());
+        row.put(DB.CIRCLE_NAME,getCircleName());
+        row.put(DB.CIRCLE_CONTACTS_JSON,getContactsJson());
+        row.put(DB.JSON_STRING,getJsonString());
+        return row;
     }
 
     @Override
-    public void printModelData() {
-
+    public void setJsonString(String jsonString) {
+        this.jsonString = jsonString;
     }
+
+    @Override
+    public String getJsonString() {
+        return this.jsonString;
+    }
+
+
 }

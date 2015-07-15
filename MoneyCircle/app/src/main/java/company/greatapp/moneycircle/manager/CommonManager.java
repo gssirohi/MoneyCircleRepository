@@ -3,6 +3,7 @@ package company.greatapp.moneycircle.manager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 
 import java.util.ArrayList;
 
@@ -14,13 +15,6 @@ import company.greatapp.moneycircle.model.Model;
  */
 public class CommonManager extends BaseModelManager  {
 
-    Context context;
-    ArrayList<Model> common = new ArrayList<Model>();
-
-    public CommonManager(Context context) {
-        this.context = context;
-        loadItemsFromDB();
-    }
     @Override
     public Model createItemFromCursor(Cursor cursor) {
         return null;
@@ -34,51 +28,25 @@ public class CommonManager extends BaseModelManager  {
     @Override
     protected void loadItemsFromDB() {
 
-        common.clear();
+    }
 
-        Cursor c = context.getContentResolver().query(DB.COMMON_TABLE_URI,
-                DB.COMMON_TABLE_PROJECTION, null, null, null);
-        if(c != null && c.getCount() > 0) {
-            c.moveToFirst();
-//           TODO
-            c.close();
-        }
+    @Override
+    protected Context getContext() {
+        return null;
+    }
 
+    @Override
+    protected Uri getTableUri() {
+        return null;
+    }
+
+    @Override
+    protected int getModelType() {
+        return 0;
     }
 
     @Override
     public ArrayList<Model> getItemList() {
         return null;
-    }
-
-    @Override
-    public Model getItemFromListByUID(String uid) {
-        return null;
-    }
-
-    @Override
-    public void insertItemInDB(Model model) {
-
-
-    }
-
-    @Override
-    public void updateItemInDB(Model model) {
-
-    }
-
-    @Override
-    public void deleteItemFromDB(Model model) {
-
-    }
-
-    @Override
-    public boolean isItemExistInDb(Model model) {
-        return false;
-    }
-
-    @Override
-    public void printManagerData() {
-
     }
 }

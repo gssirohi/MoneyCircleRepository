@@ -117,7 +117,7 @@ public class ManageCategoriesActivity extends ActionBarActivity {
         listDataHeader.add("Income");
         listDataHeader.add("Expenses");
         listDataHeader.add("Borrowed Money");
-        listDataHeader.add("Lended Money");
+        listDataHeader.add("Lent Money");
         listDataHeader.add("Split Money");
 
         // Adding child data

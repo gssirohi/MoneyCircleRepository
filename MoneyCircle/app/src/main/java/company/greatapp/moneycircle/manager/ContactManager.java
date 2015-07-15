@@ -1,13 +1,11 @@
 package company.greatapp.moneycircle.manager;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -41,10 +39,9 @@ public class ContactManager extends BaseModelManager {
         String serverName      = cursor.getString(cursor.getColumnIndex(DB.SERVER_NAME));
         String phone           = cursor.getString(cursor.getColumnIndex(DB.PHONE_NUMBER));
         String email           = cursor.getString(cursor.getColumnIndex(DB.EMAIL));
-        int circleCount        = cursor.getInt(cursor.getColumnIndex(DB.CIRCLE_COUNT));
-        String imageUri        = cursor.getString(cursor.getColumnIndex(DB.IMAGE_URI));
+        String imageUri        = cursor.getString(cursor.getColumnIndex(DB.CONTACT_IMAGE_URI));
         int registered         = cursor.getInt(cursor.getColumnIndex(DB.REGISTERED));
-        String circleJsonString = cursor.getString(cursor.getColumnIndex(DB.CIRCLE_JSON_STRING));
+        String jsonString      = cursor.getString(cursor.getColumnIndex(DB.JSON_STRING));
 
         Contact contact = new Contact();
         contact.setDbId(dbId);
@@ -55,10 +52,9 @@ public class ContactManager extends BaseModelManager {
         contact.setServerName(serverName);
         contact.setPhone(phone);
         contact.setEmail(email);
-        contact.setCircleCount(circleCount);
         contact.setImageUri(Uri.parse(imageUri));
         contact.setRegistered(registered);
-        contact.setCirclesJsonString(circleJsonString);
+        contact.setJsonString(jsonString);
         return contact;
     }
 
@@ -91,6 +87,21 @@ public class ContactManager extends BaseModelManager {
     }
 
     @Override
+    protected Context getContext() {
+        return context;
+    }
+
+    @Override
+    protected Uri getTableUri() {
+        return DB.CONTACT_TABLE_URI;
+    }
+
+    @Override
+    protected int getModelType() {
+        return Model.MODEL_TYPE_CONTACT;
+    }
+
+    @Override
     public ArrayList<Model> getItemList() {
         return this.contacts;
     }
@@ -99,46 +110,6 @@ public class ContactManager extends BaseModelManager {
         return this.titles;
     }
 
-    @Override
-    public Model getItemFromListByUID(String uid) {
-        Log.d("split","required uid: "+uid);
-        for(Model m : contacts) {
-            Log.d("split", "checking uid: " + m.getUID());
-            if(uid.equals(m.getUID()))
-                return m;
-        }
-        return null;
-    }
-
-    @Override
-    public void insertItemInDB(Model model) {
-        Contact contact = (Contact)model;
-        String uid = contact.getUID();
-        uid = uid.replaceAll("NEW","DB");
-        contact.setUID(uid);
-        ContentValues values = contact.getContentValues();
-        context.getContentResolver().insert(DB.CONTACT_TABLE_URI, values);
-    }
-
-    @Override
-    public void updateItemInDB(Model model) {
-
-    }
-
-    @Override
-    public void deleteItemFromDB(Model model) {
-
-    }
-
-    @Override
-    public boolean isItemExistInDb(Model model) {
-        return false;
-    }
-
-    @Override
-    public void printManagerData() {
-
-    }
 
     public void retriveContactsFromDevice() {
         Cursor phones = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);

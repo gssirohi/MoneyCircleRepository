@@ -6,33 +6,6 @@ import android.content.ContentValues;
  * Created by gyanendra.sirohi on 7/1/2015.
  */
 public class Category extends Model  {
-    public String getCategoryType() {
-        return categoryType;
-    }
-
-    public void setCategoryType(String categoryType) {
-        this.categoryType = categoryType;
-    }
-
-    public String getCategoryDesciption() {
-        return categoryDesciption;
-    }
-
-    public void setCategoryDesciption(String categoryDesciption) {
-        this.categoryDesciption = categoryDesciption;
-    }
-
-    public int getSuperType() {
-        return superType;
-    }
-
-    public void setSuperType(int superType) {
-        this.superType = superType;
-    }
-
-    String categoryType;
-    String categoryDesciption;
-    int superType;
 
     @Override
     public void setTitle(String title) {
@@ -51,6 +24,11 @@ public class Category extends Model  {
 
     @Override
     public void setUID(String uid) {
+
+    }
+
+    @Override
+    public void setJsonString(String jsonString) {
 
     }
 
@@ -75,12 +53,12 @@ public class Category extends Model  {
     }
 
     @Override
-    public ContentValues getContentValues() {
+    public String getJsonString() {
         return null;
     }
 
     @Override
-    public void printModelData() {
-
+    public ContentValues getContentValues() {
+        return null;
     }
 }

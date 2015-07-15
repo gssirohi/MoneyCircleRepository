@@ -10,8 +10,7 @@ import company.greatapp.moneycircle.constants.DB;
 /**
  * Created by gyanendra.sirohi on 7/1/2015.
  */
-public class Borrow extends Model {
-
+public class Lent extends Model {
 
     //=====COMMON==============//
     private int dbId;
@@ -31,6 +30,35 @@ public class Borrow extends Model {
     private String dueDateString = "";
     private String linkedContactJson;
     private Contact linkedContact;
+
+    private boolean isLinkedWithSplit;
+    private Split linkedSplit;
+    private String linkedSplitJson;
+    //---------------------------------//
+
+    public boolean isLinkedWithSplit() {
+        return isLinkedWithSplit;
+    }
+
+    public void setIsLinkedWithSplit(boolean isLinkedWithSplit) {
+        this.isLinkedWithSplit = isLinkedWithSplit;
+    }
+
+    public Split getLinkedSplit() {
+        return linkedSplit;
+    }
+
+    public void setLinkedSplit(Split linkedSplit) {
+        this.linkedSplit = linkedSplit;
+    }
+
+    public String getLinkedSplitJson() {
+        return linkedSplitJson;
+    }
+
+    public void setLinkedSplitJson(String linkedSplitJson) {
+        this.linkedSplitJson = linkedSplitJson;
+    }
 
     public Date getDueDate() {
         return dueDate;
@@ -156,6 +184,9 @@ public class Borrow extends Model {
         row.put(DB.AMOUNT, getAmount());
 
         row.put(DB.LINKED_CONTACT_JSON, getLinkedContactJson());
+
+        row.put(DB.IS_LINKED_WITH_SPLIT, isLinkedWithSplit()?1:0);
+        row.put(DB.LINKED_SPLIT_JSON, getLinkedSplitJson());
 
         row.put(DB.DUE_DATE_STRING, getDueDateString());
 

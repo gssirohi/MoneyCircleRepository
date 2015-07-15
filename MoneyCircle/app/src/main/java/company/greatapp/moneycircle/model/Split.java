@@ -2,17 +2,16 @@ package company.greatapp.moneycircle.model;
 
 import android.content.ContentValues;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import company.greatapp.moneycircle.constants.DB;
 
 /**
- * Created by gyanendra.sirohi on 7/1/2015.
+ * Created by gyanendra.sirohi on 7/15/2015.
  */
-public class Borrow extends Model {
-
-
+public class Split extends Model {
     //=====COMMON==============//
     private int dbId;
     private String uid = "";
@@ -29,8 +28,73 @@ public class Borrow extends Model {
     private Date date;
     private Date dueDate;
     private String dueDateString = "";
-    private String linkedContactJson;
-    private Contact linkedContact;
+
+    private ArrayList<Contact> linkedContacts = new ArrayList<Contact>();
+    private Expense linkedExpense;
+    private ArrayList<Lent> linkedLents = new ArrayList<Lent>();
+    private String linkedContactsJson = "";
+    private String linkedExpenseJson = "";
+    private String linkedLentsJson = "";
+
+    private int totalParticipants;
+    //---------------------------------//
+
+
+    public int getTotalParticipants() {
+        return totalParticipants;
+    }
+
+    public void setTotalParticipants(int totalParticipants) {
+        this.totalParticipants = totalParticipants;
+    }
+
+    public ArrayList<Contact> getLinkedContacts() {
+        return linkedContacts;
+    }
+
+    public void setLinkedContacts(ArrayList<Contact> linkedContacts) {
+        this.linkedContacts = linkedContacts;
+    }
+
+    public Expense getLinkedExpense() {
+        return linkedExpense;
+    }
+
+    public void setLinkedExpense(Expense linkedExpense) {
+        this.linkedExpense = linkedExpense;
+    }
+
+    public ArrayList<Lent> getLinkedLents() {
+        return linkedLents;
+    }
+
+    public void setLinkedLents(ArrayList<Lent> linkedLents) {
+        this.linkedLents = linkedLents;
+    }
+
+    public String getLinkedContactsJson() {
+        return linkedContactsJson;
+    }
+
+    public void setLinkedContactsJson(String linkedContactsJson) {
+        this.linkedContactsJson = linkedContactsJson;
+    }
+
+    public String getLinkedExpenseJson() {
+        return linkedExpenseJson;
+    }
+
+    public void setLinkedExpenseJson(String linkedExpenseJson) {
+        this.linkedExpenseJson = linkedExpenseJson;
+    }
+
+    public String getLinkedLentsJson() {
+        return linkedLentsJson;
+    }
+
+    public void setLinkedLentsJson(String linkedLentsJson) {
+        this.linkedLentsJson = linkedLentsJson;
+    }
 
     public Date getDueDate() {
         return dueDate;
@@ -48,21 +112,6 @@ public class Borrow extends Model {
         this.dueDateString = dueDateString;
     }
 
-    public String getLinkedContactJson() {
-        return linkedContactJson;
-    }
-
-    public void setLinkedContactJson(String linkedContactJson) {
-        this.linkedContactJson = linkedContactJson;
-    }
-
-    public Contact getLinkedContact() {
-        return linkedContact;
-    }
-
-    public void setLinkedContact(Contact linkedContact) {
-        this.linkedContact = linkedContact;
-    }
 
     public int getCategory() {
         return category;
@@ -154,10 +203,12 @@ public class Borrow extends Model {
         row.put(DB.CATEGORY , getCategory());
         row.put(DB.DESCRIPTION , getDescription());
         row.put(DB.AMOUNT, getAmount());
-
-        row.put(DB.LINKED_CONTACT_JSON, getLinkedContactJson());
-
+        row.put(DB.SPLIT_TOTAL_PARTICIPANTS,getTotalParticipants());
         row.put(DB.DUE_DATE_STRING, getDueDateString());
+
+        row.put(DB.SPLIT_LINKED_CONTACTS_JSON,getLinkedContactsJson());
+        row.put(DB.SPLIT_LINKED_EXPENSE_JSON,getLinkedExpenseJson());
+        row.put(DB.SPLIT_LINKED_LENTS_JSON,getLinkedLentsJson());
 
         row.put(DB.DATE_STRING ,getDateString());
         Calendar cal = Calendar.getInstance();

@@ -2,8 +2,7 @@ package company.greatapp.moneycircle.model;
 
 import android.content.ContentValues;
 
-import org.json.JSONObject;
-
+import java.util.Calendar;
 import java.util.Date;
 
 import company.greatapp.moneycircle.constants.DB;
@@ -12,163 +11,134 @@ import company.greatapp.moneycircle.constants.DB;
  * Created by gyanendra.sirohi on 7/1/2015.
  */
 public class Income extends Model {
-
-    String contactName = "";
-    String phone = "";
-    String IncomeJson = "";
-    String IncomeType = "";
-    int amount;
-    String date="";
-    String category ="";
-    String description;
-    private int modelType;
+    //=====COMMON==============//
     private int dbId;
-    private String title ="";
     private String uid = "";
+    private String title = "";
+    private int modelType;
+    private String jsonString = "";
+    //--------------------------------//
 
-    public String getIncomeJson() {
-        return IncomeJson;
-    }
+    //=========== SPECIFICS ==============//
+    private int category;
+    private String description = "";
+    private int amount;
+    private String dateString="";
+    private Date date;
 
-    public void setIncomeJson(String incomeJson) {
-        this.IncomeJson = incomeJson;
-    }
-
-
-
-
-
-
-    public String getCategory() {
+    public int getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(int category) {
         this.category = category;
     }
 
+    public String getDescription() {
+        return description;
+    }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public String getDateString() {
+        return dateString;
+    }
+
+    public void setDateString(String dateString) {
+        this.dateString = dateString;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+    //-------------------------------------//
 
     @Override
     public void setTitle(String title) {
         this.title = title;
     }
 
-    public String getContactName() {
-        return contactName;
+    @Override
+    public void setModelType(int modelType) {
+       this.modelType = modelType;
     }
 
-    public void setContactName(String contactName) {
-        this.contactName = contactName;
-        setTitle(contactName);
-
+    @Override
+    public void setDbId(int dbId) {
+       this.dbId = dbId;
     }
 
-    public String getPhone() {
-        return phone;
+    @Override
+    public void setUID(String uid) {
+        this.uid = uid;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    @Override
+    public String getTitle() {
+        return title;
     }
 
-
-
-    public String getIncomeType() {
-        return IncomeType;
+    @Override
+    public int getModelType() {
+        return modelType;
     }
 
-    public void setIncomeType(String incomeType) {
-        this.IncomeType = incomeType;
+    @Override
+    public String getUID() {
+        return uid;
     }
 
+    @Override
+    public int getDbId() {
+        return dbId;
+    }
 
+    @Override
+    public ContentValues getContentValues() {
 
+        ContentValues row = new ContentValues();
+        row.put(DB.UID , getUID());
+        row.put(DB.TITLE , getTitle());
+        row.put(DB.CATEGORY , getCategory());
+        row.put(DB.DESCRIPTION , getDescription());
+        row.put(DB.AMOUNT, getAmount());
 
-     public String getDescription() {
-          return description;
-     }
+        row.put(DB.DATE_STRING ,getDateString());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getDate());
 
-     public void setDescription(String description) {
-          this.description = description;
-     }
+        row.put(DB.DATE , cal.get(Calendar.DATE));
+        row.put(DB.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH));
+        row.put(DB.WEEK_OF_MONTH, cal.get(Calendar.WEEK_OF_MONTH));
+        row.put(DB.MONTH , cal.get(Calendar.MONTH));
+        row.put(DB.YEAR , cal.get(Calendar.YEAR));
 
-     public String getDate() {
-          return date;
-     }
+        row.put(DB.JSON_STRING ,getJsonString() );
+        return row;
+    }
 
-     public void setDate(String date) {
-          this.date = date;
-     }
+    @Override
+    public void setJsonString(String jsonString) {
+       this.jsonString = jsonString;
+    }
 
-     public int getAmount() {
-          return amount;
-     }
+    @Override
+    public String getJsonString() {
+        return jsonString;
+    }
 
-     public void setAmount(int amount) {
-          this.amount = amount;
-     }
-
-
-
-
-
-     @Override
-     public void setModelType(int modelType) {
-          this.modelType = modelType;
-     }
-
-     @Override
-     public void setDbId(int dbId) {
-          this.dbId = dbId ;
-
-     }
-
-     @Override
-     public void setUID(String uid) {
-          this.uid = uid;
-     }
-
-     @Override
-     public String getTitle() {
-          return this.title;
-     }
-
-     @Override
-     public int getModelType() {
-         return this.modelType;
-     }
-
-     @Override
-     public String getUID() {
-          return uid;
-     }
-
-     @Override
-     public int getDbId() {
-          return this.dbId;
-     }
-
-     @Override
-     public ContentValues getContentValues() {
-
-         ContentValues row = new ContentValues();
-         row.put(DB.NAME, getContactName());
-         row.put(DB.UID,getUID());
-         row.put(DB.PHONE_NUMBER,getPhone());
-         row.put(DB.INCOME_TYPE,getIncomeType());
-         row.put(DB.INCOME_CATEGORY,getCategory());
-         row.put(DB.INCOME_JSON_STRING,getIncomeJson());
-         row.put(DB.INCOME_AMOUNT,getAmount());
-         row.put(DB.INCOME_DATE, String.valueOf(getDate()));
-         row.put(DB.INCOME_DESCRIPTION,getDescription());
-
-         return row;
-     }
-
-     @Override
-     public void printModelData() {
-
-     }
 }

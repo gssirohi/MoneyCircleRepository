@@ -7,46 +7,6 @@ import android.content.ContentValues;
  */
 public class Notification extends Model {
 
-    String contactName = "";//name as in contact list
-    String phone = "";
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String notificationDescription) {
-        this.description = description;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    String description;
-    String category;
-
-
-    public String getContactName() {
-        return contactName;
-    }
-
-    public void setContactName(String contactName) {
-        this.contactName = contactName;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-
     @Override
     public void setTitle(String title) {
 
@@ -64,6 +24,11 @@ public class Notification extends Model {
 
     @Override
     public void setUID(String uid) {
+
+    }
+
+    @Override
+    public void setJsonString(String jsonString) {
 
     }
 
@@ -88,12 +53,12 @@ public class Notification extends Model {
     }
 
     @Override
-    public ContentValues getContentValues() {
+    public String getJsonString() {
         return null;
     }
 
     @Override
-    public void printModelData() {
-
+    public ContentValues getContentValues() {
+        return null;
     }
 }

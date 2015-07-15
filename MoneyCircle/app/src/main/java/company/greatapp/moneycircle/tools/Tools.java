@@ -2,7 +2,10 @@ package company.greatapp.moneycircle.tools;
 
 import android.text.TextUtils;
 
+import java.util.ArrayList;
 import java.util.UUID;
+
+import company.greatapp.moneycircle.constants.C;
 
 /**
  * Created by gyanendra.sirohi on 6/29/2015.
@@ -29,5 +32,15 @@ public class Tools {
         }
         return plain;
     }
+
+    public static String getSplitableString(ArrayList<String> list) {
+        if(list == null) return null;
+        String result = C.DIVIDER;
+        for(String s : list) {
+            result = result + s + C.DIVIDER;
+        }
+        return result;
+    }
+
 
 }

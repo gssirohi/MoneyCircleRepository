@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.net.Uri;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import company.greatapp.moneycircle.constants.DB;
@@ -12,43 +13,56 @@ import company.greatapp.moneycircle.constants.DB;
  * Created by gyanendra.sirohi on 7/1/2015.
  */
 public class Expense extends Model  {
-    int amount;
-    Date date;
-    String category;
-    String description;
-    Uri bilUri;
-    String contactName = "";//name as in contact list
-    String phone = "";
+    //=====COMMON==============//
+    private int dbId;
+    private String uid = "";
+    private String title = "";
+    private int modelType;
+    private String jsonString = "";
+    //--------------------------------//
 
-    public String getPhone() {
-        return phone;
+    //==========SPECIFICS==============//
+
+    private int category;
+    private String description = "";
+    private int amount;
+    private String dateString="";
+    private Date date;
+
+    private boolean isLinkedWithSplit;
+    private Split linkedSplit;
+    private String linkedSplitJson;
+    //---------------------------------//
+
+    public boolean isLinkedWithSplit() {
+        return isLinkedWithSplit;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setIsLinkedWithSplit(boolean isLinkedWithSplit) {
+        this.isLinkedWithSplit = isLinkedWithSplit;
     }
 
-    public Date getDate() {
-        return date;
+    public Split getLinkedSplit() {
+        return linkedSplit;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setLinkedSplit(Split linkedSplit) {
+        this.linkedSplit = linkedSplit;
     }
 
-    public int getAmount() {
-        return amount;
+    public String getLinkedSplitJson() {
+        return linkedSplitJson;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setLinkedSplitJson(String linkedSplitJson) {
+        this.linkedSplitJson = linkedSplitJson;
     }
 
-    public String getCategory() {
+    public int getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(int category) {
         this.category = category;
     }
 
@@ -60,72 +74,105 @@ public class Expense extends Model  {
         this.description = description;
     }
 
-    public Uri getBilUri() {
-        return bilUri;
+    public int getAmount() {
+        return amount;
     }
 
-    public void setBilUri(Uri bilUri) {
-        this.bilUri = bilUri;
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
+    public String getDateString() {
+        return dateString;
+    }
 
+    public void setDateString(String dateString) {
+        this.dateString = dateString;
+    }
 
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     @Override
     public void setTitle(String title) {
-
+        this.title = title;
     }
 
     @Override
     public void setModelType(int modelType) {
-
+        this.modelType = modelType;
     }
 
     @Override
     public void setDbId(int dbId) {
-
+        this.dbId = dbId;
     }
 
     @Override
     public void setUID(String uid) {
-
+        this.uid = uid;
     }
 
     @Override
     public String getTitle() {
-        return null;
+        return title;
     }
 
     @Override
     public int getModelType() {
-        return 0;
+        return modelType;
     }
 
     @Override
     public String getUID() {
-        return null;
+        return uid;
     }
 
     @Override
     public int getDbId() {
-        return 0;
+        return dbId;
     }
 
     @Override
     public ContentValues getContentValues() {
-        ContentValues row = new ContentValues();
-        row.put(DB.UID,getUID());
-        row.put(DB.PHONE_NUMBER,getPhone());
-        row.put(DB.EXPENSE_DATE, String.valueOf(getDate()));
-        row.put(DB.EXPENSE_AMOUNT,getAmount());
-        row.put(DB.EXPENSE_CATEGORY, String.valueOf(getCategory()));
-        row.put(DB.EXPENSE_DESCRIPTION,getDescription());
-        return row;
 
+        ContentValues row = new ContentValues();
+        row.put(DB.UID , getUID());
+        row.put(DB.TITLE , getTitle());
+        row.put(DB.CATEGORY , getCategory());
+        row.put(DB.DESCRIPTION , getDescription());
+        row.put(DB.AMOUNT, getAmount());
+
+        row.put(DB.IS_LINKED_WITH_SPLIT, isLinkedWithSplit()?1:0);
+        row.put(DB.LINKED_SPLIT_JSON, getLinkedSplitJson());
+
+        row.put(DB.DATE_STRING ,getDateString());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(getDate());
+
+        row.put(DB.DATE , cal.get(Calendar.DATE));
+        row.put(DB.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH));
+        row.put(DB.WEEK_OF_MONTH, cal.get(Calendar.WEEK_OF_MONTH));
+        row.put(DB.MONTH , cal.get(Calendar.MONTH));
+        row.put(DB.YEAR , cal.get(Calendar.YEAR));
+
+        row.put(DB.JSON_STRING ,getJsonString() );
+        return row;
     }
 
     @Override
-    public void printModelData() {
-
+    public void setJsonString(String jsonString) {
+        this.jsonString = jsonString;
     }
+
+    @Override
+    public String getJsonString() {
+        return jsonString;
+    }
+
 }

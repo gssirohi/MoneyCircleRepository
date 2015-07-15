@@ -75,9 +75,9 @@ public class HomeActivity extends ActionBarActivity
             case 4 :
                 ViewerScreenFragment lendedViewerFragment = new ViewerScreenFragment();
                 bundle = new Bundle();
-                bundle.putString(ViewerScreenFragment.MODEL_TYPE, "Lended");
+                bundle.putString(ViewerScreenFragment.MODEL_TYPE, "Lent");
                 lendedViewerFragment.setArguments(bundle);
-                fragmentManager.beginTransaction().replace(R.id.homeContainerId, lendedViewerFragment, "Lended ViewerFragment").commit();
+                fragmentManager.beginTransaction().replace(R.id.homeContainerId, lendedViewerFragment, "Lent ViewerFragment").commit();
                 break;
             case 5 :
                 Toast.makeText(this, "No View is attached", Toast.LENGTH_SHORT).show();
