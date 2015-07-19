@@ -15,6 +15,7 @@ public class C {
     public static final String DIVIDER = "||";
 
     public static final String CHOOSER_REQUEST = "chooserRequest";
+    public static final String CHOOSER_CHOICE_MODE = "choice";
 
     public static final int TAG_CONTACTS = 1;
     public static final int TAG_REGISTERED_CONTACTS = 2;

@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/listView"
-        android:layout_below="@+id/textView"
+        android:layout_below="@+id/tv_item_title"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 

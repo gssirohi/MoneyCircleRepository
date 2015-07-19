@@ -22,7 +22,7 @@ public class Income extends Model {
     //=========== SPECIFICS ==============//
     private int category;
     private String description = "";
-    private int amount;
+    private float amount;
     private String dateString="";
     private Date date;
 
@@ -42,11 +42,11 @@ public class Income extends Model {
         this.description = description;
     }
 
-    public int getAmount() {
+    public float getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(float amount) {
         this.amount = amount;
     }
 
@@ -115,17 +115,17 @@ public class Income extends Model {
         row.put(DB.TITLE , getTitle());
         row.put(DB.CATEGORY , getCategory());
         row.put(DB.DESCRIPTION , getDescription());
-        row.put(DB.AMOUNT, getAmount());
+        row.put(DB.AMOUNT, ""+getAmount());
 
         row.put(DB.DATE_STRING ,getDateString());
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(getDate());
-
-        row.put(DB.DATE , cal.get(Calendar.DATE));
-        row.put(DB.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH));
-        row.put(DB.WEEK_OF_MONTH, cal.get(Calendar.WEEK_OF_MONTH));
-        row.put(DB.MONTH , cal.get(Calendar.MONTH));
-        row.put(DB.YEAR , cal.get(Calendar.YEAR));
+//        Calendar cal = Calendar.getInstance();
+//        cal.setTime(getDate());
+//
+//        row.put(DB.DATE , cal.get(Calendar.DATE));
+//        row.put(DB.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH));
+//        row.put(DB.WEEK_OF_MONTH, cal.get(Calendar.WEEK_OF_MONTH));
+//        row.put(DB.MONTH , cal.get(Calendar.MONTH));
+//        row.put(DB.YEAR , cal.get(Calendar.YEAR));
 
         row.put(DB.JSON_STRING ,getJsonString() );
         return row;

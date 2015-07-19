@@ -13,7 +13,7 @@ public class DB {
 
 
 //-----------------COMMON-------------------------------------------//
-    public static final String DB_ID = "dbId";
+    public static final String DB_ID = "_id";
     public static final String UID = "uid";
 
     public static final String DUE_DATE_STRING ="dueDate";

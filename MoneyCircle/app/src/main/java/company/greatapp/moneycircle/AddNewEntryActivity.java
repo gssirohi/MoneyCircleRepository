@@ -4,17 +4,30 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import company.greatapp.moneycircle.constants.C;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 
-public class AddNewEntryActivity extends ActionBarActivity {
+import company.greatapp.moneycircle.chooser.ChooserActivity;
+import company.greatapp.moneycircle.constants.C;
+import company.greatapp.moneycircle.manager.CategoryManager;
+import company.greatapp.moneycircle.manager.IncomeManager;
+import company.greatapp.moneycircle.model.Income;
+import company.greatapp.moneycircle.tools.DateUtils;
+
+public class AddNewEntryActivity extends ActionBarActivity implements DatePickerFragment.DateSetter {
 
     private int entryType;
 
@@ -37,6 +50,8 @@ public class AddNewEntryActivity extends ActionBarActivity {
     private Button b_new_split;
     private Button b_new_member_add;
     private Button b_new_date;
+    private String dateString;
+    private int category;
 
 
     @Override
@@ -61,6 +76,18 @@ public class AddNewEntryActivity extends ActionBarActivity {
         b_new_member_add = (Button)findViewById(R.id.b_new_member_add);
         b_new_split = (Button)findViewById(R.id.b_new_split);
         b_new_date = (Button)findViewById(R.id.b_new_date);
+        b_new_category.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startItemSelection(C.TAG_CATEGORIES, ListView.CHOICE_MODE_SINGLE);
+            }
+        });
+        b_new_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog();
+            }
+        });
         setTextColor();
         setButtonColor();
         Intent intent = getIntent();
@@ -217,10 +244,68 @@ public class AddNewEntryActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_save_entry) {
-            Toast.makeText(this,"ENTRY SAVED",Toast.LENGTH_SHORT).show();
+            if(validateData()) {
+                Income income = new Income();
+                income.setDateString(dateString);
+                income.setTitle(et_new_item.getText().toString());
+                income.setCategory(category);
+                income.setAmount(Float.parseFloat(et_new_amount.getText().toString()));
+
+                IncomeManager im = new IncomeManager(this);
+                im.insertItemInDB(income);
+                Toast.makeText(this, "ENTRY SAVED", Toast.LENGTH_SHORT).show();
+            }
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean validateData(){
+        if(TextUtils.isEmpty(dateString)) return false;
+        String amount = "";
+        amount = et_new_amount.getText().toString();
+        if(TextUtils.isEmpty(amount))return false;
+
+        String title = et_new_item.getText().toString();
+        if(TextUtils.isEmpty(title))return false;
+
+        else return true;
+    }
+
+    public void showDatePickerDialog() {
+        DatePickerFragment datePickerFragment = new DatePickerFragment();
+        datePickerFragment.setListener(this);
+        datePickerFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+    @Override
+    public void setDate(int year, int monthOfYear, int dayOfMonth) {
+        b_new_date.setText(String.format("%d/%d/%d", dayOfMonth, monthOfYear+1, year));
+        dateString = DateUtils.getDateString(year,monthOfYear,dayOfMonth);
+        Toast.makeText(this,"DATE:"+dateString,Toast.LENGTH_SHORT).show();
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        Log.d("split", "onActivityResult : requestCode:" + requestCode + "  resultCode:" + resultCode);
+        if (requestCode == C.TAG_CATEGORIES) {
+            if (resultCode == RESULT_OK) {
+                ArrayList<String> returnedResult = data.getStringArrayListExtra("uids");
+                addCategory(returnedResult.get(0));
+            }
+        }
+    }
+
+    private void addCategory(String uid){
+        CategoryManager cm = new CategoryManager();
+        category = 1;
+        b_new_category.setText("Dummy:1");
+    }
+
+    private void startItemSelection(int requestCode, int mode){
+        Intent i = new Intent(this, ChooserActivity.class);
+        i.putExtra(C.CHOOSER_REQUEST,requestCode);
+        i.putExtra(C.CHOOSER_CHOICE_MODE,mode);
+        startActivityForResult(i, requestCode);
     }
 }

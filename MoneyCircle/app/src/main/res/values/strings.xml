@@ -80,5 +80,6 @@
         <item>@string/share</item>
         <item>@string/activity_contact_us</item>
     </array>
+    <string name="title_activity_new_home">NewHomeActivity</string>
 
 </resources>

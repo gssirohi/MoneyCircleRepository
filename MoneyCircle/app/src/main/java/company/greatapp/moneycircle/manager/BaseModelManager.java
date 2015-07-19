@@ -40,6 +40,8 @@ public abstract class BaseModelManager {
         String uid = model.getUID();
         uid = uid.replaceAll("NEW","DB");
         model.setUID(uid);
+        Log.d("Split","INSERTING MODEL:----->");
+        model.printModelData();
         ContentValues values = model.getContentValues();
         context.getContentResolver().insert(getTableUri(), values);
     }

@@ -37,7 +37,7 @@
         </activity>
         <activity
             android:name=".categories.ManageCategoriesActivity"
-            android:label="@string/title_activity_manage_categories">
+            android:label="@string/title_activity_manage_categories" >
         </activity>
         <activity
             android:name=".ViewAndEditProfileActivity"
@@ -58,7 +58,7 @@
         <activity
             android:name=".chooser.ChooserActivity"
             android:label="@string/title_activity_chooser"
-            android:theme="@style/Theme.AppCompat.Dialog">
+            android:theme="@style/Theme.AppCompat.Dialog" >
         </activity>
         <activity
             android:name=".ContactAndCircleActivity"
@@ -77,6 +77,10 @@
         <activity
             android:name=".HomeActivity"
             android:label="@string/activity_home" >
+        </activity>
+        <activity
+            android:name=".NewHomeActivity"
+            android:label="@string/title_activity_new_home" >
         </activity>
     </application>
 

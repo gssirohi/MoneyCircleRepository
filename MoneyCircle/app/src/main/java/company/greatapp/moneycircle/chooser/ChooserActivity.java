@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.constants.C;
@@ -37,9 +38,10 @@ public class ChooserActivity extends Activity {
         chooserList = (ListView)findViewById(R.id.lv_chooser_items);
         TextView title = (TextView)findViewById(R.id.tv_chooser_item_title);
         int requestCode  = getIntent().getIntExtra(C.CHOOSER_REQUEST,C.TAG_CONTACTS);
+        int choiceMode  = getIntent().getIntExtra(C.CHOOSER_CHOICE_MODE, ListView.CHOICE_MODE_SINGLE);
         title.setText(getChooserTitle(requestCode));
         adapter = new ChooserAdapter(this,0,getItemList(requestCode));
-        chooserList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        chooserList.setChoiceMode(choiceMode);
         chooserList.setAdapter(adapter);
         chooserList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -183,6 +185,7 @@ public class ChooserActivity extends Activity {
         ArrayList<Model> list = new ArrayList<Model>();
         switch(code) {
             case C.TAG_CATEGORIES:
+                list.add(new Contact("dummy"));
                 break;
             case C.TAG_CIRCLES:
                 break;

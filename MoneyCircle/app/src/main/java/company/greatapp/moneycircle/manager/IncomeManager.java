@@ -40,7 +40,7 @@ public class IncomeManager extends BaseModelManager{
         String uid             = cursor.getString(cursor.getColumnIndex(DB.UID));
         String title            = cursor.getString(cursor.getColumnIndex(DB.TITLE));
         int category           = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY));
-        int amount             = cursor.getInt(cursor.getColumnIndex(DB.AMOUNT));
+        String amount             = cursor.getString(cursor.getColumnIndex(DB.AMOUNT));
         String description     = cursor.getString(cursor.getColumnIndex(DB.DESCRIPTION));
         String json_string     = cursor.getString(cursor.getColumnIndex(DB.JSON_STRING));
         String date_string       = cursor.getString(cursor.getColumnIndex(DB.DATE_STRING));
@@ -56,7 +56,7 @@ public class IncomeManager extends BaseModelManager{
         income.setUID(uid);
         income.setTitle(title);
         income.setCategory(category);
-        income.setAmount(amount);
+        income.setAmount(Float.parseFloat(amount));
         income.setDescription(description);
         income.setDateString(date_string);
         income.setJsonString(json_string);

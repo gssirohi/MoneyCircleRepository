@@ -124,6 +124,10 @@ public class LauncherActivity extends ActionBarActivity {
                 intent.putExtra(C.ENTRY_TYPE,C.ENTRY_TYPE_LENDED);
                 startActivity(intent);
                 break;
+            case 21:
+                intent = new Intent(this,NewHomeActivity.class);
+                startActivity(intent);
+                break;
             default :
                 String  itemValue    = (String) listView.getItemAtPosition(i);
                 Toast.makeText(getApplicationContext(),
@@ -161,6 +165,7 @@ public class LauncherActivity extends ActionBarActivity {
         list.add("Activity18:Add Entry[EXPENSE]");
         list.add("Activity19:Add Entry[BORROW]");
         list.add("Activity20:Add Entry[LENDED]");
+        list.add("Activity21:NewHOmeActivity");
     }
 
     @Override
