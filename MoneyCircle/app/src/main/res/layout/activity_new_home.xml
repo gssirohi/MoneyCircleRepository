@@ -16,36 +16,51 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fillViewport="true"
+                android:scrollbars="none" >
             <TabWidget
                 android:id="@android:id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="visible"
-                android:layout_gravity="center_horizontal">
+                android:tabStripEnabled="true">
 
             </TabWidget>
-
+            </HorizontalScrollView>
 
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/accent_material_dark">
+                android:background="@color/accent_material_dark"
+                android:id="@+id/ll_period">
 
-                <ImageView
+                <ImageButton
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/iv_left_arrow"
-                    android:src="@drawable/ic_left_arrow"
-                    android:layout_gravity="center_vertical" />
+                    android:layout_height="match_parent"
+                    android:id="@+id/ib_left_arrow"
+                    android:src="@drawable/ic_left_arrow" />
 
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="8">
+                    android:layout_weight="8"
+                    android:background="#ff5cffba">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Medium Text"
+                        android:id="@+id/tv_period_end"
+                        android:layout_weight="8"
+                        android:layout_gravity="right|center_vertical"
+                        android:gravity="fill_horizontal"
+                        android:background="@drawable/abc_popup_background_mtrl_mult" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -53,16 +68,26 @@
                         android:text="Medium Text"
                         android:id="@+id/tv_period"
                         android:layout_weight="8"
-                        android:layout_gravity="center_horizontal"
-                        android:gravity="fill_horizontal" />
+                        android:layout_gravity="center"
+                        android:gravity="fill_horizontal"
+                        android:background="@drawable/abc_popup_background_mtrl_mult" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Medium Text"
+                        android:id="@+id/tv_period_start"
+                        android:layout_weight="8"
+                        android:layout_gravity="left|center_vertical"
+                        android:gravity="fill_horizontal"
+                        android:background="@drawable/abc_popup_background_mtrl_mult" />
                 </FrameLayout>
 
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/iv_right_arrow"
-                    android:src="@drawable/ic_right_arrow"
-                    android:layout_weight="1" />
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/ib_right_arrow"
+                    android:src="@drawable/ic_right_arrow" />
 
             </LinearLayout>
 
@@ -76,7 +101,8 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/sp_category"
                     android:spinnerMode="dialog"
-                    android:layout_gravity="center_horizontal" />
+                    android:layout_gravity="center_horizontal"
+                    android:background="#ff95ffe0" />
             </FrameLayout>
             <FrameLayout
                 android:id="@android:id/tabcontent"
@@ -161,7 +187,25 @@
                         android:layout_height="match_parent"
                         />
                 </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/tab5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="All List"
+                        android:id="@+id/tv_5"
+                        android:layout_gravity="center_horizontal" />
+
+                    <ListView
+                        android:id="@+id/lv_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        />
+                </LinearLayout>
             </FrameLayout>
         </LinearLayout>
     </TabHost>

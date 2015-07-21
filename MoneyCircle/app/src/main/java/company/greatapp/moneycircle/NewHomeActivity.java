@@ -1,6 +1,7 @@
 package company.greatapp.moneycircle;
 
 
+import android.app.ActionBar;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
@@ -15,7 +16,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TabHost;
@@ -31,6 +34,7 @@ import company.greatapp.moneycircle.model.DBFilter;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.Period;
 import company.greatapp.moneycircle.tools.DateUtils;
+import company.greatapp.moneycircle.tools.Tools;
 
 public class NewHomeActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
@@ -38,6 +42,7 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
     private ListView lv2;
     private ListView lv3;
     private ListView lv4;
+    private ListView lv5;
 
     private TextView tv1;
     private TextView tv2;
@@ -46,10 +51,14 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
 
     private Spinner sp_cat;
 
-    private ImageView ivRight;
-    private ImageView ivLeft;
+    private ImageButton ivRight;
+    private ImageButton ivLeft;
     private TabHost tabHost;
     private TabWidget tabWidget;
+
+    private TextView tv_period;
+    private TextView tv_period_start;
+    private TextView tv_period_end;
 
     private String[] mCategories;
     private ArrayAdapter<String> adapter;
@@ -67,42 +76,52 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
     private MoneyItemAdapter mWeeklyAdapter;
     private MoneyItemAdapter mMonthlyAdapter;
     private MoneyItemAdapter mYearlyAdapter;
+    private MoneyItemAdapter mAllAdapter;
 
     private final int CHANGE_TYPE_PERIOD_TAB = 1;
     private final int CHANGE_TYPE_CATEGORY = 2;
     private final int CHANGE_TYPE_ARROW = 3;
     private final int ARROW_LEFT = 4;
     private final int ARROW_RIGHT = 5;
-    private TextView tv_period;
+    private LinearLayout ll_period;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_home);
 
-        modelType = Model.MODEL_TYPE_INCOME;
+        modelType = getIntent().getIntExtra(Model.MODEL_TYPE,Model.MODEL_TYPE_INCOME);
+        ActionBar ab = getActionBar();
+        if(ab != null)ab.setTitle(Tools.getModelName(modelType));
+        //ab.setSubtitle("sub-title");
 
         lv1 = (ListView)findViewById(R.id.lv_1);
         lv2 = (ListView)findViewById(R.id.lv_2);
         lv3 = (ListView)findViewById(R.id.lv_3);
         lv4 = (ListView)findViewById(R.id.lv_4);
+        lv5 = (ListView)findViewById(R.id.lv_5);
 
         tv1 = (TextView)findViewById(R.id.tv_1);
         tv2 = (TextView)findViewById(R.id.tv_2);
         tv3 = (TextView)findViewById(R.id.tv_3);
         tv4 = (TextView)findViewById(R.id.tv_4);
 
+        ll_period = (LinearLayout)findViewById(R.id.ll_period);
         tv_period = (TextView)findViewById(R.id.tv_period);
+        tv_period_start = (TextView)findViewById(R.id.tv_period_start);
+        tv_period_end = (TextView)findViewById(R.id.tv_period_end);
+
         sp_cat = (Spinner)findViewById(R.id.sp_category);
 
-        ivLeft = (ImageView)findViewById(R.id.iv_left_arrow);
+        ivLeft = (ImageButton)findViewById(R.id.ib_left_arrow);
         ivLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 handleArrowButtonTouched(ARROW_LEFT);
             }
         });
-        ivRight = (ImageView)findViewById(R.id.iv_right_arrow);
+        ivRight = (ImageButton)findViewById(R.id.ib_right_arrow);
         ivRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,20 +163,38 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
         periodType = Period.PERIOD_DATE;
         filter = new DBFilter(modelType,Period.PERIOD_DATE,category);
         setPeriodView();
-                mDailyAdapter = new MoneyItemAdapter(this, null, false);
-                mWeeklyAdapter = new MoneyItemAdapter(this, null, false);
-                mMonthlyAdapter = new MoneyItemAdapter(this, null, false);
-                mYearlyAdapter = new MoneyItemAdapter(this, null, false);
-                lv1.setAdapter(mDailyAdapter);
-                lv2.setAdapter(mWeeklyAdapter);
-                lv3.setAdapter(mMonthlyAdapter);
-                lv4.setAdapter(mYearlyAdapter);
-                getLoaderManager().initLoader(LODER_ID, null,this);
+        mDailyAdapter = new MoneyItemAdapter(this, null, false);
+        mWeeklyAdapter = new MoneyItemAdapter(this, null, false);
+        mMonthlyAdapter = new MoneyItemAdapter(this, null, false);
+        mYearlyAdapter = new MoneyItemAdapter(this, null, false);
+        mAllAdapter = new MoneyItemAdapter(this, null, false);
+        lv1.setAdapter(mDailyAdapter);
+        lv2.setAdapter(mWeeklyAdapter);
+        lv3.setAdapter(mMonthlyAdapter);
+        lv4.setAdapter(mYearlyAdapter);
+        lv5.setAdapter(mAllAdapter);
+        getLoaderManager().initLoader(LODER_ID, null,this);
 
     }
 
     private void setPeriodView() {
-        tv_period.setText(filter.getPeriod().getStartDate()+"<==>"+filter.getPeriod().getEndDate());
+        if(periodType == Period.PERIOD_DATE) {
+            ll_period.setVisibility(View.VISIBLE);
+            tv_period.setText(filter.getPeriod().getStartDate());
+            tv_period.setVisibility(View.VISIBLE);
+            tv_period_start.setVisibility(View.GONE);
+            tv_period_end.setVisibility(View.GONE);
+        } else if(periodType == Period.PERIOD_ALL){
+            ll_period.setVisibility(View.GONE);
+        } else {
+            ll_period.setVisibility(View.VISIBLE);
+            tv_period_start.setText(filter.getPeriod().getStartDate());
+            tv_period_end.setText(filter.getPeriod().getEndDate());
+            tv_period_start.setVisibility(View.VISIBLE);
+            tv_period_end.setVisibility(View.VISIBLE);
+            tv_period.setVisibility(View.GONE);
+
+        }
     }
 
     ListView getListView(){
@@ -233,6 +270,9 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
         } else if (modelType == Model.MODEL_TYPE_LENT) {
             mCategories = new String[]{"To Family", "To Friends", "To Others"};
         }
+        else if (modelType == Model.MODEL_TYPE_SPLIT) {
+            mCategories = new String[]{"cat1", "cat2", "cat3"};
+        }
     }
 
     private void initialiseTabHost() {
@@ -258,6 +298,12 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
         yearlyTab.setContent(R.id.tab4);
         yearlyTab.setIndicator("YEAR");
         tabHost.addTab(yearlyTab);
+        //ALL
+        TabHost.TabSpec allTab = tabHost.newTabSpec(""+Period.PERIOD_ALL);
+        allTab.setContent(R.id.tab5);
+        allTab.setIndicator("ALL");
+        tabHost.addTab(allTab);
+
     }
 
 
@@ -306,8 +352,12 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if(loader.getId() == LODER_ID) {
-            Log.d("Split", "onLoadFinished  loader");
+            if(data != null){
+                Log.d("Split", "onLoadFinished  loader: COUNT: "+data.getCount());
+            }
+            Log.d("Split", "setting cursur in Adapter :"+periodType);
             switch(periodType){
+
                 case Period.PERIOD_DATE:
                     mDailyAdapter.swapCursor(data);
                     break;
@@ -319,6 +369,9 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
                     break;
                 case Period.PERIOD_YEAR:
                     mYearlyAdapter.swapCursor(data);
+                    break;
+                case Period.PERIOD_ALL:
+                    mAllAdapter.swapCursor(data);
                     break;
             }
         }
@@ -332,6 +385,7 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
             mWeeklyAdapter.swapCursor(null);
             mMonthlyAdapter.swapCursor(null);
             mYearlyAdapter.swapCursor(null);
+            mAllAdapter.swapCursor(null);
         }
     }
 }

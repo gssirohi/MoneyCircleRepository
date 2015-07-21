@@ -17,7 +17,7 @@ import company.greatapp.moneycircle.view.IncomeItemView;
 public class MoneyItemAdapter extends CursorAdapter {
 
 
-    public static String TAG = "QPINION_CURSOR_ADAPTER";
+    public static String TAG = "MONEY_ITEM_CURSOR_ADAPTER";
     private final IncomeManager im;
     private Income income;
     private Context mContext;
@@ -31,7 +31,7 @@ public class MoneyItemAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        Log.d(TAG,"bindView");
+        Log.d("Split","bindView");
         int c = cursor.getCount();
         int pos = cursor.getPosition();
         pos = pos+1;

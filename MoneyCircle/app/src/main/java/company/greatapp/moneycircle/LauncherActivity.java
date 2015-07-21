@@ -19,8 +19,10 @@ import company.greatapp.moneycircle.chooser.ChooserActivity;
 import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.manager.ContactManager;
 import company.greatapp.moneycircle.manager.PreferenceManager;
+import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.split.SetSplitAmountActivity;
 import company.greatapp.moneycircle.split.SplitToolActivity;
+import company.greatapp.moneycircle.tools.Tools;
 
 
 public class LauncherActivity extends ActionBarActivity {
@@ -50,6 +52,7 @@ public class LauncherActivity extends ActionBarActivity {
         if(!pm.isDeviceContactsRetrived()) {
              ContactManager cm = new ContactManager(this);
              cm.retriveContactsFromDevice();//contact initialization
+             Tools.addDummyEntries(this);
              SharedPreferences.Editor et =  pm.getEditor();
              et.putBoolean(C.PREF_CONTACTS_RETRIVED, true);
              et.commit();
@@ -126,8 +129,30 @@ public class LauncherActivity extends ActionBarActivity {
                 break;
             case 21:
                 intent = new Intent(this,NewHomeActivity.class);
+                intent.putExtra(Model.MODEL_TYPE,Model.MODEL_TYPE_INCOME);
                 startActivity(intent);
                 break;
+            case 22:
+                intent = new Intent(this,NewHomeActivity.class);
+                intent.putExtra(Model.MODEL_TYPE,Model.MODEL_TYPE_EXPENSE);
+                startActivity(intent);
+                break;
+            case 23:
+                intent = new Intent(this,NewHomeActivity.class);
+                intent.putExtra(Model.MODEL_TYPE,Model.MODEL_TYPE_BORROW);
+                startActivity(intent);
+                break;
+            case 24:
+                intent = new Intent(this,NewHomeActivity.class);
+                intent.putExtra(Model.MODEL_TYPE,Model.MODEL_TYPE_LENT);
+                startActivity(intent);
+                break;
+            case 25:
+                intent = new Intent(this,NewHomeActivity.class);
+                intent.putExtra(Model.MODEL_TYPE,Model.MODEL_TYPE_SPLIT);
+                startActivity(intent);
+                break;
+
             default :
                 String  itemValue    = (String) listView.getItemAtPosition(i);
                 Toast.makeText(getApplicationContext(),
@@ -165,7 +190,11 @@ public class LauncherActivity extends ActionBarActivity {
         list.add("Activity18:Add Entry[EXPENSE]");
         list.add("Activity19:Add Entry[BORROW]");
         list.add("Activity20:Add Entry[LENDED]");
-        list.add("Activity21:NewHOmeActivity");
+        list.add("Activity21:HOME[income]");
+        list.add("Activity21:HOME[expense]");
+        list.add("Activity21:HOME[borrow]");
+        list.add("Activity21:HOME[lent]");
+        list.add("Activity21:HOME[split]");
     }
 
     @Override

@@ -1,6 +1,7 @@
 package company.greatapp.moneycircle.model;
 
 import android.content.ContentValues;
+import android.net.Uri;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -129,6 +130,11 @@ public class Income extends Model {
 
         row.put(DB.JSON_STRING ,getJsonString() );
         return row;
+    }
+
+    @Override
+    protected Uri getTableUri() {
+        return DB.INCOME_TABLE_URI;
     }
 
     @Override

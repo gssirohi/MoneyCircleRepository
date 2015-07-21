@@ -1,6 +1,7 @@
 package company.greatapp.moneycircle.model;
 
 import android.content.ContentValues;
+import android.net.Uri;
 
 import org.json.JSONObject;
 
@@ -25,6 +26,10 @@ private String circleName = "";
     private ArrayList<Contact> contacts = new ArrayList<Contact>();
     //--------------------------------//
 
+    @Override
+    protected Uri getTableUri() {
+        return DB.CIRCLE_TABLE_URI;
+    }
     public String getCircleName() {
         return circleName;
     }

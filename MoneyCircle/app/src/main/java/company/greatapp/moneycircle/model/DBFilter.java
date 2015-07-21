@@ -17,8 +17,8 @@ public class DBFilter {
     int periodType;
     int category;
     Period period;
-    //String selection = DB.CATEGORY + "=" + category + " AND " + DB.DATE +  " BETWEEN ? AND ?";
-    String selection =  DB.DATE_STRING +  " BETWEEN ? AND ?";
+    String selection = DB.CATEGORY + "=" + category + " AND " + DB.DATE_STRING +  " BETWEEN ? AND ?";
+    //String selection =  DB.DATE_STRING +  " BETWEEN ? AND ?";
    // String selection = null;
     String[] args;
 
@@ -110,6 +110,13 @@ public class DBFilter {
     }
 
     public String getSelection() {
+        if(periodType == Period.PERIOD_ALL){
+            selection = DB.CATEGORY + "=" + category;
+            //selection = null;
+        } else {
+            selection = DB.CATEGORY + "=" + category + " AND " + DB.DATE_STRING +  " BETWEEN ? AND ?";
+            //selection = /*DB.CATEGORY + "=" + category + " AND " +*/ DB.DATE +  " BETWEEN ? AND ?";
+        }
         return selection;
     }
 
@@ -118,6 +125,9 @@ public class DBFilter {
     }
 
     public String[] getArgs() {
+        if(periodType == Period.PERIOD_ALL){
+            return null;
+        }
         args = new String[]{period.getStartDate() /*+ " 00:00:00"*/, period.getEndDate() /*+ " 23:59:59" */};
         return args;
         //return null;
@@ -132,7 +142,8 @@ public class DBFilter {
         Log.d("Split","FILTER: period start:"+period.getStartDate());
         Log.d("Split","FILTER: period End:"+period.getEndDate());
         Log.d("Split","FILTER: SELECTION:"+getSelection());
-        Log.d("Split","FILTER: ARGS"+getArgs()[0]+"  "+getArgs()[1]);
+        if(getArgs() != null)
+        Log.d("Split","FILTER: ARGS : "+getArgs()[0]+"  "+getArgs()[1]);
     }
 }
 

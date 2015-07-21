@@ -57,7 +57,10 @@ public class Contact extends Model {
         setUID(Tools.generateUniqueId());
     }
 
-
+    @Override
+    protected Uri getTableUri() {
+        return DB.CONTACT_TABLE_URI;
+    }
     public String getContactName() {
         return contactName;
     }

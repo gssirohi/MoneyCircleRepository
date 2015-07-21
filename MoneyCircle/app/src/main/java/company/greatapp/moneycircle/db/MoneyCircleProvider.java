@@ -145,6 +145,19 @@ public class MoneyCircleProvider extends ContentProvider{
                 break;
             }
 
+            case SPLIT_TABLE_INDEX:
+            {
+                //this method will accept a row(values) and and insert into the table
+                long rowId = qpinionDBinstance.insert(DB.SPLIT_TABLE_NAME, null, newRow);
+                //Toast.makeText(getContext(), "Inserted", Toast.LENGTH_SHORT).show();
+                if (rowId > 0) {
+                    Log.d("in cp","inserted in "+DB.SPLIT_TABLE_NAME);
+                    Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                    getContext().getContentResolver().notifyChange(objUri, null);
+                }
+                break;
+            }
+
             case CATEGORY_TABLE_INDEX:
             {
                 //this method will accept a row(values) and and insert into the table
@@ -260,7 +273,15 @@ public class MoneyCircleProvider extends ContentProvider{
                 c.setNotificationUri(getContext().getContentResolver(),uri);
                 return c;
             }
+            case SPLIT_TABLE_INDEX:
 
+            {
+                Log.d("in cp","Quering data from "+DB.SPLIT_TABLE_NAME);
+                c = qpinionDBinstance.query(DB.SPLIT_TABLE_NAME, projection, selection, selectionArgs, null, null, null);
+                Log.d("in CP", "cursor returned from " + DB.SPLIT_TABLE_NAME);
+                c.setNotificationUri(getContext().getContentResolver(),uri);
+                return c;
+            }
             case CATEGORY_TABLE_INDEX:
 
             {
@@ -383,13 +404,28 @@ public class MoneyCircleProvider extends ContentProvider{
             case LENT_TABLE_INDEX:
             {
                 long rowId = qpinionDBinstance.update(DB.LENT_TABLE_NAME, values, selection, selectionArgs);
-                Toast.makeText(getContext(),"Inserted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"updated", Toast.LENGTH_SHORT).show();
 
                 if(rowId > 0) {
 
                     Uri objUri = ContentUris.withAppendedId(uri, rowId);
                     getContext().getContentResolver().notifyChange(objUri , null);
                     Log.d("in cp","updated :"+DB.LENT_TABLE_NAME);
+                }
+                break;
+
+            }
+
+            case SPLIT_TABLE_INDEX:
+            {
+                long rowId = qpinionDBinstance.update(DB.SPLIT_TABLE_NAME, values, selection, selectionArgs);
+                Toast.makeText(getContext(),"updated", Toast.LENGTH_SHORT).show();
+
+                if(rowId > 0) {
+
+                    Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                    getContext().getContentResolver().notifyChange(objUri , null);
+                    Log.d("in cp","updated :"+DB.SPLIT_TABLE_NAME);
                 }
                 break;
 
@@ -527,6 +563,19 @@ public class MoneyCircleProvider extends ContentProvider{
         {
             Log.d("in cp","Deleting data from "+DB.LENT_TABLE_NAME);
             long rowId = qpinionDBinstance.delete(DB.LENT_TABLE_NAME, selection, selectionArgs);
+
+            if(rowId > 0) {
+                Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                getContext().getContentResolver().notifyChange(objUri, null);
+                Log.d("in CP", "item deleted from db");
+            }
+            return 0;
+        }
+        case SPLIT_TABLE_INDEX:
+
+        {
+            Log.d("in cp","Deleting data from "+DB.SPLIT_TABLE_NAME);
+            long rowId = qpinionDBinstance.delete(DB.SPLIT_TABLE_NAME, selection, selectionArgs);
 
             if(rowId > 0) {
                 Uri objUri = ContentUris.withAppendedId(uri, rowId);

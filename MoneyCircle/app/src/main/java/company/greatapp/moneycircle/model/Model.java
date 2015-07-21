@@ -1,6 +1,8 @@
 package company.greatapp.moneycircle.model;
 
 import android.content.ContentValues;
+import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 
 import company.greatapp.moneycircle.tools.Tools;
@@ -9,6 +11,7 @@ import company.greatapp.moneycircle.tools.Tools;
  * Created by gyanendra.sirohi on 6/29/2015.
  */
 public abstract class Model {
+    public static final String MODEL_TYPE              = "modelType";
     public static final int MODEL_TYPE_CONTACT              = 1;
     public static final int MODEL_TYPE_CIRCLE               = 2;
     public static final int MODEL_TYPE_INCOME               = 3;
@@ -38,7 +41,7 @@ public abstract class Model {
     public abstract String getJsonString();
 
     public abstract ContentValues getContentValues();
-
+    protected abstract Uri getTableUri();
 
     public void printModelData(){
         Log.d("SPLIT", "====================MODEL===================");
@@ -53,6 +56,15 @@ public abstract class Model {
             return true;
         else
             return false;
+    }
+    public void insertItemInDB(Context context) {
+        String uid = getUID();
+        uid = uid.replaceAll("NEW","DB");
+        setUID(uid);
+        Log.d("Split","MODEL: INSERTING :----->");
+        printModelData();
+        ContentValues values = getContentValues();
+        context.getContentResolver().insert(getTableUri(), values);
     }
 
 

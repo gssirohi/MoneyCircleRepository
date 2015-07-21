@@ -1,6 +1,7 @@
 package company.greatapp.moneycircle.model;
 
 import android.content.ContentValues;
+import android.net.Uri;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,7 +40,10 @@ public class Split extends Model {
     private int totalParticipants;
     //---------------------------------//
 
-
+    @Override
+    protected Uri getTableUri() {
+        return DB.SPLIT_TABLE_URI;
+    }
     public int getTotalParticipants() {
         return totalParticipants;
     }
@@ -211,14 +215,14 @@ public class Split extends Model {
         row.put(DB.SPLIT_LINKED_LENTS_JSON,getLinkedLentsJson());
 
         row.put(DB.DATE_STRING ,getDateString());
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(getDate());
-
-        row.put(DB.DATE , cal.get(Calendar.DATE));
-        row.put(DB.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH));
-        row.put(DB.WEEK_OF_MONTH, cal.get(Calendar.WEEK_OF_MONTH));
-        row.put(DB.MONTH , cal.get(Calendar.MONTH));
-        row.put(DB.YEAR , cal.get(Calendar.YEAR));
+//        Calendar cal = Calendar.getInstance();
+//        cal.setTime(getDate());
+//
+//        row.put(DB.DATE , cal.get(Calendar.DATE));
+//        row.put(DB.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH));
+//        row.put(DB.WEEK_OF_MONTH, cal.get(Calendar.WEEK_OF_MONTH));
+//        row.put(DB.MONTH , cal.get(Calendar.MONTH));
+//        row.put(DB.YEAR , cal.get(Calendar.YEAR));
 
         row.put(DB.JSON_STRING ,getJsonString() );
         return row;

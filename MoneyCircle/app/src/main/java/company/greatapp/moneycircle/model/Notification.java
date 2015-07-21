@@ -1,12 +1,19 @@
 package company.greatapp.moneycircle.model;
 
 import android.content.ContentValues;
+import android.net.Uri;
+
+import company.greatapp.moneycircle.constants.DB;
 
 /**
  * Created by gyanendra.sirohi on 7/1/2015.
  */
 public class Notification extends Model {
 
+    @Override
+    protected Uri getTableUri() {
+        return DB.NOTIFICATION_TABLE_URI;
+    }
     @Override
     public void setTitle(String title) {
 

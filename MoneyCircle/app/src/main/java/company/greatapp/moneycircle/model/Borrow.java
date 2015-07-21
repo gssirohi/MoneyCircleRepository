@@ -1,6 +1,7 @@
 package company.greatapp.moneycircle.model;
 
 import android.content.ContentValues;
+import android.net.Uri;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -31,7 +32,10 @@ public class Borrow extends Model {
     private String dueDateString = "";
     private String linkedContactJson;
     private Contact linkedContact;
-
+    @Override
+    protected Uri getTableUri() {
+        return DB.BORROW_TABLE_URI;
+    }
     public Date getDueDate() {
         return dueDate;
     }
@@ -160,14 +164,14 @@ public class Borrow extends Model {
         row.put(DB.DUE_DATE_STRING, getDueDateString());
 
         row.put(DB.DATE_STRING ,getDateString());
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(getDate());
-
-        row.put(DB.DATE , cal.get(Calendar.DATE));
-        row.put(DB.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH));
-        row.put(DB.WEEK_OF_MONTH, cal.get(Calendar.WEEK_OF_MONTH));
-        row.put(DB.MONTH , cal.get(Calendar.MONTH));
-        row.put(DB.YEAR , cal.get(Calendar.YEAR));
+//        Calendar cal = Calendar.getInstance();
+//        cal.setTime(getDate());
+//
+//        row.put(DB.DATE , cal.get(Calendar.DATE));
+//        row.put(DB.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH));
+//        row.put(DB.WEEK_OF_MONTH, cal.get(Calendar.WEEK_OF_MONTH));
+//        row.put(DB.MONTH , cal.get(Calendar.MONTH));
+//        row.put(DB.YEAR , cal.get(Calendar.YEAR));
 
         row.put(DB.JSON_STRING ,getJsonString() );
         return row;

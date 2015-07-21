@@ -10,6 +10,7 @@ public class Period{
     public static final int PERIOD_WEEK = 2;
     public static final int PERIOD_MONTH = 3;
     public static final int PERIOD_YEAR = 4;
+    public static final int PERIOD_ALL = 5;
     int periodType;
     String startDate;
     String endDate;
