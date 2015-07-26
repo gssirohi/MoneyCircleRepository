@@ -18,7 +18,7 @@ import company.greatapp.moneycircle.tools.GreatJSON;
 /**
  * Created by Ashish on 10-07-2015.
  */
-public class CircleManager extends BaseModelManager  {
+public class CircleManager extends BaseModelManager {
     private final ContactManager mContactManager;
     Context context;
     ArrayList<Model> circles = new ArrayList<Model>();
@@ -29,16 +29,17 @@ public class CircleManager extends BaseModelManager  {
         mContactManager = new ContactManager(context);
         loadItemsFromDB();
     }
+
     @Override
     public Model createItemFromCursor(Cursor cursor) {
 
-        if(cursor == null) return null;
+        if (cursor == null) return null;
 
-        int dbId               = cursor.getInt(cursor.getColumnIndex(DB.DB_ID));
-        String uid             = cursor.getString(cursor.getColumnIndex(DB.UID));
-        String circlename      = cursor.getString(cursor.getColumnIndex(DB.CIRCLE_NAME));
-        String jsonString      = cursor.getString(cursor.getColumnIndex(DB.JSON_STRING));
-        String contactJson     = cursor.getString(cursor.getColumnIndex(DB.CIRCLE_CONTACTS_JSON));
+        int dbId = cursor.getInt(cursor.getColumnIndex(DB.DB_ID));
+        String uid = cursor.getString(cursor.getColumnIndex(DB.UID));
+        String circlename = cursor.getString(cursor.getColumnIndex(DB.CIRCLE_NAME));
+        String jsonString = cursor.getString(cursor.getColumnIndex(DB.JSON_STRING));
+        String contactJson = cursor.getString(cursor.getColumnIndex(DB.CIRCLE_CONTACTS_JSON));
 
         Circle circle = new Circle();
         circle.setDbId(dbId);
@@ -46,8 +47,8 @@ public class CircleManager extends BaseModelManager  {
         circle.setCircleName(circlename);
         circle.setContactsJson(contactJson);
         circle.setJsonString(jsonString);
-        circle.setContacts(GreatJSON.getContactListFromJsonString(contactJson,mContactManager));
-        
+        circle.setContacts(GreatJSON.getContactListFromJsonString(contactJson, mContactManager));
+
         return circle;
     }
 
@@ -61,17 +62,26 @@ public class CircleManager extends BaseModelManager  {
 
         circles.clear();
         titles.clear();
-        Cursor c = context.getContentResolver().query(DB.CIRCLE_TABLE_URI,
-                DB.CIRCLE_TABLE_PROJECTION, null, null, null);
-        if(c != null && c.getCount() > 0) {
-            c.moveToFirst();
-            while(!c.isAfterLast()) {
-                Model model = createItemFromCursor(c);
-                circles.add(model);
-                titles.add(model.getTitle());
-                c.moveToNext();
+
+        Cursor c = null;
+        try {
+            c = context.getContentResolver().query(DB.CIRCLE_TABLE_URI,
+                    DB.CIRCLE_TABLE_PROJECTION, null, null, null);
+            if (c != null && c.getCount() > 0) {
+                c.moveToFirst();
+                while (!c.isAfterLast()) {
+                    Model model = createItemFromCursor(c);
+                    circles.add(model);
+                    titles.add(model.getTitle());
+                    c.moveToNext();
+                }
             }
-            c.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (c != null) {
+                c.close();
+            }
         }
     }
 

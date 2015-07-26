@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:orientation="vertical">
 
     <Button
         android:id="@+id/btCreateNewCircleId"
@@ -10,7 +9,8 @@
         android:layout_height="wrap_content"
         android:text="@string/create_new_circle"
         android:background="@color/material_deep_teal_500"
-        android:textAppearance="@android:style/TextAppearance.Large"/>
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:layout_margin="16dp"/>
 
     <ListView
         android:id="@+id/lvCircleViewId"
@@ -18,7 +18,5 @@
         android:layout_height="match_parent">
 
     </ListView>
-
-
 
 </LinearLayout>

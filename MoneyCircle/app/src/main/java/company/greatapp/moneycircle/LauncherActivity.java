@@ -152,7 +152,10 @@ public class LauncherActivity extends ActionBarActivity {
                 intent.putExtra(Model.MODEL_TYPE,Model.MODEL_TYPE_SPLIT);
                 startActivity(intent);
                 break;
-
+            case 26:
+                intent = new Intent(this, CardActivity.class);
+                startActivity(intent);
+                break;
             default :
                 String  itemValue    = (String) listView.getItemAtPosition(i);
                 Toast.makeText(getApplicationContext(),
@@ -195,6 +198,7 @@ public class LauncherActivity extends ActionBarActivity {
         list.add("Activity21:HOME[borrow]");
         list.add("Activity21:HOME[lent]");
         list.add("Activity21:HOME[split]");
+        list.add("Activity22:Card Activity");
     }
 
     @Override

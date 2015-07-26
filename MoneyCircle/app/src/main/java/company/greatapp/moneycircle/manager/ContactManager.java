@@ -20,7 +20,10 @@ import company.greatapp.moneycircle.tools.Tools;
  */
 public class ContactManager extends BaseModelManager {
     Context context;
-    ArrayList<Model> contacts = new ArrayList<Model>();
+    ArrayList<Model> mContactList = new ArrayList<Model>();
+    ArrayList<Model> mRegisteredContactList = new ArrayList<Model>();
+    ArrayList<Model> mUnRegisteredContactList = new ArrayList<Model>();
+
     ArrayList<String> titles = new ArrayList<String>();
 
     public ContactManager(Context context) {
@@ -30,18 +33,18 @@ public class ContactManager extends BaseModelManager {
 
     @Override
     public Model createItemFromCursor(Cursor cursor) {
-        if(cursor == null) return null;
+        if (cursor == null) return null;
 
-        int dbId               = cursor.getInt(cursor.getColumnIndex(DB.DB_ID));
-        String uid             = cursor.getString(cursor.getColumnIndex(DB.UID));
-        String name            = cursor.getString(cursor.getColumnIndex(DB.NAME));
-        String serverId        = cursor.getString(cursor.getColumnIndex(DB.SERVER_ID));
-        String serverName      = cursor.getString(cursor.getColumnIndex(DB.SERVER_NAME));
-        String phone           = cursor.getString(cursor.getColumnIndex(DB.PHONE_NUMBER));
-        String email           = cursor.getString(cursor.getColumnIndex(DB.EMAIL));
-        String imageUri        = cursor.getString(cursor.getColumnIndex(DB.CONTACT_IMAGE_URI));
-        int registered         = cursor.getInt(cursor.getColumnIndex(DB.REGISTERED));
-        String jsonString      = cursor.getString(cursor.getColumnIndex(DB.JSON_STRING));
+        int dbId = cursor.getInt(cursor.getColumnIndex(DB.DB_ID));
+        String uid = cursor.getString(cursor.getColumnIndex(DB.UID));
+        String name = cursor.getString(cursor.getColumnIndex(DB.NAME));
+        String serverId = cursor.getString(cursor.getColumnIndex(DB.SERVER_ID));
+        String serverName = cursor.getString(cursor.getColumnIndex(DB.SERVER_NAME));
+        String phone = cursor.getString(cursor.getColumnIndex(DB.PHONE_NUMBER));
+        String email = cursor.getString(cursor.getColumnIndex(DB.EMAIL));
+        String imageUri = cursor.getString(cursor.getColumnIndex(DB.CONTACT_IMAGE_URI));
+        int registered = cursor.getInt(cursor.getColumnIndex(DB.REGISTERED));
+        String jsonString = cursor.getString(cursor.getColumnIndex(DB.JSON_STRING));
 
         Contact contact = new Contact();
         contact.setDbId(dbId);
@@ -65,21 +68,23 @@ public class ContactManager extends BaseModelManager {
 
     @Override
     protected void loadItemsFromDB() {
-        contacts.clear();
+        mContactList.clear();
+        mUnRegisteredContactList.clear();
+        mRegisteredContactList.clear();
         titles.clear();
         Cursor c = context.getContentResolver().query(DB.CONTACT_TABLE_URI,
                 DB.CONTACT_TABLE_PROJECTION, null, null, null);
-        if(c != null && c.getCount() > 0) {
+        if (c != null && c.getCount() > 0) {
             c.moveToFirst();
-            while(!c.isAfterLast()) {
+            while (!c.isAfterLast()) {
                 Model model = createItemFromCursor(c);
-                if(((Contact)model).getRegistered() == C.REGISTERED_ON_MONEY_CIRCLE){
-                    contacts.add(0, model);
-                    titles.add(model.getTitle());
+                if (((Contact) model).getRegistered() == C.REGISTERED_ON_MONEY_CIRCLE) {
+                    mRegisteredContactList.add(model);
                 } else {
-                    contacts.add(model);
-                    titles.add(model.getTitle());
+                    mUnRegisteredContactList.add(model);
                 }
+                mContactList.add(model);
+                titles.add(model.getTitle());
                 c.moveToNext();
             }
             c.close();
@@ -103,28 +108,35 @@ public class ContactManager extends BaseModelManager {
 
     @Override
     public ArrayList<Model> getItemList() {
-        return this.contacts;
+        return this.mContactList;
     }
 
     public ArrayList<String> getItemNameList() {
         return this.titles;
     }
 
+    public ArrayList<Model> getRegisteredContactList() {
+        return this.mRegisteredContactList;
+    }
+
+    public ArrayList<Model> getUnRegisteredContactList() {
+        return this.mUnRegisteredContactList;
+    }
+
 
     public void retriveContactsFromDevice() {
         Cursor phones = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
 
-        if(phones != null) {
+        if (phones != null) {
 
-            while (phones.moveToNext())
-            {
-                String Name=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                String Number=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+            while (phones.moveToNext()) {
+                String Name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                String Number = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                 Number = Tools.getFormatedNumber(Number);
-                if(TextUtils.isEmpty(Number)) continue;
+                if (TextUtils.isEmpty(Number)) continue;
                 Contact contact = new Contact(Name, Number);
                 insertItemInDB(contact);
-                if(phones.isLast()) {
+                if (phones.isLast()) {
                     break;
                 }
             }

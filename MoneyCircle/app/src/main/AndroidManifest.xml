@@ -83,6 +83,7 @@
             android:name=".NewHomeActivity"
             android:label="@string/title_activity_new_home" >
         </activity>
+        <activity android:name=".CardActivity"></activity>
     </application>
 
     <!--Receivers-->

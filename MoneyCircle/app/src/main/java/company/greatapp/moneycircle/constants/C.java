@@ -8,8 +8,6 @@ public class C {
 
     public static final String PREF_CONTACTS_RETRIVED = "prefContactsRetrived";
 
-
-
     public static final int REGISTERED_ON_MONEY_CIRCLE = 11;
 
     public static final String DIVIDER = "||";

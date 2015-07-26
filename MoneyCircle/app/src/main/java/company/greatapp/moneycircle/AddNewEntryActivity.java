@@ -25,6 +25,7 @@ import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.manager.CategoryManager;
 import company.greatapp.moneycircle.manager.IncomeManager;
 import company.greatapp.moneycircle.model.Income;
+import company.greatapp.moneycircle.tools.DatePickerFragment;
 import company.greatapp.moneycircle.tools.DateUtils;
 
 public class AddNewEntryActivity extends ActionBarActivity implements DatePickerFragment.DateSetter {

@@ -81,6 +81,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/et_new_amount"
+                    android:inputType="numberDecimal"
                     android:textSize="@dimen/abc_text_size_display_2_material" />
             </LinearLayout>
 

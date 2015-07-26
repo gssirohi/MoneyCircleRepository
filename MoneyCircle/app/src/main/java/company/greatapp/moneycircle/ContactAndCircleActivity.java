@@ -29,7 +29,7 @@ public class ContactAndCircleActivity extends AppCompatActivity implements Actio
 
         mViewPager = (ViewPager)findViewById(R.id.contactTabPagerId);
 
-        mTabAdapter = new ContactAndCircleTabAdapter(getSupportFragmentManager());
+        mTabAdapter = new ContactAndCircleTabAdapter(this, getSupportFragmentManager());
         mViewPager.setAdapter(mTabAdapter);
 
         mActionBar.setHomeButtonEnabled(false);

@@ -19,8 +19,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import company.greatapp.moneycircle.DatePickerFragment;
-import company.greatapp.moneycircle.DatePickerFragment.DateSetter;
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.chooser.ChooserActivity;
 import company.greatapp.moneycircle.constants.C;
@@ -28,9 +26,10 @@ import company.greatapp.moneycircle.manager.ContactManager;
 import company.greatapp.moneycircle.model.Circle;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Participant;
+import company.greatapp.moneycircle.tools.DatePickerFragment;
 import company.greatapp.moneycircle.view.TagItemView;
 
-public class SplitToolActivity extends ActionBarActivity implements DateSetter{
+public class SplitToolActivity extends ActionBarActivity implements DatePickerFragment.DateSetter {
 
     public static final int SPLIT_AMOUNT_REQUEST = 33;
     private ArrayList<Participant> participants = new ArrayList<Participant>();
