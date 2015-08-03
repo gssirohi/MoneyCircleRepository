@@ -162,11 +162,12 @@ public class DB {
     public static final String CATEGORY_TABLE_NAME = "categoryTable";
     public static final String CATEGORY_TYPE = "categoryType";
     public static final String CATEGORY_NAME = "categoryName";
+    public static final String CATEGORY_ID = "categoryId";
 
 
     public static final Uri CATEGORY_TABLE_URI = Uri.parse("content://"+DB_AUTHORITY+"/" + CATEGORY_TABLE_NAME);
     public static final String[] CATEGORY_TABLE_PROJECTION = new String[]{
-            DB_ID,UID,
+            DB_ID,UID,/*CATEGORY_ID,*/
             CATEGORY_NAME,
             CATEGORY_TYPE};
 //----------------------------------------------------------------//

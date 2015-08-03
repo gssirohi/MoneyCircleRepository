@@ -97,7 +97,7 @@ class ChooserAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         // Capture position and set to the TextViews
-        holder.tv.setText(((Contact) objects.get(position)).getContactName());
+        holder.tv.setText(/*((Contact)*/ objects.get(position).getTitle()); //).getContactName());
         return convertView;
         //------------------------------------------------------------
     }

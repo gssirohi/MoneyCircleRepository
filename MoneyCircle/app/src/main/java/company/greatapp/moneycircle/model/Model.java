@@ -21,6 +21,7 @@ public abstract class Model {
     public static final int MODEL_TYPE_SPLIT                = 7;
     public static final int MODEL_TYPE_NOTIFICATION         = 8;
     public static final int MODEL_TYPE_USER                 = 9;
+    public static final int MODEL_TYPE_CATEGORY             = 10;
 
 
     public Model()

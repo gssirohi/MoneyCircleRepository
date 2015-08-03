@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import company.greatapp.moneycircle.categories.ManageCategoriesActivity;
 import company.greatapp.moneycircle.chooser.ChooserActivity;
 import company.greatapp.moneycircle.constants.C;
+import company.greatapp.moneycircle.manager.CategoryManager;
 import company.greatapp.moneycircle.manager.ContactManager;
 import company.greatapp.moneycircle.manager.PreferenceManager;
 import company.greatapp.moneycircle.model.Model;
@@ -50,12 +51,20 @@ public class LauncherActivity extends ActionBarActivity {
 
         PreferenceManager pm = new PreferenceManager(this);
         if(!pm.isDeviceContactsRetrived()) {
-             ContactManager cm = new ContactManager(this);
-             cm.retriveContactsFromDevice();//contact initialization
+             ContactManager contactManager = new ContactManager(this);
+             contactManager.retriveContactsFromDevice();//contact initialization
              Tools.addDummyEntries(this);
              SharedPreferences.Editor et =  pm.getEditor();
              et.putBoolean(C.PREF_CONTACTS_RETRIVED, true);
              et.commit();
+        }
+
+        if (!pm.isDefaultCategoriesLoadedInDB()) {
+            CategoryManager categoryManager = new CategoryManager(this);
+            categoryManager.insertDefaultCategoriesInDB();
+            SharedPreferences.Editor et = pm.getEditor();
+            et.putBoolean(C.PREF_DEFAULT_CATEGORIES_LOADED, true);
+            et.commit();
         }
 
     }
@@ -86,7 +95,8 @@ public class LauncherActivity extends ActionBarActivity {
                 break;
             case 8:
                 Intent intent = new Intent(this,AddNewEntryActivity.class);
-                intent.putExtra(C.ENTRY_TYPE,C.ENTRY_TYPE_INCOME);
+                intent.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
+                intent.putExtra(C.MODEL_TYPE, Model.MODEL_TYPE_INCOME);
                 startActivity(intent);
                 break;
             case 9:
@@ -114,17 +124,20 @@ public class LauncherActivity extends ActionBarActivity {
                 break;
             case 18:
                  intent = new Intent(this,AddNewEntryActivity.class);
-                intent.putExtra(C.ENTRY_TYPE,C.ENTRY_TYPE_EXPENSE);
+                intent.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
+                intent.putExtra(C.MODEL_TYPE, Model.MODEL_TYPE_EXPENSE);
                 startActivity(intent);
                 break;
             case 19:
                  intent = new Intent(this,AddNewEntryActivity.class);
-                intent.putExtra(C.ENTRY_TYPE,C.ENTRY_TYPE_BORROW);
+                intent.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
+                intent.putExtra(C.MODEL_TYPE, Model.MODEL_TYPE_BORROW);
                 startActivity(intent);
                 break;
             case 20:
                  intent = new Intent(this,AddNewEntryActivity.class);
-                intent.putExtra(C.ENTRY_TYPE,C.ENTRY_TYPE_LENDED);
+                intent.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
+                intent.putExtra(C.MODEL_TYPE, Model.MODEL_TYPE_LENT);
                 startActivity(intent);
                 break;
             case 21:
@@ -178,7 +191,7 @@ public class LauncherActivity extends ActionBarActivity {
         list.add("Activity3:Home Activity");
         list.add("Activity4:Contact & Circle Activity");
         list.add("Activity5:Settings");
-        list.add("Activity6");
+        list.add("Activity6:Manage Circles");
         list.add("Activity7");
         list.add("Activity8: Add Entry[INCOME]");
         list.add("Activity9:SplitToolActivity");

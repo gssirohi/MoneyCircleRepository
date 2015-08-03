@@ -21,4 +21,8 @@ public class PreferenceManager {
     public boolean isDeviceContactsRetrived() {
         return prefs.getBoolean(C.PREF_CONTACTS_RETRIVED,false);
     }
+
+    public boolean isDefaultCategoriesLoadedInDB() {
+        return prefs.getBoolean(C.PREF_DEFAULT_CATEGORIES_LOADED, false);
+    }
 }

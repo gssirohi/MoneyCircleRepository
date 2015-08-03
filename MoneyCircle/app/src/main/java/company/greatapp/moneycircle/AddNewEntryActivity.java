@@ -1,7 +1,6 @@
 package company.greatapp.moneycircle;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -15,22 +14,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import company.greatapp.moneycircle.chooser.ChooserActivity;
 import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.manager.CategoryManager;
 import company.greatapp.moneycircle.manager.IncomeManager;
 import company.greatapp.moneycircle.model.Income;
+import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.tools.DatePickerFragment;
 import company.greatapp.moneycircle.tools.DateUtils;
 
 public class AddNewEntryActivity extends ActionBarActivity implements DatePickerFragment.DateSetter {
 
-    private int entryType;
+    private int mEntryType;
+    private int mModelType;
 
 
     private TextView tv_new_title;
@@ -92,19 +90,24 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
         setTextColor();
         setButtonColor();
         Intent intent = getIntent();
-        int entryType = intent.getIntExtra(C.ENTRY_TYPE,C.ENTRY_TYPE_INCOME);
-        this.entryType = entryType;
-        switch(entryType) {
-            case C.ENTRY_TYPE_INCOME:
+        int entryType = intent.getIntExtra(C.ENTRY_TYPE,C.ENTRY_TYPE_INPUT);
+        this.mEntryType = entryType;
+
+        // TODO Don't start this activity if entry type is not ENTRY_TYPE_INPUT
+
+        mModelType = intent.getIntExtra(C.MODEL_TYPE, Model.MODEL_TYPE_INCOME);
+
+        switch(mModelType) {
+            case Model.MODEL_TYPE_INCOME:
                 createIncomeLayout();
                 break;
-            case C.ENTRY_TYPE_EXPENSE:
+            case Model.MODEL_TYPE_EXPENSE:
                 createExpenseLayout();
                 break;
-            case C.ENTRY_TYPE_BORROW:
+            case Model.MODEL_TYPE_BORROW:
                 createBorrowLayout();
                 break;
-            case C.ENTRY_TYPE_LENDED:
+            case Model.MODEL_TYPE_LENT:
                 createLendedLayout();
                 break;
         }
@@ -249,7 +252,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
                 Income income = new Income();
                 income.setDateString(dateString);
                 income.setTitle(et_new_item.getText().toString());
-                income.setCategory(category);
+                income.setCategory(category);       // TODO This value has to be unique for every category
                 income.setAmount(Float.parseFloat(et_new_amount.getText().toString()));
 
                 IncomeManager im = new IncomeManager(this);
@@ -298,15 +301,17 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
     }
 
     private void addCategory(String uid){
-        CategoryManager cm = new CategoryManager();
-        category = 1;
-        b_new_category.setText("Dummy:1");
+        CategoryManager cm = new CategoryManager(this, mModelType);
+        String title = cm.getItemFromListByUID(uid).getTitle();
+        category = 1;   // TODO This value has to be properly set
+        b_new_category.setText(title);
     }
 
     private void startItemSelection(int requestCode, int mode){
         Intent i = new Intent(this, ChooserActivity.class);
         i.putExtra(C.CHOOSER_REQUEST,requestCode);
         i.putExtra(C.CHOOSER_CHOICE_MODE,mode);
+        i.putExtra(C.CHOOSER_MODEL, mModelType);
         startActivityForResult(i, requestCode);
     }
 }

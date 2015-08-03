@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import company.greatapp.moneycircle.constants.DB;
+import company.greatapp.moneycircle.tools.Tools;
 
 /**
  * Created by gyanendra.sirohi on 7/1/2015.
@@ -21,42 +22,55 @@ public class Income extends Model {
     //--------------------------------//
 
     //=========== SPECIFICS ==============//
-    private int category;
-    private String description = "";
-    private float amount;
-    private String dateString="";
+    private int mCategory;
+    private String mDescription = "";
+    private float mAmount;
+    private String mDateString ="";
     private Date date;
 
+    public Income() {}      // Empty Constructor
+
+    // TODO Need to update this constructor implementation properly
+    public Income(String title, int amount, int category, String date) {
+
+        setTitle(title);
+        setAmount(amount);
+        setCategory(category);
+        setDateString(date);
+        setUID(Tools.generateUniqueId());
+        setModelType(Category.MODEL_TYPE_INCOME);
+    }
+
     public int getCategory() {
-        return category;
+        return mCategory;
     }
 
     public void setCategory(int category) {
-        this.category = category;
+        this.mCategory = category;
     }
 
     public String getDescription() {
-        return description;
+        return mDescription;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.mDescription = description;
     }
 
     public float getAmount() {
-        return amount;
+        return mAmount;
     }
 
     public void setAmount(float amount) {
-        this.amount = amount;
+        this.mAmount = amount;
     }
 
     public String getDateString() {
-        return dateString;
+        return mDateString;
     }
 
     public void setDateString(String dateString) {
-        this.dateString = dateString;
+        this.mDateString = dateString;
     }
 
     public Date getDate() {

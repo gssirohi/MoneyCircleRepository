@@ -25,6 +25,7 @@ import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.manager.ContactManager;
 import company.greatapp.moneycircle.model.Circle;
 import company.greatapp.moneycircle.model.Contact;
+import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.Participant;
 import company.greatapp.moneycircle.tools.DatePickerFragment;
 import company.greatapp.moneycircle.view.TagItemView;
@@ -167,6 +168,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
     private void startItemSelection(int requestCode){
         Intent i = new Intent(this, ChooserActivity.class);
         i.putExtra(C.CHOOSER_REQUEST,requestCode);
+        i.putExtra(C.CHOOSER_MODEL, Model.MODEL_TYPE_SPLIT);
         startActivityForResult(i, requestCode);
     }
 

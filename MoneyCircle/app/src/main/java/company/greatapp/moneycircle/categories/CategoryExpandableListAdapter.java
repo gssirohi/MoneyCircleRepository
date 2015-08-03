@@ -16,24 +16,25 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import company.greatapp.moneycircle.R;
+import company.greatapp.moneycircle.model.Model;
 
 public class CategoryExpandableListAdapter extends BaseExpandableListAdapter {
 
-    private Context _context;
-    private List<String> _listDataHeader; // header titles
+    private Context mContext;
+    private List<String> mListDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<String>> _listDataChild;
+    private HashMap<String, List<Model>> mListDataChild;
 
     public CategoryExpandableListAdapter(Context context, List<String> listDataHeader,
-                                         HashMap<String, List<String>> listChildData) {
-        this._context = context;
-        this._listDataHeader = listDataHeader;
-        this._listDataChild = listChildData;
+                                         HashMap<String, List<Model>> listChildData) {
+        this.mContext = context;
+        this.mListDataHeader = listDataHeader;
+        this.mListDataChild = listChildData;
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
+        return this.mListDataChild.get(this.mListDataHeader.get(groupPosition))
                 .get(childPosititon);
     }
 
@@ -46,10 +47,10 @@ public class CategoryExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        final String childText = (String) getChild(groupPosition, childPosition);
+        final String childText = ((Model)getChild(groupPosition, childPosition)).getTitle();
 
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
+            LayoutInflater infalInflater = (LayoutInflater) this.mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.category_child_list_item, null);
         }
@@ -66,18 +67,18 @@ public class CategoryExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
+        return this.mListDataChild.get(this.mListDataHeader.get(groupPosition))
                 .size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return this._listDataHeader.get(groupPosition);
+        return this.mListDataHeader.get(groupPosition);
     }
 
     @Override
     public int getGroupCount() {
-        return this._listDataHeader.size();
+        return this.mListDataHeader.size();
     }
 
     @Override
@@ -90,7 +91,7 @@ public class CategoryExpandableListAdapter extends BaseExpandableListAdapter {
                              View convertView, ViewGroup parent) {
         String headerTitle = (String) getGroup(groupPosition);
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
+            LayoutInflater infalInflater = (LayoutInflater) this.mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.category_group_list_item, null);
         }

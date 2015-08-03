@@ -16,13 +16,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.constants.C;
+import company.greatapp.moneycircle.manager.CategoryManager;
 import company.greatapp.moneycircle.manager.ContactManager;
 import company.greatapp.moneycircle.model.Model;
-import company.greatapp.moneycircle.model.Contact;
 
 public class ChooserActivity extends Activity {
 
@@ -37,18 +36,23 @@ public class ChooserActivity extends Activity {
         setContentView(R.layout.activity_chooser);
         chooserList = (ListView)findViewById(R.id.lv_chooser_items);
         TextView title = (TextView)findViewById(R.id.tv_chooser_item_title);
+
         int requestCode  = getIntent().getIntExtra(C.CHOOSER_REQUEST,C.TAG_CONTACTS);
         int choiceMode  = getIntent().getIntExtra(C.CHOOSER_CHOICE_MODE, ListView.CHOICE_MODE_SINGLE);
+        int chooserModel = getIntent().getIntExtra(C.CHOOSER_MODEL, Model.MODEL_TYPE_INCOME);
+
         title.setText(getChooserTitle(requestCode));
-        adapter = new ChooserAdapter(this,0,getItemList(requestCode));
+        adapter = new ChooserAdapter(this,0,getItemList(requestCode, chooserModel));
         chooserList.setChoiceMode(choiceMode);
         chooserList.setAdapter(adapter);
+
         chooserList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 onClickListItem(parent, view, position, id);
             }
         });
+
         chooserList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
             @Override
@@ -150,7 +154,7 @@ public class ChooserActivity extends Activity {
             int position = checked.keyAt(i);
             if (checked.valueAt(i)) {
                 Log.d("split", "FOUND checked values at : "+position);
-                selectedItems.add(((Contact) adapter.getItem(position)).getUID());
+                selectedItems.add((adapter.getItem(position)).getUID());
             }
         }
         Intent data = new Intent();
@@ -181,12 +185,12 @@ public class ChooserActivity extends Activity {
         }
     }
 
-    private ArrayList<Model> getItemList(int code) {
+    private ArrayList<Model> getItemList(int code, int chooserModel) {
         ArrayList<Model> list = new ArrayList<Model>();
         switch(code) {
             case C.TAG_CATEGORIES:
-                list.add(new Contact("dummy"));
-                break;
+                CategoryManager categoryManager = new CategoryManager(this, chooserModel);
+                return categoryManager.getItemList();
             case C.TAG_CIRCLES:
                 break;
             case C.TAG_REGISTERED_CONTACTS:

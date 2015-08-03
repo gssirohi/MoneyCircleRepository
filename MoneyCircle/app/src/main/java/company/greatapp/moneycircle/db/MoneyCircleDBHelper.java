@@ -164,8 +164,9 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
 
                             + DB.DB_ID + " Integer primary key ,"
                             + DB.UID + " text,"
+                            /*+ DB.CATEGORY_ID + "int,"*/   // TODO This field has to be added in category table and this value has to be unique for every category
                             + DB.CATEGORY_NAME + " text, "
-                             +DB.CATEGORY_TYPE + " text  );"
+                             +DB.CATEGORY_TYPE + " int  );"
             );
             Log.d("DBhelper", "query sent for" + DB.CATEGORY_TABLE_NAME);
     //=========================================================================//
