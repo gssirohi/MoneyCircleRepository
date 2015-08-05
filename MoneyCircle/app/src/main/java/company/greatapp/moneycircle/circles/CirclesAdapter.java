@@ -101,7 +101,7 @@ public class CirclesAdapter extends BaseAdapter {
         }
 */
         for (String c : arr1) {
-            layout.addView(new TagItemView(mContext,type, c));
+            layout.addView(new TagItemView(mContext,layout,c,false));
             out = out+c+",";
         }
         //Toast.makeText(mContext, out, Toast.LENGTH_SHORT).show();

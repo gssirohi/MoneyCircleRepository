@@ -22,15 +22,28 @@ public class TagItemView extends LinearLayout {
 
     public static final int TYPE_REGISTERED_CONTACT = 1;
     private final ViewGroup parent;
-    private final Model model;
+    private Model model = null;
+    private final String title;
     private RemoveTagListener listener;
 
     public TagItemView(Context context,ViewGroup parent, Model model, boolean isCancelable) {
         super(context);
         this.parent = parent;
         this.model = model;
-
         int type = model.getModelType();
+        this.title = model.getTitle();
+        init(context, isCancelable);
+    }
+
+    public TagItemView(Context context,ViewGroup parent, String item, boolean isCancelable) {
+        super(context);
+        this.parent = parent;
+        this.title = item;
+        init(context, isCancelable);
+    }
+
+    private void init(Context context, boolean isCancelable) {
+
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if(inflater != null) {
@@ -41,10 +54,10 @@ public class TagItemView extends LinearLayout {
             ib_cancel.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   handleCancel(v);
+                    handleCancel(v);
                 }
             });
-            b.setText(model.getTitle());
+            b.setText(this.title);
         }
     }
 
@@ -59,6 +72,9 @@ public class TagItemView extends LinearLayout {
 
     public Model getModel(){
         return this.model;
+    }
+    public String getTitle(){
+        return this.title;
     }
 
     public interface RemoveTagListener{
