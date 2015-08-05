@@ -192,7 +192,8 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
             tv_period_end.setText(filter.getPeriod().getEndDate());
             tv_period_start.setVisibility(View.VISIBLE);
             tv_period_end.setVisibility(View.VISIBLE);
-            tv_period.setVisibility(View.GONE);
+            tv_period.setText("<->");
+            //tv_period.setVisibility(View.GONE);
 
         }
     }

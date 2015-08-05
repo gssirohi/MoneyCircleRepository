@@ -48,8 +48,7 @@
                 <FrameLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="8"
-                    android:background="#ff5cffba">
+                    android:layout_weight="8">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -59,8 +58,7 @@
                         android:id="@+id/tv_period_end"
                         android:layout_weight="8"
                         android:layout_gravity="right|center_vertical"
-                        android:gravity="fill_horizontal"
-                        android:background="@drawable/abc_popup_background_mtrl_mult" />
+                        android:gravity="fill_horizontal" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -69,8 +67,7 @@
                         android:id="@+id/tv_period"
                         android:layout_weight="8"
                         android:layout_gravity="center"
-                        android:gravity="fill_horizontal"
-                        android:background="@drawable/abc_popup_background_mtrl_mult" />
+                        android:gravity="fill_horizontal" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -79,8 +76,7 @@
                         android:id="@+id/tv_period_start"
                         android:layout_weight="8"
                         android:layout_gravity="left|center_vertical"
-                        android:gravity="fill_horizontal"
-                        android:background="@drawable/abc_popup_background_mtrl_mult" />
+                        android:gravity="fill_horizontal" />
                 </FrameLayout>
 
                 <ImageButton
@@ -101,8 +97,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/sp_category"
                     android:spinnerMode="dialog"
-                    android:layout_gravity="center_horizontal"
-                    android:background="#ff95ffe0" />
+                    android:layout_gravity="center_horizontal" />
             </FrameLayout>
             <FrameLayout
                 android:id="@android:id/tabcontent"

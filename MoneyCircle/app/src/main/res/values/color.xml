@@ -5,4 +5,50 @@
     <color name="white">#ffffffff</color>
     <color name="dull_white">#ffefebeb</color>
     <color name="red">#ffff0000</color>
+    <color name="app_basic">#ff6d00</color>
+    <color name="app_secondary">#00b8d4</color>
+
+    <color name="app_light">#ff9100</color>
+    <color name="app_lighter">#ffb74d</color>
+    <color name="app_lightest">#ffcc80</color>
+
+    <color name="app_dark">#ef6c00</color>
+    <color name="app_darker">#e65100</color>
+    <color name="app_darkest">#ff3d00</color>
+
+
+    <color name="income">#8bc34a</color>
+    <color name="income_light">#c5e1a5</color>
+
+
+    <color name="expense">#ff5252</color>
+    <color name="expense_light">#ffcdd2</color>
+
+    <color name="borrow">#795548</color>
+    <color name="borrow_light">#d7ccc8</color>
+
+    <color name="lent">#ab47bc</color>
+    <color name="lent_light">#e1bee7</color>
+
+    <color name="split">#0288d1</color>
+    <color name="split_light">#b3e5fc</color>
+
+    <color name="contact">#9e9e9e</color>
+    <color name="contact_light">#e0e0e0</color>
+
+    <color name="registered_contact">#ffeb3b</color>
+    <color name="registered_contact_light">#fff59d</color>
+
+    <color name="circle">#ff4081</color>
+    <color name="circle_light">#f8bbd0</color>
+
+    <color name="category">#00796b</color>
+    <color name="category_light">#b2dfdb</color>
+
+    <color name="text_basic">#3e2723</color>
+    <color name="text_basic_light">#d7ccc8</color>
+
+
+    <color name="text_error">#ef5350</color>
+    <color name="text_info">#7cb342</color>
 </resources>

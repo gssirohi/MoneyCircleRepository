@@ -3,12 +3,24 @@
     android:layout_width="wrap_content" android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:layout_margin="3dp"
-    android:id="@+id/ll_tag_item_view">
+    android:id="@+id/ll_tag_item_view"
+    android:background="@drawable/shape_rounded_corner">
 
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="SEXY"
-        android:id="@+id/b_tag_item" />
+        android:id="@+id/b_tag_item"
+        android:background="@android:color/transparent"
+        android:minHeight="0dp"
+        android:padding="5dp"
+        android:textColor="#ffffffff" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/ib_tag_cancel"
+        android:src="@android:drawable/ic_delete"
+        android:background="@android:color/transparent" />
 </LinearLayout>

@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -169,6 +170,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         Intent i = new Intent(this, ChooserActivity.class);
         i.putExtra(C.CHOOSER_REQUEST,requestCode);
         i.putExtra(C.CHOOSER_MODEL, Model.MODEL_TYPE_SPLIT);
+        i.putExtra(C.CHOOSER_CHOICE_MODE, ListView.CHOICE_MODE_MULTIPLE);
         startActivityForResult(i, requestCode);
     }
 
@@ -309,13 +311,20 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
 
         int count = ll.getChildCount();
         ll.removeAllViews();
-
+        TagItemView.RemoveTagListener listener = new TagItemView.RemoveTagListener() {
+            @Override
+            public void OnTagRemoved(TagItemView view) {
+                Model model = view.getModel();
+                String title = (model.getTitle()+" removed");
+                Toast.makeText(SplitToolActivity.this,title,Toast.LENGTH_SHORT).show();
+            }
+        };
         for (Contact c : memberContacts) {
-            ll.addView(new TagItemView(this,type, c.getContactName()));
+            TagItemView tagView = new TagItemView(this,ll,c,true);
+            tagView.setRemoveTagListener(listener);
+            ll.addView(tagView);
             out = out+c.getContactName()+",";
         }
-        Toast.makeText(this,out,Toast.LENGTH_SHORT).show();
-
     }
 
     @Override
