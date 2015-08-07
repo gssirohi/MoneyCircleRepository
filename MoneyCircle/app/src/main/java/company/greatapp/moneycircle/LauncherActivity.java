@@ -24,6 +24,7 @@ import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.split.SetSplitAmountActivity;
 import company.greatapp.moneycircle.split.SplitToolActivity;
 import company.greatapp.moneycircle.tools.Tools;
+import company.greateapp.moneycircle.MainActivity;
 
 
 public class LauncherActivity extends ActionBarActivity {
@@ -85,7 +86,7 @@ public class LauncherActivity extends ActionBarActivity {
                 startActivity(new Intent(this,WelcomeActivity.class));
                 break;
             case 3:
-                startActivity(new Intent(this,HomeActivity.class));
+                startActivity(new Intent(this,MainActivity.class));
                 break;
             case 4:
                 startActivity(new Intent(this,ContactAndCircleActivity.class));

@@ -20,7 +20,6 @@ import company.greatapp.moneycircle.split.SetSplitAmountActivity;
  */
 public class TagItemView extends LinearLayout {
 
-    public static final int TYPE_REGISTERED_CONTACT = 1;
     private final ViewGroup parent;
     private Model model = null;
     private final String title;

@@ -3,7 +3,14 @@
     package="company.greatapp.moneycircle" >
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+
+    <!-- Receivers -->
+    <receiver android:name=".receiver.TransactionalSmsListener" >
+        <intent-filter>
+            <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+        </intent-filter>
+    </receiver>
 
     <application
         android:allowBackup="true"
@@ -83,14 +90,11 @@
             android:name=".NewHomeActivity"
             android:label="@string/title_activity_new_home" >
         </activity>
-        <activity android:name=".CardActivity"></activity>
+        <activity android:name=".CardActivity" />
+        <activity
+            android:name="company.greateapp.moneycircle.MainActivity"
+            android:label="@string/title_activity_main" >
+        </activity>
     </application>
-
-    <!--Receivers-->
-    <receiver android:name=".receiver.TransactionalSmsListener">
-        <intent-filter>
-            <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
-        </intent-filter>
-    </receiver>
 
 </manifest>

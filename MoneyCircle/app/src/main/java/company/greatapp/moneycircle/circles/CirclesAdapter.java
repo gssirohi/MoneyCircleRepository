@@ -65,7 +65,6 @@ public class CirclesAdapter extends BaseAdapter {
             convertView.setTag(holder);
 
         } else {
-
             holder = (ViewHolder)convertView.getTag();
         }
 
