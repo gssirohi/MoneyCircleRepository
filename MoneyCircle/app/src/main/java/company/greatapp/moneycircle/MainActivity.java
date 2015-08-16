@@ -1,31 +1,45 @@
 package company.greatapp.moneycircle;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TabHost;
 import android.widget.TabWidget;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.adapters.NavDrawerListAdapter;
+import company.greatapp.moneycircle.constants.C;
+import company.greatapp.moneycircle.manager.CategoryManager;
+import company.greatapp.moneycircle.manager.ContactManager;
+import company.greatapp.moneycircle.manager.PreferenceManager;
+import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.NavDrawerItem;
 import company.greatapp.moneycircle.model.Period;
 import company.greatapp.moneycircle.split.SplitToolActivity;
+import company.greatapp.moneycircle.tools.Tools;
+import company.greatapp.moneycircle.view.CircleButton;
 
 public class MainActivity extends ActionBarActivity {
     private DrawerLayout mDrawerLayout;
@@ -54,6 +68,10 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //TODO: this is launcher activity now on
+        //hence we need to init application settings and requirments here
+        //move below init method to the launcher activity always
+        initApp();
 
         tabHost = (TabHost)findViewById(R.id.tabHost);
         initialiseTabHost();
@@ -157,6 +175,25 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    private void initApp(){
+        PreferenceManager pm = new PreferenceManager(this);
+        if(!pm.isDeviceContactsRetrived()) {
+            ContactManager contactManager = new ContactManager(this);
+            contactManager.retriveContactsFromDevice();//contact initialization
+            Tools.addDummyEntries(this);
+            SharedPreferences.Editor et =  pm.getEditor();
+            et.putBoolean(C.PREF_CONTACTS_RETRIVED, true);
+            et.commit();
+        }
+
+        if (!pm.isDefaultCategoriesLoadedInDB()) {
+            CategoryManager categoryManager = new CategoryManager(this);
+            categoryManager.insertDefaultCategoriesInDB();
+            SharedPreferences.Editor et = pm.getEditor();
+            et.putBoolean(C.PREF_DEFAULT_CATEGORIES_LOADED, true);
+            et.commit();
+        }
+    }
     private void handleDrawerItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch(position){
             case 0://home
@@ -226,7 +263,116 @@ public class MainActivity extends ActionBarActivity {
 
     private void showAddOptionsScreen() {
         //TODO: show add option screen
-        startActivity(new Intent(this,SplitToolActivity.class));
+        //startActivity(new Intent(this,SplitToolActivity.class));
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.new_entry_options_dialog_layout, null, false);
+        final Dialog dialog = new Dialog(this);
+
+        dialog.setContentView(viewGroup);
+        dialog.setTitle("Add New Entry");
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
+        CircleButton b_split = (CircleButton)viewGroup.findViewById(R.id.b_split);
+        CircleButton b_income = (CircleButton)viewGroup.findViewById(R.id.b_income);
+        CircleButton b_expense = (CircleButton)viewGroup.findViewById(R.id.b_expense);
+        CircleButton b_borrow = (CircleButton)viewGroup.findViewById(R.id.b_borrow);
+        CircleButton b_lent = (CircleButton)viewGroup.findViewById(R.id.b_lent);
+        CircleButton b_daily_shop = (CircleButton)viewGroup.findViewById(R.id.b_daily_shop);
+
+        CircleButton b_circle = (CircleButton)viewGroup.findViewById(R.id.b_new_circle);
+        CircleButton b_category = (CircleButton)viewGroup.findViewById(R.id.b_new_category);
+
+        b_daily_shop.setColor(getResources().getColor(R.color.app_light));
+        b_daily_shop.setHolo(true);
+        b_daily_shop.setOnClickListener(getListener(1));
+
+        b_split.setColor(getResources().getColor(R.color.split));
+        b_split.setHolo(true);
+        b_split.setOnClickListener(getListener(2));
+
+        b_income.setColor(getResources().getColor(R.color.income));
+        b_income.setHolo(true);
+        b_income.setOnClickListener(getListener(3));
+
+        b_expense.setColor(getResources().getColor(R.color.expense));
+        b_expense.setHolo(true);
+        b_expense.setOnClickListener(getListener(4));
+
+        b_lent.setColor(getResources().getColor(R.color.lent));
+        b_lent.setHolo(true);
+        b_lent.setOnClickListener(getListener(5));
+
+        b_borrow.setColor(getResources().getColor(R.color.borrow));
+        b_borrow.setHolo(true);
+        b_borrow.setOnClickListener(getListener(6));
+
+        b_category.setColor(getResources().getColor(R.color.category_light));
+        b_category.setOnClickListener(getListener(7));
+
+        b_circle.setColor(getResources().getColor(R.color.circle_light));
+        b_circle.setOnClickListener(getListener(8));
+
+
+       dialog.show();
+
+    }
+
+    private View.OnClickListener getListener(final int type) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleButtonClick(type);
+            }
+        };
+    }
+
+    private void handleButtonClick(int type) {
+        String msg = "";
+        Intent i = null;
+        switch(type) {
+            case 1:
+                msg = "daily expense";
+                break;
+            case 2:
+                msg = "split";
+                i = new Intent(this,SplitToolActivity.class);
+                startActivity(i);
+                break;
+            case 3:
+                msg = "income";
+                i = new Intent(this,AddNewEntryActivity.class);
+                i.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
+                i.putExtra(C.MODEL_TYPE, Model.MODEL_TYPE_INCOME);
+                startActivity(i);
+                break;
+            case 4:
+                msg = "expense";
+                i = new Intent(this,AddNewEntryActivity.class);
+                i.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
+                i.putExtra(C.MODEL_TYPE, Model.MODEL_TYPE_EXPENSE);
+                startActivity(i);
+                break;
+            case 5:
+                msg = "lent";
+                i = new Intent(this,AddNewEntryActivity.class);
+                i.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
+                i.putExtra(C.MODEL_TYPE, Model.MODEL_TYPE_LENT);
+                startActivity(i);
+                break;
+            case 6:
+                msg = "borrow";
+                i = new Intent(this,AddNewEntryActivity.class);
+                i.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
+                i.putExtra(C.MODEL_TYPE, Model.MODEL_TYPE_BORROW);
+                startActivity(i);
+                break;
+            case 7:
+                msg = "category";
+                break;
+            case 8:
+                msg = "circle";
+                break;
+        }
+        Toast.makeText(this, "Add new " + msg, Toast.LENGTH_SHORT).show();
     }
 
     /**
