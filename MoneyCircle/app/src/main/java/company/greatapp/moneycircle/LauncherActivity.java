@@ -53,7 +53,7 @@ public class LauncherActivity extends ActionBarActivity {
         if(!pm.isDeviceContactsRetrived()) {
              ContactManager contactManager = new ContactManager(this);
              contactManager.retriveContactsFromDevice();//contact initialization
-             Tools.addDummyEntries(this);
+             //Tools.addDummyEntries(this);
              SharedPreferences.Editor et =  pm.getEditor();
              et.putBoolean(C.PREF_CONTACTS_RETRIVED, true);
              et.commit();

@@ -15,18 +15,18 @@ import company.greatapp.moneycircle.constants.DB;
 public class DBFilter {
     int modelType;
     int periodType;
-    int category;
+    String mCategory;
     Period period;
-    String selection = DB.CATEGORY + "=" + category + " AND " + DB.DATE_STRING +  " BETWEEN ? AND ?";
+    String selection = DB.CATEGORY + "=\"" + mCategory + "\" AND " + DB.DATE_STRING +  " BETWEEN ? AND ?";
     //String selection =  DB.DATE_STRING +  " BETWEEN ? AND ?";
    // String selection = null;
     String[] args;
 
 
-    public DBFilter(int modelType, int periodType, int category){
+    public DBFilter(int modelType, int periodType, String category){
         this.modelType = modelType;
         this.periodType = periodType;
-        this.category = category;
+        this.mCategory = category;
         init();
     }
 
@@ -93,12 +93,12 @@ public class DBFilter {
         init();// reset period with new mode and curr date
     }
 
-    public int getCategory() {
-        return category;
+    public String getCategory() {
+        return mCategory;
     }
 
-    public void setCategory(int category) {
-        this.category = category;
+    public void setCategory(String category) {
+        this.mCategory = category;
     }
 
     public Period getPeriod() {
@@ -110,12 +110,15 @@ public class DBFilter {
     }
 
     public String getSelection() {
+
         if(periodType == Period.PERIOD_ALL){
-            selection = DB.CATEGORY + "=" + category;
-            //selection = null;
+//            selection = DB.CATEGORY + "=" + mCategory;
+            selection = null;
+        } else if (mCategory == null) {
+            selection = DB.DATE_STRING +  " BETWEEN ? AND ?";
         } else {
-            selection = DB.CATEGORY + "=" + category + " AND " + DB.DATE_STRING +  " BETWEEN ? AND ?";
-            //selection = /*DB.CATEGORY + "=" + category + " AND " +*/ DB.DATE +  " BETWEEN ? AND ?";
+            selection = DB.CATEGORY + "=\"" + mCategory + "\" AND " + DB.DATE_STRING +  " BETWEEN ? AND ?";
+//            selection = DB.CATEGORY + "=\"" + mCategory + "\" AND " + DB.DATE +  " BETWEEN ? AND ?";
         }
         return selection;
     }
@@ -124,8 +127,12 @@ public class DBFilter {
         this.selection = selection;
     }
 
+    /**
+     * If selection is null, then selection argument also has to be null, otherwise uncaught exception will happen.
+     * @return
+     */
     public String[] getArgs() {
-        if(periodType == Period.PERIOD_ALL){
+        if(selection == null || periodType == Period.PERIOD_ALL){
             return null;
         }
         args = new String[]{period.getStartDate() /*+ " 00:00:00"*/, period.getEndDate() /*+ " 23:59:59" */};

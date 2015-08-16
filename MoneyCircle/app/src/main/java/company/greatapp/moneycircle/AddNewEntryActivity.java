@@ -18,17 +18,24 @@ import java.util.ArrayList;
 
 import company.greatapp.moneycircle.chooser.ChooserActivity;
 import company.greatapp.moneycircle.constants.C;
+import company.greatapp.moneycircle.manager.BaseModelManager;
+import company.greatapp.moneycircle.manager.BorrowManager;
 import company.greatapp.moneycircle.manager.CategoryManager;
+import company.greatapp.moneycircle.manager.ExpenseManager;
 import company.greatapp.moneycircle.manager.IncomeManager;
+import company.greatapp.moneycircle.manager.LentManager;
+import company.greatapp.moneycircle.model.Borrow;
+import company.greatapp.moneycircle.model.Expense;
 import company.greatapp.moneycircle.model.Income;
+import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.tools.DatePickerFragment;
 import company.greatapp.moneycircle.tools.DateUtils;
 
 public class AddNewEntryActivity extends ActionBarActivity implements DatePickerFragment.DateSetter {
 
-    private int mEntryType;
-    private int mModelType;
+    private int mModelType;     // Model Type
+    private int mEntryType;     // Entry type means either it is a display or input
 
 
     private TextView tv_new_title;
@@ -49,8 +56,8 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
     private Button b_new_split;
     private Button b_new_member_add;
     private Button b_new_date;
-    private String dateString;
-    private int category;
+    private String mDateString;
+    private String mCategory;
 
 
     @Override
@@ -112,6 +119,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
                 break;
         }
 
+        setCurrentDate();
     }
 
     private void setButtonColor() {
@@ -249,15 +257,9 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_save_entry) {
             if(validateData()) {
-                Income income = new Income();
-                income.setDateString(dateString);
-                income.setTitle(et_new_item.getText().toString());
-                income.setCategory(category);       // TODO This value has to be unique for every category
-                income.setAmount(Float.parseFloat(et_new_amount.getText().toString()));
-
-                IncomeManager im = new IncomeManager(this);
-                im.insertItemInDB(income);
-                Toast.makeText(this, "ENTRY SAVED", Toast.LENGTH_SHORT).show();
+                saveData();
+            } else {
+                Toast.makeText(this, "Field Empty", Toast.LENGTH_LONG).show();
             }
             return true;
         }
@@ -265,16 +267,99 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
         return super.onOptionsItemSelected(item);
     }
 
-    private boolean validateData(){
-        if(TextUtils.isEmpty(dateString)) return false;
-        String amount = "";
-        amount = et_new_amount.getText().toString();
-        if(TextUtils.isEmpty(amount))return false;
+    private boolean validateData() {
+        if (TextUtils.isEmpty(mDateString)) return false;
+        String amount = et_new_amount.getText().toString();
+        if (TextUtils.isEmpty(amount)) return false;
+
+        if (mModelType == Model.MODEL_TYPE_BORROW || mModelType == Model.MODEL_TYPE_LENT) {
+            if (b_new_member_add.getText().equals("INCLUDE MEMBER")) return false;
+        }
 
         String title = et_new_item.getText().toString();
-        if(TextUtils.isEmpty(title))return false;
+        if (TextUtils.isEmpty(title)) return false;
 
         else return true;
+    }
+
+    private void saveData() {
+
+        BaseModelManager manager = null;
+        String description = null;
+        switch (mModelType) {
+            case Model.MODEL_TYPE_INCOME:
+                Income income = new Income();
+                income.setDateString(mDateString);
+                income.setTitle(et_new_item.getText().toString());
+                income.setCategory(mCategory);
+                income.setAmount(Float.parseFloat(et_new_amount.getText().toString()));
+                description = et_new_note.getText().toString();
+                if (!TextUtils.isEmpty(description)) {
+                    income.setDescription(description);
+                }
+
+                manager = new IncomeManager(this);
+                manager.insertItemInDB(income);
+
+                Toast.makeText(this, "Income ENTRY SAVED", Toast.LENGTH_SHORT).show();
+                break;
+            case Model.MODEL_TYPE_EXPENSE:
+                Expense expense = new Expense();
+                expense.setDateString(mDateString);
+                expense.setTitle(et_new_item.getText().toString());
+                expense.setCategory(mCategory);
+                expense.setAmount(Float.parseFloat(et_new_amount.getText().toString()));
+                description = et_new_note.getText().toString();
+                if (!TextUtils.isEmpty(description)) {
+                    expense.setDescription(description);
+                }
+                // TODO Split with other member entry needs to be included.
+
+                manager = new ExpenseManager(this);
+                manager.insertItemInDB(expense);
+
+                Toast.makeText(this, "Expense ENTRY SAVED", Toast.LENGTH_SHORT).show();
+                break;
+            case Model.MODEL_TYPE_BORROW:
+                Borrow borrow = new Borrow();
+                borrow.setDateString(mDateString);
+                borrow.setTitle(et_new_item.getText().toString());
+                borrow.setCategory(mCategory);
+                borrow.setAmount(Float.parseFloat(et_new_amount.getText().toString()));
+                description = et_new_note.getText().toString();
+                if (!TextUtils.isEmpty(description)) {
+                    borrow.setDescription(description);
+                }
+
+                // TODO Include member field need to be handled
+                //borrow.setLinkedContact(b_new_member_add.getText());
+
+                manager = new BorrowManager(this);
+                manager.insertItemInDB(borrow);
+
+                Toast.makeText(this, "Borrow ENTRY SAVED", Toast.LENGTH_SHORT).show();
+                break;
+            case Model.MODEL_TYPE_LENT:
+                Lent lent = new Lent();
+                lent.setDateString(mDateString);
+                lent.setTitle(et_new_item.getText().toString());
+                lent.setCategory(mCategory);
+                lent.setAmount(Float.parseFloat(et_new_amount.getText().toString()));
+                description = et_new_note.getText().toString();
+                if (!TextUtils.isEmpty(description)) {
+                    lent.setDescription(description);
+                }
+
+                // TODO Include member field need to be handled
+//                lent.setLinkedContact(b_new_member_add.getText());
+
+                manager = new LentManager(this);
+                manager.insertItemInDB(lent);
+
+                Toast.makeText(this, "Lent ENTRY SAVED", Toast.LENGTH_SHORT).show();
+                break;
+        }
+
     }
 
     public void showDatePickerDialog() {
@@ -282,11 +367,17 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
         datePickerFragment.setListener(this);
         datePickerFragment.show(getSupportFragmentManager(), "datePicker");
     }
+
+    public void setCurrentDate() {
+        mDateString = DateUtils.getCurrentDate();
+        b_new_date.setText(mDateString);
+    }
+
     @Override
     public void setDate(int year, int monthOfYear, int dayOfMonth) {
-        b_new_date.setText(String.format("%d/%d/%d", dayOfMonth, monthOfYear+1, year));
-        dateString = DateUtils.getDateString(year,monthOfYear,dayOfMonth);
-        Toast.makeText(this,"DATE:"+dateString,Toast.LENGTH_SHORT).show();
+        b_new_date.setText(String.format("%d/%d/%d", year, monthOfYear+1, dayOfMonth));
+        mDateString = DateUtils.getDateString(year,monthOfYear,dayOfMonth);
+        Toast.makeText(this,"DATE:"+ mDateString,Toast.LENGTH_SHORT).show();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -303,7 +394,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
     private void addCategory(String uid){
         CategoryManager cm = new CategoryManager(this, mModelType);
         String title = cm.getItemFromListByUID(uid).getTitle();
-        category = 1;   // TODO This value has to be properly set
+        mCategory = uid;   // TODO This value has to be properly set
         b_new_category.setText(title);
     }
 

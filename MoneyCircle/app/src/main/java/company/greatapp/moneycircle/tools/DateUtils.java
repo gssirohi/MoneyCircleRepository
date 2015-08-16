@@ -43,6 +43,7 @@ public class DateUtils {
         String nextDate = "";
         try {
             Calendar today = Calendar.getInstance();
+            today.setFirstDayOfWeek(Calendar.SUNDAY);
             DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
             Date date = format.parse(curDate);
             today.setTime(date);
@@ -59,6 +60,7 @@ public class DateUtils {
         String nextDate = "";
         try {
             Calendar today = Calendar.getInstance();
+            today.setFirstDayOfWeek(Calendar.SUNDAY);
             DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
             Date date = format.parse(curDate);
             today.setTime(date);
@@ -75,6 +77,7 @@ public class DateUtils {
         String nextDate = "";
         try {
             Calendar today = Calendar.getInstance();
+            today.setFirstDayOfWeek(Calendar.SUNDAY);
             DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
             Date date = format.parse(curDate);
             today.setTime(date);
@@ -91,6 +94,7 @@ public class DateUtils {
         String nextDate = "";
         try {
             Calendar today = Calendar.getInstance();
+            today.setFirstDayOfWeek(Calendar.SUNDAY);
             DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
             Date date = format.parse(curDate);
             today.setTime(date);
@@ -256,6 +260,7 @@ public class DateUtils {
     public static String getCurrentWeekFirstDate() {
         String dateString = "";
         Calendar c = Calendar.getInstance();
+        c.setFirstDayOfWeek(Calendar.SUNDAY);
         c.set(Calendar.DAY_OF_WEEK, c.getActualMinimum(Calendar.DAY_OF_WEEK));
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         dateString = format.format(c.getTime());
@@ -265,6 +270,7 @@ public class DateUtils {
     public static String getCurrentWeekLastDate() {
         String dateString = "";
         Calendar c = Calendar.getInstance();
+        c.setFirstDayOfWeek(Calendar.SUNDAY);
         c.set(Calendar.DAY_OF_WEEK, c.getActualMaximum(Calendar.DAY_OF_WEEK));
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         dateString = format.format(c.getTime());

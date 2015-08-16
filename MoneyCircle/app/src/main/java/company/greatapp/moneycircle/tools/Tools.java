@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import company.greatapp.moneycircle.constants.C;
+import company.greatapp.moneycircle.manager.CategoryManager;
 import company.greatapp.moneycircle.model.Borrow;
 import company.greatapp.moneycircle.model.Expense;
 import company.greatapp.moneycircle.model.Income;
@@ -50,7 +51,7 @@ public class Tools {
         return result;
     }
 
-    public static void addDummyEntries(Context context) {
+    public static void addDummyEntries(Context context, CategoryManager categoryManager) {
         String[] incomes = new String[]{"LGSI Salary","Gambling on Dewali",
                 "Flat rent","Commety Interest","project freelancing","KBC Price"};
         String[] expenses= new String[]{
@@ -64,11 +65,26 @@ public class Tools {
         String[] splits= new String[]{"New Friends Party","Dont Tell Mama","Gilassy","KFC","McD treat","HRC treat",
         "Flat 102 party","Nandi Hill Trip"};
 
+        ArrayList<Model> incomeCategoryList = null;
+        ArrayList<Model> expenseCategoryList = null;
+        ArrayList<Model> borrowCategoryList = null;
+        ArrayList<Model> lentCategoryList = null;
+        ArrayList<Model> splitCategoryList = null;
+
+        if (categoryManager != null) {
+            categoryManager.loadItemsFromDB();
+            incomeCategoryList = categoryManager.getIncomeCategoryList();
+            expenseCategoryList = categoryManager.getExpenseCategoryList();
+            borrowCategoryList = categoryManager.getBorrowCategoryList();
+            lentCategoryList = categoryManager.getLentCategoryList();
+            splitCategoryList = categoryManager.getSplitCategoryList();
+        }
+
         for(String s: incomes){
             Income item = new Income();
             item.setTitle(s);
             item.setDateString(getRandomDate());
-            item.setCategory(randInt(0, 3));
+            item.setCategory(incomeCategoryList.get(randInt(0, incomeCategoryList.size()-1)).getUID());
             item.setAmount(randInt(500, 10000));
             item.insertItemInDB(context);
         }
@@ -76,7 +92,7 @@ public class Tools {
             Expense item = new Expense();
             item.setTitle(s);
             item.setDateString(getRandomDate());
-            item.setCategory(randInt(0, 3));
+            item.setCategory(expenseCategoryList.get(randInt(0, expenseCategoryList.size()-1)).getUID());
             item.setAmount(randInt(500, 10000));
             item.insertItemInDB(context);
         }
@@ -84,7 +100,7 @@ public class Tools {
             Borrow item = new Borrow();
             item.setTitle(s);
             item.setDateString(getRandomDate());
-            item.setCategory(randInt(0, 3));
+            item.setCategory(borrowCategoryList.get(randInt(0, borrowCategoryList.size()-1)).getUID());
             item.setAmount(randInt(500, 10000));
             item.insertItemInDB(context);
         }
@@ -92,7 +108,7 @@ public class Tools {
             Lent item = new Lent();
             item.setTitle(s);
             item.setDateString(getRandomDate());
-            item.setCategory(randInt(0, 3));
+            item.setCategory(lentCategoryList.get(randInt(0, lentCategoryList.size()-1)).getUID());
             item.setAmount(randInt(500, 10000));
             item.insertItemInDB(context);
         }

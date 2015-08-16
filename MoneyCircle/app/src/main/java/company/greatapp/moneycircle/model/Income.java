@@ -3,7 +3,6 @@ package company.greatapp.moneycircle.model;
 import android.content.ContentValues;
 import android.net.Uri;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import company.greatapp.moneycircle.constants.DB;
@@ -14,38 +13,50 @@ import company.greatapp.moneycircle.tools.Tools;
  */
 public class Income extends Model {
     //=====COMMON==============//
-    private int dbId;
-    private String uid = "";
-    private String title = "";
+    private int mDbId;
+    private String mUid = "";
+    private String mTitle = "";
     private int modelType;
     private String jsonString = "";
     //--------------------------------//
 
     //=========== SPECIFICS ==============//
-    private int mCategory;
+    private String mCategory;
     private String mDescription = "";
     private float mAmount;
     private String mDateString ="";
     private Date date;
 
-    public Income() {}      // Empty Constructor
-
-    // TODO Need to update this constructor implementation properly
-    public Income(String title, int amount, int category, String date) {
-
-        setTitle(title);
-        setAmount(amount);
-        setCategory(category);
-        setDateString(date);
+    public Income() {      // Empty Constructor
         setUID(Tools.generateUniqueId());
-        setModelType(Category.MODEL_TYPE_INCOME);
     }
 
-    public int getCategory() {
+    /**
+     * This Constructor is only used to create income object whose UID need to be load from DB.
+     * @param dbId
+     * @param uid
+     */
+    public Income(int dbId, String uid) {
+        mDbId = dbId;
+        mUid = uid;
+    }
+
+    // TODO Need to update this constructor implementation properly
+    public Income(String title, int amount, String category, String date) {
+
+        mTitle = title;
+        mAmount = amount;
+        mCategory = category;
+        mDateString = date;
+        //setUID(Tools.generateUniqueId());
+        modelType = Model.MODEL_TYPE_INCOME;
+    }
+
+    public String getCategory() {
         return mCategory;
     }
 
-    public void setCategory(int category) {
+    public void setCategory(String category) {
         this.mCategory = category;
     }
 
@@ -84,7 +95,7 @@ public class Income extends Model {
 
     @Override
     public void setTitle(String title) {
-        this.title = title;
+        this.mTitle = title;
     }
 
     @Override
@@ -94,17 +105,17 @@ public class Income extends Model {
 
     @Override
     public void setDbId(int dbId) {
-       this.dbId = dbId;
+       this.mDbId = dbId;
     }
 
     @Override
     public void setUID(String uid) {
-        this.uid = uid;
+        this.mUid = uid;
     }
 
     @Override
     public String getTitle() {
-        return title;
+        return mTitle;
     }
 
     @Override
@@ -114,12 +125,12 @@ public class Income extends Model {
 
     @Override
     public String getUID() {
-        return uid;
+        return mUid;
     }
 
     @Override
     public int getDbId() {
-        return dbId;
+        return mDbId;
     }
 
     @Override

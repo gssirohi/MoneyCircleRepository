@@ -25,6 +25,7 @@ import company.greatapp.moneycircle.model.Model;
 
 public class ChooserActivity extends Activity {
 
+    private static final String LOGTAG = "ChooserActivity";
     private AbsListView.MultiChoiceModeListener actionModeCallBack;
     private ChooserAdapter adapter;
     private ListView chooserList;
@@ -44,11 +45,13 @@ public class ChooserActivity extends Activity {
         title.setText(getChooserTitle(requestCode));
         adapter = new ChooserAdapter(this,0,getItemList(requestCode, chooserModel));
         chooserList.setChoiceMode(choiceMode);
+        Log.d(LOGTAG,"onCreate choiceMode"+choiceMode);
         chooserList.setAdapter(adapter);
 
         chooserList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(LOGTAG,"setOnItemClickListener onItemClick");
                 onClickListItem(parent, view, position, id);
             }
         });
@@ -58,6 +61,7 @@ public class ChooserActivity extends Activity {
             @Override
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
                                            int arg2, long arg3) {
+                Log.d(LOGTAG,"setOnItemLongClickListener onItemClick");
                 chooserList.clearChoices();
                 chooserList.setItemChecked(arg2, true);
                 chooserList.startActionMode(getActionModeCallBack());
@@ -98,6 +102,7 @@ public class ChooserActivity extends Activity {
         }
         return actionModeCallBack;
     }
+
     private void setActionModeCallBack() {
         actionModeCallBack = new AbsListView.MultiChoiceModeListener() {
 
@@ -132,6 +137,7 @@ public class ChooserActivity extends Activity {
 
             @Override
             public void onItemCheckedStateChanged(android.view.ActionMode mode, int position, long id, boolean checked) {
+                Log.d(LOGTAG,"onItemCheckedStateChanged");
                 // Capture total checked items
                 final int checkedCount = chooserList.getCheckedItemCount();
                 // Set the CAB title according to total checked items
@@ -144,9 +150,11 @@ public class ChooserActivity extends Activity {
     private void onClickListItem(AdapterView<?> parent, View view, int position, long id) {
         //TextView tv = (CheckBox)view.findViewById(R.id.tv_chooser_item);
         //tv.setChecked(!tv.isChecked());//toggel
+        Log.d(LOGTAG,"onClickListItem");
     }
 
     private void onClickDone() {
+        Log.d(LOGTAG,"onClickDone");
         SparseBooleanArray checked = chooserList.getCheckedItemPositions();
         ArrayList<String> selectedItems = new ArrayList<String>();
         for (int i = 0; i < checked.size(); i++) {
@@ -186,6 +194,7 @@ public class ChooserActivity extends Activity {
     }
 
     private ArrayList<Model> getItemList(int code, int chooserModel) {
+        Log.d(LOGTAG,"getItemList");
         ArrayList<Model> list = new ArrayList<Model>();
         switch(code) {
             case C.TAG_CATEGORIES:

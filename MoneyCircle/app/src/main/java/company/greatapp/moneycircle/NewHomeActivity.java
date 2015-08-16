@@ -26,10 +26,14 @@ import android.widget.TabWidget;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.adapters.MoneyItemAdapter;
 import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.constants.DB;
+import company.greatapp.moneycircle.manager.CategoryManager;
+import company.greatapp.moneycircle.model.Category;
 import company.greatapp.moneycircle.model.DBFilter;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.Period;
@@ -60,11 +64,11 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
     private TextView tv_period_start;
     private TextView tv_period_end;
 
-    private String[] mCategories;
-    private ArrayAdapter<String> adapter;
+    private ArrayList<Model> mCategories;
+    private ArrayAdapter<Model> adapter;
 
     private int modelType;
-    private int category;
+    private String category;
     private int periodType;
 
     private DBFilter filter;
@@ -140,7 +144,7 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
             }
         });
         getCategories();
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mCategories);
+        adapter = new ArrayAdapter<Model>(this, android.R.layout.simple_spinner_item, mCategories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sp_cat.setAdapter(adapter);
         sp_cat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -159,7 +163,7 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
     }
     
     public void init(){
-        category = 0;
+        category = null;
         periodType = Period.PERIOD_DATE;
         filter = new DBFilter(modelType,Period.PERIOD_DATE,category);
         setPeriodView();
@@ -212,7 +216,7 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
     return null;
 }
     private void handleSpinnerItemSelected(int position) {
-        String item = adapter.getItem(position);
+        String item = adapter.getItem(position).getTitle();
         setView("category", item);
         changeContentView(CHANGE_TYPE_CATEGORY,position);
     }
@@ -237,8 +241,6 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
         }
     }
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -262,7 +264,7 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
     }
 
     private void getCategories() {
-        if (modelType == Model.MODEL_TYPE_INCOME) {
+        /*if (modelType == Model.MODEL_TYPE_INCOME) {
             mCategories = new String[]{"All", "Salary", "Share", "RD", "FD"};
         } else if (modelType == Model.MODEL_TYPE_EXPENSE) {
             mCategories = new String[]{"Entertainment", "Bills", "Clothing", "Food", "Trip", "Travel"};
@@ -273,7 +275,11 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
         }
         else if (modelType == Model.MODEL_TYPE_SPLIT) {
             mCategories = new String[]{"cat1", "cat2", "cat3"};
-        }
+        }*/
+        mCategories = new ArrayList<>();
+        mCategories.add(new Category("All", null));
+        CategoryManager categoryManager = new CategoryManager(this, modelType);
+        mCategories.addAll(categoryManager.getItemList());
     }
 
     private void initialiseTabHost() {
@@ -319,8 +325,8 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
                 filter.setPeriodType(value);
                 break;
             case CHANGE_TYPE_CATEGORY:
-                category = value;
-                filter.setCategory(value);
+                category = mCategories.get(value).getUID();
+                filter.setCategory(category);
                 break;
             case CHANGE_TYPE_ARROW:
                 if(value == ARROW_LEFT) {
@@ -334,14 +340,24 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
         setPeriodView();
     }
 
-
-
-
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if(id == LODER_ID) {
             filter.print();
-            Log.d("Split","onCreateLoader loader");
+            Log.d("Split", "onCreateLoader loader");
+            Log.d("Split", "onCreateLoader loader filter.getDbUri()" + filter.getDbUri());
+            for (int i = 0; i < filter.getProjection().length; i++) {
+                Log.d("Split","onCreateLoader loader i["+i+"] filter.getProjection()"+filter.getProjection()[i]);
+            }
+            Log.d("Split","onCreateLoader loader filter.getSelection()"+filter.getSelection());
+            if (filter.getArgs() != null) {
+                for (int i = 0; i < filter.getArgs().length; i++) {
+                    Log.d("Split","onCreateLoader loader i["+i+"] filter.getArgs()"+filter.getArgs()[i]);
+                }
+            } else {
+                Log.d("Split","onCreateLoader loader filter.getArgs()"+filter.getArgs());
+            }
+
             return new CursorLoader(this, filter.getDbUri(),
                     filter.getProjection(), filter.getSelection(), filter.getArgs(),
                     "data DESC");

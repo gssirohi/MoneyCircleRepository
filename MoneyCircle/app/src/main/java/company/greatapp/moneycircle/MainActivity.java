@@ -180,7 +180,7 @@ public class MainActivity extends ActionBarActivity {
         if(!pm.isDeviceContactsRetrived()) {
             ContactManager contactManager = new ContactManager(this);
             contactManager.retriveContactsFromDevice();//contact initialization
-            Tools.addDummyEntries(this);
+            //Tools.addDummyEntries(this);
             SharedPreferences.Editor et =  pm.getEditor();
             et.putBoolean(C.PREF_CONTACTS_RETRIVED, true);
             et.commit();
@@ -192,6 +192,7 @@ public class MainActivity extends ActionBarActivity {
             SharedPreferences.Editor et = pm.getEditor();
             et.putBoolean(C.PREF_DEFAULT_CATEGORIES_LOADED, true);
             et.commit();
+            Tools.addDummyEntries(this, categoryManager);
         }
     }
     private void handleDrawerItemClick(AdapterView<?> parent, View view, int position, long id) {

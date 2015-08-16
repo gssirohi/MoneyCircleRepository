@@ -3,10 +3,10 @@ package company.greatapp.moneycircle.model;
 import android.content.ContentValues;
 import android.net.Uri;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import company.greatapp.moneycircle.constants.DB;
+import company.greatapp.moneycircle.tools.Tools;
 
 /**
  * Created by gyanendra.sirohi on 7/1/2015.
@@ -15,23 +15,39 @@ public class Borrow extends Model {
 
 
     //=====COMMON==============//
-    private int dbId;
-    private String uid = "";
-    private String title = "";
-    private int modelType;
+    private int mDbId;
+    private String mUid = "";
+    private String mTitle = "";
+    private int mModelType;
     private String jsonString = "";
     //--------------------------------//
 
     //=========== SPECIFICS ==============//
-    private int category;
-    private String description = "";
-    private int amount;
-    private String dateString="";
+
+    private String mCategory;
+    private String mDescription = "";
+    private float mAmount;
+    private String mDateString ="";
     private Date date;
     private Date dueDate;
     private String dueDateString = "";
     private String linkedContactJson;
     private Contact linkedContact;
+
+    public Borrow() {      // Empty Constructor
+        setUID(Tools.generateUniqueId());
+    }
+
+    /**
+     * This Constructor is only used to create expense object whose UID need to be load from DB.
+     * @param dbId
+     * @param uid
+     */
+    public Borrow(int dbId, String uid) {
+        mDbId = dbId;
+        mUid = uid;
+    }
+
     @Override
     protected Uri getTableUri() {
         return DB.BORROW_TABLE_URI;
@@ -68,36 +84,36 @@ public class Borrow extends Model {
         this.linkedContact = linkedContact;
     }
 
-    public int getCategory() {
-        return category;
+    public String getCategory() {
+        return mCategory;
     }
 
-    public void setCategory(int category) {
-        this.category = category;
+    public void setCategory(String category) {
+        this.mCategory = category;
     }
 
     public String getDescription() {
-        return description;
+        return mDescription;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.mDescription = description;
     }
 
-    public int getAmount() {
-        return amount;
+    public float getAmount() {
+        return mAmount;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setAmount(float amount) {
+        this.mAmount = amount;
     }
 
     public String getDateString() {
-        return dateString;
+        return mDateString;
     }
 
     public void setDateString(String dateString) {
-        this.dateString = dateString;
+        this.mDateString = dateString;
     }
 
     public Date getDate() {
@@ -111,42 +127,42 @@ public class Borrow extends Model {
 
     @Override
     public void setTitle(String title) {
-        this.title = title;
+        this.mTitle = title;
     }
 
     @Override
     public void setModelType(int modelType) {
-        this.modelType = modelType;
+        this.mModelType = modelType;
     }
 
     @Override
     public void setDbId(int dbId) {
-        this.dbId = dbId;
+        this.mDbId = dbId;
     }
 
     @Override
     public void setUID(String uid) {
-        this.uid = uid;
+        this.mUid = uid;
     }
 
     @Override
     public String getTitle() {
-        return title;
+        return mTitle;
     }
 
     @Override
     public int getModelType() {
-        return modelType;
+        return mModelType;
     }
 
     @Override
     public String getUID() {
-        return uid;
+        return mUid;
     }
 
     @Override
     public int getDbId() {
-        return dbId;
+        return mDbId;
     }
 
     @Override

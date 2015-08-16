@@ -8,6 +8,7 @@ import android.net.Uri;
 
 import java.util.ArrayList;
 
+import company.greatapp.moneycircle.NewHomeActivity;
 import company.greatapp.moneycircle.constants.DB;
 
 import company.greatapp.moneycircle.model.Lent;
@@ -27,7 +28,9 @@ public class LentManager extends BaseModelManager  {
 
     public LentManager(Context context){
         this.context = context;
-        loadItemsFromDB();
+        if (context instanceof NewHomeActivity) {
+            loadItemsFromDB();
+        }
     }
 
 
@@ -38,8 +41,8 @@ public class LentManager extends BaseModelManager  {
         int dbId               =cursor.getInt(cursor.getColumnIndex(DB.DB_ID));
         String uid             = cursor.getString(cursor.getColumnIndex(DB.UID));
         String title           = cursor.getString(cursor.getColumnIndex(DB.TITLE));
-        int category           = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY));
-        int amount             = cursor.getInt(cursor.getColumnIndex(DB.AMOUNT));
+        String category           = cursor.getString(cursor.getColumnIndex(DB.CATEGORY));
+        String amount             = cursor.getString(cursor.getColumnIndex(DB.AMOUNT));
         String description     = cursor.getString(cursor.getColumnIndex(DB.DESCRIPTION));
         String dueDateString     = cursor.getString(cursor.getColumnIndex(DB.DUE_DATE_STRING));
         String linkedContactJson     = cursor.getString(cursor.getColumnIndex(DB.LINKED_CONTACT_JSON));
@@ -48,18 +51,16 @@ public class LentManager extends BaseModelManager  {
         String json_string     = cursor.getString(cursor.getColumnIndex(DB.JSON_STRING));
         String date_string     = cursor.getString(cursor.getColumnIndex(DB.DATE_STRING));
         int date               = cursor.getInt(cursor.getColumnIndex(DB.DATE));
-        int dom                = cursor.getInt(cursor.getColumnIndex(DB.DAY_OF_MONTH));
-        int wom                = cursor.getInt(cursor.getColumnIndex(DB.WEEK_OF_MONTH));
-        int m                  = cursor.getInt(cursor.getColumnIndex(DB.MONTH));
-        int y                  = cursor.getInt(cursor.getColumnIndex(DB.YEAR));
+        int dateOfMonth             = cursor.getInt(cursor.getColumnIndex(DB.DAY_OF_MONTH));
+        int weekOfMonth             = cursor.getInt(cursor.getColumnIndex(DB.WEEK_OF_MONTH));
+        int month             = cursor.getInt(cursor.getColumnIndex(DB.MONTH));
+        int year             = cursor.getInt(cursor.getColumnIndex(DB.YEAR));
 
 
-        Lent lent =new Lent();
-        lent.setDbId(dbId);
-        lent.setUID(uid);
+        Lent lent =new Lent(dbId, uid);
         lent.setTitle(title);
         lent.setCategory(category);
-        lent.setAmount(amount);
+        lent.setAmount(Float.parseFloat(amount));
         lent.setDescription(description);
         lent.setDueDateString(dueDateString);
         lent.setLinkedContactJson(linkedContactJson);

@@ -20,11 +20,17 @@ public class Category extends Model  {
     private String mJsonString;
 
     public Category(String categoryName, int categoryType) {
-        setTitle(categoryName);
+        mCategoryName = categoryName;
         setUID(Tools.generateUniqueId());
         mCategoryType = categoryType;
         mModelType = Model.MODEL_TYPE_CATEGORY;
         // mCategoryId =      // TODO Need to set this value by deciding the unique number logic
+    }
+
+    public Category(String categoryName, String uid) {
+
+        mCategoryName = categoryName;
+        mUId = uid;
     }
 
     public Category(String categoryName,int dbId, String uid, int categoryType/*,int categoryId*/) {
@@ -115,5 +121,10 @@ public class Category extends Model  {
         values.put(DB.CATEGORY_NAME, getTitle());
         values.put(DB.CATEGORY_TYPE, getCategoryType());
         return values;
+    }
+
+    @Override
+    public String toString() {
+        return mCategoryName;
     }
 }

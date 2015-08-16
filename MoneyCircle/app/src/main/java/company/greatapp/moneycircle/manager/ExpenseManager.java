@@ -9,6 +9,7 @@ import android.net.Uri;
 import java.util.ArrayList;
 import java.util.Date;
 
+import company.greatapp.moneycircle.NewHomeActivity;
 import company.greatapp.moneycircle.constants.DB;
 
 import company.greatapp.moneycircle.model.Expense;
@@ -29,7 +30,9 @@ public class ExpenseManager extends BaseModelManager  {
 
     public ExpenseManager(Context context){
         this.context = context;
-        loadItemsFromDB();
+        if (context instanceof NewHomeActivity) {
+            loadItemsFromDB();
+        }
     }
 
 
@@ -41,26 +44,24 @@ public class ExpenseManager extends BaseModelManager  {
         int dbId               =cursor.getInt(cursor.getColumnIndex(DB.DB_ID));
         String uid             = cursor.getString(cursor.getColumnIndex(DB.UID));
         String title            = cursor.getString(cursor.getColumnIndex(DB.TITLE));
-        int category           = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY));
-        int amount             = cursor.getInt(cursor.getColumnIndex(DB.AMOUNT));
+        String category           = cursor.getString(cursor.getColumnIndex(DB.CATEGORY));
+        String amount             = cursor.getString(cursor.getColumnIndex(DB.AMOUNT));
         String description     = cursor.getString(cursor.getColumnIndex(DB.DESCRIPTION));
         int isLinked             = cursor.getInt(cursor.getColumnIndex(DB.IS_LINKED_WITH_SPLIT));
         String splitJson     = cursor.getString(cursor.getColumnIndex(DB.LINKED_SPLIT_JSON));
         String json_string     = cursor.getString(cursor.getColumnIndex(DB.JSON_STRING));
         String date_string       = cursor.getString(cursor.getColumnIndex(DB.DATE_STRING));
         int date             = cursor.getInt(cursor.getColumnIndex(DB.DATE));
-        int dom             = cursor.getInt(cursor.getColumnIndex(DB.DAY_OF_MONTH));
-        int wom             = cursor.getInt(cursor.getColumnIndex(DB.WEEK_OF_MONTH));
-        int m             = cursor.getInt(cursor.getColumnIndex(DB.MONTH));
-        int y             = cursor.getInt(cursor.getColumnIndex(DB.YEAR));
+        int dateOfMonth             = cursor.getInt(cursor.getColumnIndex(DB.DAY_OF_MONTH));
+        int weekOfMonth             = cursor.getInt(cursor.getColumnIndex(DB.WEEK_OF_MONTH));
+        int month             = cursor.getInt(cursor.getColumnIndex(DB.MONTH));
+        int year             = cursor.getInt(cursor.getColumnIndex(DB.YEAR));
 
 
-        Expense expense =new Expense();
-        expense.setDbId(dbId);
-        expense.setUID(uid);
+        Expense expense =new Expense(dbId, uid);
         expense.setTitle(title);
         expense.setCategory(category);
-        expense.setAmount(amount);
+        expense.setAmount(Float.parseFloat(amount));
         expense.setDescription(description);
         expense.setIsLinkedWithSplit((isLinked == 1)?true:false);
         expense.setLinkedSplitJson(splitJson);
