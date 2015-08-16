@@ -24,7 +24,6 @@ import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.split.SetSplitAmountActivity;
 import company.greatapp.moneycircle.split.SplitToolActivity;
 import company.greatapp.moneycircle.tools.Tools;
-import company.greateapp.moneycircle.MainActivity;
 
 
 public class LauncherActivity extends ActionBarActivity {

@@ -5,7 +5,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_margin="10dp"
+    android:layout_margin="5dp"
     card_view:cardCornerRadius="4dp">
 
     <LinearLayout
@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:background="@color/app_lighter"
+            android:background="#FFFF8000"
             android:orientation="horizontal"
             android:paddingTop="3dp"
             android:padding="3dp">
@@ -46,7 +46,6 @@
             android:id="@+id/llCardViewContentContainerId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -55,14 +54,13 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:layout_margin="5dp"
                 android:weightSum="2">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="This month"/>
+                    android:text="Monthly Income"/>
                 <TextView
                     android:id="@+id/tvMainInfoId"
                     android:layout_width="0dp"
@@ -79,7 +77,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:layout_margin="5dp"
                 android:weightSum="2">
 
                 <TextView
