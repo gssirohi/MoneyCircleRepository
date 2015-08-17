@@ -1,9 +1,13 @@
 <resources>
     <string name="app_name">MoneyCircle</string>
     <string name="action_settings">Settings</string>
+    <string name="action_add_new_entry">NEW</string>
+
     <string name="welcome">Welcome!</string>
     <string name="start">Start</string>
     <string name="activity_contact_us">ContactUs</string>
+    
+        <!--Registration and Login Related String-->
     <string name="name">Name</string>
     <string name="mobile">Mobile</string>
     <string name="dob">DOB</string>
@@ -11,6 +15,9 @@
     <string name="activity_register_and_SignIn">Register/SignIn</string>
     <string name="google_plus">Google Plus</string>
     <string name="facebook">Facebook</string>
+    <string name="authentication_text"><big><big><b>Authentication</b></big></big>\n<small>Please authenticate by selecting google or facebook login.</small></string>
+    <string name="email">Email</string>
+
     <string name="title_activity_set_split_amount">Set Split Amount</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_manage_categories">Manage Categories</string>
@@ -33,4 +40,75 @@
     <string name="categories">Category</string>
     <string name="invite_contact">Invite Contacts</string>
     <string name="create_new_circle">Create New Circle</string>
+    <string name="title_activity_add_new_entry">New Entry</string>
+    	<!--Diary Related Strings-->
+    <string name="income">Income</string>
+    <string name="expense">Expense</string>
+    <string name="borrowed">Borrowed</string>
+    <string name="lended">Lended</string>
+    <string name="split">Split</string>
+    <string name="action_add">Add</string>
+    <string name="diary">Personal Diary</string>
+    
+    <array name="list_add_new_entry">
+        <item>@string/income</item>
+        <item>@string/expense</item>
+        <item>@string/borrowed</item>
+        <item>@string/lended</item>
+        <item>@string/split</item>
+    </array>
+
+    	<!--Drawer Related Strings-->
+
+    <string name="profile">Profile</string>
+    <string name="contact_and_circle">Contact &amp; Circles</string>
+    <string name="report">Report</string>
+    <string name="share">Share</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="activity_home">Home Activity</string>
+
+    <array name="drawer_list">
+        <item>@string/diary</item>
+        <item>@string/income</item>
+        <item>@string/expense</item>
+        <item>@string/borrowed</item>
+        <item>@string/lended</item>
+        <item>@string/contact_and_circle</item>
+        <item>@string/action_settings</item>
+        <item>@string/profile</item>
+        <item>@string/report</item>
+        <item>@string/share</item>
+        <item>@string/activity_contact_us</item>
+    </array>
+    <string name="title_activity_new_home">NewHomeActivity</string>
+    <string name="drawer_open">Slider Menu Opened</string>
+    <string name="drawer_close">Slider Menu Closed</string>
+
+    <!-- Nav Drawer Menu Items -->
+    <string-array name="nav_drawer_items">
+        <item >Home</item>
+        <item >People</item>
+        <item >Settings</item>
+        <item >Notifications</item>
+        <item >Profile</item>
+        <item >Developers</item>
+    </string-array>
+
+    <!-- Nav Drawer List Item Icons -->
+    <!-- Keep them in order as the titles are in -->
+    <array name="nav_drawer_icons">
+        <item>@drawable/home_icon</item>
+        <item>@drawable/people_icon</item>
+        <item>@drawable/settings_icon</item>
+        <item>@drawable/notification</item>
+        <item>@drawable/profile</item>
+        <item>@drawable/developer</item>
+    </array>
+
+    <!-- Content Description -->
+    <string name="desc_list_item_icon">Item Icon</string>
+    <string name="title_activity_main">MainActivity</string>
+
 </resources>

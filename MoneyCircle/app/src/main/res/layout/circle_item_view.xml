@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="10"
+        android:background="@color/accent_material_light">
+
+        <TextView
+            android:id="@+id/tvGroupNameId"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="9"
+            android:textStyle="bold"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:text="Group Name"/>
+
+        <TextView
+            android:id="@+id/tvGroupMemberCountId"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="6"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/llGroupListId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <!--<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/accent_material_dark"
+        android:orientation="horizontal"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp">
+
+        <ImageView
+            android:id="@+id/ivMember1Id"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/ic_profilepic"/>
+
+        <ImageView
+            android:id="@+id/ivMember2Id"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/ic_profilepic"/>
+
+        <ImageView
+            android:id="@+id/ivMember3Id"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/ic_profilepic"/>
+
+        <ImageView
+            android:id="@+id/ivMember4Id"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/ic_profilepic"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:gravity="bottom"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:text="......."/>
+    </LinearLayout>-->
+
+</LinearLayout>

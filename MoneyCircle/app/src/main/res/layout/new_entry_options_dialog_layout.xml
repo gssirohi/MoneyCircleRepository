@@ -1,0 +1,124 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="horizontal">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:baselineAligned="true">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <view
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    class="company.greatapp.moneycircle.view.CircleButton"
+                    android:id="@+id/b_daily_shop"
+                    android:text="DAILY EXPENSE"
+
+                    android:layout_weight="1"
+                    android:layout_margin="20dp"
+                    android:layout_gravity="center_vertical" />
+
+                <view
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    class="company.greatapp.moneycircle.view.CircleButton"
+                    android:id="@+id/b_split"
+                    android:text="SPLIT"
+                    android:layout_weight="1"
+                    android:layout_margin="20dp"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <view
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    class="company.greatapp.moneycircle.view.CircleButton"
+                    android:id="@+id/b_income"
+                    android:text="INCOME"
+                    android:layout_weight="1"
+                    android:layout_margin="20dp"
+                    android:layout_gravity="center_vertical" />
+
+                <view
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    class="company.greatapp.moneycircle.view.CircleButton"
+                    android:id="@+id/b_expense"
+                    android:text="EXPENSE"
+                    android:layout_weight="1"
+                    android:layout_margin="20dp"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <view
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    class="company.greatapp.moneycircle.view.CircleButton"
+                    android:id="@+id/b_lent"
+                    android:text="LENT"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="20dp" />
+
+                <view
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    class="company.greatapp.moneycircle.view.CircleButton"
+                    android:id="@+id/b_borrow"
+                    android:text="BORROW"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="20dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <view
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    class="company.greatapp.moneycircle.view.CircleButton"
+                    android:id="@+id/b_new_category"
+                    android:text="CATEGORY"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="20dp" />
+
+                <view
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    class="company.greatapp.moneycircle.view.CircleButton"
+                    android:id="@+id/b_new_circle"
+                    android:text="CIRCLE"
+                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="20dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

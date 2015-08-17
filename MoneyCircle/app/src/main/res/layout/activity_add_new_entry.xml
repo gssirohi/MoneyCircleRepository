@@ -1,0 +1,180 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="company.greatapp.moneycircle.AddNewEntryActivity"
+    android:padding="2dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="N E W  I N C O M E"
+        android:id="@+id/tv_new_title"
+        android:layout_gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView2"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/tv_new_title"
+        android:layout_marginTop="10dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/tv_new_title"
+            android:layout_toEndOf="@+id/tv_new_title">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="I have a new "
+                    android:id="@+id/tv_new_before_type"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="5dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="INCOME "
+                    android:id="@+id/tv_new_type"
+                    android:layout_gravity="center_horizontal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="of worth"
+                    android:id="@+id/tv_new_after_type" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Rs."
+                    android:id="@+id/tv_new_currency"
+                    android:layout_gravity="center_vertical" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/et_new_amount"
+                    android:inputType="numberDecimal"
+                    android:textSize="@dimen/abc_text_size_display_2_material" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="of category type"
+                android:id="@+id/tv_new_category"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Salary"
+                android:id="@+id/b_new_category"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="5dp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="from"
+                android:id="@+id/tv_new_member_add"
+                android:layout_gravity="center_horizontal" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Member"
+                android:id="@+id/b_new_member_add"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="from the source"
+                android:id="@+id/tv_new_item"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/et_new_item"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="on Date"
+                android:id="@+id/textView9"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5 July 2015"
+                android:id="@+id/b_new_date"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="5dp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="and want to include below note"
+                android:id="@+id/tv_new_note"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="10dp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/et_new_note"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="5dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SPLIT THIS EXPENSE WITH OTHERS"
+                android:id="@+id/b_new_split"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

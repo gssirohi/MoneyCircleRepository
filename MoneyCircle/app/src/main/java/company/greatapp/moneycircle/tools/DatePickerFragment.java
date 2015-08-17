@@ -1,4 +1,4 @@
-package company.greatapp.moneycircle;
+package company.greatapp.moneycircle.tools;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -23,7 +23,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         // Use the current date as the default date in the picker
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MINUTE);
+        int month = calendar.get(Calendar.MONTH);
         int date = calendar.get(Calendar.DAY_OF_MONTH);
 
         // Create a new instance of DatePickerDialog and return it

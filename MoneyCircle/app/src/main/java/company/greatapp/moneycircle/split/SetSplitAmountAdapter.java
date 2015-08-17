@@ -9,19 +9,23 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import company.greatapp.moneycircle.model.Participant;
+
 /**
  * Created by gyanendra.s.sirohi on 6/26/2015.
  */
 class SetSplitAmountAdapter extends BaseAdapter {
 
-    private final ArrayList<SetSplitAmountActivity.Participant> participants;
+    private final ArrayList<Participant> participants;
+    private final int mode;
     Context context;
     private static LayoutInflater inflater = null;
     private TextView tv_amount;
 
-    public SetSplitAmountAdapter(Context context, ArrayList<SetSplitAmountActivity.Participant> participants) {
+    public SetSplitAmountAdapter(Context context, ArrayList<Participant> participants, int mode) {
         // TODO Auto-generated constructor stub
         this.context = context;
+        this.mode = mode;
         this.participants = participants;
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -48,7 +52,7 @@ class SetSplitAmountAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // TODO Auto-generated method stub
-            return  new SetSplitAmountRowItemView(context,null,inflater,participants.get(position));
+            return  new SetSplitAmountRowItemView(context,null,inflater,participants.get(position),mode);
     }
 }
 

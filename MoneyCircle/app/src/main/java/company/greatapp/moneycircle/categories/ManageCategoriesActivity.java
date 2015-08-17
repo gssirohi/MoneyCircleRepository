@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
@@ -20,18 +21,25 @@ import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.Toast;
 
 import company.greatapp.moneycircle.R;
+import company.greatapp.moneycircle.manager.CategoryManager;
+import company.greatapp.moneycircle.model.Category;
+import company.greatapp.moneycircle.model.Model;
 
 public class ManageCategoriesActivity extends ActionBarActivity {
+
+    public static final String LOGTAG = "ManageCategories";
 
     CategoryExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     List<String> listDataHeader;
-    HashMap<String, List<String>> listDataChild;
-    private ArrayList<String> income;
-    private ArrayList<String> Expense;
-    private ArrayList<String> lended;
-    private ArrayList<String> borrowed;
-    private ArrayList<String> split;
+    HashMap<String, List<Model>> listDataChild;
+    private ArrayList<Model> mIncomeCategoryList;
+    private ArrayList<Model> mExpenseCategoryList;
+    private ArrayList<Model> mLentCategoryList;
+    private ArrayList<Model> mBorrowCategoryList;
+    private ArrayList<Model> mSplitCategoryList;
+
+    private CategoryManager mCategoryManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +48,8 @@ public class ManageCategoriesActivity extends ActionBarActivity {
 
         // get the listview
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
+
+        mCategoryManager = new CategoryManager(this, 0);  // 0 is passed to load categories for all the models
 
         // preparing list data
         prepareListData();
@@ -110,106 +120,98 @@ public class ManageCategoriesActivity extends ActionBarActivity {
      * Preparing the list data
      */
     private void prepareListData() {
+
+        Log.d(LOGTAG, "prepareListData");
+
+        if (mCategoryManager == null) {
+            return;
+        }
+
         listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<String>>();
+        listDataChild = new HashMap<String, List<Model>>();
 
         // Adding child data
         listDataHeader.add("Income");
         listDataHeader.add("Expenses");
         listDataHeader.add("Borrowed Money");
-        listDataHeader.add("Lended Money");
+        listDataHeader.add("Lent Money");
         listDataHeader.add("Split Money");
 
         // Adding child data
-        income = new ArrayList<String>();
-        income.add("Salary");
-        income.add("business profit");
-        income.add("Rent");
-        income.add("freelancing");
-        income.add("donation");
-        income.add("Gambling");
-        income.add("Share");
-        income.add("Equity");
+        mIncomeCategoryList = mCategoryManager.getIncomeCategoryList();
 
-        Expense = new ArrayList<String>();
-        Expense.add("Entertainment");
-        Expense.add("Bills");
-        Expense.add("Clothing");
-        Expense.add("Outside Food");
-        Expense.add("Kitchen");
-        Expense.add("House holds");
-        Expense.add("Trip");
-        Expense.add("Daily Travel");
-        Expense.add("Insurance Policy");
+        mExpenseCategoryList = mCategoryManager.getExpenseCategoryList();
 
-        borrowed = new ArrayList<String>();
-        borrowed.add("Bank Loan");
-        borrowed.add("Credit Card");
-        borrowed.add("From Friends");
-        borrowed.add("From Family");
-        borrowed.add("Shop");
+        mBorrowCategoryList = mCategoryManager.getBorrowCategoryList();
 
-        lended = new ArrayList<String>();
-        lended.add("To Friend");
-        lended.add("To Family");
-        lended.add("Others");
+        mLentCategoryList = mCategoryManager.getLentCategoryList();
 
-        split = new ArrayList<String>();
-        split.add("Lunch");
-        split.add("Pizza");
-        split.add("Trip");
-        split.add("Rent");
-        split.add("Party");
-        split.add("Movie");
+        mSplitCategoryList = mCategoryManager.getSplitCategoryList();
 
-        listDataChild.put(listDataHeader.get(0), income); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), Expense);
-        listDataChild.put(listDataHeader.get(2), borrowed);
-        listDataChild.put(listDataHeader.get(3), lended);
-        listDataChild.put(listDataHeader.get(4), split);
+        listDataChild.put(listDataHeader.get(0), mIncomeCategoryList); // Header, Child data
+        listDataChild.put(listDataHeader.get(1), mExpenseCategoryList);
+        listDataChild.put(listDataHeader.get(2), mBorrowCategoryList);
+        listDataChild.put(listDataHeader.get(3), mLentCategoryList);
+        listDataChild.put(listDataHeader.get(4), mSplitCategoryList);
     }
 
     public void onClickDelete(View view) {
-       // Toast.makeText(this,"Delete Clicked",Toast.LENGTH_SHORT).show();
-        int group = (Integer)view.getTag(R.string.category_group_id);
-        int child = (Integer)view.getTag(R.string.category_child_id);
-        removeChild(group,child);
+        // Toast.makeText(this,"Delete Clicked",Toast.LENGTH_SHORT).show();
+        int group = (Integer) view.getTag(R.string.category_group_id);
+        int child = (Integer) view.getTag(R.string.category_child_id);
+        removeChild(group, child);
     }
 
     public void onClickAdd(View view) {
         // Toast.makeText(this,"Add Clicked",Toast.LENGTH_SHORT).show();
-        int group = (Integer)view.getTag(R.string.category_group_id);
+        int group = (Integer) view.getTag(R.string.category_group_id);
         showCategoryDialog(group);
     }
+
     private void removeChild(int group, int child) {
         //this will not remove view immediatley
         //you have to collapse and expand again to view the effect
         //However it will be automatically controlled later on
         //because we are going to use Loaders finally with database support
-        switch(group) {
+
+        if (mCategoryManager == null) {
+            return;
+        }
+
+        Model category = null;
+        switch (group) {
             case 0:
-                income.remove(child);
+                category = mIncomeCategoryList.get(child);
+                // TODO instead of updating this list need to change to use loader
+//                mIncomeCategoryList.remove(child);
                 break;
             case 1:
-                Expense.remove(child);
+                category = mExpenseCategoryList.get(child);
+//                mExpenseCategoryList.remove(child);
                 break;
             case 2:
-                borrowed.remove(child);
+                category = mBorrowCategoryList.get(child);
+//                mBorrowCategoryList.remove(child);
                 break;
             case 3:
-                lended.remove(child);
+                category = mLentCategoryList.get(child);
+//                mLentCategoryList.remove(child);
                 break;
             case 4:
-                split.remove(child);
+                category = mSplitCategoryList.get(child);
+//                mSplitCategoryList.remove(child);
                 break;
+        }
 
+        if (category != null) {
+            mCategoryManager.deleteItemFromDB(category);
         }
     }
 
     protected void showCategoryDialog(final int groupPos) {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-        final EditText edittext= new EditText(this);
+        final EditText edittext = new EditText(this);
         alert.setMessage("Enter name of category");
         alert.setTitle(listDataHeader.get(groupPos));
 
@@ -218,9 +220,9 @@ public class ManageCategoriesActivity extends ActionBarActivity {
         alert.setPositiveButton("CREATE", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 //What ever you want to do with the value
-                String name = edittext.getText().toString();
-                if(!TextUtils.isEmpty(name)) {
-                    addGroupChild(name, groupPos);
+                String categoryName = edittext.getText().toString();
+                if (!TextUtils.isEmpty(categoryName)) {
+                    addGroupChild(categoryName, groupPos);
                 }
                 dialog.dismiss();
             }
@@ -237,25 +239,39 @@ public class ManageCategoriesActivity extends ActionBarActivity {
 
     }
 
-    private void addGroupChild(String child, int groupPos) {
-        switch(groupPos) {
-        case 0:
-        income.add(child);
-        break;
-        case 1:
-        Expense.add(child);
-        break;
-        case 2:
-        borrowed.add(child);
-        break;
-        case 3:
-        lended.add(child);
-        break;
-        case 4:
-        split.add(child);
-        break;
+    private void addGroupChild(String categoryName, int groupPos) {
+        if (mCategoryManager == null) {
+            return;
+        }
 
-    }
+        Category category = null;
+        switch (groupPos) {
+            case 0:
+                category = new Category(categoryName, Model.MODEL_TYPE_INCOME);
+                // TODO instead of updating this list need to change to use loader
+//        mIncomeCategoryList.add(categoryName);
+                break;
+            case 1:
+                category = new Category(categoryName, Model.MODEL_TYPE_EXPENSE);
+//        mExpenseCategoryList.add(categoryName);
+                break;
+            case 2:
+                category = new Category(categoryName, Model.MODEL_TYPE_BORROW);
+//        mBorrowCategoryList.add(categoryName);
+                break;
+            case 3:
+                category = new Category(categoryName, Model.MODEL_TYPE_LENT);
+//        mLentCategoryList.add(categoryName);
+                break;
+            case 4:
+                category = new Category(categoryName, Model.MODEL_TYPE_SPLIT);
+//        mSplitCategoryList.add(categoryName);
+                break;
+
+        }
+        if (category != null) {
+            mCategoryManager.insertItemInDB(category);
+        }
     }
 
 }

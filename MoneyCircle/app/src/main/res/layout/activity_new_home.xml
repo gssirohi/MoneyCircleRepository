@@ -1,0 +1,208 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="company.greatapp.moneycircle.NewHomeActivity">
+
+
+
+    <TabHost
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/tabHost"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fillViewport="true"
+                android:scrollbars="none" >
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:tabStripEnabled="true">
+
+            </TabWidget>
+            </HorizontalScrollView>
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/accent_material_dark"
+                android:id="@+id/ll_period">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/ib_left_arrow"
+                    android:src="@drawable/ic_left_arrow" />
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="8">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Medium Text"
+                        android:id="@+id/tv_period_end"
+                        android:layout_weight="8"
+                        android:layout_gravity="right|center_vertical"
+                        android:gravity="fill_horizontal" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Medium Text"
+                        android:id="@+id/tv_period"
+                        android:layout_weight="8"
+                        android:layout_gravity="center"
+                        android:gravity="fill_horizontal" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Medium Text"
+                        android:id="@+id/tv_period_start"
+                        android:layout_weight="8"
+                        android:layout_gravity="left|center_vertical"
+                        android:gravity="fill_horizontal" />
+                </FrameLayout>
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/ib_right_arrow"
+                    android:src="@drawable/ic_right_arrow" />
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/accent_material_dark"
+              >
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/sp_category"
+                    android:spinnerMode="dialog"
+                    android:layout_gravity="center_horizontal" />
+            </FrameLayout>
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#fffff0d1">
+
+                <LinearLayout
+                    android:id="@+id/tab1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="DAILY List"
+                        android:id="@+id/tv_1"
+                        android:layout_gravity="center_horizontal" />
+
+                    <ListView
+                        android:id="@+id/lv_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/tab2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="WEEK List"
+                        android:id="@+id/tv_2"
+                        android:layout_gravity="center_horizontal" />
+
+                    <ListView
+                        android:id="@+id/lv_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/tab3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="MONTH List"
+                        android:id="@+id/tv_3"
+                        android:layout_gravity="center_horizontal" />
+
+                    <ListView
+                        android:id="@+id/lv_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/tab4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Year List"
+                        android:id="@+id/tv_4"
+                        android:layout_gravity="center_horizontal" />
+
+                    <ListView
+                        android:id="@+id/lv_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/tab5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="All List"
+                        android:id="@+id/tv_5"
+                        android:layout_gravity="center_horizontal" />
+
+                    <ListView
+                        android:id="@+id/lv_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        />
+                </LinearLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
+</RelativeLayout>

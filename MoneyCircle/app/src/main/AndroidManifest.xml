@@ -2,13 +2,23 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="company.greatapp.moneycircle" >
 
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+
+    <!-- Receivers -->
+    <receiver android:name=".receiver.TransactionalSmsListener" >
+        <intent-filter>
+            <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+        </intent-filter>
+    </receiver>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".LauncherActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +40,8 @@
         </activity>
         <activity
             android:name=".split.SetSplitAmountActivity"
-            android:label="@string/title_activity_set_split_amount" >
+            android:label="@string/title_activity_set_split_amount"
+            android:theme="@style/Theme.AppCompat.Dialog" >
         </activity>
         <activity
             android:name=".categories.ManageCategoriesActivity"
@@ -54,10 +65,35 @@
         </activity>
         <activity
             android:name=".chooser.ChooserActivity"
-            android:label="@string/title_activity_chooser" >
+            android:label="@string/title_activity_chooser"
+            android:theme="@style/Theme.AppCompat.Dialog" >
         </activity>
-        <activity android:name=".ContactAndCircleActivity"
-            android:label="@string/activity_contact_and_circle">
+        <activity
+            android:name=".ContactAndCircleActivity"
+            android:label="@string/activity_contact_and_circle" >
+        </activity>
+
+        <provider
+            android:name=".db.MoneyCircleProvider"
+            android:authorities="company.greatapp.moneycircle.db"
+            android:exported="false" />
+
+        <activity
+            android:name=".AddNewEntryActivity"
+            android:label="@string/title_activity_add_new_entry" >
+        </activity>
+        <activity
+            android:name=".HomeActivity"
+            android:label="@string/activity_home" >
+        </activity>
+        <activity
+            android:name=".NewHomeActivity"
+            android:label="@string/title_activity_new_home" >
+        </activity>
+        <activity android:name=".CardActivity" />
+        <activity
+            android:name=".LauncherActivity"
+            android:label="launcher" >
         </activity>
     </application>
 

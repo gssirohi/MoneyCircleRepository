@@ -1,23 +1,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context="company.greateapp.moneycircle.SetSplitAmount">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/button"
+        android:layout_above="@+id/b_set_split_amount_done"
         android:id="@+id/linear">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:id="@+id/ll_1">
+            android:id="@+id/ll_1"
+            android:layout_margin="5dp">
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -30,7 +31,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="5000"
+                android:text="0000"
                 android:id="@+id/tv_total_amount"
                 android:layout_weight="1"
                 android:layout_gravity="center_vertical" />
@@ -42,7 +43,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:id="@+id/ll2">
+            android:id="@+id/ll2"
+            android:layout_margin="5dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -63,30 +65,50 @@
 
 
         </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/ll3"
+            android:layout_margin="5dp">
 
-            <RadioGroup
-                android:layout_width="match_parent"
+            <TextView
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                android:id="@+id/radioGroup">
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Total Shares"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/textView4"
+                android:layout_weight="1" />
 
-                <RadioButton
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="New RadioButton"
-                    android:id="@+id/radioButton"
-                    android:layout_weight="1" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="00"
+                android:id="@+id/tv_total_shares"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical" />
 
-                <RadioButton
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="New RadioButton"
-                    android:id="@+id/radioButton2"
-                    android:layout_weight="1" />
-            </RadioGroup>
 
-            <ToggleButton
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="remaining : "
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/b_set_split_amount_done"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/tv_remaining"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#ffff2037" />
+
+        <ToggleButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Equally"
@@ -98,6 +120,13 @@
                 android:onClick= "toggleclick"/>
 
 
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sp_split_amount_mode"
+            android:layout_gravity="center_horizontal"
+            android:spinnerMode="dropdown" />
+
         <ListView
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
@@ -105,11 +134,15 @@
             android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
+
+
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="DONE"
-        android:id="@+id/button"
+        android:id="@+id/b_set_split_amount_done"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"/>
+
 </RelativeLayout>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@color/accent_material_dark"
+    android:layout_margin="15dp">
+
+    <ImageView
+        android:id="@+id/ivProfilePicContactItemId"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerInParent="true"
+        android:src="@drawable/ic_profilepic"/>
+
+    <TextView
+        android:id="@+id/tvContactNameId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contact Name"
+        android:layout_toRightOf="@+id/ivProfilePicContactItemId"
+        android:layout_centerInParent="true"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ImageView
+        android:id="@+id/ivInviteIconId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_invite"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/ivChatIconId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_chat"
+        android:visibility="gone"/>
+
+</RelativeLayout>
