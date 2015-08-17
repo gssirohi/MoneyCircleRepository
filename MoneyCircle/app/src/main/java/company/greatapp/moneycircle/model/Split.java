@@ -22,9 +22,9 @@ public class Split extends Model {
     //--------------------------------//
 
     //=========== SPECIFICS ==============//
-    private int category;
+    private String category;
     private String description = "";
-    private int amount;
+    private float amount;
     private String dateString="";
     private Date date;
     private Date dueDate;
@@ -34,6 +34,25 @@ public class Split extends Model {
     private Expense linkedExpense;
     private ArrayList<Lent> linkedLents = new ArrayList<Lent>();
     private String linkedContactsJson = "";
+
+    public String getLinkedCircleJson() {
+        return linkedCircleJson;
+    }
+
+    public void setLinkedCircleJson(String linkedCircleJson) {
+        this.linkedCircleJson = linkedCircleJson;
+    }
+
+    public String getLinkedParticipantsJson() {
+        return linkedParticipantsJson;
+    }
+
+    public void setLinkedParticipantsJson(String linkedParticipantsJson) {
+        this.linkedParticipantsJson = linkedParticipantsJson;
+    }
+
+    private String linkedCircleJson = "";
+    private String linkedParticipantsJson = "";
     private String linkedExpenseJson = "";
     private String linkedLentsJson = "";
 
@@ -117,11 +136,11 @@ public class Split extends Model {
     }
 
 
-    public int getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(int category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
@@ -133,11 +152,11 @@ public class Split extends Model {
         this.description = description;
     }
 
-    public int getAmount() {
+    public float getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(float amount) {
         this.amount = amount;
     }
 
@@ -211,6 +230,9 @@ public class Split extends Model {
         row.put(DB.DUE_DATE_STRING, getDueDateString());
 
         row.put(DB.SPLIT_LINKED_CONTACTS_JSON,getLinkedContactsJson());
+        row.put(DB.SPLIT_LINKED_CIRCLE_JSON,getLinkedCircleJson());
+        row.put(DB.SPLIT_LINKED_PARTICIPANTS_JSON,getLinkedParticipantsJson());
+
         row.put(DB.SPLIT_LINKED_EXPENSE_JSON,getLinkedExpenseJson());
         row.put(DB.SPLIT_LINKED_LENTS_JSON,getLinkedLentsJson());
 

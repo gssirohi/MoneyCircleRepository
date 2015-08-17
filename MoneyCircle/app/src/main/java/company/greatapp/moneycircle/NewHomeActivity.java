@@ -167,11 +167,11 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
         periodType = Period.PERIOD_DATE;
         filter = new DBFilter(modelType,Period.PERIOD_DATE,category);
         setPeriodView();
-        mDailyAdapter = new MoneyItemAdapter(this, null, false);
-        mWeeklyAdapter = new MoneyItemAdapter(this, null, false);
-        mMonthlyAdapter = new MoneyItemAdapter(this, null, false);
-        mYearlyAdapter = new MoneyItemAdapter(this, null, false);
-        mAllAdapter = new MoneyItemAdapter(this, null, false);
+        mDailyAdapter = new MoneyItemAdapter(this, null, false, modelType);
+        mWeeklyAdapter = new MoneyItemAdapter(this, null, false, modelType);
+        mMonthlyAdapter = new MoneyItemAdapter(this, null, false, modelType);
+        mYearlyAdapter = new MoneyItemAdapter(this, null, false, modelType);
+        mAllAdapter = new MoneyItemAdapter(this, null, false, modelType);
         lv1.setAdapter(mDailyAdapter);
         lv2.setAdapter(mWeeklyAdapter);
         lv3.setAdapter(mMonthlyAdapter);

@@ -1,5 +1,6 @@
 package company.greatapp.moneycircle.tools;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -38,6 +39,13 @@ public class GreatJSON {
     }
 
     public static JSONObject getJsonObjectForContact(Contact contact) {
+        if(contact == null) {
+            Log.d("SPLIT", "Contact is Null");
+            return null;
+        }
+
+        Log.d("SPLIT","getting json obj for below contact-->");
+        contact.printModelData();
         String jsonString = "";
         JSONObject obj = new JSONObject();
         try{
@@ -67,9 +75,15 @@ public class GreatJSON {
         return list;
     }
 
-    private static Contact getContactFromJsonString(String json, ContactManager cm) {
+    public static Contact getContactFromJsonString(String json, ContactManager cm) {
         Contact contact = null;
-        if(cm == null) return contact;
+        if(cm == null) return null;
+        if(TextUtils.isEmpty(json)){
+            Log.d("SPLIT","JSON is NULL or EMPTY");
+            return null;
+        }
+        Log.d("SPLIT","getting Contact for below json-->");
+        Log.d("SPLIT","JSON : "+json);
         try {
             JSONObject obj = new JSONObject(json);
             String title = obj.getString("title");
@@ -124,7 +138,7 @@ public class GreatJSON {
         return list;
     }
 
-    private static Circle getCircleFromJsonString(String json, CircleManager cm) {
+    public static Circle getCircleFromJsonString(String json, CircleManager cm) {
         Circle circle = null;
         if(cm == null) return circle;
         try {

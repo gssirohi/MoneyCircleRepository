@@ -5,19 +5,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.text.TextUtils;
 
 import java.util.ArrayList;
 
 import company.greatapp.moneycircle.NewHomeActivity;
 import company.greatapp.moneycircle.constants.DB;
 
+import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
+import company.greatapp.moneycircle.tools.GreatJSON;
 
 /**
  * Created by Ashish on 09-07-2015.
  */
 public class LentManager extends BaseModelManager  {
+    private final ContactManager mContactManager;
     Context context;
     ArrayList<Model> lents = new ArrayList<Model>();
     ArrayList<String> titles = new ArrayList<String>();
@@ -28,6 +32,7 @@ public class LentManager extends BaseModelManager  {
 
     public LentManager(Context context){
         this.context = context;
+        mContactManager = new ContactManager(context);
         if (context instanceof NewHomeActivity) {
             loadItemsFromDB();
         }
@@ -63,7 +68,10 @@ public class LentManager extends BaseModelManager  {
         lent.setAmount(Float.parseFloat(amount));
         lent.setDescription(description);
         lent.setDueDateString(dueDateString);
-        lent.setLinkedContactJson(linkedContactJson);
+        if(!TextUtils.isEmpty(linkedContactJson)) {
+            Contact member = GreatJSON.getContactFromJsonString(linkedContactJson, mContactManager);
+            lent.setLinkedContact(member);
+        }
         lent.setIsLinkedWithSplit((isLinked == 1)?true:false);
         lent.setLinkedSplitJson(splitJson);
         lent.setDateString(date_string);

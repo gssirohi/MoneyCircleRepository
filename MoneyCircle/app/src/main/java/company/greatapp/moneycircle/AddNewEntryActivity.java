@@ -8,8 +8,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,16 +23,19 @@ import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.manager.BaseModelManager;
 import company.greatapp.moneycircle.manager.BorrowManager;
 import company.greatapp.moneycircle.manager.CategoryManager;
+import company.greatapp.moneycircle.manager.ContactManager;
 import company.greatapp.moneycircle.manager.ExpenseManager;
 import company.greatapp.moneycircle.manager.IncomeManager;
 import company.greatapp.moneycircle.manager.LentManager;
 import company.greatapp.moneycircle.model.Borrow;
+import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Expense;
 import company.greatapp.moneycircle.model.Income;
 import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.tools.DatePickerFragment;
 import company.greatapp.moneycircle.tools.DateUtils;
+import company.greatapp.moneycircle.view.TagItemView;
 
 public class AddNewEntryActivity extends ActionBarActivity implements DatePickerFragment.DateSetter {
 
@@ -58,6 +63,8 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
     private Button b_new_date;
     private String mDateString;
     private String mCategory;
+    private FrameLayout f_member;
+    private Contact mMember;
 
 
     @Override
@@ -78,8 +85,17 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
         et_new_item = (EditText)findViewById(R.id.et_new_item);
         et_new_note = (EditText)findViewById(R.id.et_new_note);
 
+        f_member = (FrameLayout)findViewById(R.id.f_member);
+        f_member.setVisibility(View.GONE);
+
         b_new_category = (Button)findViewById(R.id.b_new_category);
         b_new_member_add = (Button)findViewById(R.id.b_new_member_add);
+        b_new_member_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startItemSelection(C.TAG_CONTACTS, ListView.CHOICE_MODE_SINGLE);
+            }
+        });
         b_new_split = (Button)findViewById(R.id.b_new_split);
         b_new_date = (Button)findViewById(R.id.b_new_date);
         b_new_category.setOnClickListener(new View.OnClickListener() {
@@ -273,7 +289,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
         if (TextUtils.isEmpty(amount)) return false;
 
         if (mModelType == Model.MODEL_TYPE_BORROW || mModelType == Model.MODEL_TYPE_LENT) {
-            if (b_new_member_add.getText().equals("INCLUDE MEMBER")) return false;
+            if (mMember == null) return false;
         }
 
         String title = et_new_item.getText().toString();
@@ -326,6 +342,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
                 borrow.setTitle(et_new_item.getText().toString());
                 borrow.setCategory(mCategory);
                 borrow.setAmount(Float.parseFloat(et_new_amount.getText().toString()));
+                borrow.setLinkedContact(mMember);
                 description = et_new_note.getText().toString();
                 if (!TextUtils.isEmpty(description)) {
                     borrow.setDescription(description);
@@ -344,6 +361,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
                 lent.setDateString(mDateString);
                 lent.setTitle(et_new_item.getText().toString());
                 lent.setCategory(mCategory);
+                lent.setLinkedContact(mMember);
                 lent.setAmount(Float.parseFloat(et_new_amount.getText().toString()));
                 description = et_new_note.getText().toString();
                 if (!TextUtils.isEmpty(description)) {
@@ -354,12 +372,13 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
 //                lent.setLinkedContact(b_new_member_add.getText());
 
                 manager = new LentManager(this);
+                lent.printModelData();
                 manager.insertItemInDB(lent);
 
                 Toast.makeText(this, "Lent ENTRY SAVED", Toast.LENGTH_SHORT).show();
                 break;
         }
-
+        finish();
     }
 
     public void showDatePickerDialog() {
@@ -376,7 +395,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
     @Override
     public void setDate(int year, int monthOfYear, int dayOfMonth) {
         b_new_date.setText(String.format("%d/%d/%d", year, monthOfYear+1, dayOfMonth));
-        mDateString = DateUtils.getDateString(year,monthOfYear,dayOfMonth);
+        mDateString = DateUtils.getDateString(year, monthOfYear, dayOfMonth);
         Toast.makeText(this,"DATE:"+ mDateString,Toast.LENGTH_SHORT).show();
     }
 
@@ -388,7 +407,36 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
                 ArrayList<String> returnedResult = data.getStringArrayListExtra("uids");
                 addCategory(returnedResult.get(0));
             }
+        } else if (requestCode == C.TAG_CONTACTS) {
+            if (resultCode == RESULT_OK) {
+                ArrayList<String> returnedResult = data.getStringArrayListExtra("uids");
+                addMember(returnedResult.get(0));
+            }
         }
+    }
+
+    private void addMember(String s) {
+        if(TextUtils.isEmpty(s))return;
+        ContactManager cm = new ContactManager(this);
+        Contact member = (Contact)cm.getItemFromListByUID(s);
+        TagItemView tagView = new TagItemView(this,f_member,member,true);
+        TagItemView.RemoveTagListener listener = new TagItemView.RemoveTagListener() {
+            @Override
+            public void OnTagRemoved(TagItemView view) {
+                handleMemberRemoved(view);
+            }
+        };
+        tagView.setRemoveTagListener(listener);
+        f_member.addView(tagView);
+        b_new_member_add.setVisibility(View.GONE);
+        f_member.setVisibility(View.VISIBLE);
+        mMember = member;
+    }
+
+    private void handleMemberRemoved(TagItemView view) {
+        b_new_member_add.setVisibility(View.VISIBLE);
+        f_member.setVisibility(View.GONE);
+        mMember = null;
     }
 
     private void addCategory(String uid){

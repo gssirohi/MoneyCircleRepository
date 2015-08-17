@@ -3,12 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="5dp"
-    android:background="#ffff71af">
+    android:layout_margin="5dp"
+    android:background="@color/app_lighter">
 <LinearLayout
     android:layout_width="match_parent" android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="2dp"
-    android:background="#ffff1f70">
+    android:background="@color/app_light">
 
 
     <ImageView
@@ -60,7 +61,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:layout_width="319dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="5000.70"
@@ -70,8 +71,16 @@
 
         <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"></FrameLayout>
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/f_member"
+                android:layout_gravity="center_vertical|right"
+                android:layout_marginRight="10dp"></FrameLayout>
+        </FrameLayout>
 
     </LinearLayout>
     </LinearLayout>

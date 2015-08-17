@@ -2,10 +2,14 @@ package company.greatapp.moneycircle.model;
 
 import android.content.ContentValues;
 import android.net.Uri;
+import android.util.Log;
+
+import org.json.JSONObject;
 
 import java.util.Date;
 
 import company.greatapp.moneycircle.constants.DB;
+import company.greatapp.moneycircle.tools.GreatJSON;
 import company.greatapp.moneycircle.tools.Tools;
 
 /**
@@ -100,7 +104,7 @@ public class Lent extends Model {
         return linkedContactJson;
     }
 
-    public void setLinkedContactJson(String linkedContactJson) {
+    private void setLinkedContactJson(String linkedContactJson) {
         this.linkedContactJson = linkedContactJson;
     }
 
@@ -110,6 +114,13 @@ public class Lent extends Model {
 
     public void setLinkedContact(Contact linkedContact) {
         this.linkedContact = linkedContact;
+        JSONObject obj = GreatJSON.getJsonObjectForContact(linkedContact);
+        if(obj != null) {
+            String jsonString = obj.toString();
+            setLinkedContactJson(jsonString);
+        } else {
+            setLinkedContactJson("");
+        }
     }
 
     public String getCategory() {
@@ -232,6 +243,18 @@ public class Lent extends Model {
     @Override
     public String getJsonString() {
         return jsonString;
+    }
+
+    public void printModelData(){
+        Log.d("SPLIT", "====================MODEL===================");
+        Log.d("SPLIT","DBID["+getDbId()+"] : UID["+getUID()+"]");
+        Log.d("SPLIT","TITLE : "+getTitle());
+        Log.d("SPLIT","CONTACT JSON : "+getLinkedContactJson());
+        if(getLinkedContact() != null)
+        Log.d("SPLIT","CONTACT : " + getLinkedContact().getUID());
+        else
+            Log.d("SPLIT","CONTACT : " + "NULL");
+        Log.d("SPLIT", "-----------------------------------------------");
     }
 
 }

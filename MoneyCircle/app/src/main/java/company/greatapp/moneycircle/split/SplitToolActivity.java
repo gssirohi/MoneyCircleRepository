@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.chooser.ChooserActivity;
 import company.greatapp.moneycircle.constants.C;
+import company.greatapp.moneycircle.manager.CategoryManager;
+import company.greatapp.moneycircle.manager.CircleManager;
 import company.greatapp.moneycircle.manager.ContactManager;
 import company.greatapp.moneycircle.model.Circle;
 import company.greatapp.moneycircle.model.Contact;
@@ -37,8 +39,8 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
     private ArrayList<Participant> participants = new ArrayList<Participant>();
     private ArrayList<Contact> memberContacts = new ArrayList<Contact>();
     private Circle memberCircle;
-    //TODO: ucomment it for circle
-    //private CircleManager circleManager;
+
+    private CircleManager circleManager;
     private ContactManager contactManager;
 
     private TextView tv_new_title;
@@ -61,12 +63,14 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
     private Button b_new_circles_add;
     private Button b_new_date;
     private LinearLayout ll_new_contacts;
+    private LinearLayout ll_new_circles;
     private CheckBox cb_include_me;
     private boolean isUserIncluded;
     private Button b_distribution_type;
     private boolean isEqually;
     private TextView tv_distribution_details;
     private TextView tv_total_members;
+    private String mCategory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +78,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         setContentView(R.layout.activity_split_tool);
 
         ll_new_contacts = (LinearLayout)findViewById(R.id.ll_new_contacts);
+        ll_new_circles = (LinearLayout)findViewById(R.id.ll_new_circles);
         tv_new_title = (TextView)findViewById(R.id.tv_new_title);
         tv_new_before_type = (TextView)findViewById(R.id.tv_new_before_type);
         tv_new_type = (TextView)findViewById(R.id.tv_new_type);
@@ -138,9 +143,45 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
 
         contactManager = new ContactManager(this);
         //TODO: ucomment it for circle
-        //circleManager = new CircleManager(this);
+        circleManager = new CircleManager(this);
     }
+    private void handleSplitAction() {
+        String amount = getAmountFromBox();
+        CharSequence title = et_new_item.getText();
+        if(amount.equals("0") || participants.size() < 2
+                || TextUtils.isEmpty(title)){
+            //TODO: Put all the conditons before starting SetSplitAMountActivity
+            Toast.makeText(this,"field empty",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        //TITLE
 
+        //AMOUNT
+
+
+        //DATE
+
+        //DUE DATE
+
+        //DESC
+        CharSequence desc = et_new_note.getText();
+        if(TextUtils.isEmpty(desc))
+            desc = "";
+
+        //category
+
+        //total CONTACTS
+
+        //CIRCLE
+
+        //PARTICIPANTS
+
+        //EXPENSE
+
+        //TOTAL LENTS
+
+
+    }
     private void handleDistributionTypeButton(View v) {
         String amount = getAmountFromBox();
         if(amount.equals("0") || participants.size() < 2 ){
@@ -169,7 +210,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
     private void startItemSelection(int requestCode){
         Intent i = new Intent(this, ChooserActivity.class);
         i.putExtra(C.CHOOSER_REQUEST,requestCode);
-        i.putExtra(C.CHOOSER_MODEL, Model.MODEL_TYPE_SPLIT);
+        i.putExtra(C.CHOOSER_MODEL, Model.MODEL_TYPE_CONTACT);
         i.putExtra(C.CHOOSER_CHOICE_MODE, ListView.CHOICE_MODE_MULTIPLE);
         startActivityForResult(i, requestCode);
     }
@@ -178,13 +219,16 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
     {
         Log.d("split", "onActivityResult : requestCode:" + requestCode + "  resultCode:" + resultCode);
        if (requestCode == C.TAG_CONTACTS
-               || requestCode == C.TAG_REGISTERED_CONTACTS
-               || requestCode == C.TAG_CIRCLES) {
+               || requestCode == C.TAG_REGISTERED_CONTACTS ) {
             if (resultCode == RESULT_OK) {
                 ArrayList<String> returnedResult = data.getStringArrayListExtra("uids");
                 addParticipants(C.TAG_CONTACTS, returnedResult);
                 addTagViews(requestCode);
             }
+        } else if (requestCode == C.TAG_CIRCLES) {
+           ArrayList<String> returnedResult = data.getStringArrayListExtra("uids");
+           addParticipants(C.TAG_CIRCLES, returnedResult);
+           addTagViews(requestCode);
         } else if(requestCode == SPLIT_AMOUNT_REQUEST) {
            if (resultCode == RESULT_OK) {
                participants = data.getParcelableArrayListExtra("participants");
@@ -192,7 +236,19 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
                b_distribution_type.setText(isEqually ? "EQUALLY" : "UNEQUALLY");
                setDistributedAmountView();
            }
+       } else if(requestCode == C.TAG_CATEGORIES) {
+           if (resultCode == RESULT_OK) {
+               ArrayList<String> returnedResult = data.getStringArrayListExtra("uids");
+               addCategory(returnedResult.get(0));
+           }
        }
+    }
+
+    private void addCategory(String uid){
+        CategoryManager cm = new CategoryManager(this, Model.MODEL_TYPE_SPLIT);
+        String title = cm.getItemFromListByUID(uid).getTitle();
+        mCategory = uid;   // TODO This value has to be properly set
+        b_new_category.setText(title);
     }
 
     private void setDistributedAmountView() {
@@ -218,10 +274,10 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
                 break;
             case C.TAG_CIRCLES:
                 //TODO: ucomment it for circle
-//                memberCircle = null;
-//                String uid = returnedResult.get(0);
-//                    memberCircle = circleManager.getCircleByUID(uid);
-//                break;
+                memberCircle = null;
+                String uid = returnedResult.get(0);
+                memberCircle = (Circle)circleManager.getItemFromListByUID(uid);
+                break;
         }
         participants.clear();
         if(isUserIncluded) {
@@ -231,10 +287,10 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
             participants.add(new Participant(c));
         }
 
-        //TODO: ucomment it for circle
-//        for (Contact c :memberCircle.getMemberList()) {
-//            participants.add(new Participant(c));
-//        }
+        if(memberCircle != null)
+        for (Contact c : memberCircle.getContacts()) {
+            participants.add(new Participant(c));
+        }
 
         setDividedAmountEqually();
     }
@@ -252,10 +308,10 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
             participants.add(new Participant(c));
         }
 
-        //TODO: ucomment it for circle
-//        for (Contact c :memberCircle.getMemberList()) {
-//            participants.add(new Participant(c));
-//        }
+        if(memberCircle != null)
+        for (Contact c :memberCircle.getContacts()) {
+            participants.add(new Participant(c));
+        }
 
         setDividedAmountEqually();
     }
@@ -280,9 +336,6 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         String value = et_new_amount.getText().toString();
         if(TextUtils.isEmpty(value)){
             value = "0";
-        }else if(!TextUtils.isDigitsOnly(value)) {
-            value = "0";
-            Toast.makeText(this,"WRONG FORMAT",Toast.LENGTH_SHORT).show();
         }
         return value;
     }
@@ -301,7 +354,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
 
                 break;
             case C.TAG_CIRCLES:
-              //  ll = ll_circle;
+                ll = ll_new_circles;
                 break;
             case C.TAG_CONTACTS:
                 ll = ll_new_contacts;
@@ -314,16 +367,34 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         TagItemView.RemoveTagListener listener = new TagItemView.RemoveTagListener() {
             @Override
             public void OnTagRemoved(TagItemView view) {
-                Model model = view.getModel();
-                String title = (model.getTitle()+" removed");
-                Toast.makeText(SplitToolActivity.this,title,Toast.LENGTH_SHORT).show();
+                handleTagRemoved(view);
             }
         };
-        for (Contact c : memberContacts) {
-            TagItemView tagView = new TagItemView(this,ll,c,true);
-            tagView.setRemoveTagListener(listener);
-            ll.addView(tagView);
-            out = out+c.getContactName()+",";
+        if(type == C.TAG_CONTACTS || type == C.TAG_REGISTERED_CONTACTS) {
+            for (Contact c : memberContacts) {
+                TagItemView tagView = new TagItemView(this, ll, c, true);
+                tagView.setRemoveTagListener(listener);
+                ll.addView(tagView);
+                out = out + c.getContactName() + ",";
+            }
+        } else if (type == C.TAG_CIRCLES) {
+                if(memberCircle == null) return;
+                TagItemView tagView = new TagItemView(this, ll, memberCircle, true);
+                tagView.setRemoveTagListener(listener);
+                ll.addView(tagView);
+                out = out + memberCircle.getTitle() + ",";
+        }
+    }
+
+    private void handleTagRemoved(TagItemView view) {
+        Model model = view.getModel();
+        if(model == null) return;
+        if(Model.MODEL_TYPE_CONTACT == model.getModelType()) {
+            memberContacts.remove((Contact)model);
+            refreshParticipants();
+        } else if (Model.MODEL_TYPE_CIRCLE == model.getModelType()) {
+            memberCircle = null;
+            refreshParticipants();
         }
     }
 
@@ -336,11 +407,14 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_split) {
+            handleSplitAction();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
     @Override
     public void setDate(int year, int monthOfYear, int dayOfMonth) {

@@ -147,6 +147,8 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
                             + DB.DUE_DATE_STRING + " text, "
                             + DB.SPLIT_TOTAL_PARTICIPANTS + " int,"
                             + DB.SPLIT_LINKED_CONTACTS_JSON + " text, "
+                            + DB.SPLIT_LINKED_CIRCLE_JSON + " text, "
+                            + DB.SPLIT_LINKED_PARTICIPANTS_JSON + " text, "
                             + DB.SPLIT_LINKED_EXPENSE_JSON + " text, "
                             + DB.SPLIT_LINKED_LENTS_JSON + " text,"
                             + DB.DATE_STRING + " text, "

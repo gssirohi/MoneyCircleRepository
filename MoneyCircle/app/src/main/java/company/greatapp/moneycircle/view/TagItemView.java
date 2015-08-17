@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.chooser.ChooserActivity;
@@ -22,15 +23,17 @@ public class TagItemView extends LinearLayout {
 
     private final ViewGroup parent;
     private Model model = null;
-    private final String title;
+    private String title;
     private RemoveTagListener listener;
 
     public TagItemView(Context context,ViewGroup parent, Model model, boolean isCancelable) {
         super(context);
         this.parent = parent;
         this.model = model;
-        int type = model.getModelType();
-        this.title = model.getTitle();
+        if(model != null) {
+            int type = model.getModelType();
+            this.title = model.getTitle();
+        }
         init(context, isCancelable);
     }
 
@@ -57,13 +60,27 @@ public class TagItemView extends LinearLayout {
                 }
             });
             b.setText(this.title);
+            b.setOnClickListener(getListener(context));
         }
+    }
+
+    private OnClickListener getListener(final Context context) {
+        return new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(getModel() != null)
+                    Toast.makeText(context,""+getModel().getTitle()+" CLICKED",Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(context,""+getTitle()+" CLICKED",Toast.LENGTH_SHORT).show();
+            }
+        };
     }
 
     public void setRemoveTagListener(RemoveTagListener listener){
         this.listener = listener;
     }
     private void handleCancel(View view) {
+        if(parent == null) return;
         parent.removeView(this);
         if(listener != null)
         listener.OnTagRemoved(this);

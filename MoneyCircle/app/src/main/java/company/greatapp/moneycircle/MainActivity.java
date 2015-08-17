@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -18,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -268,10 +270,12 @@ public class MainActivity extends ActionBarActivity {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.new_entry_options_dialog_layout, null, false);
         final Dialog dialog = new Dialog(this);
-
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(viewGroup);
         dialog.setTitle("Add New Entry");
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
         CircleButton b_split = (CircleButton)viewGroup.findViewById(R.id.b_split);
         CircleButton b_income = (CircleButton)viewGroup.findViewById(R.id.b_income);
         CircleButton b_expense = (CircleButton)viewGroup.findViewById(R.id.b_expense);

@@ -36,12 +36,15 @@ public class SplitManager extends BaseModelManager {
         int dbId               =cursor.getInt(cursor.getColumnIndex(DB.DB_ID));
         String uid             = cursor.getString(cursor.getColumnIndex(DB.UID));
         String title           = cursor.getString(cursor.getColumnIndex(DB.TITLE));
-        int category           = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY));
+        String category           = cursor.getString(cursor.getColumnIndex(DB.CATEGORY));
         int amount             = cursor.getInt(cursor.getColumnIndex(DB.AMOUNT));
         String description     = cursor.getString(cursor.getColumnIndex(DB.DESCRIPTION));
-        String dueDateString     = cursor.getString(cursor.getColumnIndex(DB.DUE_DATE_STRING));
+        String dueDateString   = cursor.getString(cursor.getColumnIndex(DB.DUE_DATE_STRING));
 
         String linkedContactsJson     = cursor.getString(cursor.getColumnIndex(DB.SPLIT_LINKED_CONTACTS_JSON));
+        String linkedCircleJson     = cursor.getString(cursor.getColumnIndex(DB.SPLIT_LINKED_CIRCLE_JSON));
+        String linkedParticipantsJson     = cursor.getString(cursor.getColumnIndex(DB.SPLIT_LINKED_PARTICIPANTS_JSON));
+
         String linkedExpenseJson     = cursor.getString(cursor.getColumnIndex(DB.SPLIT_LINKED_EXPENSE_JSON));
         String linkedLentsJson     = cursor.getString(cursor.getColumnIndex(DB.SPLIT_LINKED_LENTS_JSON));
 
