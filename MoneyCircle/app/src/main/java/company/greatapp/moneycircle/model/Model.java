@@ -58,14 +58,14 @@ public abstract class Model {
         else
             return false;
     }
-    public void insertItemInDB(Context context) {
+    public Uri insertItemInDB(Context context) {
         String uid = getUID();
         uid = uid.replaceAll("NEW","DB");
         setUID(uid);
         Log.d("Split","MODEL: INSERTING :----->");
         printModelData();
         ContentValues values = getContentValues();
-        context.getContentResolver().insert(getTableUri(), values);
+        return context.getContentResolver().insert(getTableUri(), values);
     }
 
 

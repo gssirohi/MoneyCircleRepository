@@ -153,7 +153,7 @@ public class GreatJSON {
         return circle;
     }
 
-    public JSONObject getJsonObjectForSplit(Split split) {
+    public static JSONObject getJsonObjectForSplit(Split split) {
         String jsonString = "";
         JSONObject obj = new JSONObject();
         try{
@@ -168,7 +168,7 @@ public class GreatJSON {
         return obj;
     }
 
-    private Split getSplitFromJsonString(String json, SplitManager cm) {
+    private static Split getSplitFromJsonString(String json, SplitManager cm) {
         Split split = null;
         if(cm == null) return split;
         try {
@@ -183,7 +183,7 @@ public class GreatJSON {
         return split;
     }
 
-    public JSONObject getJsonObjectForExpense(Expense expense) {
+    public static JSONObject getJsonObjectForExpense(Expense expense) {
         String jsonString = "";
         JSONObject obj = new JSONObject();
         try{
@@ -198,7 +198,7 @@ public class GreatJSON {
         return obj;
     }
 
-    private Expense getExpenseFromJsonString(String json, ExpenseManager cm) {
+    private static Expense getExpenseFromJsonString(String json, ExpenseManager cm) {
         Expense expense = null;
         if(cm == null) return expense;
         try {

@@ -6,6 +6,10 @@ package company.greatapp.moneycircle.constants;
 public class C {
     public static final String MONEY_CIRCLE_PREFERENCES = "moneyCirclePreferences";
 
+    public static final String USER_TITLE = "You";
+    public static final String USER_UNIQUE_ID = "userUniqueId";
+    public static final String USER_DUMMY_NUMBER = "9876543210";
+
     public static final String PREF_CONTACTS_RETRIVED = "prefContactsRetrived";
     public static final String PREF_DEFAULT_CATEGORIES_LOADED = "prefCategoriesLoaded";
 

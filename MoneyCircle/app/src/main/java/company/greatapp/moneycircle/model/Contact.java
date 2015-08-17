@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.tools.Tools;
 
@@ -41,7 +42,10 @@ public class Contact extends Model {
     public Contact(String name, String number) {
         setContactName(name);
         setPhone(number);
-        setUID(Tools.generateUniqueId());
+        if(name.equals(C.USER_TITLE) && number.equals(C.USER_DUMMY_NUMBER))
+            setUID(C.USER_UNIQUE_ID);
+        else
+            setUID(Tools.generateUniqueId());
     }
 
 

@@ -141,7 +141,13 @@ public class ContactManager extends BaseModelManager {
                 }
             }
         }
+        Contact contact = new Contact(C.USER_TITLE, C.USER_DUMMY_NUMBER);
+        insertItemInDB(contact);
 
+    }
+
+    public Contact getUser() {
+        return (Contact)getItemFromListByUID(C.USER_UNIQUE_ID);
     }
 
 }

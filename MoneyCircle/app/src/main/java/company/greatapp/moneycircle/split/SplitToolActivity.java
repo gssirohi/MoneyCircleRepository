@@ -1,6 +1,7 @@
 package company.greatapp.moneycircle.split;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Parcelable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -18,6 +19,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import company.greatapp.moneycircle.R;
@@ -28,9 +32,13 @@ import company.greatapp.moneycircle.manager.CircleManager;
 import company.greatapp.moneycircle.manager.ContactManager;
 import company.greatapp.moneycircle.model.Circle;
 import company.greatapp.moneycircle.model.Contact;
+import company.greatapp.moneycircle.model.Expense;
+import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.Participant;
+import company.greatapp.moneycircle.model.Split;
 import company.greatapp.moneycircle.tools.DatePickerFragment;
+import company.greatapp.moneycircle.tools.GreatJSON;
 import company.greatapp.moneycircle.view.TagItemView;
 
 public class SplitToolActivity extends ActionBarActivity implements DatePickerFragment.DateSetter {
@@ -39,7 +47,8 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
     private ArrayList<Participant> participants = new ArrayList<Participant>();
     private ArrayList<Contact> memberContacts = new ArrayList<Contact>();
     private Circle memberCircle;
-
+    
+    
     private CircleManager circleManager;
     private ContactManager contactManager;
 
@@ -146,42 +155,166 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         circleManager = new CircleManager(this);
     }
     private void handleSplitAction() {
+        if(!validateData()) return;
+        
+        //TITLE
+        String title = et_new_item.getText().toString();
+        //AMOUNT
+        String amountString = et_new_amount.getText().toString();
+        float amount = Float.parseFloat(amountString);
+        //DATE
+        String dateString = b_new_date.getText().toString();
+        //DUE DATE
+        
+        //DESC
+        String desc = et_new_note.getText().toString();
+        //category
+          //mCategory has the value
+
+        //total PARTICIPANTS
+        ArrayList<Contact> allMembers = new ArrayList<Contact>();
+        for(Participant p : participants) {
+            Contact c = (Contact)contactManager.getItemFromListByUID(p.memberUID);
+            allMembers.add(c);
+        }
+
+        JSONArray jArrayParticipants = GreatJSON.getJsonArrayForContactList(allMembers);
+        String jsonStringParticipants = jArrayParticipants.toString();
+        
+        //CONTACTS
+        JSONArray jArrayContacts = GreatJSON.getJsonArrayForContactList(memberContacts);
+        String jsonStringContacts = jArrayContacts.toString();
+        
+        //CIRCLE
+        JSONObject jsonCircle = GreatJSON.getJsonObjectForCircle(memberCircle);
+        String jsonStringCircle = jsonCircle.toString();
+        
+        //EXPENSE
+        Expense expense = insertExpense();
+        String jsonStringExpense = "";
+        if(expense != null) {
+            JSONObject obj = GreatJSON.getJsonObjectForExpense(expense);
+            if(obj != null) {
+                jsonStringExpense = obj.toString();
+            }
+        }
+        //TOTAL LENTS
+        ArrayList<Lent> lents = insertLents();
+        JSONArray jArrayLents = GreatJSON.getJsonArrayForLentList(lents);
+        String jsonStringLents = jArrayLents.toString();
+
+
+        Split split = new Split();
+
+        split.setTitle(title);
+        split.setAmount(amount);
+        split.setDescription(desc);
+        split.setCategory(mCategory);
+        split.setDateString(dateString);
+        split.setLinkedParticipantsJson(jsonStringParticipants);
+        split.setLinkedContactsJson(jsonStringContacts);
+        split.setLinkedCircleJson(jsonStringCircle);
+        split.setLinkedExpenseJson(jsonStringExpense);
+        split.setLinkedLentsJson(jsonStringLents);
+
+        Uri uri = split.insertItemInDB(this);
+
+        finish();
+
+    }
+
+    private ArrayList<Lent> insertLents() {
+        //title
+        String title = et_new_item.getText().toString();
+        //category
+           //mCategory has the value
+        //desc
+            String desc = et_new_note.getText().toString();
+        //date
+        String dateString = b_new_date.getText().toString();
+        //is split
+        boolean isSplit = true;
+        // linked split
+        // not yet created it will be updated after split creation in db
+
+        ArrayList<Lent> lents = new ArrayList<Lent>();
+        for(Participant p : participants) {
+            if(p.memberUID.equals(C.USER_UNIQUE_ID))
+                continue;
+            //linked contact
+            Contact linkedMember = (Contact)contactManager.getItemFromListByUID(p.memberUID);
+            //amount
+            float amount = p.amount;
+
+            Lent lent = new Lent();
+            lent.setTitle(title);
+            lent.setAmount(amount);
+            lent.setDescription(desc);
+            lent.setDateString(dateString);
+            lent.setIsLinkedWithSplit(true);
+            lent.setCategory(mCategory);
+            lent.setLinkedContact(linkedMember);
+            lent.insertItemInDB(this);
+            lents.add(lent);
+        }
+        return lents;
+    }
+
+    private float getParticipantAmountByUID(String uid) {
+        if(participants != null) {
+            for (Participant p : participants) {
+                if(p.memberUID.equals(uid)) {
+                    return p.amount;
+                }
+            }
+        }
+        return 0;//when not found
+    }
+    private Expense insertExpense() {
+        if(!isUserIncluded) return null;
+
+        //title
+        String title = et_new_item.getText().toString();
+        //amount
+        String amount =""+ getParticipantAmountByUID(contactManager.getUser().getUID());
+        //category
+            //mCategory has the value
+        //desc
+        String desc = et_new_note.getText().toString();
+        //date
+        String dateString = b_new_date.getText().toString();
+        //is split
+        boolean isSplit = true;
+        // linked split
+         // not yet created it will be updated after split creation in db
+
+        Expense expense = new Expense();
+        expense.setTitle(title);
+        expense.setAmount(Float.parseFloat(amount));
+        expense.setCategory(mCategory);
+        expense.setDescription(desc);
+        expense.setDateString(dateString);
+        expense.setIsLinkedWithSplit(isSplit);
+        //expense.setLinkedSplitJson();
+        Uri uri = expense.insertItemInDB(this);
+        if(uri != null)
+            return expense;
+        else
+            return null;
+    }
+
+    private boolean validateData() {
         String amount = getAmountFromBox();
         CharSequence title = et_new_item.getText();
         if(amount.equals("0") || participants.size() < 2
                 || TextUtils.isEmpty(title)){
             //TODO: Put all the conditons before starting SetSplitAMountActivity
             Toast.makeText(this,"field empty",Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
-        //TITLE
-
-        //AMOUNT
-
-
-        //DATE
-
-        //DUE DATE
-
-        //DESC
-        CharSequence desc = et_new_note.getText();
-        if(TextUtils.isEmpty(desc))
-            desc = "";
-
-        //category
-
-        //total CONTACTS
-
-        //CIRCLE
-
-        //PARTICIPANTS
-
-        //EXPENSE
-
-        //TOTAL LENTS
-
-
+        return true;
     }
+
     private void handleDistributionTypeButton(View v) {
         String amount = getAmountFromBox();
         if(amount.equals("0") || participants.size() < 2 ){
@@ -265,7 +398,6 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         Log.d("SPLIT", "addParticipants");
         switch(tag){
             case C.TAG_CONTACTS:
-
                 memberContacts.clear();
                 for (String uid : returnedResult) {
                     Log.d("SPLIT","querying from contact manager");
@@ -281,7 +413,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         }
         participants.clear();
         if(isUserIncluded) {
-            participants.add(new Participant("You","user"));
+            participants.add(new Participant(contactManager.getUser()));
         }
         for (Contact c : memberContacts) {
             participants.add(new Participant(c));
@@ -424,4 +556,6 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
     private ArrayList<Participant> getParticipants() {
         return participants;
     }
+
+
 }
