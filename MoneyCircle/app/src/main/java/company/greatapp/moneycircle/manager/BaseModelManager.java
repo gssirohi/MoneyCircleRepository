@@ -17,7 +17,7 @@ import company.greatapp.moneycircle.model.Model;
  */
 public abstract class BaseModelManager {
 
-    public abstract Model createItemFromCursor(Cursor cursor);
+    public abstract Model createHeavyItemFromCursor(Cursor cursor);
     public abstract Model createItemFromIntent(Intent intent);
     protected abstract void loadItemsFromDB();
     protected abstract Context getContext();

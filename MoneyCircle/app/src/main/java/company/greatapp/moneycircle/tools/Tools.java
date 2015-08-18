@@ -2,7 +2,11 @@ package company.greatapp.moneycircle.tools;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.database.Cursor;
+import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -10,13 +14,21 @@ import java.util.UUID;
 
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.constants.C;
+import company.greatapp.moneycircle.constants.DB;
+import company.greatapp.moneycircle.manager.BorrowManager;
 import company.greatapp.moneycircle.manager.CategoryManager;
+import company.greatapp.moneycircle.manager.ExpenseManager;
+import company.greatapp.moneycircle.manager.IncomeManager;
+import company.greatapp.moneycircle.manager.LentManager;
+import company.greatapp.moneycircle.manager.SplitManager;
 import company.greatapp.moneycircle.model.Borrow;
+import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Expense;
 import company.greatapp.moneycircle.model.Income;
 import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.Split;
+import company.greatapp.moneycircle.view.TagItemView;
 
 /**
  * Created by gyanendra.sirohi on 6/29/2015.
@@ -52,6 +64,84 @@ public class Tools {
         }
         return result;
     }
+
+    public static String getUidFromCursor(Cursor cursor) {
+        if (cursor == null) return null;
+        return cursor.getString(cursor.getColumnIndex(DB.UID));
+    }
+
+    public static Model getDbInstance(Context context,Model model) {
+        if(context == null || model == null) return null;
+        return getDbInstance(context,model.getUID(),model.getModelType());
+    }
+
+    public static Model getDbInstance(Context context,String uid,int modelType) {
+        if(context == null || TextUtils.isEmpty(uid)) return null;
+        uid = uid.replaceAll("NEW","DB");
+        Model model = null;
+        String [] projection = null;
+        String selection=DB.UID + "=" + uid;
+        String [] selArgs = null;
+        Uri tableUri = null;
+
+        if (modelType == Model.MODEL_TYPE_INCOME) {
+            projection = DB.INCOME_TABLE_PROJECTION;
+            tableUri = DB.INCOME_TABLE_URI;
+        } else if (modelType == Model.MODEL_TYPE_EXPENSE) {
+            projection = DB.EXPENSE_TABLE_PROJECTION;
+            tableUri = DB.EXPENSE_TABLE_URI;
+        } else if (modelType == Model.MODEL_TYPE_BORROW) {
+            projection = DB.BORROW_TABLE_PROJECTION;
+            tableUri = DB.BORROW_TABLE_URI;
+        } else if (modelType == Model.MODEL_TYPE_LENT) {
+            projection = DB.LENT_TABLE_PROJECTION;
+            tableUri = DB.LENT_TABLE_URI;
+        }
+        else if (modelType == Model.MODEL_TYPE_SPLIT) {
+            projection = DB.SPLIT_TABLE_PROJECTION;
+            tableUri = DB.SPLIT_TABLE_URI;
+        } else if (modelType == Model.MODEL_TYPE_CATEGORY) {
+            projection = DB.CATEGORY_TABLE_PROJECTION;
+            tableUri = DB.CATEGORY_TABLE_URI;            
+        }
+
+        Cursor c = context.getContentResolver().query(tableUri, projection , selection , selArgs ,null);
+        if(c != null && c.getCount() > 0) {
+            c.moveToFirst();
+            model =  createLightModelFromCursor(c,modelType);
+            c.close();
+        }
+        return model;
+    }
+
+    public static Model createLightModelFromCursor(Cursor cursor, int modelType) {
+        Model model= null;
+        switch (modelType) {
+            case Model.MODEL_TYPE_INCOME:
+                model = IncomeManager.createLightItemFromCursor(cursor);
+                break;
+            case Model.MODEL_TYPE_EXPENSE:
+                model = ExpenseManager.createLightItemFromCursor(cursor);
+                break;
+            case Model.MODEL_TYPE_BORROW:
+                model = BorrowManager.createLightItemFromCursor(cursor);
+                break;
+            case Model.MODEL_TYPE_LENT:
+                model = LentManager.createLightItemFromCursor(cursor);
+                break;
+            case Model.MODEL_TYPE_SPLIT:
+                model = SplitManager.createLightItemFromCursor(cursor);
+                break;
+            case Model.MODEL_TYPE_CATEGORY:
+                model = CategoryManager.createLightItemFromCursor(cursor);
+                break;
+            default:
+                Log.d("SPLIT", "modelType not found");
+        }
+        return model;
+    }
+
+
 
     public static void addDummyEntries(Context context, CategoryManager categoryManager) {
         String[] incomes = new String[]{"LGSI Salary","Gambling on Dewali",
@@ -125,7 +215,30 @@ public class Tools {
 //        }
 
     }
+    
+    private void demoMethod(int modelType) {
+        switch (modelType) {
+            case Model.MODEL_TYPE_INCOME:
 
+                break;
+            case Model.MODEL_TYPE_EXPENSE:
+
+                break;
+            case Model.MODEL_TYPE_BORROW:
+
+                break;
+            case Model.MODEL_TYPE_LENT:
+
+                break;
+            case Model.MODEL_TYPE_SPLIT:
+
+                break;
+            case Model.MODEL_TYPE_CATEGORY:
+                break;
+            default:
+                Log.d("SPLIT", "modelType not found");
+        }
+    }
 
     public static String getRandomDate(){
         String date="";

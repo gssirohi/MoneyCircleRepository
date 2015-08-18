@@ -16,7 +16,7 @@ import company.greatapp.moneycircle.model.Model;
 public class CommonManager extends BaseModelManager  {
 
     @Override
-    public Model createItemFromCursor(Cursor cursor) {
+    public Model createHeavyItemFromCursor(Cursor cursor) {
         return null;
     }
 

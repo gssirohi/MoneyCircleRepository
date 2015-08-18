@@ -19,7 +19,7 @@ import company.greatapp.moneycircle.model.Notification;
 public class NotificationManager extends BaseModelManager  {
 
     @Override
-    public Model createItemFromCursor(Cursor cursor) {
+    public Model createHeavyItemFromCursor(Cursor cursor) {
         return null;
     }
 

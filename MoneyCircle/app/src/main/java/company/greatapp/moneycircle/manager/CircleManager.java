@@ -34,7 +34,7 @@ public class CircleManager extends BaseModelManager {
     }
 
     @Override
-    public Model createItemFromCursor(Cursor cursor) {
+    public Model createHeavyItemFromCursor(Cursor cursor) {
 
         if (cursor == null) return null;
 
@@ -52,6 +52,26 @@ public class CircleManager extends BaseModelManager {
 
         return circle;
     }
+
+    public static Model createLightItemFromCursor(Cursor cursor) {
+
+        if (cursor == null) return null;
+
+        int dbId = cursor.getInt(cursor.getColumnIndex(DB.DB_ID));
+        String uid = cursor.getString(cursor.getColumnIndex(DB.UID));
+        String circlename = cursor.getString(cursor.getColumnIndex(DB.CIRCLE_NAME));
+        String jsonString = cursor.getString(cursor.getColumnIndex(DB.JSON_STRING));
+        String contactJson = cursor.getString(cursor.getColumnIndex(DB.CIRCLE_CONTACTS_JSON));
+
+        Circle circle = new Circle(circlename, uid);
+        circle.setDbId(dbId);
+        circle.setContactsJson(contactJson);
+        circle.setJsonString(jsonString);
+        //circle.setMemberList(GreatJSON.getContactListFromJsonString(contactJson, mContactManager));
+
+        return circle;
+    }
+
 
     @Override
     public Model createItemFromIntent(Intent intent) {
@@ -71,7 +91,7 @@ public class CircleManager extends BaseModelManager {
             if (c != null && c.getCount() > 0) {
                 c.moveToFirst();
                 while (!c.isAfterLast()) {
-                    Model model = createItemFromCursor(c);
+                    Model model = createHeavyItemFromCursor(c);
                     circles.add(model);
                     titles.add(model.getTitle());
                     c.moveToNext();

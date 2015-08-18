@@ -1,6 +1,5 @@
 package company.greatapp.moneycircle.manager;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,7 +9,6 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import company.greatapp.moneycircle.NewHomeActivity;
 import company.greatapp.moneycircle.constants.DB;
 
 import company.greatapp.moneycircle.model.Contact;
@@ -41,7 +39,7 @@ public class LentManager extends BaseModelManager  {
 
 
     @Override
-    public Model createItemFromCursor(Cursor cursor) {
+    public Model createHeavyItemFromCursor(Cursor cursor) {
         if(cursor == null) return null;
 
         int dbId               =cursor.getInt(cursor.getColumnIndex(DB.DB_ID));
@@ -80,6 +78,45 @@ public class LentManager extends BaseModelManager  {
         return lent;
     }
 
+    public static Model createLightItemFromCursor(Cursor cursor) {
+        if(cursor == null) return null;
+
+        int dbId               =cursor.getInt(cursor.getColumnIndex(DB.DB_ID));
+        String uid             = cursor.getString(cursor.getColumnIndex(DB.UID));
+        String title           = cursor.getString(cursor.getColumnIndex(DB.TITLE));
+        String category           = cursor.getString(cursor.getColumnIndex(DB.CATEGORY));
+        String amount             = cursor.getString(cursor.getColumnIndex(DB.AMOUNT));
+        String description     = cursor.getString(cursor.getColumnIndex(DB.DESCRIPTION));
+        String dueDateString     = cursor.getString(cursor.getColumnIndex(DB.DUE_DATE_STRING));
+        String linkedContactJson     = cursor.getString(cursor.getColumnIndex(DB.LINKED_CONTACT_JSON));
+        int isLinked             = cursor.getInt(cursor.getColumnIndex(DB.IS_LINKED_WITH_SPLIT));
+        String splitJson     = cursor.getString(cursor.getColumnIndex(DB.LINKED_SPLIT_JSON));
+        String json_string     = cursor.getString(cursor.getColumnIndex(DB.JSON_STRING));
+        String date_string     = cursor.getString(cursor.getColumnIndex(DB.DATE_STRING));
+        int date               = cursor.getInt(cursor.getColumnIndex(DB.DATE));
+        int dateOfMonth             = cursor.getInt(cursor.getColumnIndex(DB.DAY_OF_MONTH));
+        int weekOfMonth             = cursor.getInt(cursor.getColumnIndex(DB.WEEK_OF_MONTH));
+        int month             = cursor.getInt(cursor.getColumnIndex(DB.MONTH));
+        int year             = cursor.getInt(cursor.getColumnIndex(DB.YEAR));
+
+
+        Lent lent =new Lent(dbId, uid);
+        lent.setTitle(title);
+        lent.setCategory(category);
+        lent.setAmount(Float.parseFloat(amount));
+        lent.setDescription(description);
+        lent.setDueDateString(dueDateString);
+//        if(!TextUtils.isEmpty(linkedContactJson)) {
+//            Contact member = GreatJSON.getContactFromJsonString(linkedContactJson, mContactManager);
+//            lent.setLinkedContact(member);
+//        }
+        lent.setIsLinkedWithSplit((isLinked == 1)?true:false);
+        lent.setLinkedSplitJson(splitJson);
+        lent.setDateString(date_string);
+        lent.setJsonString(json_string);
+        return lent;
+    }
+
     @Override
     public Model createItemFromIntent(Intent intent) {
         return null;
@@ -94,7 +131,7 @@ public class LentManager extends BaseModelManager  {
         if(c != null && c.getCount() > 0) {
             c.moveToFirst();
             while(!c.isAfterLast()) {
-                Model model = createItemFromCursor(c);
+                Model model = createHeavyItemFromCursor(c);
                 if(model != null) {
                     Log.d("SPLIT", "LOADING LENT[" + model.getTitle() + "] : " + model.getUID());
                 }

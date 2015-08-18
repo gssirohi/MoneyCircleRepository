@@ -13,14 +13,10 @@ import company.greatapp.moneycircle.manager.ExpenseManager;
 import company.greatapp.moneycircle.manager.IncomeManager;
 import company.greatapp.moneycircle.manager.LentManager;
 import company.greatapp.moneycircle.manager.SplitManager;
-import company.greatapp.moneycircle.model.Borrow;
-import company.greatapp.moneycircle.model.Expense;
 import company.greatapp.moneycircle.model.Income;
-import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
-import company.greatapp.moneycircle.model.Split;
+import company.greatapp.moneycircle.tools.Tools;
 import company.greatapp.moneycircle.view.MoneyItemView;
-import company.greatapp.moneycircle.view.TagItemView;
 
 /**
  * Created by Gyanendrasingh on 18-07-2015.
@@ -33,11 +29,16 @@ public class MoneyItemAdapter extends CursorAdapter {
     private Income income;
     private BaseModelManager manager;
     private Context mContext;
+    private int previousCount = -10;
 
     public MoneyItemAdapter(Context context, Cursor c, boolean autoRequery, int type) {
         super(context, c, autoRequery);
         mType = type;
         Log.d(TAG, "constructor");
+        initManager(context, type);
+    }
+
+    private void initManager(Context context, int type){
         switch(type) {
             case Model.MODEL_TYPE_INCOME:
                 manager = new IncomeManager(context);
@@ -61,15 +62,27 @@ public class MoneyItemAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         Log.d("Split","bindView");
         int c = cursor.getCount();
+
+        if(c != previousCount) {
+            initManager(context,mType);
+            previousCount = c;
+        }
         int pos = cursor.getPosition();
         pos = pos+1;
         int p = (c -pos +1);
         //cursor.move(p -pos);
         cursor.moveToPosition(p-1);
 
-        Model model = manager.createItemFromCursor(cursor);
+        //Model model = manager.createHeavyItemFromCursor(cursor);
+        //Dont create item from cursor as we alreay have all items created in manager
+        //just get UID from cursor and get the corresponding Model from manager
+
+        Model model = manager.getItemFromListByUID(Tools.getUidFromCursor(cursor));
+
+        //Model model = Tools.createLightModelFromCursor(cursor,mType);
+
         if(model == null) {
-            Log.d(TAG,"income = null");
+            Log.d(TAG,"Adapter model  = null");
         }
         ((MoneyItemView)view).initView(model);
 

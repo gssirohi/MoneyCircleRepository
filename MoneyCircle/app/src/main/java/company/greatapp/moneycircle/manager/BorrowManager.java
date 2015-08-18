@@ -39,7 +39,7 @@ public class BorrowManager extends BaseModelManager  {
 
 
     @Override
-    public Model createItemFromCursor(Cursor cursor) {
+    public Model createHeavyItemFromCursor(Cursor cursor) {
         if(cursor == null) return null;
 
         int dbId               =cursor.getInt(cursor.getColumnIndex(DB.DB_ID));
@@ -74,6 +74,42 @@ public class BorrowManager extends BaseModelManager  {
         return borrow;
     }
 
+    public static Model createLightItemFromCursor(Cursor cursor) {
+        if(cursor == null) return null;
+
+        int dbId               =cursor.getInt(cursor.getColumnIndex(DB.DB_ID));
+        String uid             = cursor.getString(cursor.getColumnIndex(DB.UID));
+        String title           = cursor.getString(cursor.getColumnIndex(DB.TITLE));
+        String category           = cursor.getString(cursor.getColumnIndex(DB.CATEGORY));
+        String amount             = cursor.getString(cursor.getColumnIndex(DB.AMOUNT));
+        String description     = cursor.getString(cursor.getColumnIndex(DB.DESCRIPTION));
+        String dueDateString     = cursor.getString(cursor.getColumnIndex(DB.DUE_DATE_STRING));
+        String linkedContactJson     = cursor.getString(cursor.getColumnIndex(DB.LINKED_CONTACT_JSON));
+        String json_string     = cursor.getString(cursor.getColumnIndex(DB.JSON_STRING));
+        String date_string     = cursor.getString(cursor.getColumnIndex(DB.DATE_STRING));
+        int date               = cursor.getInt(cursor.getColumnIndex(DB.DATE));
+        int dateOfMonth             = cursor.getInt(cursor.getColumnIndex(DB.DAY_OF_MONTH));
+        int weekOfMonth             = cursor.getInt(cursor.getColumnIndex(DB.WEEK_OF_MONTH));
+        int month             = cursor.getInt(cursor.getColumnIndex(DB.MONTH));
+        int year             = cursor.getInt(cursor.getColumnIndex(DB.YEAR));
+
+
+        Borrow borrow = new Borrow(dbId, uid);
+        borrow.setTitle(title);
+        borrow.setCategory(category);
+        borrow.setAmount(Float.parseFloat(amount));
+        borrow.setDescription(description);
+        borrow.setDueDateString(dueDateString);
+//        if(!TextUtils.isEmpty(linkedContactJson)) {
+//            Contact member = GreatJSON.getContactFromJsonString(linkedContactJson, mContactManager);
+//            borrow.setLinkedContact(member);
+//        }
+        borrow.setDateString(date_string);
+        borrow.setJsonString(json_string);
+        return borrow;
+    }
+
+
     @Override
     public Model createItemFromIntent(Intent intent) {
         return null;
@@ -88,7 +124,7 @@ public class BorrowManager extends BaseModelManager  {
         if(c != null && c.getCount() > 0) {
             c.moveToFirst();
             while(!c.isAfterLast()) {
-                Model model = createItemFromCursor(c);
+                Model model = createHeavyItemFromCursor(c);
                 borrows.add(model);
                 titles.add(model.getTitle());
                 c.moveToNext();

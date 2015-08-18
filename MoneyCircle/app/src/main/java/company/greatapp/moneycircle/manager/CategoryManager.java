@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import company.greatapp.moneycircle.constants.DB;
 
@@ -55,7 +54,7 @@ public class CategoryManager extends BaseModelManager  {
     }
 
     @Override
-    public Model createItemFromCursor(Cursor cursor) {
+    public Model createHeavyItemFromCursor(Cursor cursor) {
 
         if (cursor == null) {
             return null;
@@ -80,6 +79,32 @@ public class CategoryManager extends BaseModelManager  {
         return category;
     }
 
+    public static Model createLightItemFromCursor(Cursor cursor) {
+
+        if (cursor == null) {
+            return null;
+        }
+
+        int dbId = cursor.getInt(cursor.getColumnIndex(DB.DB_ID));
+        String uId = cursor.getString(cursor.getColumnIndex(DB.UID));
+        String categoryName = cursor.getString(cursor.getColumnIndex(DB.CATEGORY_NAME));
+        int categoryType = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY_TYPE));
+        boolean forIncome = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY_FOR_INCOME)) == 1?true:false;
+        boolean forExpense = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY_FOR_EXPENSE)) == 1?true:false;
+        boolean forBorrow = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY_FOR_BORROW)) == 1?true:false;
+        boolean forLent = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY_FOR_LENT)) == 1?true:false;
+        boolean forSplit = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY_FOR_SPLIT)) == 1?true:false;
+
+        Category category = new Category(categoryName, dbId, uId, categoryType);
+        category.setForIncome(forIncome);
+        category.setForExpense(forExpense);
+        category.setForBorrow(forBorrow);
+        category.setForLent(forLent);
+        category.setForSplit(forSplit);
+        return category;
+    }
+
+
     @Override
     public Model createItemFromIntent(Intent intent) {
         return null;
@@ -99,7 +124,7 @@ public class CategoryManager extends BaseModelManager  {
             Log.d(LOGTAG, "loadItemsFromDB cursorCount :"+cursor.getCount());
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                Category category = (Category)createItemFromCursor(cursor);
+                Category category = (Category) createHeavyItemFromCursor(cursor);
 
                 mAllCategories.add(category);
 
