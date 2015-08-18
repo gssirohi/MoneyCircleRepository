@@ -31,7 +31,7 @@ public class CategoryManager extends BaseModelManager  {
     private ArrayList<Model> mBorrowCategoryList;
     private ArrayList<Model> mLentCategoryList;
     private ArrayList<Model> mSplitCategoryList;
-    private ArrayList<Model> mAllCategories;
+    private ArrayList<Model> mAllCategories = new ArrayList<Model>();
 
     /**
      * This Constructor is used to load default categories in DB only.

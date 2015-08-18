@@ -375,6 +375,8 @@ public class MainActivity extends ActionBarActivity {
                 break;
             case 8:
                 msg = "circle";
+                i = new Intent(this, ManageCircleActivity.class);
+                startActivity(i);
                 break;
         }
         Toast.makeText(this, "Add new " + msg, Toast.LENGTH_SHORT).show();

@@ -21,6 +21,8 @@ public class C {
     public static final String CHOOSER_CHOICE_MODE = "choice";
     public static final String CHOOSER_MODEL = "model";
 
+    public static final String NEW_CIRCLE_NAME = "new_circle_name";
+
     public static final int TAG_CONTACTS = 1;
     public static final int TAG_REGISTERED_CONTACTS = 2;
     public static final int TAG_CIRCLES = 3;

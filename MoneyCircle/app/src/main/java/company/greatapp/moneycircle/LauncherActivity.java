@@ -93,6 +93,9 @@ public class LauncherActivity extends ActionBarActivity {
             case 5:
                 startActivity(new Intent(this,SettingActivity.class));
                 break;
+            case 6:
+                startActivity(new Intent(this, ManageCircleActivity.class));
+                break;
             case 8:
                 Intent intent = new Intent(this,AddNewEntryActivity.class);
                 intent.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);

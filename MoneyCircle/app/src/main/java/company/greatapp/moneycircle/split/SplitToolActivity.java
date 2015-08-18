@@ -484,7 +484,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         }
 
         if(memberCircle != null)
-        for (Contact c : memberCircle.getContacts()) {
+        for (Contact c : memberCircle.getMemberList()) {
             participants.add(new Participant(c));
         }
 
@@ -505,7 +505,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         }
 
         if(memberCircle != null)
-        for (Contact c :memberCircle.getContacts()) {
+        for (Contact c :memberCircle.getMemberList()) {
             participants.add(new Participant(c));
         }
 

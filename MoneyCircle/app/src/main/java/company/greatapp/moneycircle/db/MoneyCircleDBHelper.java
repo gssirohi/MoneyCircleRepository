@@ -46,9 +46,9 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
 
                             + DB.DB_ID + " Integer primary key ,"
                             + DB.UID + " text,"
-                            + DB.CIRCLE_NAME + "text, "
-                            + DB.CIRCLE_CONTACTS_JSON + "text, "
-                            + DB.JSON_STRING + "text );"
+                            + DB.CIRCLE_NAME + " text, "
+                            + DB.CIRCLE_CONTACTS_JSON + " text, "
+                            + DB.JSON_STRING + " text );"
             );
             Log.d("DBhelper","query sent for"+DB.CIRCLE_TABLE_NAME);
     //=========================================================================//

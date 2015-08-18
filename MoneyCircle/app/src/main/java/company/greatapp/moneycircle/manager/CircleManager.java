@@ -1,11 +1,9 @@
 package company.greatapp.moneycircle.manager;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -20,14 +18,19 @@ import company.greatapp.moneycircle.tools.GreatJSON;
  */
 public class CircleManager extends BaseModelManager {
     private final ContactManager mContactManager;
-    Context context;
+    Context mContext;
     ArrayList<Model> circles = new ArrayList<Model>();
     ArrayList<String> titles = new ArrayList<String>();
 
     public CircleManager(Context context) {
-        this.context = context;
+        this.mContext = context;
         mContactManager = new ContactManager(context);
         loadItemsFromDB();
+    }
+
+    public CircleManager(Context context, ContactManager contactManager) {
+        this.mContext = context;
+        mContactManager = contactManager;
     }
 
     @Override
@@ -41,13 +44,11 @@ public class CircleManager extends BaseModelManager {
         String jsonString = cursor.getString(cursor.getColumnIndex(DB.JSON_STRING));
         String contactJson = cursor.getString(cursor.getColumnIndex(DB.CIRCLE_CONTACTS_JSON));
 
-        Circle circle = new Circle();
+        Circle circle = new Circle(circlename, uid);
         circle.setDbId(dbId);
-        circle.setUID(uid);
-        circle.setCircleName(circlename);
         circle.setContactsJson(contactJson);
         circle.setJsonString(jsonString);
-        circle.setContacts(GreatJSON.getContactListFromJsonString(contactJson, mContactManager));
+        circle.setMemberList(GreatJSON.getContactListFromJsonString(contactJson, mContactManager));
 
         return circle;
     }
@@ -65,7 +66,7 @@ public class CircleManager extends BaseModelManager {
 
         Cursor c = null;
         try {
-            c = context.getContentResolver().query(DB.CIRCLE_TABLE_URI,
+            c = mContext.getContentResolver().query(DB.CIRCLE_TABLE_URI,
                     DB.CIRCLE_TABLE_PROJECTION, null, null, null);
             if (c != null && c.getCount() > 0) {
                 c.moveToFirst();
@@ -87,7 +88,7 @@ public class CircleManager extends BaseModelManager {
 
     @Override
     protected Context getContext() {
-        return context;
+        return mContext;
     }
 
     @Override

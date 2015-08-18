@@ -111,4 +111,19 @@
     <string name="desc_list_item_icon">Item Icon</string>
     <string name="title_activity_main">MainActivity</string>
 
+    <string name="actvity_manage_circle">Manage Circle</string>
+
+    <string name="action_save">SAVE</string>
+    <string name="action_create">CREATE</string>
+    <string name="action_cancel">CANCEL</string>
+    <string name="action_continue">CONTINUE</string>
+
+    <string name="holder_id">holder id</string>
+    <string name="circle_member_id">member id</string>
+
+    <string name="circle_name">Circle Name</string>
+    <string name="enter_new_circle_name">Enter New Circle Name</string>
+    <string name="action_add_member">Add Member</string>
+    <string name="no_member">No Member</string>
+
 </resources>

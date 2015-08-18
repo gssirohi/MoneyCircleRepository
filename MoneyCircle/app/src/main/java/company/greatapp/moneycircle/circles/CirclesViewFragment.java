@@ -1,5 +1,6 @@
 package company.greatapp.moneycircle.circles;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import company.greatapp.moneycircle.ManageCircleActivity;
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.manager.CircleManager;
 import company.greatapp.moneycircle.model.Circle;
@@ -37,18 +39,26 @@ public class CirclesViewFragment extends Fragment{
 
         Log.d("Prateek", "[CirclesViewFragment] onCreateView");
         View view = inflater.inflate(R.layout.fragment_circle_viewer, container, false);
-            Button createCircleButton = (Button)view.findViewById(R.id.btCreateNewCircleId);
-            mListView = (ListView)view.findViewById(R.id.lvCircleViewId);
+        Button createCircleButton = (Button)view.findViewById(R.id.btCreateNewCircleId);
+        createCircleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createNewCircleDialog();
+            }
+        });
+        mListView = (ListView)view.findViewById(R.id.lvCircleViewId);
 
-        /*if (circles == null) {
-            mListView.setVisibility(View.GONE);
-            createCircleButton.setVisibility(View.VISIBLE);
-        } else {*/
-            createCircleButton.setVisibility(View.GONE);
-            mListView.setVisibility(View.VISIBLE);
-            CirclesAdapter adapter = new CirclesAdapter(getActivity(), mCircleManager.getItemList());
-            mListView.setAdapter(adapter);
-        //}
+        mListView.setVisibility(View.VISIBLE);
+        CirclesAdapter adapter = new CirclesAdapter(getActivity(), mCircleManager.getItemList());
+        mListView.setAdapter(adapter);
+
         return view;
     }
+
+    public void createNewCircleDialog() {
+
+        Intent intent = new Intent(getActivity(), ManageCircleActivity.class);
+        startActivity(intent);
+    }
+
 }
