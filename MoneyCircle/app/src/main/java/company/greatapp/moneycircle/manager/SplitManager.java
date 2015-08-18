@@ -10,11 +10,16 @@ import java.util.ArrayList;
 import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.model.Split;
 import company.greatapp.moneycircle.model.Model;
+import company.greatapp.moneycircle.tools.GreatJSON;
 
 /**
  * Created by gyanendra.sirohi on 7/15/2015.
  */
 public class SplitManager extends BaseModelManager {
+    private final ContactManager contactManager;
+    private final CircleManager circleManager;
+    private final ExpenseManager expenseManager;
+    private final LentManager lentManager;
     Context context;
     ArrayList<Model> splits = new ArrayList<Model>();
     ArrayList<String> titles = new ArrayList<String>();
@@ -25,6 +30,11 @@ public class SplitManager extends BaseModelManager {
 
     public SplitManager(Context context){
         this.context = context;
+        contactManager = new ContactManager(context);
+        circleManager = new CircleManager(context);
+        expenseManager = new ExpenseManager(context);
+        lentManager = new LentManager(context);
+
         loadItemsFromDB();
     }
 
@@ -40,6 +50,8 @@ public class SplitManager extends BaseModelManager {
         int amount             = cursor.getInt(cursor.getColumnIndex(DB.AMOUNT));
         String description     = cursor.getString(cursor.getColumnIndex(DB.DESCRIPTION));
         String dueDateString   = cursor.getString(cursor.getColumnIndex(DB.DUE_DATE_STRING));
+
+        int participantsCount = cursor.getInt(cursor.getColumnIndex(DB.SPLIT_TOTAL_PARTICIPANTS));
 
         String linkedContactsJson     = cursor.getString(cursor.getColumnIndex(DB.SPLIT_LINKED_CONTACTS_JSON));
         String linkedCircleJson     = cursor.getString(cursor.getColumnIndex(DB.SPLIT_LINKED_CIRCLE_JSON));
@@ -66,9 +78,18 @@ public class SplitManager extends BaseModelManager {
         split.setDescription(description);
         split.setDueDateString(dueDateString);
 
+        split.setTotalParticipants(participantsCount);
+
+        split.setLinkedParticipantsJson(linkedParticipantsJson);
+        split.setLinkedParticipants(GreatJSON.getContactListFromJsonString(linkedParticipantsJson, contactManager));
         split.setLinkedContactsJson(linkedContactsJson);
+        split.setLinkedContacts(GreatJSON.getContactListFromJsonString(linkedContactsJson, contactManager));
+        split.setLinkedCircleJson(linkedCircleJson);
+        split.setLinkedCircle(GreatJSON.getCircleFromJsonString(linkedCircleJson, circleManager));
         split.setLinkedExpenseJson(linkedExpenseJson);
+        split.setLinkedExpense(GreatJSON.getExpenseFromJsonString(linkedExpenseJson, expenseManager));
         split.setLinkedLentsJson(linkedLentsJson);
+        split.setLinkedLents(GreatJSON.getLentListFromJsonString(linkedLentsJson,lentManager));
 
         split.setDateString(date_string);
         split.setJsonString(json_string);

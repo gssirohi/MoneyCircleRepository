@@ -109,6 +109,7 @@ public class GreatJSON {
     }
 
     public static JSONObject getJsonObjectForCircle(Circle circle) {
+        if(circle == null) return null;
         String jsonString = "";
         JSONObject obj = new JSONObject();
         try{
@@ -123,6 +124,7 @@ public class GreatJSON {
         return obj;
     }
     public static ArrayList<Circle> getCircleListFromJsonString(String json, CircleManager cm) {
+        if(cm == null) return null;
         ArrayList<Circle> list = new ArrayList<Circle>();
         try {
             JSONArray array = new JSONArray(json);
@@ -139,6 +141,7 @@ public class GreatJSON {
     }
 
     public static Circle getCircleFromJsonString(String json, CircleManager cm) {
+        if(cm == null) return null;
         Circle circle = null;
         if(cm == null) return circle;
         try {
@@ -154,6 +157,7 @@ public class GreatJSON {
     }
 
     public static JSONObject getJsonObjectForSplit(Split split) {
+        if(split == null) return null;
         String jsonString = "";
         JSONObject obj = new JSONObject();
         try{
@@ -169,6 +173,7 @@ public class GreatJSON {
     }
 
     private static Split getSplitFromJsonString(String json, SplitManager cm) {
+        if(cm == null) return null;
         Split split = null;
         if(cm == null) return split;
         try {
@@ -184,6 +189,7 @@ public class GreatJSON {
     }
 
     public static JSONObject getJsonObjectForExpense(Expense expense) {
+        if(expense == null) return null;
         String jsonString = "";
         JSONObject obj = new JSONObject();
         try{
@@ -198,7 +204,8 @@ public class GreatJSON {
         return obj;
     }
 
-    private static Expense getExpenseFromJsonString(String json, ExpenseManager cm) {
+    public static Expense getExpenseFromJsonString(String json, ExpenseManager cm) {
+        if(cm == null) return null;
         Expense expense = null;
         if(cm == null) return expense;
         try {
@@ -213,6 +220,7 @@ public class GreatJSON {
         return expense;
     }
     public static JSONArray getJsonArrayForLentList(ArrayList<Lent> lents) {
+        if(lents == null) return null;
         String jsonString = "";
         JSONArray array = new JSONArray();
 
@@ -226,6 +234,7 @@ public class GreatJSON {
     }
 
     public static JSONObject getJsonObjectForLent(Lent lent) {
+        if(lent == null) return null;
         String jsonString = "";
         JSONObject obj = new JSONObject();
         try{
@@ -240,6 +249,7 @@ public class GreatJSON {
         return obj;
     }
     public static ArrayList<Lent> getLentListFromJsonString(String json, LentManager cm) {
+        if(cm == null) return null;
         ArrayList<Lent> list = new ArrayList<Lent>();
         try {
             JSONArray array = new JSONArray(json);
@@ -256,6 +266,7 @@ public class GreatJSON {
     }
 
     private static Lent getLentFromJsonString(String json, LentManager cm) {
+        if(cm == null) return null;
         Lent lent = null;
         if(cm == null) return lent;
         try {

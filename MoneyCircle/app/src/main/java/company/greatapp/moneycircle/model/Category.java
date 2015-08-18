@@ -11,35 +11,88 @@ import company.greatapp.moneycircle.tools.Tools;
  */
 public class Category extends Model  {
 
+    public static final int SINGLE_MODEL = 1;
+    public static final int MULTIPLE_MODEL = 2;
+
     private String mCategoryName;
     private int mCategoryType;
-    private int mCategoryId;        // Need to set this categoryId as unique, we will save this value in Income,expense, table and all
     private int mModelType;
     private int mDbId;
     private String mUId;
     private String mJsonString;
+
+
+    private boolean forIncome;
+    private boolean forExpense;
+    private boolean forBorrow;
+    private boolean forLent;
+    private boolean forSplit;
+
+
+    public boolean isForSplit() {
+        return forSplit;
+    }
+
+    public void setForSplit(boolean forSplit) {
+        this.forSplit = forSplit;
+        //this should be the part of Lent as well as expense
+        if(forSplit) {
+            this.forExpense = true;
+            this.forLent = true;
+        }
+    }
+
+    public boolean isForLent() {
+        return forLent;
+    }
+
+    public void setForLent(boolean forLent) {
+        this.forLent = forLent;
+    }
+
+    public boolean isForBorrow() {
+        return forBorrow;
+    }
+
+    public void setForBorrow(boolean forBorrow) {
+        this.forBorrow = forBorrow;
+    }
+
+    public boolean isForExpense() {
+        return forExpense;
+    }
+
+    public void setForExpense(boolean forExpense) {
+        this.forExpense = forExpense;
+    }
+
+    public boolean isForIncome() {
+        return forIncome;
+    }
+
+    public void setForIncome(boolean forIncome) {
+        this.forIncome = forIncome;
+    }
 
     public Category(String categoryName, int categoryType) {
         mCategoryName = categoryName;
         setUID(Tools.generateUniqueId());
         mCategoryType = categoryType;
         mModelType = Model.MODEL_TYPE_CATEGORY;
-        // mCategoryId =      // TODO Need to set this value by deciding the unique number logic
     }
 
     public Category(String categoryName, String uid) {
-
         mCategoryName = categoryName;
         mUId = uid;
+        mModelType = Model.MODEL_TYPE_CATEGORY;
     }
 
-    public Category(String categoryName,int dbId, String uid, int categoryType/*,int categoryId*/) {
+    public Category(String categoryName,int dbId, String uid, int categoryType) {
         mCategoryName = categoryName;
         mDbId = dbId;
         mUId = uid;
         mCategoryType = categoryType;
         mModelType = Model.MODEL_TYPE_CATEGORY;
-        //mCategoryId = categoryId;
     }
 
     @Override
@@ -105,14 +158,6 @@ public class Category extends Model  {
         return mJsonString;
     }
 
-    private void setCategoryId(int categoryId) {
-        mCategoryId = categoryId;
-    }
-
-    public int getCategoryId() {
-        return mCategoryId;
-    }
-
     @Override
     public ContentValues getContentValues() {
         ContentValues values = new ContentValues();
@@ -120,6 +165,13 @@ public class Category extends Model  {
         values.put(DB.UID, getUID());
         values.put(DB.CATEGORY_NAME, getTitle());
         values.put(DB.CATEGORY_TYPE, getCategoryType());
+
+        values.put(DB.CATEGORY_FOR_INCOME, isForIncome()?1:0);
+        values.put(DB.CATEGORY_FOR_EXPENSE, isForExpense()?1:0);
+        values.put(DB.CATEGORY_FOR_BORROW, isForBorrow()?1:0);
+        values.put(DB.CATEGORY_FOR_LENT, isForLent()?1:0);
+        values.put(DB.CATEGORY_FOR_SPLIT, isForSplit()?1:0);
+
         return values;
     }
 

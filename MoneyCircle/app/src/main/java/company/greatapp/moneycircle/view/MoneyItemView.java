@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -32,6 +33,8 @@ public class MoneyItemView extends LinearLayout {
     private final TextView tv_date;
     private final int mType;
     private final FrameLayout f_member;
+    private final FrameLayout f_split;
+    private final LinearLayout ll_split_member;
     private Income income;
     public MoneyItemView(Context context, AttributeSet attrs, int type) {
 
@@ -48,11 +51,17 @@ public class MoneyItemView extends LinearLayout {
         tv_amount = (TextView)viewGroup.findViewById(R.id.tv_item_amount);
         tv_date = (TextView)viewGroup.findViewById(R.id.tv_item_date);
         f_member = (FrameLayout)viewGroup.findViewById(R.id.f_member);
+        f_split = (FrameLayout)viewGroup.findViewById(R.id.f_split);
+        ll_split_member = (LinearLayout)viewGroup.findViewById(R.id.ll_split_member);
 
     }
 
     public void initView(Model model) {
         if(model == null) return;
+        f_member.removeAllViews();
+        f_split.removeAllViews();
+        ll_split_member.removeAllViews();
+
         tv_title.setText(model.getTitle());
 
         switch(mType) {
@@ -64,27 +73,52 @@ public class MoneyItemView extends LinearLayout {
             case Model.MODEL_TYPE_EXPENSE:
                 tv_amount.setText(""+((Expense)model).getAmount());
                 tv_date.setText(((Expense)model).getDateString());
+                if(((Expense)model).isLinkedWithSplit()){
+                    f_split.addView(new TagItemView(getContext(), f_split, "SPLIT", false));
+                }
                 break;
             case Model.MODEL_TYPE_BORROW:
                 tv_amount.setText(""+((Borrow)model).getAmount());
                 tv_date.setText(((Borrow) model).getDateString());
                 Contact memberB = ((Borrow)model).getLinkedContact();
-                if(memberB != null)
-                f_member.addView(new TagItemView(getContext(),f_member,memberB,false));
+                if(memberB != null) {
+                    f_member.addView(new TagItemView(getContext(), f_member, memberB, false));
+                }
                 break;
             case Model.MODEL_TYPE_LENT:
                 tv_amount.setText(""+((Lent)model).getAmount());
                 tv_date.setText(((Lent)model).getDateString());
                 Contact memberL = ((Lent)model).getLinkedContact();
-                if(memberL != null)
-                f_member.addView(new TagItemView(getContext(),f_member,memberL,false));
+                if(memberL != null) {
+                    f_member.addView(new TagItemView(getContext(), f_member, memberL, false));
+                }
+                if(((Lent)model).isLinkedWithSplit()){
+                    f_split.addView(new TagItemView(getContext(), f_split, "SPLIT", false));
+                }
                 break;
             case Model.MODEL_TYPE_SPLIT:
                 tv_amount.setText(""+((Split)model).getAmount());
                 tv_date.setText(((Split)model).getDateString());
+//                TextView tv = new TextView(getContext());
+//                f_member.addView(tv);
+//                tv.setText(((Split)model).printModelData());
+                f_member.setVisibility(View.GONE);
+                f_split.setVisibility(View.GONE);
+                ll_split_member.setVisibility(View.VISIBLE);
+                addMemberTagViews((Split)model);
                 break;
         }
 
+    }
+
+    private void addMemberTagViews(Split split) {
+        if(split == null)return;
+
+        for(Contact c : split.getLinkedParticipants()) {
+            if(c != null){
+                ll_split_member.addView(new TagItemView(getContext(), ll_split_member, c, false));
+            }
+        }
     }
 
 }

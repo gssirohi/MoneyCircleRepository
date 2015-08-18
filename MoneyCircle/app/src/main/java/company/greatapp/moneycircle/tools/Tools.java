@@ -1,12 +1,14 @@
 package company.greatapp.moneycircle.tools;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.UUID;
 
+import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.manager.CategoryManager;
 import company.greatapp.moneycircle.model.Borrow;
@@ -112,14 +114,15 @@ public class Tools {
             item.setAmount(randInt(500, 10000));
             item.insertItemInDB(context);
         }
-        for(String s: splits){
-            Split item = new Split();
-            item.setTitle(s);
-            item.setDateString(getRandomDate());
-            item.setCategory(randInt(0, 3));
-            item.setAmount(randInt(500, 10000));
-            item.insertItemInDB(context);
-        }
+//
+//        for(String s: splits){
+//            Split item = new Split();
+//            item.setTitle(s);
+//            item.setDateString(getRandomDate());
+//            item.setCategory(splitCategoryList.get(randInt(0, splitCategoryList.size()-1)).getUID());
+//            item.setAmount(randInt(500, 10000));
+//            item.insertItemInDB(context);
+//        }
 
     }
 
@@ -153,4 +156,22 @@ public static String getModelName(int modelType){
     }
     return name;
 }
+
+    public static int getModelColor(Context context, int modelType) {
+        Resources res = context.getResources();
+        int color = 0;
+        if (modelType == Model.MODEL_TYPE_INCOME) {
+            color = res.getColor(R.color.income);
+        } else if (modelType == Model.MODEL_TYPE_EXPENSE) {
+            color = res.getColor(R.color.expense);
+        } else if (modelType == Model.MODEL_TYPE_BORROW) {
+            color = res.getColor(R.color.borrow);
+        } else if (modelType == Model.MODEL_TYPE_LENT) {
+            color = res.getColor(R.color.lent);
+        }
+        else if (modelType == Model.MODEL_TYPE_SPLIT) {
+            color = res.getColor(R.color.split);
+        }
+        return color;
+    }
 }

@@ -155,7 +155,7 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                category = "all";
             }
         });
         
@@ -163,7 +163,7 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
     }
     
     public void init(){
-        category = null;
+        category = "all";//uid
         periodType = Period.PERIOD_DATE;
         filter = new DBFilter(modelType,Period.PERIOD_DATE,category);
         setPeriodView();
@@ -277,9 +277,9 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
             mCategories = new String[]{"cat1", "cat2", "cat3"};
         }*/
         mCategories = new ArrayList<>();
-        mCategories.add(new Category("All", null));
+        mCategories.add(new Category("All", "all"));
         CategoryManager categoryManager = new CategoryManager(this, modelType);
-        mCategories.addAll(categoryManager.getItemList());
+        mCategories.addAll(categoryManager.getItemListByModel(modelType));
     }
 
     private void initialiseTabHost() {

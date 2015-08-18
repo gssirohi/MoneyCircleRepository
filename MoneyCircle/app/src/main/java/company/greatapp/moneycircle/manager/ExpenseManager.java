@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,9 +31,9 @@ public class ExpenseManager extends BaseModelManager  {
 
     public ExpenseManager(Context context){
         this.context = context;
-        if (context instanceof NewHomeActivity) {
+        //if (context instanceof NewHomeActivity) {
             loadItemsFromDB();
-        }
+        //}
     }
 
 
@@ -85,6 +86,9 @@ public class ExpenseManager extends BaseModelManager  {
             c.moveToFirst();
             while(!c.isAfterLast()) {
                 Model model = createItemFromCursor(c);
+                if(model != null) {
+                    Log.d("SPLIT", "LOADING EXPENSE["+model.getTitle()+"] : " + model.getUID());
+                }
                 expenses.add(model);
                 titles.add(model.getTitle());
                 c.moveToNext();

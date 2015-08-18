@@ -114,7 +114,7 @@ public class DBFilter {
         if(periodType == Period.PERIOD_ALL){
 //            selection = DB.CATEGORY + "=" + mCategory;
             selection = null;
-        } else if (mCategory == null) {
+        } else if (mCategory.equals("all")) {
             selection = DB.DATE_STRING +  " BETWEEN ? AND ?";
         } else {
             selection = DB.CATEGORY + "=\"" + mCategory + "\" AND " + DB.DATE_STRING +  " BETWEEN ? AND ?";

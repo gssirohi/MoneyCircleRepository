@@ -2,6 +2,7 @@ package company.greatapp.moneycircle.model;
 
 import android.content.ContentValues;
 import android.net.Uri;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,10 +31,28 @@ public class Split extends Model {
     private Date dueDate;
     private String dueDateString = "";
 
+    private ArrayList<Contact> linkedParticipants = new ArrayList<Contact>();
     private ArrayList<Contact> linkedContacts = new ArrayList<Contact>();
+    private Circle linkedCircle;
     private Expense linkedExpense;
     private ArrayList<Lent> linkedLents = new ArrayList<Lent>();
     private String linkedContactsJson = "";
+
+    public ArrayList<Contact> getLinkedParticipants() {
+        return linkedParticipants;
+    }
+
+    public void setLinkedParticipants(ArrayList<Contact> linkedParticipants) {
+        this.linkedParticipants = linkedParticipants;
+    }
+
+    public Circle getLinkedCircle() {
+        return linkedCircle;
+    }
+
+    public void setLinkedCircle(Circle linkedCircle) {
+        this.linkedCircle = linkedCircle;
+    }
 
     public String getLinkedCircleJson() {
         return linkedCircleJson;
@@ -259,5 +278,58 @@ public class Split extends Model {
     public String getJsonString() {
         return jsonString;
     }
+
+    public String printModelData(){
+        String msg = "";
+        msg = "\n=======================SPLIT MODEL======================\n";
+        msg = msg+"DBID["+getDbId()+"] : UID["+getUID()+"]\n";
+        msg = msg+"TITLE : "+getTitle()+"\n";
+        msg = msg+"AMOUNT : "+getAmount()+"\n";
+        msg = msg+"TOTAL MEMBER : "+getTotalParticipants()+"\n";
+        msg = msg+"CATEGORY : "+getCategory()+"\n";
+        msg = msg+"DESC : "+getDescription()+"\n";
+        msg = msg+"DATE_S : "+getDateString()+"\n";
+
+        msg = msg+"PARTICIPANTS JSON : "+getLinkedParticipantsJson()+"\n";
+        msg = msg+"===========PARTICIPANTS=================\n";
+        for(Contact c: getLinkedParticipants()) {
+            msg = msg+"   PRTICIPANT : "+(c!= null?c.printModelData():"null participant")+"\n";
+        }
+        msg = msg+"----------------------------------------\n";
+        msg = msg+"\n";
+
+        msg = msg+"CONTACTS JSON : "+getLinkedContactsJson()+"\n";
+        msg = msg+"===========CONTACTS=================\n";
+        for(Contact c: getLinkedContacts()) {
+            msg = msg+"   CONTACT : "+(c!=null?c.printModelData():"null contact")+"\n";
+        }
+        msg = msg+"----------------------------------------\n";
+        msg = msg+"\n";
+
+        msg = msg+"CIRCLE JSON : "+getLinkedCircleJson()+"\n";
+        msg = msg+"===========CIRCLE=================\n";
+        msg = msg+"   CIRCLE : "+(getLinkedCircle()!=null?getLinkedCircle().printModelData():"null circle")+"\n";
+        msg = msg+"----------------------------------------\n";
+        msg = msg+"\n";
+
+        msg = msg+"EXPENSE JSON : "+getLinkedExpenseJson()+"\n";
+        msg = msg+"===========EXPENSE=================\n";
+        msg = msg+"   EXPENSE : "+(getLinkedExpense()!=null?getLinkedExpense().printModelData():"null expense")+"\n";
+        msg = msg+"----------------------------------------\n";
+        msg = msg+"\n";
+
+        msg = msg+"LENTS JSON : "+getLinkedLentsJson()+"\n";
+        msg = msg+"===========LENTS=================\n";
+        for(Lent l: getLinkedLents()) {
+            msg = msg+"   LENT : "+(l!=null?l.printModelData():"null lent")+"\n";
+        }
+        msg = msg+"----------------------------------------\n";
+        msg = msg+"\n";
+
+        msg = msg+"-----------------------------------------------\n";
+        Log.d("SPLIT", msg);
+        return msg;
+    }
+
 
 }

@@ -396,7 +396,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
     public void setDate(int year, int monthOfYear, int dayOfMonth) {
         b_new_date.setText(String.format("%d/%d/%d", year, monthOfYear+1, dayOfMonth));
         mDateString = DateUtils.getDateString(year, monthOfYear, dayOfMonth);
-        Toast.makeText(this,"DATE:"+ mDateString,Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this,"DATE:"+ mDateString,Toast.LENGTH_SHORT).show();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data)

@@ -26,12 +26,13 @@ public abstract class BaseModelManager {
     public abstract ArrayList<Model> getItemList();
 
     public Model getItemFromListByUID(String uid) {
-        Log.d("split", "required uid: " + uid);
+       // Log.d("split", "required uid: " + uid);
         for(Model m : getItemList()) {
-            Log.d("split", "checking uid: " + m.getUID());
+         //   Log.d("split", "checking uid: " + m.getUID());
             if(uid.equals(m.getUID()))
                 return m;
         }
+        Log.d("split", "UID NOT FOUND : " + uid);
         return null;
     }
 

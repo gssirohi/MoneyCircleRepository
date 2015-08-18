@@ -69,20 +69,42 @@
             android:textColor="@color/white"
             android:layout_weight="1" />
 
-        <FrameLayout
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical">
 
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:id="@+id/f_member"
-                android:layout_gravity="center_vertical|right"
+                android:layout_gravity="left|center_vertical"
                 android:layout_marginRight="10dp"></FrameLayout>
-        </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/f_split"
+                android:layout_gravity="right|center_vertical"></FrameLayout>
+        </LinearLayout>
 
     </LinearLayout>
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/horizontalScrollView2"
+            android:layout_gravity="center_horizontal">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/ll_split_member"></LinearLayout>
+        </HorizontalScrollView>
     </LinearLayout>
+
 </LinearLayout>
 </RelativeLayout>

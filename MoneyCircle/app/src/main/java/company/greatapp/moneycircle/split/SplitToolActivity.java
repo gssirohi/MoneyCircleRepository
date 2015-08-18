@@ -30,6 +30,9 @@ import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.manager.CategoryManager;
 import company.greatapp.moneycircle.manager.CircleManager;
 import company.greatapp.moneycircle.manager.ContactManager;
+import company.greatapp.moneycircle.manager.ExpenseManager;
+import company.greatapp.moneycircle.manager.LentManager;
+import company.greatapp.moneycircle.manager.SplitManager;
 import company.greatapp.moneycircle.model.Circle;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Expense;
@@ -38,6 +41,7 @@ import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.Participant;
 import company.greatapp.moneycircle.model.Split;
 import company.greatapp.moneycircle.tools.DatePickerFragment;
+import company.greatapp.moneycircle.tools.DateUtils;
 import company.greatapp.moneycircle.tools.GreatJSON;
 import company.greatapp.moneycircle.view.TagItemView;
 
@@ -80,6 +84,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
     private TextView tv_distribution_details;
     private TextView tv_total_members;
     private String mCategory;
+    private String mDateString = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,7 +168,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         String amountString = et_new_amount.getText().toString();
         float amount = Float.parseFloat(amountString);
         //DATE
-        String dateString = b_new_date.getText().toString();
+        String dateString = mDateString;
         //DUE DATE
         
         //DESC
@@ -187,19 +192,31 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         
         //CIRCLE
         JSONObject jsonCircle = GreatJSON.getJsonObjectForCircle(memberCircle);
-        String jsonStringCircle = jsonCircle.toString();
+        String jsonStringCircle = (jsonCircle != null)?jsonCircle.toString():"";
         
         //EXPENSE
         Expense expense = insertExpense();
+
         String jsonStringExpense = "";
         if(expense != null) {
+          //change UID as in DB instance of this instance
+          expense.setUID(expense.getUID().replaceAll("NEW","DB"));
+
             JSONObject obj = GreatJSON.getJsonObjectForExpense(expense);
             if(obj != null) {
                 jsonStringExpense = obj.toString();
+            }else{
+                Log.d("SPLIT","expense json is null");
             }
         }
         //TOTAL LENTS
         ArrayList<Lent> lents = insertLents();
+        for(Lent l : lents){
+            if (l != null) {
+                //change UID as in DB instance of this instance
+                l.setUID(l.getUID().replaceAll("NEW","DB"));
+            }
+        }
         JSONArray jArrayLents = GreatJSON.getJsonArrayForLentList(lents);
         String jsonStringLents = jArrayLents.toString();
 
@@ -211,13 +228,60 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         split.setDescription(desc);
         split.setCategory(mCategory);
         split.setDateString(dateString);
+
         split.setLinkedParticipantsJson(jsonStringParticipants);
+        split.setLinkedParticipants(allMembers);
+
+        split.setTotalParticipants(allMembers.size());
+
         split.setLinkedContactsJson(jsonStringContacts);
+        split.setLinkedContacts(memberContacts);
+
         split.setLinkedCircleJson(jsonStringCircle);
+        split.setLinkedCircle(memberCircle);
+
         split.setLinkedExpenseJson(jsonStringExpense);
+        split.setLinkedExpense(expense);//update it with DB expense (DB version will have this split info)
+
         split.setLinkedLentsJson(jsonStringLents);
+        split.setLinkedLents(lents);//update it with DB expense (DB version will have this split info)
 
         Uri uri = split.insertItemInDB(this);
+
+        //change UID as in DB instance of this instance
+        split.setUID(split.getUID().replaceAll("NEW", "DB"));
+
+        JSONObject objS = GreatJSON.getJsonObjectForSplit(split);
+        String jsonStringSplit = "";
+        if(objS != null) {
+            jsonStringSplit = objS.toString();
+        }
+
+        //for updation original DB item is needed(dbId)
+        if(expense != null) {
+            ExpenseManager em = new ExpenseManager(this);
+            Expense dbExpense = (Expense) em.getItemFromListByUID(expense.getUID());
+            dbExpense.setLinkedSplitJson(jsonStringSplit);
+            dbExpense.updateItemInDb(this);
+//            split.setLinkedExpense(dbExpense);
+        }
+
+
+        LentManager lm = new LentManager(this);
+        ArrayList<Lent> dbLents = new ArrayList<Lent>();
+        for(Lent l : lents){
+            if (l != null) {
+                Lent dbLent = (Lent)lm.getItemFromListByUID(l.getUID());
+                dbLent.setLinkedSplitJson(jsonStringSplit);
+                dbLent.updateItemInDb(this);
+                dbLents.add(dbLent);
+            }
+        }
+//        split.setLinkedLents(dbLents);
+//        SplitManager sm = new SplitManager(this);
+//        Split dbSplit = (Split)sm.getItemFromListByUID(split.getUID());
+//        split.setDbId(dbSplit.getDbId());//update db id from db instance
+//        split.updateItemInDb(this);
 
         finish();
 
@@ -231,7 +295,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         //desc
             String desc = et_new_note.getText().toString();
         //date
-        String dateString = b_new_date.getText().toString();
+        String dateString = mDateString;
         //is split
         boolean isSplit = true;
         // linked split
@@ -282,7 +346,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         //desc
         String desc = et_new_note.getText().toString();
         //date
-        String dateString = b_new_date.getText().toString();
+        String dateString = mDateString;
         //is split
         boolean isSplit = true;
         // linked split
@@ -294,13 +358,13 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         expense.setCategory(mCategory);
         expense.setDescription(desc);
         expense.setDateString(dateString);
-        expense.setIsLinkedWithSplit(isSplit);
+        expense.setIsLinkedWithSplit(true);
         //expense.setLinkedSplitJson();
         Uri uri = expense.insertItemInDB(this);
         if(uri != null)
             return expense;
         else
-            return null;
+            return expense;//return null;
     }
 
     private boolean validateData() {
@@ -551,6 +615,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
     @Override
     public void setDate(int year, int monthOfYear, int dayOfMonth) {
         b_new_date.setText(String.format("%d/%d/%d", dayOfMonth, monthOfYear, year));
+        mDateString = DateUtils.getDateString(year, monthOfYear, dayOfMonth);
     }
 
     private ArrayList<Participant> getParticipants() {

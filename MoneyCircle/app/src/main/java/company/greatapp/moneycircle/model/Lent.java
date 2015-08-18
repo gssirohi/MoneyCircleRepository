@@ -245,16 +245,5 @@ public class Lent extends Model {
         return jsonString;
     }
 
-    public void printModelData(){
-        Log.d("SPLIT", "====================MODEL===================");
-        Log.d("SPLIT","DBID["+getDbId()+"] : UID["+getUID()+"]");
-        Log.d("SPLIT","TITLE : "+getTitle());
-        Log.d("SPLIT","CONTACT JSON : "+getLinkedContactJson());
-        if(getLinkedContact() != null)
-        Log.d("SPLIT","CONTACT : " + getLinkedContact().getUID());
-        else
-            Log.d("SPLIT","CONTACT : " + "NULL");
-        Log.d("SPLIT", "-----------------------------------------------");
-    }
 
 }

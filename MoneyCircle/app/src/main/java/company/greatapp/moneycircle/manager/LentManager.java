@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -33,9 +34,9 @@ public class LentManager extends BaseModelManager  {
     public LentManager(Context context){
         this.context = context;
         mContactManager = new ContactManager(context);
-        if (context instanceof NewHomeActivity) {
+       // if (context instanceof NewHomeActivity) {
             loadItemsFromDB();
-        }
+       // }
     }
 
 
@@ -94,6 +95,9 @@ public class LentManager extends BaseModelManager  {
             c.moveToFirst();
             while(!c.isAfterLast()) {
                 Model model = createItemFromCursor(c);
+                if(model != null) {
+                    Log.d("SPLIT", "LOADING LENT[" + model.getTitle() + "] : " + model.getUID());
+                }
                 lents.add(model);
                 titles.add(model.getTitle());
                 c.moveToNext();

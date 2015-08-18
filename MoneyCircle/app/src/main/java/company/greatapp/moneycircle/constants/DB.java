@@ -164,13 +164,19 @@ public class DB {
     public static final String CATEGORY_TABLE_NAME = "categoryTable";
     public static final String CATEGORY_TYPE = "categoryType";
     public static final String CATEGORY_NAME = "categoryName";
-    public static final String CATEGORY_ID = "categoryId";
+
+    public static final String CATEGORY_FOR_INCOME = "catIncome";
+    public static final String CATEGORY_FOR_EXPENSE = "catExpemse";
+    public static final String CATEGORY_FOR_BORROW = "catBorrow";
+    public static final String CATEGORY_FOR_LENT = "catLent";
+    public static final String CATEGORY_FOR_SPLIT = "catSplit";
 
 
     public static final Uri CATEGORY_TABLE_URI = Uri.parse("content://"+DB_AUTHORITY+"/" + CATEGORY_TABLE_NAME);
     public static final String[] CATEGORY_TABLE_PROJECTION = new String[]{
-            DB_ID,UID,/*CATEGORY_ID,*/
+            DB_ID,UID,
             CATEGORY_NAME,
+            CATEGORY_FOR_INCOME,CATEGORY_FOR_EXPENSE,CATEGORY_FOR_BORROW,CATEGORY_FOR_LENT,CATEGORY_FOR_SPLIT,
             CATEGORY_TYPE};
 //----------------------------------------------------------------//
 
