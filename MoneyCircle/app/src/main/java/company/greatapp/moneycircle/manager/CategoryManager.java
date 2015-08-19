@@ -8,6 +8,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.constants.DB;
 
 
@@ -233,15 +234,10 @@ public class CategoryManager extends BaseModelManager  {
     private ArrayList<Model> getDefaultCategoryList() {
 
         ArrayList<Model> listI = new ArrayList<>();
-        listI.add(new Category("Salary",Category.SINGLE_MODEL));
-        listI.add(new Category("Shares",Category.SINGLE_MODEL));
-        listI.add(new Category("Rent",Category.SINGLE_MODEL));
-        listI.add(new Category("Bussiness Profit",Category.SINGLE_MODEL));
-        listI.add(new Category("Freelancing",Category.SINGLE_MODEL));
-        listI.add(new Category("Donation",Category.SINGLE_MODEL));
-        listI.add(new Category("Gambling",Category.SINGLE_MODEL));
-        listI.add(new Category("Equity",Category.SINGLE_MODEL));
-        listI.add(new Category("Mutual Fund",Category.SINGLE_MODEL));
+        listI.add(new Category("income 1",Category.SINGLE_MODEL));
+        listI.add(new Category("income 2",Category.SINGLE_MODEL));
+        listI.add(new Category("income 3",Category.SINGLE_MODEL));
+        listI.add(new Category("income 4",Category.SINGLE_MODEL));
 
         for (Model m : listI) {
             ((Category)m).setForIncome(true);
@@ -249,14 +245,11 @@ public class CategoryManager extends BaseModelManager  {
         }
 
         ArrayList<Model> listE = new ArrayList<>();
-        listE.add(new Category("Entertainment",Category.SINGLE_MODEL));
-        listE.add(new Category("Bills",Category.SINGLE_MODEL));
-        listE.add(new Category("Clothing",Category.SINGLE_MODEL));
-        listE.add(new Category("Food",Category.SINGLE_MODEL));
-        listE.add(new Category("Juice",Category.SINGLE_MODEL));
-        listE.add(new Category("Drinks",Category.SINGLE_MODEL));
-        listE.add(new Category("Kitchen",Category.SINGLE_MODEL));
-        listE.add(new Category("House Holds",Category.SINGLE_MODEL));
+        listE.add(new Category("expense 1",Category.SINGLE_MODEL));
+        listE.add(new Category("expense 2",Category.SINGLE_MODEL));
+        listE.add(new Category("expense 3",Category.SINGLE_MODEL));
+        listE.add(new Category("expense 4",Category.SINGLE_MODEL));
+        listE.add(new Category("expense 5",Category.SINGLE_MODEL));
 
         for (Model m : listE) {
             ((Category)m).setForExpense(true);
@@ -264,10 +257,10 @@ public class CategoryManager extends BaseModelManager  {
         }
 
         ArrayList<Model> listB = new ArrayList<>();
-        listB.add(new Category("Bank Loan",Category.SINGLE_MODEL));
-        listB.add(new Category("Credit Card",Category.SINGLE_MODEL));
-        listB.add(new Category("From Friends",Category.SINGLE_MODEL));
-        listB.add(new Category("Shop",Category.SINGLE_MODEL));
+        listB.add(new Category("borrow 1",Category.SINGLE_MODEL));
+        listB.add(new Category("borrow 2",Category.SINGLE_MODEL));
+        listB.add(new Category("borrow 3",Category.SINGLE_MODEL));
+        listB.add(new Category("borrow 4",Category.SINGLE_MODEL));
 
         for (Model m : listB) {
             ((Category)m).setForBorrow(true);
@@ -275,29 +268,26 @@ public class CategoryManager extends BaseModelManager  {
         }
 
         ArrayList<Model> listL = new ArrayList<>();
-        listL.add(new Category("To Friend",Category.SINGLE_MODEL));
-        listL.add(new Category("To Family",Category.SINGLE_MODEL));
-        listL.add(new Category("To Colege",Category.SINGLE_MODEL));
-        listL.add(new Category("On Lease",Category.SINGLE_MODEL));
+        listL.add(new Category("lent 1",Category.SINGLE_MODEL));
+        listL.add(new Category("lent 2",Category.SINGLE_MODEL));
+        listL.add(new Category("lent 3",Category.SINGLE_MODEL));
+        listL.add(new Category("lent 4",Category.SINGLE_MODEL));
         for (Model m : listL) {
             ((Category)m).setForLent(true);
             mAllCategories.add(m);
         }
 
         ArrayList<Model> listS = new ArrayList<>();
-        listS.add(new Category("Lunch",Category.MULTIPLE_MODEL));
-        listS.add(new Category("Pizza",Category.MULTIPLE_MODEL));
-        listS.add(new Category("Trip",Category.MULTIPLE_MODEL));
-        listS.add(new Category("Rent",Category.MULTIPLE_MODEL));
-        listS.add(new Category("Party", Category.MULTIPLE_MODEL));
-        listS.add(new Category("Movie",Category.MULTIPLE_MODEL));
-        listS.add(new Category("Kitchen", Category.MULTIPLE_MODEL));
-        listS.add(new Category("Flat",Category.MULTIPLE_MODEL));
+        listS.add(new Category("split 1",Category.MULTIPLE_MODEL));
+        listS.add(new Category("split 2",Category.MULTIPLE_MODEL));
+        listS.add(new Category("split 3",Category.MULTIPLE_MODEL));
+
         for (Model m : listS) {
             ((Category)m).setForSplit(true);
             mAllCategories.add(m);
         }
-
+        //add a category for the case when no category is selected
+        mAllCategories.add(new Category("No category", C.CATEGORY_NONE_UID));
 
         return  mAllCategories;
     }

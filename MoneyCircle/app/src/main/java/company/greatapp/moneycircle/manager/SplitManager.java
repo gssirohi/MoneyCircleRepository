@@ -102,7 +102,7 @@ public class SplitManager extends BaseModelManager {
         int dbId               =cursor.getInt(cursor.getColumnIndex(DB.DB_ID));
         String uid             = cursor.getString(cursor.getColumnIndex(DB.UID));
         String title           = cursor.getString(cursor.getColumnIndex(DB.TITLE));
-        String category           = cursor.getString(cursor.getColumnIndex(DB.CATEGORY));
+        String category        = cursor.getString(cursor.getColumnIndex(DB.CATEGORY));
         int amount             = cursor.getInt(cursor.getColumnIndex(DB.AMOUNT));
         String description     = cursor.getString(cursor.getColumnIndex(DB.DESCRIPTION));
         String dueDateString   = cursor.getString(cursor.getColumnIndex(DB.DUE_DATE_STRING));

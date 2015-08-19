@@ -177,7 +177,7 @@ public class ContactManager extends BaseModelManager {
     }
 
     public Contact getUser() {
-        return (Contact)getItemFromListByUID(C.USER_UNIQUE_ID);
+        return (Contact) getHeavyItemFromListByUID(C.USER_UNIQUE_ID);
     }
 
 }

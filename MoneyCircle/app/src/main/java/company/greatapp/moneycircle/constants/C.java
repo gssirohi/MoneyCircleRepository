@@ -41,4 +41,5 @@ public class C {
     public static final int ENTRY_TYPE_DISPLAY = 101;
 
 
+    public static final String CATEGORY_NONE_UID = "noCat";
 }

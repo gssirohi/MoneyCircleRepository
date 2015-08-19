@@ -2,7 +2,6 @@ package company.greatapp.moneycircle.split;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Parcelable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -32,7 +31,6 @@ import company.greatapp.moneycircle.manager.CircleManager;
 import company.greatapp.moneycircle.manager.ContactManager;
 import company.greatapp.moneycircle.manager.ExpenseManager;
 import company.greatapp.moneycircle.manager.LentManager;
-import company.greatapp.moneycircle.manager.SplitManager;
 import company.greatapp.moneycircle.model.Circle;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Expense;
@@ -118,19 +116,19 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         b_new_members_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startItemSelection(C.TAG_CONTACTS);
+                startItemSelection(C.TAG_CONTACTS,Model.MODEL_TYPE_SPLIT,ListView.CHOICE_MODE_MULTIPLE);
             }
         });
         b_new_category.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startItemSelection(C.TAG_CATEGORIES);
+                startItemSelection(C.TAG_CATEGORIES,Model.MODEL_TYPE_SPLIT,ListView.CHOICE_MODE_SINGLE);
             }
         });
         b_new_circles_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startItemSelection(C.TAG_CIRCLES);
+                startItemSelection(C.TAG_CIRCLES,Model.MODEL_TYPE_SPLIT,ListView.CHOICE_MODE_SINGLE);
             }
         });
         b_new_date.setOnClickListener(new View.OnClickListener() {
@@ -158,6 +156,8 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         contactManager = new ContactManager(this);
         //TODO: ucomment it for circle
         circleManager = new CircleManager(this);
+
+        mCategory = C.CATEGORY_NONE_UID;
     }
     private void handleSplitAction() {
         if(!validateData()) return;
@@ -179,7 +179,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         //total PARTICIPANTS
         ArrayList<Contact> allMembers = new ArrayList<Contact>();
         for(Participant p : participants) {
-            Contact c = (Contact)contactManager.getItemFromListByUID(p.memberUID);
+            Contact c = (Contact)contactManager.getHeavyItemFromListByUID(p.memberUID);
             allMembers.add(c);
         }
 
@@ -260,7 +260,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         //for updation original DB item is needed(dbId)
         if(expense != null) {
             ExpenseManager em = new ExpenseManager(this);
-            Expense dbExpense = (Expense) em.getItemFromListByUID(expense.getUID());
+            Expense dbExpense = (Expense) em.getHeavyItemFromListByUID(expense.getUID());
             dbExpense.setLinkedSplitJson(jsonStringSplit);
             dbExpense.updateItemInDb(this);
 //            split.setLinkedExpense(dbExpense);
@@ -271,7 +271,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         ArrayList<Lent> dbLents = new ArrayList<Lent>();
         for(Lent l : lents){
             if (l != null) {
-                Lent dbLent = (Lent)lm.getItemFromListByUID(l.getUID());
+                Lent dbLent = (Lent)lm.getHeavyItemFromListByUID(l.getUID());
                 dbLent.setLinkedSplitJson(jsonStringSplit);
                 dbLent.updateItemInDb(this);
                 dbLents.add(dbLent);
@@ -279,7 +279,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         }
 //        split.setLinkedLents(dbLents);
 //        SplitManager sm = new SplitManager(this);
-//        Split dbSplit = (Split)sm.getItemFromListByUID(split.getUID());
+//        Split dbSplit = (Split)sm.getHeavyItemFromListByUID(split.getUID());
 //        split.setDbId(dbSplit.getDbId());//update db id from db instance
 //        split.updateItemInDb(this);
 
@@ -306,7 +306,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
             if(p.memberUID.equals(C.USER_UNIQUE_ID))
                 continue;
             //linked contact
-            Contact linkedMember = (Contact)contactManager.getItemFromListByUID(p.memberUID);
+            Contact linkedMember = (Contact)contactManager.getHeavyItemFromListByUID(p.memberUID);
             //amount
             float amount = p.amount;
 
@@ -404,17 +404,18 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         getMenuInflater().inflate(R.menu.menu_split_tool, menu);
         return true;
     }
-    private void startItemSelection(int requestCode){
+    private void startItemSelection(int requestCode, int modelType, int choiceMode){
         Intent i = new Intent(this, ChooserActivity.class);
         i.putExtra(C.CHOOSER_REQUEST,requestCode);
-        i.putExtra(C.CHOOSER_MODEL, Model.MODEL_TYPE_CONTACT);
-        i.putExtra(C.CHOOSER_CHOICE_MODE, ListView.CHOICE_MODE_MULTIPLE);
+        i.putExtra(C.CHOOSER_MODEL, modelType);
+        i.putExtra(C.CHOOSER_CHOICE_MODE,choiceMode);
         startActivityForResult(i, requestCode);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         Log.d("split", "onActivityResult : requestCode:" + requestCode + "  resultCode:" + resultCode);
+        if(data == null) return;
        if (requestCode == C.TAG_CONTACTS
                || requestCode == C.TAG_REGISTERED_CONTACTS ) {
             if (resultCode == RESULT_OK) {
@@ -443,7 +444,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
 
     private void addCategory(String uid){
         CategoryManager cm = new CategoryManager(this, Model.MODEL_TYPE_SPLIT);
-        String title = cm.getItemFromListByUID(uid).getTitle();
+        String title = cm.getHeavyItemFromListByUID(uid).getTitle();
         mCategory = uid;   // TODO This value has to be properly set
         b_new_category.setText(title);
     }
@@ -465,14 +466,14 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
                 memberContacts.clear();
                 for (String uid : returnedResult) {
                     Log.d("SPLIT","querying from contact manager");
-                    memberContacts.add((Contact)contactManager.getItemFromListByUID(uid));
+                    memberContacts.add((Contact)contactManager.getHeavyItemFromListByUID(uid));
                 }
                 break;
             case C.TAG_CIRCLES:
                 //TODO: ucomment it for circle
                 memberCircle = null;
                 String uid = returnedResult.get(0);
-                memberCircle = (Circle)circleManager.getItemFromListByUID(uid);
+                memberCircle = (Circle)circleManager.getHeavyItemFromListByUID(uid);
                 break;
         }
         participants.clear();

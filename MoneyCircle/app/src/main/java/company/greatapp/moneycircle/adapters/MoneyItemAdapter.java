@@ -76,15 +76,18 @@ public class MoneyItemAdapter extends CursorAdapter {
         //Model model = manager.createHeavyItemFromCursor(cursor);
         //Dont create item from cursor as we alreay have all items created in manager
         //just get UID from cursor and get the corresponding Model from manager
+        Log.d("SPLIT","adapter cursor moved to " + (p-1));
 
-        Model model = manager.getItemFromListByUID(Tools.getUidFromCursor(cursor));
+        Model model = manager.getHeavyItemFromListByUID(Tools.getUidFromCursor(cursor));
 
         //Model model = Tools.createLightModelFromCursor(cursor,mType);
 
         if(model == null) {
             Log.d(TAG,"Adapter model  = null");
+        } else {
+
+            ((MoneyItemView)view).initView(model);
         }
-        ((MoneyItemView)view).initView(model);
 
     }
 

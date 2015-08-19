@@ -67,8 +67,10 @@ public class TagItemView extends LinearLayout {
         if(inflater != null) {
             viewGroup = (ViewGroup)inflater.inflate(R.layout.tag_item_layout, this, true);
             Button b = (Button)viewGroup.findViewById(R.id.b_tag_item);
+            TextView divider = (TextView)viewGroup.findViewById(R.id.divider);
             ImageButton ib_cancel = (ImageButton)viewGroup.findViewById(R.id.ib_tag_cancel);
             ib_cancel.setVisibility(isCancelable ? View.VISIBLE : View.GONE);
+            divider.setVisibility(isCancelable ? View.VISIBLE : View.GONE);
             ib_cancel.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {

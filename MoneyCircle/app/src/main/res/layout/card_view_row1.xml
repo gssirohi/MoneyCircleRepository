@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:background="@color/app_lighter"
+            android:background="#FFFFFF"
             android:orientation="horizontal"
             android:paddingTop="3dp"
             android:padding="3dp">
@@ -41,6 +41,12 @@
                 android:text="Income"/>
 
         </LinearLayout>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:background="@color/app_lighter"
+            android:id="@+id/textView" />
 
         <LinearLayout
             android:id="@+id/llCardViewContentContainerId"

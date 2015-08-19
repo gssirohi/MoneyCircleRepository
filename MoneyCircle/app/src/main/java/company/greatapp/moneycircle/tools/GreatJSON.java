@@ -89,7 +89,7 @@ public class GreatJSON {
             String title = obj.getString("title");
             String uid = obj.getString("uid");
             String dbid = obj.getString("dbid");
-            contact = (Contact)cm.getItemFromListByUID(uid);
+            contact = (Contact)cm.getHeavyItemFromListByUID(uid);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -149,7 +149,7 @@ public class GreatJSON {
             String title = obj.getString("title");
             String uid = obj.getString("uid");
             String dbid = obj.getString("dbid");
-            circle = (Circle)cm.getItemFromListByUID(uid);
+            circle = (Circle)cm.getHeavyItemFromListByUID(uid);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -181,7 +181,7 @@ public class GreatJSON {
             String title = obj.getString("title");
             String uid = obj.getString("uid");
             String dbid = obj.getString("dbid");
-            split = (Split)cm.getItemFromListByUID(uid);
+            split = (Split)cm.getHeavyItemFromListByUID(uid);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -213,7 +213,7 @@ public class GreatJSON {
             String title = obj.getString("title");
             String uid = obj.getString("uid");
             String dbid = obj.getString("dbid");
-            expense = (Expense)cm.getItemFromListByUID(uid);
+            expense = (Expense)cm.getHeavyItemFromListByUID(uid);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -274,7 +274,7 @@ public class GreatJSON {
             String title = obj.getString("title");
             String uid = obj.getString("uid");
             String dbid = obj.getString("dbid");
-            lent = (Lent)cm.getItemFromListByUID(uid);
+            lent = (Lent)cm.getHeavyItemFromListByUID(uid);
         } catch (JSONException e) {
             e.printStackTrace();
         }

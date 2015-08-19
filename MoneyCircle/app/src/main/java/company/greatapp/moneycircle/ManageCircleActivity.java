@@ -195,7 +195,7 @@ public class ManageCircleActivity extends AppCompatActivity {
         Contact contact = null;
         for (String contactUID : contactUIDList) {
 
-            contact = (Contact) mContactManager.getItemFromListByUID(contactUID);
+            contact = (Contact) mContactManager.getHeavyItemFromListByUID(contactUID);
             mRegisteredContactList.add(contact);
         }
 

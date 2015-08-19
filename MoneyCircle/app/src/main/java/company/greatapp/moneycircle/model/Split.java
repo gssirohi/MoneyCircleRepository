@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import company.greatapp.moneycircle.constants.DB;
+import company.greatapp.moneycircle.tools.Tools;
 
 /**
  * Created by gyanendra.sirohi on 7/15/2015.
@@ -37,6 +38,10 @@ public class Split extends Model {
     private Expense linkedExpense;
     private ArrayList<Lent> linkedLents = new ArrayList<Lent>();
     private String linkedContactsJson = "";
+
+    public Split(){
+        setUID(Tools.generateUniqueId());
+    }
 
     public ArrayList<Contact> getLinkedParticipants() {
         return linkedParticipants;

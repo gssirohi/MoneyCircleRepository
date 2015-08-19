@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -418,7 +417,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
     private void addMember(String s) {
         if(TextUtils.isEmpty(s))return;
         ContactManager cm = new ContactManager(this);
-        Contact member = (Contact)cm.getItemFromListByUID(s);
+        Contact member = (Contact)cm.getHeavyItemFromListByUID(s);
         TagItemView tagView = new TagItemView(this,f_member,member,true);
         TagItemView.RemoveTagListener listener = new TagItemView.RemoveTagListener() {
             @Override
@@ -441,7 +440,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
 
     private void addCategory(String uid){
         CategoryManager cm = new CategoryManager(this, mModelType);
-        String title = cm.getItemFromListByUID(uid).getTitle();
+        String title = cm.getHeavyItemFromListByUID(uid).getTitle();
         mCategory = uid;   // TODO This value has to be properly set
         b_new_category.setText(title);
     }

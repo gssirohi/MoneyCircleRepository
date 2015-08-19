@@ -25,7 +25,7 @@ public abstract class BaseModelManager {
     protected abstract int getModelType();
     public abstract ArrayList<Model> getItemList();
 
-    public Model getItemFromListByUID(String uid) {
+    public Model getHeavyItemFromListByUID(String uid) {
        // Log.d("split", "required uid: " + uid);
         for(Model m : getItemList()) {
          //   Log.d("split", "checking uid: " + m.getUID());

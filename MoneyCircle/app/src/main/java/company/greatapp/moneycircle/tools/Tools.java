@@ -67,7 +67,9 @@ public class Tools {
 
     public static String getUidFromCursor(Cursor cursor) {
         if (cursor == null) return null;
-        return cursor.getString(cursor.getColumnIndex(DB.UID));
+        String uid = cursor.getString(cursor.getColumnIndex(DB.UID));
+        Log.d("SPLIT","UID for this cursor is : "+uid);
+        return uid;
     }
 
     public static Model getDbInstance(Context context,Model model) {
@@ -105,7 +107,7 @@ public class Tools {
             tableUri = DB.CATEGORY_TABLE_URI;            
         }
 
-        Cursor c = context.getContentResolver().query(tableUri, projection , selection , selArgs ,null);
+        Cursor c = context.getContentResolver().query(tableUri, projection, selection, selArgs, null);
         if(c != null && c.getCount() > 0) {
             c.moveToFirst();
             model =  createLightModelFromCursor(c,modelType);
