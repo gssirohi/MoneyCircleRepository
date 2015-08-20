@@ -130,6 +130,7 @@ public class CircleButton extends Button {
  }
 
  private void init(Context context, AttributeSet attrs) {
+  this.setTextColor(Color.WHITE);
  this.setFocusable(true);
 // this.setScaleType(ScaleType.CENTER_INSIDE);
  setClickable(true);

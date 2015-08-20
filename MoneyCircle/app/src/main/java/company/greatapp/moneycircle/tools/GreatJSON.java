@@ -1,5 +1,6 @@
 package company.greatapp.moneycircle.tools;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -38,6 +39,13 @@ public class GreatJSON {
     }
 
     public static JSONObject getJsonObjectForContact(Contact contact) {
+        if(contact == null) {
+            Log.d("SPLIT", "Contact is Null");
+            return null;
+        }
+
+        Log.d("SPLIT","getting json obj for below contact-->");
+        contact.printModelData();
         String jsonString = "";
         JSONObject obj = new JSONObject();
         try{
@@ -67,15 +75,21 @@ public class GreatJSON {
         return list;
     }
 
-    private static Contact getContactFromJsonString(String json, ContactManager cm) {
+    public static Contact getContactFromJsonString(String json, ContactManager cm) {
         Contact contact = null;
-        if(cm == null) return contact;
+        if(cm == null) return null;
+        if(TextUtils.isEmpty(json)){
+            Log.d("SPLIT","JSON is NULL or EMPTY");
+            return null;
+        }
+        Log.d("SPLIT","getting Contact for below json-->");
+        Log.d("SPLIT","JSON : "+json);
         try {
             JSONObject obj = new JSONObject(json);
             String title = obj.getString("title");
             String uid = obj.getString("uid");
             String dbid = obj.getString("dbid");
-            contact = (Contact)cm.getItemFromListByUID(uid);
+            contact = (Contact)cm.getHeavyItemFromListByUID(uid);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -95,6 +109,7 @@ public class GreatJSON {
     }
 
     public static JSONObject getJsonObjectForCircle(Circle circle) {
+        if(circle == null) return null;
         String jsonString = "";
         JSONObject obj = new JSONObject();
         try{
@@ -109,6 +124,7 @@ public class GreatJSON {
         return obj;
     }
     public static ArrayList<Circle> getCircleListFromJsonString(String json, CircleManager cm) {
+        if(cm == null) return null;
         ArrayList<Circle> list = new ArrayList<Circle>();
         try {
             JSONArray array = new JSONArray(json);
@@ -124,7 +140,8 @@ public class GreatJSON {
         return list;
     }
 
-    private static Circle getCircleFromJsonString(String json, CircleManager cm) {
+    public static Circle getCircleFromJsonString(String json, CircleManager cm) {
+        if(cm == null) return null;
         Circle circle = null;
         if(cm == null) return circle;
         try {
@@ -132,14 +149,15 @@ public class GreatJSON {
             String title = obj.getString("title");
             String uid = obj.getString("uid");
             String dbid = obj.getString("dbid");
-            circle = (Circle)cm.getItemFromListByUID(uid);
+            circle = (Circle)cm.getHeavyItemFromListByUID(uid);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return circle;
     }
 
-    public JSONObject getJsonObjectForSplit(Split split) {
+    public static JSONObject getJsonObjectForSplit(Split split) {
+        if(split == null) return null;
         String jsonString = "";
         JSONObject obj = new JSONObject();
         try{
@@ -154,7 +172,8 @@ public class GreatJSON {
         return obj;
     }
 
-    private Split getSplitFromJsonString(String json, SplitManager cm) {
+    private static Split getSplitFromJsonString(String json, SplitManager cm) {
+        if(cm == null) return null;
         Split split = null;
         if(cm == null) return split;
         try {
@@ -162,14 +181,15 @@ public class GreatJSON {
             String title = obj.getString("title");
             String uid = obj.getString("uid");
             String dbid = obj.getString("dbid");
-            split = (Split)cm.getItemFromListByUID(uid);
+            split = (Split)cm.getHeavyItemFromListByUID(uid);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return split;
     }
 
-    public JSONObject getJsonObjectForExpense(Expense expense) {
+    public static JSONObject getJsonObjectForExpense(Expense expense) {
+        if(expense == null) return null;
         String jsonString = "";
         JSONObject obj = new JSONObject();
         try{
@@ -184,7 +204,8 @@ public class GreatJSON {
         return obj;
     }
 
-    private Expense getExpenseFromJsonString(String json, ExpenseManager cm) {
+    public static Expense getExpenseFromJsonString(String json, ExpenseManager cm) {
+        if(cm == null) return null;
         Expense expense = null;
         if(cm == null) return expense;
         try {
@@ -192,13 +213,14 @@ public class GreatJSON {
             String title = obj.getString("title");
             String uid = obj.getString("uid");
             String dbid = obj.getString("dbid");
-            expense = (Expense)cm.getItemFromListByUID(uid);
+            expense = (Expense)cm.getHeavyItemFromListByUID(uid);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return expense;
     }
     public static JSONArray getJsonArrayForLentList(ArrayList<Lent> lents) {
+        if(lents == null) return null;
         String jsonString = "";
         JSONArray array = new JSONArray();
 
@@ -212,6 +234,7 @@ public class GreatJSON {
     }
 
     public static JSONObject getJsonObjectForLent(Lent lent) {
+        if(lent == null) return null;
         String jsonString = "";
         JSONObject obj = new JSONObject();
         try{
@@ -226,6 +249,7 @@ public class GreatJSON {
         return obj;
     }
     public static ArrayList<Lent> getLentListFromJsonString(String json, LentManager cm) {
+        if(cm == null) return null;
         ArrayList<Lent> list = new ArrayList<Lent>();
         try {
             JSONArray array = new JSONArray(json);
@@ -242,6 +266,7 @@ public class GreatJSON {
     }
 
     private static Lent getLentFromJsonString(String json, LentManager cm) {
+        if(cm == null) return null;
         Lent lent = null;
         if(cm == null) return lent;
         try {
@@ -249,7 +274,7 @@ public class GreatJSON {
             String title = obj.getString("title");
             String uid = obj.getString("uid");
             String dbid = obj.getString("dbid");
-            lent = (Lent)cm.getItemFromListByUID(uid);
+            lent = (Lent)cm.getHeavyItemFromListByUID(uid);
         } catch (JSONException e) {
             e.printStackTrace();
         }

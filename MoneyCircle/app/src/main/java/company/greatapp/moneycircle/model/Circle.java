@@ -3,96 +3,113 @@ package company.greatapp.moneycircle.model;
 import android.content.ContentValues;
 import android.net.Uri;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 import company.greatapp.moneycircle.constants.DB;
+import company.greatapp.moneycircle.tools.Tools;
 
 /**
  * Created by gyanendra.sirohi on 7/1/2015.
  */
 public class Circle extends Model  {
     //=====COMMON==============//
-    private int dbId;
-    private String uid = "";
-    private String title = "";
-    private int modelType;
+    private int mDbId;
+    private String mUid = "";
+    private String mTitle = "";
+    private int mModelType;
     private String jsonString = "";
 //--------------------------------//
 //=====SPECIFIC==============//
-private String circleName = "";
-    private String contactsJson;
-    private ArrayList<Contact> contacts = new ArrayList<Contact>();
+    private String mCircleName = "";
+    private String mContactsJson;
+    private ArrayList<Contact> mMemberList = new ArrayList<Contact>();
     //--------------------------------//
+
+    // In this model Title and Circle Name would be same.
+    public Circle(String circleName) {
+        mCircleName = circleName;
+        mTitle = circleName;
+        mUid = Tools.generateUniqueId();
+    }
+
+    /**
+     * This Constructor is used for creating circle object from cursor.
+     * @param circleName
+     * @param uid
+     */
+    public Circle(String circleName, String uid) {
+        mCircleName = circleName;
+        mTitle = circleName;
+        mUid = uid;
+    }
 
     @Override
     protected Uri getTableUri() {
         return DB.CIRCLE_TABLE_URI;
     }
     public String getCircleName() {
-        return circleName;
+        return mCircleName;
     }
 
     public void setCircleName(String circleName) {
-        this.circleName = circleName;
+        this.mCircleName = circleName;
     }
 
     public String getContactsJson() {
-        return contactsJson;
+        return mContactsJson;
     }
 
     public void setContactsJson(String contactsJson) {
-        this.contactsJson = contactsJson;
+        this.mContactsJson = contactsJson;
     }
 
-    public ArrayList<Contact> getContacts() {
-        return contacts;
+    public ArrayList<Contact> getMemberList() {
+        return mMemberList;
     }
 
-    public void setContacts(ArrayList<Contact> contacts) {
-        this.contacts = contacts;
+    public void setMemberList(ArrayList<Contact> memberList) {
+        this.mMemberList = memberList;
     }
 
 
     @Override
     public void setTitle(String title) {
-        this.title = title;
+        this.mTitle = title;
     }
 
     @Override
     public void setModelType(int modelType) {
-      this.modelType = modelType;
+      this.mModelType = modelType;
     }
 
     @Override
     public void setDbId(int dbId) {
-      this.dbId = dbId;
+      this.mDbId = dbId;
     }
 
     @Override
     public void setUID(String uid) {
-       this.uid = uid;
+       this.mUid = uid;
     }
 
     @Override
     public String getTitle() {
-        return title;
+        return mTitle;
     }
 
     @Override
     public int getModelType() {
-        return modelType;
+        return mModelType;
     }
 
     @Override
     public String getUID() {
-        return uid;
+        return mUid;
     }
 
     @Override
     public int getDbId() {
-        return dbId;
+        return mDbId;
     }
 
     @Override

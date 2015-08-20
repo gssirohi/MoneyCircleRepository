@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.manager.CategoryManager;
+import company.greatapp.moneycircle.manager.CircleManager;
 import company.greatapp.moneycircle.manager.ContactManager;
 import company.greatapp.moneycircle.model.Model;
 
@@ -40,10 +41,10 @@ public class ChooserActivity extends Activity {
 
         int requestCode  = getIntent().getIntExtra(C.CHOOSER_REQUEST,C.TAG_CONTACTS);
         int choiceMode  = getIntent().getIntExtra(C.CHOOSER_CHOICE_MODE, ListView.CHOICE_MODE_SINGLE);
-        int chooserModel = getIntent().getIntExtra(C.CHOOSER_MODEL, Model.MODEL_TYPE_INCOME);
+        int modelType   = getIntent().getIntExtra(C.CHOOSER_MODEL, Model.MODEL_TYPE_INCOME);
 
         title.setText(getChooserTitle(requestCode));
-        adapter = new ChooserAdapter(this,0,getItemList(requestCode, chooserModel));
+        adapter = new ChooserAdapter(this,0,getItemList(requestCode, modelType));
         chooserList.setChoiceMode(choiceMode);
         Log.d(LOGTAG,"onCreate choiceMode"+choiceMode);
         chooserList.setAdapter(adapter);
@@ -193,15 +194,16 @@ public class ChooserActivity extends Activity {
         }
     }
 
-    private ArrayList<Model> getItemList(int code, int chooserModel) {
+    private ArrayList<Model> getItemList(int requiredModelListCode, int modelTypeForCategoryList) {
         Log.d(LOGTAG,"getItemList");
         ArrayList<Model> list = new ArrayList<Model>();
-        switch(code) {
+        switch(requiredModelListCode) {
             case C.TAG_CATEGORIES:
-                CategoryManager categoryManager = new CategoryManager(this, chooserModel);
-                return categoryManager.getItemList();
+                CategoryManager categoryManager = new CategoryManager(this, modelTypeForCategoryList);
+                return categoryManager.getItemListByModel(modelTypeForCategoryList);
             case C.TAG_CIRCLES:
-                break;
+                CircleManager circleManager = new CircleManager(this);
+                return circleManager.getItemList();
             case C.TAG_REGISTERED_CONTACTS:
                 break;
             case C.TAG_CONTACTS:

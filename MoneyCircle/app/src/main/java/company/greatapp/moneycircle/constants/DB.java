@@ -139,6 +139,8 @@ public class DB {
     public static final String SPLIT_TABLE_NAME = "splitTable";
 
     public static final String SPLIT_LINKED_CONTACTS_JSON = "splitConts";
+    public static final String SPLIT_LINKED_CIRCLE_JSON = "splitCircle";
+    public static final String SPLIT_LINKED_PARTICIPANTS_JSON = "splitPartic";
     public static final String SPLIT_LINKED_EXPENSE_JSON = "splitExp";
     public static final String SPLIT_LINKED_LENTS_JSON = "splitLents";
     public static final String SPLIT_TOTAL_PARTICIPANTS = "splitTotalPart";
@@ -150,7 +152,7 @@ public class DB {
             TITLE,CATEGORY,DESCRIPTION,AMOUNT,
             DUE_DATE_STRING,
             SPLIT_TOTAL_PARTICIPANTS,
-            SPLIT_LINKED_CONTACTS_JSON,
+            SPLIT_LINKED_CONTACTS_JSON,SPLIT_LINKED_CIRCLE_JSON,SPLIT_LINKED_PARTICIPANTS_JSON,
             SPLIT_LINKED_EXPENSE_JSON,
             SPLIT_LINKED_LENTS_JSON,
             DATE_STRING,DATE, DAY_OF_MONTH, WEEK_OF_MONTH,MONTH,YEAR,
@@ -162,13 +164,19 @@ public class DB {
     public static final String CATEGORY_TABLE_NAME = "categoryTable";
     public static final String CATEGORY_TYPE = "categoryType";
     public static final String CATEGORY_NAME = "categoryName";
-    public static final String CATEGORY_ID = "categoryId";
+
+    public static final String CATEGORY_FOR_INCOME = "catIncome";
+    public static final String CATEGORY_FOR_EXPENSE = "catExpemse";
+    public static final String CATEGORY_FOR_BORROW = "catBorrow";
+    public static final String CATEGORY_FOR_LENT = "catLent";
+    public static final String CATEGORY_FOR_SPLIT = "catSplit";
 
 
     public static final Uri CATEGORY_TABLE_URI = Uri.parse("content://"+DB_AUTHORITY+"/" + CATEGORY_TABLE_NAME);
     public static final String[] CATEGORY_TABLE_PROJECTION = new String[]{
-            DB_ID,UID,/*CATEGORY_ID,*/
+            DB_ID,UID,
             CATEGORY_NAME,
+            CATEGORY_FOR_INCOME,CATEGORY_FOR_EXPENSE,CATEGORY_FOR_BORROW,CATEGORY_FOR_LENT,CATEGORY_FOR_SPLIT,
             CATEGORY_TYPE};
 //----------------------------------------------------------------//
 
@@ -199,5 +207,6 @@ public class DB {
     public static final Uri COMMON_TABLE_URI = Uri.parse("content://"+DB_AUTHORITY+"/" + COMMON_TABLE_NAME);
     public static final String[] COMMON_TABLE_PROJECTION = new String[]{
             DB_ID,UID,NAME,PHONE_NUMBER,};
+
 //----------------------------------------------------------------//
 }

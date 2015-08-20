@@ -45,6 +45,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/tab1"
+                    android:scrollbars="none"
                     android:layout_gravity="center_horizontal|top" >
 
                     <LinearLayout
@@ -57,6 +58,7 @@
                 <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:scrollbars="none"
                     android:id="@+id/tab2" >
 
                     <LinearLayout

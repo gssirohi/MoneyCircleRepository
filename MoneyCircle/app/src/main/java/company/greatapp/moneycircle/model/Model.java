@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
+import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.tools.Tools;
 
 /**
@@ -44,11 +45,14 @@ public abstract class Model {
     public abstract ContentValues getContentValues();
     protected abstract Uri getTableUri();
 
-    public void printModelData(){
-        Log.d("SPLIT", "====================MODEL===================");
-        Log.d("SPLIT","DBID["+getDbId()+"] : UID["+getUID()+"]");
-        Log.d("SPLIT","TITLE : "+getTitle());
-        Log.d("SPLIT", "-----------------------------------------------");
+    public String printModelData(){
+        String msg = "";
+        msg = "\n====================MODEL===================\n";
+        msg = msg+"DBID["+getDbId()+"] : UID["+getUID()+"]\n";
+        msg = msg+"TITLE : "+getTitle()+"\n";
+        msg = msg+"-----------------------------------------------\n";
+        Log.d("SPLIT",msg);
+        return msg;
     }
 
     public  boolean isDBInstance() {
@@ -58,15 +62,23 @@ public abstract class Model {
         else
             return false;
     }
-    public void insertItemInDB(Context context) {
+    public Uri insertItemInDB(Context context) {
         String uid = getUID();
         uid = uid.replaceAll("NEW","DB");
         setUID(uid);
         Log.d("Split","MODEL: INSERTING :----->");
         printModelData();
         ContentValues values = getContentValues();
-        context.getContentResolver().insert(getTableUri(), values);
+        return context.getContentResolver().insert(getTableUri(), values);
     }
 
+    public int updateItemInDb(Context context) {
+        String where = DB.DB_ID + "=" + getDbId();
+        String[] selectionArgs = null;
+        Log.d("Split","MODEL: UPDATING :----->");
+        printModelData();
+        ContentValues values = getContentValues();
+        return context.getContentResolver().update(getTableUri(), values, where, selectionArgs);
+    }
 
 }

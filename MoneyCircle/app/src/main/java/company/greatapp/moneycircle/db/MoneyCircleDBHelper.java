@@ -46,9 +46,9 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
 
                             + DB.DB_ID + " Integer primary key ,"
                             + DB.UID + " text,"
-                            + DB.CIRCLE_NAME + "text, "
-                            + DB.CIRCLE_CONTACTS_JSON + "text, "
-                            + DB.JSON_STRING + "text );"
+                            + DB.CIRCLE_NAME + " text, "
+                            + DB.CIRCLE_CONTACTS_JSON + " text, "
+                            + DB.JSON_STRING + " text );"
             );
             Log.d("DBhelper","query sent for"+DB.CIRCLE_TABLE_NAME);
     //=========================================================================//
@@ -147,6 +147,8 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
                             + DB.DUE_DATE_STRING + " text, "
                             + DB.SPLIT_TOTAL_PARTICIPANTS + " int,"
                             + DB.SPLIT_LINKED_CONTACTS_JSON + " text, "
+                            + DB.SPLIT_LINKED_CIRCLE_JSON + " text, "
+                            + DB.SPLIT_LINKED_PARTICIPANTS_JSON + " text, "
                             + DB.SPLIT_LINKED_EXPENSE_JSON + " text, "
                             + DB.SPLIT_LINKED_LENTS_JSON + " text,"
                             + DB.DATE_STRING + " text, "
@@ -164,9 +166,13 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
 
                             + DB.DB_ID + " Integer primary key ,"
                             + DB.UID + " text,"
-                            /*+ DB.CATEGORY_ID + "int,"*/   // TODO This field has to be added in category table and this value has to be unique for every category
                             + DB.CATEGORY_NAME + " text, "
-                             +DB.CATEGORY_TYPE + " int  );"
+                            + DB.CATEGORY_FOR_INCOME + " int, "
+                            + DB.CATEGORY_FOR_EXPENSE + " int, "
+                            + DB.CATEGORY_FOR_BORROW + " int, "
+                            + DB.CATEGORY_FOR_LENT + " int, "
+                            + DB.CATEGORY_FOR_SPLIT + " int, "
+                            + DB.CATEGORY_TYPE + " int  );"
             );
             Log.d("DBhelper", "query sent for" + DB.CATEGORY_TABLE_NAME);
     //=========================================================================//

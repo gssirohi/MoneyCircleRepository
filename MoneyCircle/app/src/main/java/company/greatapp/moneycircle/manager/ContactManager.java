@@ -32,7 +32,7 @@ public class ContactManager extends BaseModelManager {
     }
 
     @Override
-    public Model createItemFromCursor(Cursor cursor) {
+    public Model createHeavyItemFromCursor(Cursor cursor) {
         if (cursor == null) return null;
 
         int dbId = cursor.getInt(cursor.getColumnIndex(DB.DB_ID));
@@ -61,6 +61,36 @@ public class ContactManager extends BaseModelManager {
         return contact;
     }
 
+    public static Model createLightItemFromCursor(Cursor cursor) {
+        if (cursor == null) return null;
+
+        int dbId = cursor.getInt(cursor.getColumnIndex(DB.DB_ID));
+        String uid = cursor.getString(cursor.getColumnIndex(DB.UID));
+        String name = cursor.getString(cursor.getColumnIndex(DB.NAME));
+        String serverId = cursor.getString(cursor.getColumnIndex(DB.SERVER_ID));
+        String serverName = cursor.getString(cursor.getColumnIndex(DB.SERVER_NAME));
+        String phone = cursor.getString(cursor.getColumnIndex(DB.PHONE_NUMBER));
+        String email = cursor.getString(cursor.getColumnIndex(DB.EMAIL));
+        String imageUri = cursor.getString(cursor.getColumnIndex(DB.CONTACT_IMAGE_URI));
+        int registered = cursor.getInt(cursor.getColumnIndex(DB.REGISTERED));
+        String jsonString = cursor.getString(cursor.getColumnIndex(DB.JSON_STRING));
+
+        Contact contact = new Contact();
+        contact.setDbId(dbId);
+        contact.setUID(uid);
+        contact.setTitle(name);
+        contact.setContactName(name);
+        contact.setServerId(serverId);
+        contact.setServerName(serverName);
+        contact.setPhone(phone);
+        contact.setEmail(email);
+        contact.setImageUri(Uri.parse(imageUri));
+        contact.setRegistered(registered);
+        contact.setJsonString(jsonString);
+        return contact;
+    }
+
+
     @Override
     public Model createItemFromIntent(Intent intent) {
         return null;
@@ -77,7 +107,7 @@ public class ContactManager extends BaseModelManager {
         if (c != null && c.getCount() > 0) {
             c.moveToFirst();
             while (!c.isAfterLast()) {
-                Model model = createItemFromCursor(c);
+                Model model = createHeavyItemFromCursor(c);
                 if (((Contact) model).getRegistered() == C.REGISTERED_ON_MONEY_CIRCLE) {
                     mRegisteredContactList.add(model);
                 } else {
@@ -141,7 +171,13 @@ public class ContactManager extends BaseModelManager {
                 }
             }
         }
+        Contact contact = new Contact(C.USER_TITLE, C.USER_DUMMY_NUMBER);
+        insertItemInDB(contact);
 
+    }
+
+    public Contact getUser() {
+        return (Contact) getHeavyItemFromListByUID(C.USER_UNIQUE_ID);
     }
 
 }

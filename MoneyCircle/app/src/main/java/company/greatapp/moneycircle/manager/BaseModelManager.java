@@ -17,7 +17,7 @@ import company.greatapp.moneycircle.model.Model;
  */
 public abstract class BaseModelManager {
 
-    public abstract Model createItemFromCursor(Cursor cursor);
+    public abstract Model createHeavyItemFromCursor(Cursor cursor);
     public abstract Model createItemFromIntent(Intent intent);
     protected abstract void loadItemsFromDB();
     protected abstract Context getContext();
@@ -25,13 +25,14 @@ public abstract class BaseModelManager {
     protected abstract int getModelType();
     public abstract ArrayList<Model> getItemList();
 
-    public Model getItemFromListByUID(String uid) {
-        Log.d("split", "required uid: " + uid);
+    public Model getHeavyItemFromListByUID(String uid) {
+       // Log.d("split", "required uid: " + uid);
         for(Model m : getItemList()) {
-            Log.d("split", "checking uid: " + m.getUID());
+         //   Log.d("split", "checking uid: " + m.getUID());
             if(uid.equals(m.getUID()))
                 return m;
         }
+        Log.d("split", "UID NOT FOUND : " + uid);
         return null;
     }
 

@@ -27,8 +27,6 @@ public class CirclesAdapter extends BaseAdapter {
     ArrayList<Model> mCircles = new ArrayList<Model>();
     LayoutInflater mInflater;
 
-    String[] groupName = {"Entertainment Group","Lunch Group","Flat Group","Playing Group","Sutta Group"};
-
     public CirclesAdapter(Context context, ArrayList<Model> circles) {
         mContext = context;
         mCircles = circles;
@@ -37,14 +35,12 @@ public class CirclesAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-//        return mCircles.size();
-        return groupName.length;
+        return mCircles.size();
     }
 
     @Override
     public Object getItem(int position) {
-//        return mCircles.get(position);
-        return groupName[position];
+        return mCircles.get(position);
     }
 
     @Override
@@ -68,42 +64,28 @@ public class CirclesAdapter extends BaseAdapter {
             holder = (ViewHolder)convertView.getTag();
         }
 
-        //Circle circle = (Circle)mCircles.get(position);
-        /*holder.groupName.setText(circle.getName());
-        holder.membersCount.setText(circle.getMemberCount());
-        addTagViews(holder.groupList, C.TAG_CONTACTS, circle.getMemberList());*/
-        holder.groupName.setText(groupName[position]);
-        holder.membersCount.setText("5");
-        //addTagViews(holder.groupList, C.TAG_CONTACTS, circle.getMemberList());
-        addTagViews(holder.groupList, C.TAG_CONTACTS);
+        Circle circle = (Circle)mCircles.get(position);
+        holder.groupName.setText(circle.getCircleName());
+        holder.membersCount.setText(""+circle.getMemberList().size());
+        addTagViews(holder.groupList, C.TAG_CONTACTS, circle.getMemberList());
 
         return convertView;
     }
 
-    //private void addTagViews(LinearLayout layout, int type, ArrayList<Contact> memberList) {
-    private void addTagViews(LinearLayout layout, int type) {
+    private void addTagViews(LinearLayout layout, int type, ArrayList<Contact> memberList) {
+//    private void addTagViews(LinearLayout layout, int type) {
         /*TODO returned Result will be uids finally not the String
         so we need to get names/titles of the item from manager classes using these uids
         */
-        String[] arr1 = {"Iron Man", "Thor", "Captain America", "Owl", "Hulk"};
-        String out = "";
 
         if(layout == null) return;
 
         int count = layout.getChildCount();
         layout.removeAllViews();
 
-/*
-        for (Contact c : memberList) {
-            layout.addView(new TagItemView(mContext,type, c.getContactName()));
-            out = out+c.getContactName()+",";
+        for (Contact contact : memberList) {
+            layout.addView(new TagItemView(mContext, layout, contact, false));
         }
-*/
-        for (String c : arr1) {
-            layout.addView(new TagItemView(mContext,layout,c,false));
-            out = out+c+",";
-        }
-        //Toast.makeText(mContext, out, Toast.LENGTH_SHORT).show();
 
     }
 

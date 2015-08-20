@@ -8,6 +8,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.constants.DB;
 
 
@@ -30,6 +31,7 @@ public class CategoryManager extends BaseModelManager  {
     private ArrayList<Model> mBorrowCategoryList;
     private ArrayList<Model> mLentCategoryList;
     private ArrayList<Model> mSplitCategoryList;
+    private ArrayList<Model> mAllCategories = new ArrayList<Model>();
 
     /**
      * This Constructor is used to load default categories in DB only.
@@ -49,11 +51,11 @@ public class CategoryManager extends BaseModelManager  {
         mContext = context;
         mModelType = modelType;
 
-        loadItemsFromDB(); // TODO currently all categories are loaded need to change that only particular required category will be loaded
+        loadItemsFromDB();
     }
 
     @Override
-    public Model createItemFromCursor(Cursor cursor) {
+    public Model createHeavyItemFromCursor(Cursor cursor) {
 
         if (cursor == null) {
             return null;
@@ -63,10 +65,46 @@ public class CategoryManager extends BaseModelManager  {
         String uId = cursor.getString(cursor.getColumnIndex(DB.UID));
         String categoryName = cursor.getString(cursor.getColumnIndex(DB.CATEGORY_NAME));
         int categoryType = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY_TYPE));
+        boolean forIncome = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY_FOR_INCOME)) == 1?true:false;
+        boolean forExpense = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY_FOR_EXPENSE)) == 1?true:false;
+        boolean forBorrow = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY_FOR_BORROW)) == 1?true:false;
+        boolean forLent = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY_FOR_LENT)) == 1?true:false;
+        boolean forSplit = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY_FOR_SPLIT)) == 1?true:false;
 
         Category category = new Category(categoryName, dbId, uId, categoryType);
+        category.setForIncome(forIncome);
+        category.setForExpense(forExpense);
+        category.setForBorrow(forBorrow);
+        category.setForLent(forLent);
+        category.setForSplit(forSplit);
         return category;
     }
+
+    public static Model createLightItemFromCursor(Cursor cursor) {
+
+        if (cursor == null) {
+            return null;
+        }
+
+        int dbId = cursor.getInt(cursor.getColumnIndex(DB.DB_ID));
+        String uId = cursor.getString(cursor.getColumnIndex(DB.UID));
+        String categoryName = cursor.getString(cursor.getColumnIndex(DB.CATEGORY_NAME));
+        int categoryType = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY_TYPE));
+        boolean forIncome = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY_FOR_INCOME)) == 1?true:false;
+        boolean forExpense = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY_FOR_EXPENSE)) == 1?true:false;
+        boolean forBorrow = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY_FOR_BORROW)) == 1?true:false;
+        boolean forLent = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY_FOR_LENT)) == 1?true:false;
+        boolean forSplit = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY_FOR_SPLIT)) == 1?true:false;
+
+        Category category = new Category(categoryName, dbId, uId, categoryType);
+        category.setForIncome(forIncome);
+        category.setForExpense(forExpense);
+        category.setForBorrow(forBorrow);
+        category.setForLent(forLent);
+        category.setForSplit(forSplit);
+        return category;
+    }
+
 
     @Override
     public Model createItemFromIntent(Intent intent) {
@@ -77,39 +115,53 @@ public class CategoryManager extends BaseModelManager  {
     @Override
     public void loadItemsFromDB() {
         Log.d(LOGTAG, "loadItemsFromDB");
-
+        if(mAllCategories == null) {
+            mAllCategories = new ArrayList<Model>();
+        }
+        mAllCategories.clear();
         Cursor cursor = mContext.getContentResolver().query(DB.CATEGORY_TABLE_URI,
                 DB.CATEGORY_TABLE_PROJECTION, null, null,null);
         if (cursor != null && cursor.getCount() > 0) {
             Log.d(LOGTAG, "loadItemsFromDB cursorCount :"+cursor.getCount());
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
-                Category category = (Category)createItemFromCursor(cursor);
-                if (category.getCategoryType() == Model.MODEL_TYPE_INCOME) {
+                Category category = (Category) createHeavyItemFromCursor(cursor);
+
+                mAllCategories.add(category);
+
+                if (category.isForIncome()) {
                     if (mIncomeCategoryList == null) {
                         mIncomeCategoryList = new ArrayList<>();
                     }
                     mIncomeCategoryList.add(category);
                     Log.d(LOGTAG, "loadItemsFromDB mIncomeCategoryList :" + category.getTitle());
-                } else if (category.getCategoryType() == Model.MODEL_TYPE_EXPENSE) {
+                }
+
+                if (category.isForExpense()) {
                     if (mExpenseCategoryList == null) {
                         mExpenseCategoryList = new ArrayList<>();
                     }
                     mExpenseCategoryList.add(category);
                     Log.d(LOGTAG, "loadItemsFromDB mExpenseCategoryList :" + category.getTitle());
-                } else if (category.getCategoryType() == Model.MODEL_TYPE_BORROW) {
+                }
+
+                if (category.isForBorrow()) {
                     if (mBorrowCategoryList == null) {
                         mBorrowCategoryList = new ArrayList<>();
                     }
                     mBorrowCategoryList.add(category);
                     Log.d(LOGTAG, "loadItemsFromDB mBorrowCategoryList :" + category.getTitle());
-                } else if (category.getCategoryType() == Model.MODEL_TYPE_LENT) {
+                }
+
+                if (category.isForLent()) {
                     if (mLentCategoryList == null) {
                         mLentCategoryList = new ArrayList<>();
                     }
                     mLentCategoryList.add(category);
                     Log.d(LOGTAG, "loadItemsFromDB mLentCategoryList :" + category.getTitle());
-                } else if (category.getCategoryType() == Model.MODEL_TYPE_SPLIT) {
+                }
+
+                if (category.isForSplit()) {
                     if (mSplitCategoryList == null) {
                         mSplitCategoryList = new ArrayList<>();
                     }
@@ -141,20 +193,7 @@ public class CategoryManager extends BaseModelManager  {
     @Override
     public ArrayList<Model> getItemList() {
         Log.d(LOGTAG, "getItemList");
-
-        switch (mModelType) {
-            case Model.MODEL_TYPE_INCOME:
-                return mIncomeCategoryList;
-            case Model.MODEL_TYPE_EXPENSE:
-                return mExpenseCategoryList;
-            case Model.MODEL_TYPE_BORROW:
-                return mBorrowCategoryList;
-            case Model.MODEL_TYPE_LENT:
-                return mLentCategoryList;
-            case Model.MODEL_TYPE_SPLIT:
-                return mSplitCategoryList;
-        }
-        return null;
+        return mAllCategories;
     }
 
     public ArrayList<Model> getIncomeCategoryList() {
@@ -181,12 +220,7 @@ public class CategoryManager extends BaseModelManager  {
 
         Log.d(LOGTAG, "insertDefaultCategoriesInDB");
 
-        ArrayList<Model> defaultCategoryList = new ArrayList<>();
-        defaultCategoryList.addAll(getDefaultIncomeCategoryList());     // Income Category List
-        defaultCategoryList.addAll(getDefaultExpenseCategoryList());    // Expense Category List
-        defaultCategoryList.addAll(getDefaultBorrowCategoryList());     // Borrow Category List
-        defaultCategoryList.addAll(getDefaultLentCategoryList());       // Lent Category List
-        defaultCategoryList.addAll(getDefaultSplitCategoryList());      // Split Category List
+        ArrayList<Model> defaultCategoryList = getDefaultCategoryList();
 
         int i = 0;
         for (Model category : defaultCategoryList) {
@@ -197,71 +231,80 @@ public class CategoryManager extends BaseModelManager  {
 
     }
 
-    private ArrayList<Model> getDefaultIncomeCategoryList() {
-        ArrayList<Model> list = new ArrayList<>();
-        list.add(new Category("Salary", Model.MODEL_TYPE_INCOME));
-        list.add(new Category("Shares", Model.MODEL_TYPE_INCOME));
-        list.add(new Category("Rent", Model.MODEL_TYPE_INCOME));
-        list.add(new Category("Bussiness Profit", Model.MODEL_TYPE_INCOME));
-        list.add(new Category("Freelancing", Model.MODEL_TYPE_INCOME));
-        list.add(new Category("Donation", Model.MODEL_TYPE_INCOME));
-        list.add(new Category("Gambling", Model.MODEL_TYPE_INCOME));
-        list.add(new Category("Equity", Model.MODEL_TYPE_INCOME));
-        list.add(new Category("Mutual Fund", Model.MODEL_TYPE_INCOME));
+    private ArrayList<Model> getDefaultCategoryList() {
 
-        return list;
+        ArrayList<Model> listI = new ArrayList<>();
+        listI.add(new Category("income 1",Category.SINGLE_MODEL));
+        listI.add(new Category("income 2",Category.SINGLE_MODEL));
+        listI.add(new Category("income 3",Category.SINGLE_MODEL));
+        listI.add(new Category("income 4",Category.SINGLE_MODEL));
+
+        for (Model m : listI) {
+            ((Category)m).setForIncome(true);
+            mAllCategories.add(m);
+        }
+
+        ArrayList<Model> listE = new ArrayList<>();
+        listE.add(new Category("expense 1",Category.SINGLE_MODEL));
+        listE.add(new Category("expense 2",Category.SINGLE_MODEL));
+        listE.add(new Category("expense 3",Category.SINGLE_MODEL));
+        listE.add(new Category("expense 4",Category.SINGLE_MODEL));
+        listE.add(new Category("expense 5",Category.SINGLE_MODEL));
+
+        for (Model m : listE) {
+            ((Category)m).setForExpense(true);
+            mAllCategories.add(m);
+        }
+
+        ArrayList<Model> listB = new ArrayList<>();
+        listB.add(new Category("borrow 1",Category.SINGLE_MODEL));
+        listB.add(new Category("borrow 2",Category.SINGLE_MODEL));
+        listB.add(new Category("borrow 3",Category.SINGLE_MODEL));
+        listB.add(new Category("borrow 4",Category.SINGLE_MODEL));
+
+        for (Model m : listB) {
+            ((Category)m).setForBorrow(true);
+            mAllCategories.add(m);
+        }
+
+        ArrayList<Model> listL = new ArrayList<>();
+        listL.add(new Category("lent 1",Category.SINGLE_MODEL));
+        listL.add(new Category("lent 2",Category.SINGLE_MODEL));
+        listL.add(new Category("lent 3",Category.SINGLE_MODEL));
+        listL.add(new Category("lent 4",Category.SINGLE_MODEL));
+        for (Model m : listL) {
+            ((Category)m).setForLent(true);
+            mAllCategories.add(m);
+        }
+
+        ArrayList<Model> listS = new ArrayList<>();
+        listS.add(new Category("split 1",Category.MULTIPLE_MODEL));
+        listS.add(new Category("split 2",Category.MULTIPLE_MODEL));
+        listS.add(new Category("split 3",Category.MULTIPLE_MODEL));
+
+        for (Model m : listS) {
+            ((Category)m).setForSplit(true);
+            mAllCategories.add(m);
+        }
+        //add a category for the case when no category is selected
+        mAllCategories.add(new Category("No category", C.CATEGORY_NONE_UID));
+
+        return  mAllCategories;
     }
 
-    private ArrayList<Model> getDefaultExpenseCategoryList() {
-        ArrayList<Model> list = new ArrayList<>();
-        list.add(new Category("Entertainment", Model.MODEL_TYPE_EXPENSE));
-        list.add(new Category("Bills", Model.MODEL_TYPE_EXPENSE));
-        list.add(new Category("Clothing", Model.MODEL_TYPE_EXPENSE));
-        list.add(new Category("Food", Model.MODEL_TYPE_EXPENSE));
-        list.add(new Category("Juice", Model.MODEL_TYPE_EXPENSE));
-        list.add(new Category("Drinks", Model.MODEL_TYPE_EXPENSE));
-        list.add(new Category("Kitchen", Model.MODEL_TYPE_EXPENSE));
-        list.add(new Category("House Holds", Model.MODEL_TYPE_EXPENSE));
-        list.add(new Category("Internet", Model.MODEL_TYPE_EXPENSE));
-        list.add(new Category("Daily Traveling", Model.MODEL_TYPE_EXPENSE));
-        list.add(new Category("Trip", Model.MODEL_TYPE_EXPENSE));
-        list.add(new Category("Policy", Model.MODEL_TYPE_EXPENSE));
-        list.add(new Category("House Hold Helps", Model.MODEL_TYPE_EXPENSE));
-
-        return list;
-    }
-
-    private ArrayList<Model> getDefaultBorrowCategoryList() {
-        ArrayList<Model> list = new ArrayList<>();
-        list.add(new Category("Bank Loan", Model.MODEL_TYPE_BORROW));
-        list.add(new Category("Credit Card", Model.MODEL_TYPE_BORROW));
-        list.add(new Category("From Friends", Model.MODEL_TYPE_BORROW));
-        list.add(new Category("Shop", Model.MODEL_TYPE_BORROW));
-
-        return list;
-    }
-
-    private ArrayList<Model> getDefaultLentCategoryList() {
-        ArrayList<Model> list = new ArrayList<>();
-        list.add(new Category("To Friend", Model.MODEL_TYPE_LENT));
-        list.add(new Category("To Family", Model.MODEL_TYPE_LENT));
-        list.add(new Category("To Colege", Model.MODEL_TYPE_LENT));
-        list.add(new Category("On Lease", Model.MODEL_TYPE_LENT));
-
-        return list;
-    }
-
-    private ArrayList<Model> getDefaultSplitCategoryList() {
-        ArrayList<Model> list = new ArrayList<>();
-        list.add(new Category("Lunch", Model.MODEL_TYPE_SPLIT));
-        list.add(new Category("Pizza", Model.MODEL_TYPE_SPLIT));
-        list.add(new Category("Trip", Model.MODEL_TYPE_SPLIT));
-        list.add(new Category("Rent", Model.MODEL_TYPE_SPLIT));
-        list.add(new Category("Party", Model.MODEL_TYPE_SPLIT));
-        list.add(new Category("Movie", Model.MODEL_TYPE_SPLIT));
-        list.add(new Category("Kitchen", Model.MODEL_TYPE_SPLIT));
-        list.add(new Category("Flat", Model.MODEL_TYPE_SPLIT));
-
-        return list;
+    public ArrayList<Model> getItemListByModel(int modelType) {
+        switch(modelType) {
+            case Model.MODEL_TYPE_INCOME:
+                return mIncomeCategoryList;
+            case Model.MODEL_TYPE_EXPENSE:
+                return mExpenseCategoryList;
+            case Model.MODEL_TYPE_BORROW:
+                return mBorrowCategoryList;
+            case Model.MODEL_TYPE_LENT:
+                return mLentCategoryList;
+            case Model.MODEL_TYPE_SPLIT:
+                return mSplitCategoryList;
+        }
+        return null;
     }
 }

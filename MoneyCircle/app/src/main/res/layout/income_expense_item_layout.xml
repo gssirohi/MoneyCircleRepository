@@ -3,12 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="5dp"
-    android:background="#ffff71af">
+    android:layout_margin="5dp"
+    android:background="@color/app_lighter">
 <LinearLayout
     android:layout_width="match_parent" android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="2dp"
-    android:background="#ffff1f70">
+    android:background="#FFFFFF">
 
 
     <ImageView
@@ -40,7 +41,7 @@
             android:text="Big Basket"
             android:id="@+id/tv_item_title"
             android:layout_weight="7"
-            android:textColor="@color/white"
+            android:textColor="@color/app_darkest"
             android:layout_gravity="center_vertical" />
 
         <TextView
@@ -49,31 +50,69 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="13 July 2015"
             android:id="@+id/tv_item_date"
-            android:textColor="@color/white"
+            android:textColor="@color/app_dark"
             android:layout_gravity="center_vertical"
             android:layout_weight="1" />
     </LinearLayout>
 
-    <LinearLayout
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_margin="5dp"
+            android:layout_height="1dip"
+            android:background="@color/app_lighter"
+            android:id="@+id/textView" />
+
+        <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:layout_width="319dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="5000.70"
             android:id="@+id/tv_item_amount"
-            android:textColor="@color/white"
+            android:textColor="@color/app_dark"
             android:layout_weight="1" />
 
-        <FrameLayout
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"></FrameLayout>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/f_member"
+                android:layout_gravity="left|center_vertical"
+                android:layout_marginRight="10dp"></FrameLayout>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/f_split"
+                android:layout_gravity="right|center_vertical"></FrameLayout>
+        </LinearLayout>
 
     </LinearLayout>
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/horizontalScrollView2"
+            android:scrollbars="none"
+            android:layout_gravity="center_horizontal">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/ll_split_member"></LinearLayout>
+        </HorizontalScrollView>
     </LinearLayout>
+
 </LinearLayout>
 </RelativeLayout>

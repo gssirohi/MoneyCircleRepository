@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rlManageCircleNameId"
+        android:layout_width="match_parent"
+        android:layout_height="50sp"
+        android:layout_margin="5dp"
+        android:paddingTop="2dp">
+
+        <TextView
+            android:id="@+id/tvManageCircleNameId"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="Group Name"
+            android:layout_alignParentLeft="true"
+            android:textAppearance="@android:style/TextAppearance.Large"/>
+
+        <ImageView
+            android:id="@+id/ivManageCircleEditId"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:src="@android:drawable/ic_menu_edit"
+            android:layout_alignParentRight="true"
+            android:onClick="onClickEditCircleName"/>
+    </RelativeLayout>
+
+    <EditText
+        android:id="@+id/edManageCircleNameId"
+        android:layout_width="match_parent"
+        android:layout_height="50sp"
+        android:layout_margin="5dp"
+        android:paddingTop="2dp"
+        android:hint="Enter Group Name"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tvMemberId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/accent_material_light"
+        android:text="Members"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/bt_addMemberId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/action_add_member"
+        android:background="@color/material_deep_teal_500"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:layout_margin="16dp"
+        android:onClick="onClickAddNewMember"/>
+
+    <TextView
+        android:id="@+id/tv_noMemberId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/no_member"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:layout_margin="16dp"
+        android:typeface="serif"
+        android:visibility="gone"/>
+
+    <ListView
+        android:id="@+id/lvMemberListId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+    </ListView>
+
+</LinearLayout>

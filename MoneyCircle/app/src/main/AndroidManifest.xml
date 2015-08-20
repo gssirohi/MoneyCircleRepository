@@ -95,6 +95,10 @@
             android:name=".LauncherActivity"
             android:label="launcher" >
         </activity>
+        <activity
+            android:name=".ManageCircleActivity"
+            android:label="@string/actvity_manage_circle" >
+        </activity>
     </application>
 
 </manifest>

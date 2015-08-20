@@ -20,6 +20,7 @@
         android:id="@+id/scrollView2"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/tv_new_title"
+        android:scrollbars="none"
         android:layout_marginTop="10dp">
 
         <LinearLayout
@@ -67,6 +68,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/et_new_amount"
                     android:textSize="@dimen/abc_text_size_display_2_material"
+                    android:inputType="numberDecimal"
                     android:hint="00.00" />
             </LinearLayout>
 
@@ -82,7 +84,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Salary"
+                android:text="choose category"
                 android:id="@+id/b_new_category"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="2dp" />

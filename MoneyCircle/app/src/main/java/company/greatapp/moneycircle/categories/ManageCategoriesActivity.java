@@ -217,7 +217,7 @@ public class ManageCategoriesActivity extends ActionBarActivity {
 
         alert.setView(edittext);
 
-        alert.setPositiveButton("CREATE", new DialogInterface.OnClickListener() {
+        alert.setPositiveButton(R.string.action_create, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 //What ever you want to do with the value
                 String categoryName = edittext.getText().toString();
@@ -228,7 +228,7 @@ public class ManageCategoriesActivity extends ActionBarActivity {
             }
         });
 
-        alert.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+        alert.setNegativeButton(R.string.action_cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 // what ever you want to do with No option.
                 dialog.dismiss();
