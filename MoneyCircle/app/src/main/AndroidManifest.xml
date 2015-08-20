@@ -83,14 +83,9 @@
             android:label="@string/title_activity_add_new_entry" >
         </activity>
         <activity
-            android:name=".HomeActivity"
-            android:label="@string/activity_home" >
-        </activity>
-        <activity
             android:name=".NewHomeActivity"
             android:label="@string/title_activity_new_home" >
         </activity>
-        <activity android:name=".CardActivity" />
         <activity
             android:name=".LauncherActivity"
             android:label="launcher" >

@@ -9,68 +9,61 @@
     card_view:cardCornerRadius="4dp">
 
     <LinearLayout
-        android:id="@+id/llCardViewContainerId"
+        android:id="@+id/ll_card_main_frame"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/llCardViewTitleContainerId"
+            android:id="@+id/ll_card_title_frame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:background="#FFFFFF"
+            android:background="@color/app_lighter"
             android:orientation="horizontal"
             android:paddingTop="3dp"
             android:padding="3dp">
 
             <ImageView
-                android:id="@+id/ivTitleIconId"
+                android:id="@+id/iv_card_icon"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="#F0FFFFFF"
                 android:src="@drawable/ic_income" />
 
             <TextView
-                android:id="@+id/tvTitleId"
+                android:id="@+id/tv_card_title"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:gravity="center_vertical"
                 android:textAppearance="@android:style/TextAppearance.Large"
                 android:paddingLeft="20dp"
-                android:text="Income"/>
+                android:text="Daily Report"/>
 
         </LinearLayout>
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="2dip"
-            android:background="@color/app_lighter"
-            android:id="@+id/textView" />
-
         <LinearLayout
-            android:id="@+id/llCardViewContentContainerId"
+            android:id="@+id/ll_card_content_frame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
             android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/llCardViewContentRow1Id"
+                android:id="@+id/ll_card_content_row_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:layout_margin="5dp"
                 android:weightSum="2">
 
                 <TextView
+                    android:id="@+id/tv_card_content_row_1_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="This month"/>
+                    android:text="Monthly Income"/>
                 <TextView
-                    android:id="@+id/tvMainInfoId"
+                    android:id="@+id/tv_card_content_row_1_value"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -78,28 +71,27 @@
                     android:text="30000" />
 
             </LinearLayout>
-
             <LinearLayout
-                android:id="@+id/llCardViewContentRow2Id"
+                android:id="@+id/ll_card_content_row_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:layout_margin="5dp"
                 android:weightSum="2">
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="Last Transaction"
-                    android:layout_weight="1"/>
-
-                <TextView
-                    android:id="@+id/tvSecondaryInfoId"
+                    android:id="@+id/tv_card_content_row_2_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="1000" />
+                    android:text="Monthly Income"/>
+                <TextView
+                    android:id="@+id/tv_card_content_row_2_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAppearance="@android:style/TextAppearance.Medium"
+                    android:text="30000" />
 
             </LinearLayout>
 

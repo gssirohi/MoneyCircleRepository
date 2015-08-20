@@ -115,6 +115,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
         int entryType = intent.getIntExtra(C.ENTRY_TYPE,C.ENTRY_TYPE_INPUT);
         this.mEntryType = entryType;
 
+        mCategory = C.CATEGORY_NONE_UID;
         // TODO Don't start this activity if entry type is not ENTRY_TYPE_INPUT
 
         mModelType = intent.getIntExtra(C.MODEL_TYPE, Model.MODEL_TYPE_INCOME);

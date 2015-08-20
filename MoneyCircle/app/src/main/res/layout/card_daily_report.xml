@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="10dp"
+    card_view:cardCornerRadius="4dp">
+
+    <LinearLayout
+        android:id="@+id/ll_card_main_frame"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_card_title_frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:background="@color/app_lighter"
+            android:orientation="horizontal"
+            android:paddingTop="3dp"
+            android:padding="3dp">
+
+            <ImageView
+                android:id="@+id/iv_card_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="#F0FFFFFF"
+                android:src="@drawable/ic_income" />
+
+            <TextView
+                android:id="@+id/tv_card_title"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:textAppearance="@android:style/TextAppearance.Large"
+                android:paddingLeft="20dp"
+                android:text="Daily Report"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_card_content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_card_content_row_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/tv_card_content_row_1_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Today's income"/>
+                <TextView
+                    android:id="@+id/tv_card_content_row_1_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAppearance="@android:style/TextAppearance.Medium"
+                    android:text="10000" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_card_content_row_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/tv_card_content_row_2_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Today's Borrow"/>
+                <TextView
+                    android:id="@+id/tv_card_content_row_2_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAppearance="@android:style/TextAppearance.Medium"
+                    android:text="3000" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_card_content_row_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/tv_card_content_row_3_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Today's expense"/>
+                <TextView
+                    android:id="@+id/tv_card_content_row_3_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAppearance="@android:style/TextAppearance.Medium"
+                    android:text="2000" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_card_content_row_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/tv_card_content_row_4_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Today's lent"/>
+                <TextView
+                    android:id="@+id/tv_card_content_row_4_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAppearance="@android:style/TextAppearance.Medium"
+                    android:text="5000" />
+
+            </LinearLayout>
+
+            <view
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                class="company.greatapp.moneycircle.view.CashFlowView"
+                android:id="@+id/v_cash_flow" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
