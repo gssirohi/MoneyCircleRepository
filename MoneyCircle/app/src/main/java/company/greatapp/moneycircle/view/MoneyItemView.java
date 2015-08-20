@@ -46,7 +46,7 @@ public class MoneyItemView extends LinearLayout {
 
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        viewGroup = (ViewGroup) inflater.inflate(R.layout.income_expense_item_layout, this, true);
+        viewGroup = (ViewGroup) inflater.inflate(R.layout.money_item_layout, this, true);
         tv_title = (TextView)viewGroup.findViewById(R.id.tv_item_title);
         tv_amount = (TextView)viewGroup.findViewById(R.id.tv_item_amount);
         tv_date = (TextView)viewGroup.findViewById(R.id.tv_item_date);

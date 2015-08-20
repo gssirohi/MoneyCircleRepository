@@ -32,9 +32,7 @@ public class BorrowManager extends BaseModelManager  {
     public BorrowManager(Context context){
         this.context = context;
         mContactManager = new ContactManager(context);
-        if (context instanceof NewHomeActivity) {
-            loadItemsFromDB();
-        }
+        loadItemsFromDB();
     }
 
 

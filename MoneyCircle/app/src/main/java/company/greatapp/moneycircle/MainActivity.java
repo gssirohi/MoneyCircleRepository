@@ -89,15 +89,19 @@ public class MainActivity extends ActionBarActivity {
         tabDiary = (LinearLayout)findViewById(R.id.ll_tab1);
         tabTrends = (LinearLayout)findViewById(R.id.ll_tab2);
 
-        CardDesigner cdDiary = new CardDesigner(this,null);
-        CardDesigner cdTrends = new CardDesigner(this,null);
+        CardDesigner designer = new CardDesigner(this,null);
 
-        View cardIncome = cdDiary.getCardView(CardDesigner.CARD_INCOME);
-        View cardExpense = cdDiary.getCardView(CardDesigner.CARD_EXPENSE);
-        View cardBorrow = cdDiary.getCardView(CardDesigner.CARD_BORROW);
-        View cardLent = cdDiary.getCardView(CardDesigner.CARD_LENT);
-        View cardSplit = cdDiary.getCardView(CardDesigner.CARD_SPLIT);
-        View cardDailyReport = cdDiary.getCardView(CardDesigner.CARD_DAILY_REPORT);
+        View cardIncome = designer.getCardView(CardDesigner.CARD_INCOME);
+        View cardExpense = designer.getCardView(CardDesigner.CARD_EXPENSE);
+        View cardBorrow = designer.getCardView(CardDesigner.CARD_BORROW);
+        View cardLent = designer.getCardView(CardDesigner.CARD_LENT);
+        View cardSplit = designer.getCardView(CardDesigner.CARD_SPLIT);
+        View cardDailyReport = designer.getCardView(CardDesigner.CARD_DAILY_REPORT);
+
+        View cardUpcomingBorrow = designer.getCardView(CardDesigner.CARD_UPCOMING_BORROW);
+        View cardUpcomingLent = designer.getCardView(CardDesigner.CARD_UPCOMING_LENT);
+        View cardSpendAreas = designer.getCardView(CardDesigner.CARD_TOP_SPEND_AREAS);
+        View cardBudget = designer.getCardView(CardDesigner.CARD_BUDGET);
 
         tabDiary.addView(cardDailyReport);
         tabDiary.addView(cardIncome);
@@ -105,6 +109,12 @@ public class MainActivity extends ActionBarActivity {
         tabDiary.addView(cardBorrow);
         tabDiary.addView(cardLent);
         tabDiary.addView(cardSplit);
+
+        tabTrends.addView(cardBudget);
+        tabTrends.addView(cardSpendAreas);
+        tabTrends.addView(cardUpcomingBorrow);
+        tabTrends.addView(cardUpcomingLent);
+
 
         mTitle = mDrawerTitle = getTitle();
 
@@ -270,11 +280,16 @@ public class MainActivity extends ActionBarActivity {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.new_entry_options_dialog_layout, null, false);
         final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        if(C.NEW_ENTRY_DIALOG_TRANSPARENT) {
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        }
         dialog.setContentView(viewGroup);
         dialog.setTitle("Add New Entry");
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        if(C.NEW_ENTRY_DIALOG_TRANSPARENT) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        }
+
 
         CircleButton b_split = (CircleButton)viewGroup.findViewById(R.id.b_split);
         CircleButton b_income = (CircleButton)viewGroup.findViewById(R.id.b_income);

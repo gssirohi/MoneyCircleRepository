@@ -46,106 +46,80 @@
             android:id="@+id/ll_card_content_frame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp">
+
 
             <LinearLayout
-                android:id="@+id/ll_card_content_row_1"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Total available to spend"
+                    android:id="@+id/tv_card_budget_available_title"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="9000"
+                    android:id="@+id/tv_card_budget_available_value"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <ProgressBar
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:weightSum="2">
+                android:id="@+id/pb_card_budget"
+                android:max="100"
+                android:progress="40"
+                android:layout_margin="10dp"
+                android:indeterminate="false" />
 
-                <TextView
-                    android:id="@+id/tv_card_content_row_1_title"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Today's income"/>
-                <TextView
-                    android:id="@+id/tv_card_content_row_1_value"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textAppearance="@android:style/TextAppearance.Medium"
-                    android:text="10000" />
-
-            </LinearLayout>
             <LinearLayout
-                android:id="@+id/ll_card_content_row_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center"
-                android:weightSum="2">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/tv_card_content_row_2_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Today's Borrow"/>
-                <TextView
-                    android:id="@+id/tv_card_content_row_2_value"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textAppearance="@android:style/TextAppearance.Medium"
-                    android:text="3000" />
+                    android:text="This month expense"
+                    android:id="@+id/tv_card_budget_expense_title"
+                    android:layout_weight="1" />
 
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="9000"
+                    android:id="@+id/tv_card_budget_expense_value"
+                    android:layout_weight="1" />
             </LinearLayout>
+
             <LinearLayout
-                android:id="@+id/ll_card_content_row_3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center"
-                android:weightSum="2">
-
-                <TextView
-                    android:id="@+id/tv_card_content_row_3_title"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Today's expense"/>
-                <TextView
-                    android:id="@+id/tv_card_content_row_3_value"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textAppearance="@android:style/TextAppearance.Medium"
-                    android:text="2000" />
-
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/ll_card_content_row_4"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:weightSum="2">
+                android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/tv_card_content_row_4_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Today's lent"/>
-                <TextView
-                    android:id="@+id/tv_card_content_row_4_value"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textAppearance="@android:style/TextAppearance.Medium"
-                    android:text="5000" />
+                    android:text="Total monthly budget"
+                    android:id="@+id/tv_card_budget_total_title"
+                    android:layout_weight="1" />
 
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="9000"
+                    android:id="@+id/tv_card_budget_total_value"
+                    android:layout_weight="1" />
             </LinearLayout>
-
-            <view
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                class="company.greatapp.moneycircle.view.CashFlowView"
-                android:id="@+id/v_cash_flow" />
 
 
         </LinearLayout>
