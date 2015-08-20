@@ -97,14 +97,14 @@ public class MainActivity extends ActionBarActivity {
         View cardBorrow = cdDiary.getCardView(CardDesigner.CARD_BORROW);
         View cardLent = cdDiary.getCardView(CardDesigner.CARD_LENT);
         View cardSplit = cdDiary.getCardView(CardDesigner.CARD_SPLIT);
+        View cardDailyReport = cdDiary.getCardView(CardDesigner.CARD_DAILY_REPORT);
 
+        tabDiary.addView(cardDailyReport);
         tabDiary.addView(cardIncome);
         tabDiary.addView(cardExpense);
         tabDiary.addView(cardBorrow);
         tabDiary.addView(cardLent);
         tabDiary.addView(cardSplit);
-
-
 
         mTitle = mDrawerTitle = getTitle();
 

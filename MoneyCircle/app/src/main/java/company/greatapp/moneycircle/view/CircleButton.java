@@ -125,8 +125,10 @@ public class CircleButton extends Button {
  }
 
  private void showPressedRing() {
- pressedAnimator.setFloatValues(animationProgress, pressedRingWidth);
- pressedAnimator.start();
+   if(isClickable()) {
+     pressedAnimator.setFloatValues(animationProgress, pressedRingWidth);
+     pressedAnimator.start();
+   }
  }
 
  private void init(Context context, AttributeSet attrs) {

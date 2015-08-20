@@ -169,8 +169,8 @@ public class LauncherActivity extends ActionBarActivity {
                 startActivity(intent);
                 break;
             case 26:
-                intent = new Intent(this, CardActivity.class);
-                startActivity(intent);
+               // intent = new Intent(this, CardActivity.class);
+               // startActivity(intent);
                 break;
             default :
                 String  itemValue    = (String) listView.getItemAtPosition(i);
