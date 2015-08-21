@@ -18,12 +18,10 @@ public class ContactAndCircleTabAdapter extends FragmentStatePagerAdapter {
 
     private static final int TOTAL_TABS = 3;
     private ContactManager mContactManager = null;
-    private CircleManager mCircleManager = null;
 
     public ContactAndCircleTabAdapter(Context context, FragmentManager fm) {
         super(fm);
         mContactManager = new ContactManager(context);
-        mCircleManager = new CircleManager(context);
     }
 
     @Override
@@ -35,7 +33,7 @@ public class ContactAndCircleTabAdapter extends FragmentStatePagerAdapter {
             case 1:
                 return new ContactsViewFragment(mContactManager);
             case 2:
-                return new CirclesViewFragment(mCircleManager);
+                return new CirclesViewFragment(mContactManager);
         }
         return null;
     }
