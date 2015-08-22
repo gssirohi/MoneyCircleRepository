@@ -35,12 +35,25 @@ public abstract class Model {
     public abstract void setDbId(int dbId);
     public abstract void setUID(String uid);
     public abstract void setJsonString(String jsonString);
+    public abstract void setAmount(float amount);
+
+    public abstract void setDateString(String dateString);
+    public abstract void setDueDateString(String dueDateString);
+    public abstract void setLinkedContact(Contact contact);
+    public abstract void setCategory(String categoryUid);
+
 
     public abstract String getTitle();
     public abstract int getModelType();
     public abstract String getUID();
     public abstract int getDbId();
     public abstract String getJsonString();
+    public abstract float getAmount();
+
+    public abstract String getDateString();
+    public abstract String getDueDateString();
+    public abstract Contact getLinkedContact();
+    public abstract String getCategory();
 
     public abstract ContentValues getContentValues();
     protected abstract Uri getTableUri();

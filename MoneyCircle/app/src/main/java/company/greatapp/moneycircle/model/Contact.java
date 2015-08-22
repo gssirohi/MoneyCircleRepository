@@ -36,6 +36,8 @@ public class Contact extends Model {
     String serverName = "";// Name choosen by user while registering
     String serverId = "";//id provided by 3rd party server
 
+    float borrowedAmountfromThis;
+    float lentAmountToThis;
 
 
 
@@ -59,6 +61,22 @@ public class Contact extends Model {
         setContactName("unnamed");
         setPhone("na");
         setUID(Tools.generateUniqueId());
+    }
+
+    public float getBorrowedAmountfromThis() {
+        return borrowedAmountfromThis;
+    }
+
+    public void setBorrowedAmountfromThis(float borrowedAmountfromThis) {
+        this.borrowedAmountfromThis = borrowedAmountfromThis;
+    }
+
+    public float getLentAmountToThis() {
+        return lentAmountToThis;
+    }
+
+    public void setLentAmountToThis(float lentAmountToThis) {
+        this.lentAmountToThis = lentAmountToThis;
     }
 
     @Override
@@ -133,9 +151,60 @@ public class Contact extends Model {
     public String getJsonString() {
         return jsonString;
     }
+
+    @Override
+    public float getAmount() {
+        return 0;
+    }
+
+    @Override
+    public String getDateString() {
+        return null;
+    }
+
+    @Override
+    public String getDueDateString() {
+        return null;
+    }
+
+    @Override
+    public Contact getLinkedContact() {
+        return null;
+    }
+
+    @Override
+    public String getCategory() {
+        return null;
+    }
+
     @Override
     public void setJsonString(String jsonString) {
         this.jsonString = jsonString;
+    }
+
+    @Override
+    public void setAmount(float amount) {
+
+    }
+
+    @Override
+    public void setDateString(String dateString) {
+
+    }
+
+    @Override
+    public void setDueDateString(String dueDateString) {
+
+    }
+
+    @Override
+    public void setLinkedContact(Contact contact) {
+
+    }
+
+    @Override
+    public void setCategory(String categoryUid) {
+
     }
 
     @Override
@@ -189,6 +258,8 @@ public class Contact extends Model {
         row.put(DB.EMAIL , getEmail());
         row.put(DB.CONTACT_IMAGE_URI , ""+getImageUri());
         row.put(DB.REGISTERED ,getRegistered());
+        row.put(DB.CONTACT_BORROWED_AMOUNT_FROM_THIS,""+getBorrowedAmountfromThis());
+        row.put(DB.CONTACT_LENT_AMOUNT_TO_THIS,""+getLentAmountToThis());
         row.put(DB.SERVER_NAME , getServerName());
         row.put(DB.SERVER_ID, getServerId());
         row.put(DB.JSON_STRING ,getJsonString() );

@@ -53,7 +53,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="0dp"
-                        android:id="@+id/ll_tab1"></LinearLayout>
+                        android:id="@+id/ll_tab1"
+                        android:padding="2dp"></LinearLayout>
                 </ScrollView>
 
                 <ScrollView
@@ -67,7 +68,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_margin="0dp"
-                        android:id="@+id/ll_tab2"></LinearLayout>
+                        android:id="@+id/ll_tab2"
+                        android:padding="2dp"></LinearLayout>
                 </ScrollView>
             </FrameLayout>
         </LinearLayout>

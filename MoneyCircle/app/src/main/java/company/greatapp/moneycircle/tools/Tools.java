@@ -1,6 +1,7 @@
 package company.greatapp.moneycircle.tools;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
@@ -15,8 +16,11 @@ import java.util.UUID;
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.constants.DB;
+import company.greatapp.moneycircle.db.MoneyCircleProvider;
 import company.greatapp.moneycircle.manager.BorrowManager;
 import company.greatapp.moneycircle.manager.CategoryManager;
+import company.greatapp.moneycircle.manager.CircleManager;
+import company.greatapp.moneycircle.manager.ContactManager;
 import company.greatapp.moneycircle.manager.ExpenseManager;
 import company.greatapp.moneycircle.manager.IncomeManager;
 import company.greatapp.moneycircle.manager.LentManager;
@@ -28,6 +32,7 @@ import company.greatapp.moneycircle.model.Income;
 import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.Split;
+import company.greatapp.moneycircle.receiver.MoneyTransactionReceiver;
 import company.greatapp.moneycircle.view.TagItemView;
 
 /**
@@ -37,7 +42,8 @@ public class Tools {
 
     public static String generateUniqueId() {
         String uid = UUID.randomUUID().toString();
-        return "NEW-"+uid;
+        uid = uid.replaceAll("-","");
+        return "NEW"+uid;
     }
 
 
@@ -82,8 +88,8 @@ public class Tools {
         uid = uid.replaceAll("NEW","DB");
         Model model = null;
         String [] projection = null;
-        String selection=DB.UID + "=" + uid;
-        String [] selArgs = null;
+        String selection=DB.UID + "=" + "?";
+        String [] selArgs = new String[]{""+uid};
         Uri tableUri = null;
 
         if (modelType == Model.MODEL_TYPE_INCOME) {
@@ -105,8 +111,15 @@ public class Tools {
         } else if (modelType == Model.MODEL_TYPE_CATEGORY) {
             projection = DB.CATEGORY_TABLE_PROJECTION;
             tableUri = DB.CATEGORY_TABLE_URI;            
+        } else if (modelType == Model.MODEL_TYPE_CONTACT) {
+            projection = DB.CONTACT_TABLE_PROJECTION;
+            tableUri = DB.CONTACT_TABLE_URI;
+        }  else if (modelType == Model.MODEL_TYPE_CIRCLE) {
+            projection = DB.CIRCLE_TABLE_PROJECTION;
+            tableUri = DB.CIRCLE_TABLE_URI;
         }
 
+        Log.d("SPLIT","querying from table URI : "+tableUri);
         Cursor c = context.getContentResolver().query(tableUri, projection, selection, selArgs, null);
         if(c != null && c.getCount() > 0) {
             c.moveToFirst();
@@ -136,6 +149,12 @@ public class Tools {
                 break;
             case Model.MODEL_TYPE_CATEGORY:
                 model = CategoryManager.createLightItemFromCursor(cursor);
+                break;
+            case Model.MODEL_TYPE_CONTACT:
+                model = ContactManager.createLightItemFromCursor(cursor);
+                break;
+            case Model.MODEL_TYPE_CIRCLE:
+                model = CircleManager.createLightItemFromCursor(cursor);
                 break;
             default:
                 Log.d("SPLIT", "modelType not found");
@@ -288,5 +307,13 @@ public static String getModelName(int modelType){
             color = res.getColor(R.color.split);
         }
         return color;
+    }
+
+    public static void sendMoneyTransactionBroadCast(Context context) {
+        Intent intent = new Intent(MoneyTransactionReceiver.ACTION_MONEY_TRANSACTION);
+        // You can also include some extra data.
+        intent.putExtra("message", "This is my message!");
+        Log.i("SPLIT","broadCast is set for MONEY_TRANSACTION");
+        context.sendBroadcast(intent);
     }
 }

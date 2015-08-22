@@ -2,7 +2,6 @@ package company.greatapp.moneycircle;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,15 +10,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import java.util.ArrayList;
 
-import company.greatapp.moneycircle.manager.BorrowManager;
-import company.greatapp.moneycircle.manager.CategoryManager;
-import company.greatapp.moneycircle.manager.LentManager;
+import company.greatapp.moneycircle.manager.Accountant;
+import company.greatapp.moneycircle.model.AccountRegister;
 import company.greatapp.moneycircle.model.Category;
+import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Model;
+import company.greatapp.moneycircle.view.CircleButton;
 import company.greatapp.moneycircle.view.MoneyItemView;
 import company.greatapp.moneycircle.view.TopSegmentItemView;
 
@@ -46,17 +45,135 @@ public class CardDesigner {
     public static final int CARD_TOP_BORROWER = 11;
     public static final int CARD_TOP_LENDERS = 12;
 
+
+    private ViewGroup mCardIncome;
+    private ViewGroup mCardExpense;
+    private ViewGroup mCardBorrow;
+    private ViewGroup mCardLent;
+    private ViewGroup mCardSplit;
+    private ViewGroup mCardDailyReport;
+    private ViewGroup mCardUpcomingBorrow;
+    private ViewGroup mCardUpcomingLent;
+    private ViewGroup mCardBudget;
+    private ViewGroup mCardTopSpend;
+    private ViewGroup mCardTopBorrower;
+    private ViewGroup mCardTopLender;
+    private Accountant mAccountant;
+    private AccountRegister incomeRegister;
+    private AccountRegister expenseRegister;
+    private AccountRegister borrowRegister;
+    private AccountRegister lentRegister;
+    private AccountRegister splitRegister;
+
     public CardDesigner(Context context, ViewGroup parent) {
         mContext = context;
         mParent = parent;
+        mAccountant = new Accountant(context,true);
+        incomeRegister = mAccountant.getRegister(Model.MODEL_TYPE_INCOME);
+        expenseRegister = mAccountant.getRegister(Model.MODEL_TYPE_EXPENSE);
+        borrowRegister = mAccountant.getRegister(Model.MODEL_TYPE_BORROW);
+        lentRegister = mAccountant.getRegister(Model.MODEL_TYPE_LENT);
+        splitRegister = mAccountant.getRegister(Model.MODEL_TYPE_SPLIT);
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        initAllCardViews(mAccountant);
     }
 
-    public void initCardView(Accountant accountant) {
+    public ViewGroup getCardView(int cardType) {
+
+        switch(cardType) {
+            case CARD_INCOME:
+                if(mCardIncome == null) {
+                    initCardView(mAccountant,CARD_INCOME);
+                }
+                return mCardIncome;
+            case CARD_EXPENSE:
+                if(mCardExpense == null) {
+                    initCardView(mAccountant,CARD_EXPENSE);
+                }
+                return mCardExpense;
+            case CARD_BORROW:
+                if(mCardBorrow == null) {
+                    initCardView(mAccountant,CARD_BORROW);
+                }
+                return mCardBorrow;
+            case CARD_LENT:
+                if(mCardLent == null) {
+                    initCardView(mAccountant,CARD_LENT);
+                }
+                return mCardLent;
+            case CARD_SPLIT:
+                if(mCardSplit == null) {
+                    initCardView(mAccountant,CARD_SPLIT);
+                }
+                return mCardSplit;
+            case CARD_DAILY_REPORT:
+                if(mCardDailyReport == null) {
+                    initCardView(mAccountant,CARD_DAILY_REPORT);
+                }
+                return mCardDailyReport;
+            case CARD_UPCOMING_BORROW:
+                if(mCardUpcomingBorrow == null) {
+                    initCardView(mAccountant,CARD_UPCOMING_BORROW);
+                }
+                return mCardUpcomingBorrow;
+            case CARD_UPCOMING_LENT:
+                if(mCardUpcomingLent == null) {
+                    initCardView(mAccountant,CARD_UPCOMING_LENT);
+                }
+                return mCardUpcomingLent;
+            case CARD_BUDGET:
+                if(mCardBudget == null) {
+                    initCardView(mAccountant,CARD_BUDGET);
+                }
+                return mCardBudget;
+            case CARD_TOP_BORROWER:
+                if(mCardTopBorrower == null) {
+                    initCardView(mAccountant,CARD_TOP_BORROWER);
+                }
+                return mCardTopBorrower;
+            case CARD_TOP_LENDERS:
+                if(mCardTopLender == null) {
+                    initCardView(mAccountant,CARD_TOP_LENDERS);
+                }
+                return mCardTopLender;
+            case CARD_TOP_SPEND_AREAS:
+                if(mCardTopSpend == null) {
+                    initCardView(mAccountant,CARD_TOP_SPEND_AREAS);
+                }
+                return mCardTopSpend;
+        }
+        return null;
+    }
+    private void initAccountant(Accountant accountant) {
+        mAccountant = accountant;
+        incomeRegister = mAccountant.getRegister(Model.MODEL_TYPE_INCOME);
+        expenseRegister = mAccountant.getRegister(Model.MODEL_TYPE_EXPENSE);
+        borrowRegister = mAccountant.getRegister(Model.MODEL_TYPE_BORROW);
+        lentRegister = mAccountant.getRegister(Model.MODEL_TYPE_LENT);
+        splitRegister = mAccountant.getRegister(Model.MODEL_TYPE_SPLIT);
+    }
+
+    public void initAllCardViews(Accountant accountant) {
+        if(accountant == null) return;
+        initAccountant(accountant);
+        initCardView(accountant,CARD_INCOME);
+        initCardView(accountant,CARD_EXPENSE);
+        initCardView(accountant,CARD_BORROW);
+        initCardView(accountant,CARD_LENT);
+        initCardView(accountant,CARD_SPLIT);
+        initCardView(accountant,CARD_DAILY_REPORT);
+
+        initCardView(accountant,CARD_UPCOMING_BORROW);
+        initCardView(accountant,CARD_UPCOMING_LENT);
+        initCardView(accountant,CARD_BUDGET);
+        initCardView(accountant, CARD_TOP_BORROWER);
+        initCardView(accountant, CARD_TOP_LENDERS);
+        initCardView(accountant, CARD_TOP_SPEND_AREAS);
 
     }
-    public ViewGroup initCardView(Accountant accountant, int type) {
-
+    public void initCardView(Accountant accountant, int type) {
+        if(accountant == null) return;
+        Log.d("SPLIT","--------initializing CARD VIEW ["+type+"]-------->");
         ImageView iv_card_icon;
         TextView tv_title;
         LinearLayout ll_items;
@@ -72,13 +189,15 @@ public class CardDesigner {
         TextView tv_this_year_value;
         TextView tv_total_value;
 
+        View no_item;
+
         Intent i = null;
         switch (type){
             case CARD_INCOME:
                 if(mCardIncome == null) {
                     mCardIncome = (ViewGroup) inflater.inflate(R.layout.card_money_item, mParent, false);
                 }
-                if(mCardIncome == null) return null;
+                if(mCardIncome == null) return ;
                 iv_card_icon = (ImageView)mCardIncome.findViewById(R.id.iv_card_icon);
                 tv_title = (TextView)mCardIncome.findViewById(R.id.tv_card_title);
 
@@ -98,21 +217,23 @@ public class CardDesigner {
                 tv_this_year_title.setText("This year Income");
                 tv_total_title.setText("Total Income");
 
-                tv_previous_month_value.setText(""+accountant.getPreviousMonthData(Model.MODEL_TYPE_INCOME));
-                tv_this_month_value.setText(""+accountant.getThisMonthData(Model.MODEL_TYPE_INCOME));
-                tv_this_year_value.setText(""+accountant.getThisYearData(Model.MODEL_TYPE_INCOME));
-                tv_total_value.setText(""+accountant.getTotalData(Model.MODEL_TYPE_INCOME));
+
+                tv_previous_month_value.setText("" + incomeRegister.getTotalOfLastMonth());
+                tv_this_month_value.setText(""+incomeRegister.getTotalOfCurrentMonth());
+                tv_this_year_value.setText(""+incomeRegister.getTotalOfCurrentYear());
+                tv_total_value.setText(""+incomeRegister.getTotalTillNow());
 
                 i = new Intent(mContext,NewHomeActivity.class);
                 i.putExtra(Model.MODEL_TYPE,Model.MODEL_TYPE_INCOME);
                 tv_title.setOnClickListener(getListener(i));
                 iv_card_icon.setImageResource(R.drawable.ic_income);
+                mCardIncome.invalidate();
                 break;
             case CARD_EXPENSE:
                 if(mCardExpense == null) {
                     mCardExpense = (ViewGroup) inflater.inflate(R.layout.card_money_item, mParent, false);
                 }
-                if(mCardExpense == null) return null;
+                if(mCardExpense == null) return ;
                 iv_card_icon = (ImageView)mCardExpense.findViewById(R.id.iv_card_icon);
                 tv_title = (TextView)mCardExpense.findViewById(R.id.tv_card_title);
 
@@ -132,21 +253,22 @@ public class CardDesigner {
                 tv_this_year_title.setText("This year Expense");
                 tv_total_title.setText("Total Expense");
 
-                tv_previous_month_value.setText(""+accountant.getPreviousMonthData(Model.MODEL_TYPE_EXPENSE));
-                tv_this_month_value.setText(""+accountant.getThisMonthData(Model.MODEL_TYPE_EXPENSE));
-                tv_this_year_value.setText(""+accountant.getThisYearData(Model.MODEL_TYPE_EXPENSE));
-                tv_total_value.setText(""+accountant.getTotalData(Model.MODEL_TYPE_EXPENSE));
+                tv_previous_month_value.setText(""+expenseRegister.getTotalOfLastMonth());
+                tv_this_month_value.setText(""+expenseRegister.getTotalOfCurrentMonth());
+                tv_this_year_value.setText(""+expenseRegister.getTotalOfCurrentYear());
+                tv_total_value.setText(""+expenseRegister.getTotalTillNow());
 
                 i = new Intent(mContext,NewHomeActivity.class);
                 i.putExtra(Model.MODEL_TYPE,Model.MODEL_TYPE_EXPENSE);
                 tv_title.setOnClickListener(getListener(i));
                 iv_card_icon.setImageResource(R.drawable.ic_expense);
+                mCardExpense.invalidate();
                 break;
             case CARD_BORROW:
                 if(mCardBorrow == null) {
                     mCardBorrow = (ViewGroup) inflater.inflate(R.layout.card_money_item, mParent, false);
                 }
-                if(mCardBorrow == null) return null;
+                if(mCardBorrow == null) return ;
                 iv_card_icon = (ImageView)mCardBorrow.findViewById(R.id.iv_card_icon);
                 tv_title = (TextView)mCardBorrow.findViewById(R.id.tv_card_title);
 
@@ -166,10 +288,11 @@ public class CardDesigner {
                 tv_this_year_title.setText("This year BORROW");
                 tv_total_title.setText("Total BORROW");
 
-                tv_previous_month_value.setText(""+accountant.getPreviousMonthData(Model.MODEL_TYPE_BORROW));
-                tv_this_month_value.setText(""+accountant.getThisMonthData(Model.MODEL_TYPE_BORROW));
-                tv_this_year_value.setText(""+accountant.getThisYearData(Model.MODEL_TYPE_BORROW));
-                tv_total_value.setText(""+accountant.getTotalData(Model.MODEL_TYPE_BORROW));
+
+                tv_previous_month_value.setText(""+borrowRegister.getTotalOfLastMonth());
+                tv_this_month_value.setText(""+borrowRegister.getTotalOfCurrentMonth());
+                tv_this_year_value.setText(""+borrowRegister.getTotalOfCurrentYear());
+                tv_total_value.setText(""+borrowRegister.getTotalTillNow());
 
                 i = new Intent(mContext,NewHomeActivity.class);
                 i.putExtra(Model.MODEL_TYPE,Model.MODEL_TYPE_BORROW);
@@ -180,7 +303,7 @@ public class CardDesigner {
                 if(mCardLent == null) {
                     mCardLent = (ViewGroup) inflater.inflate(R.layout.card_money_item, mParent, false);
                 }
-                if(mCardLent == null) return null;
+                if(mCardLent == null) return ;
                 iv_card_icon = (ImageView)mCardLent.findViewById(R.id.iv_card_icon);
                 tv_title = (TextView)mCardLent.findViewById(R.id.tv_card_title);
 
@@ -200,10 +323,10 @@ public class CardDesigner {
                 tv_this_year_title.setText("This year LENT");
                 tv_total_title.setText("Total LENT");
 
-                tv_previous_month_value.setText(""+accountant.getPreviousMonthData(Model.MODEL_TYPE_LENT));
-                tv_this_month_value.setText(""+accountant.getThisMonthData(Model.MODEL_TYPE_LENT));
-                tv_this_year_value.setText(""+accountant.getThisYearData(Model.MODEL_TYPE_LENT));
-                tv_total_value.setText(""+accountant.getTotalData(Model.MODEL_TYPE_LENT));
+                tv_previous_month_value.setText(""+lentRegister.getTotalOfLastMonth());
+                tv_this_month_value.setText(""+lentRegister.getTotalOfCurrentMonth());
+                tv_this_year_value.setText(""+lentRegister.getTotalOfCurrentYear());
+                tv_total_value.setText(""+lentRegister.getTotalTillNow());
 
                 i = new Intent(mContext,NewHomeActivity.class);
                 i.putExtra(Model.MODEL_TYPE,Model.MODEL_TYPE_LENT);
@@ -214,7 +337,7 @@ public class CardDesigner {
                 if(mCardSplit == null) {
                     mCardSplit = (ViewGroup) inflater.inflate(R.layout.card_money_item, mParent, false);
                 }
-                if(mCardSplit == null) return null;
+                if(mCardSplit == null) return ;
                 iv_card_icon = (ImageView)mCardSplit.findViewById(R.id.iv_card_icon);
                 tv_title = (TextView)mCardSplit.findViewById(R.id.tv_card_title);
 
@@ -234,10 +357,10 @@ public class CardDesigner {
                 tv_this_year_title.setText("This year SPLIT");
                 tv_total_title.setText("Total SPLIT");
 
-                tv_previous_month_value.setText(""+accountant.getPreviousMonthData(Model.MODEL_TYPE_SPLIT));
-                tv_this_month_value.setText(""+accountant.getThisMonthData(Model.MODEL_TYPE_SPLIT));
-                tv_this_year_value.setText(""+accountant.getThisYearData(Model.MODEL_TYPE_SPLIT));
-                tv_total_value.setText(""+accountant.getTotalData(Model.MODEL_TYPE_SPLIT));
+                tv_previous_month_value.setText(""+splitRegister.getTotalOfLastMonth());
+                tv_this_month_value.setText(""+splitRegister.getTotalOfCurrentMonth());
+                tv_this_year_value.setText(""+splitRegister.getTotalOfCurrentYear());
+                tv_total_value.setText(""+splitRegister.getTotalTillNow());
 
                 i = new Intent(mContext,NewHomeActivity.class);
                 i.putExtra(Model.MODEL_TYPE,Model.MODEL_TYPE_SPLIT);
@@ -246,9 +369,9 @@ public class CardDesigner {
                 break;
             case CARD_DAILY_REPORT:
                 if(mCardDailyReport == null) {
-                    mCardDailyReport = (ViewGroup) inflater.inflate(R.layout.card_money_item, mParent, false);
+                    mCardDailyReport = (ViewGroup) inflater.inflate(R.layout.card_daily_report, mParent, false);
                 }
-                if(mCardDailyReport == null) return null;
+                if(mCardDailyReport == null) return ;
                 iv_card_icon = (ImageView)mCardDailyReport.findViewById(R.id.iv_card_icon);
                 tv_title = (TextView)mCardDailyReport.findViewById(R.id.tv_card_title);
 
@@ -261,6 +384,9 @@ public class CardDesigner {
                 TextView tv_e_value = (TextView)mCardDailyReport.findViewById(R.id.tv_card_content_row_2_value);
                 TextView tv_b_value = (TextView)mCardDailyReport.findViewById(R.id.tv_card_content_row_3_value);
                 TextView tv_l_value = (TextView)mCardDailyReport.findViewById(R.id.tv_card_content_row_4_value);
+                CircleButton cb_net = (CircleButton)mCardDailyReport.findViewById(R.id.cb_cash_net);
+                CircleButton cb_in = (CircleButton)mCardDailyReport.findViewById(R.id.cb_cash_in);
+                CircleButton cb_out = (CircleButton)mCardDailyReport.findViewById(R.id.cb_cash_out);
 
                 tv_title.setText("Today's Report");
                 tv_i_title.setText("Today's Income");
@@ -268,131 +394,209 @@ public class CardDesigner {
                 tv_b_title.setText("Today's Borrow");
                 tv_l_title.setText("Today's Lent");
 
-                tv_i_value.setText(""+accountant.getTodayData(Model.MODEL_TYPE_INCOME));
-                tv_e_value.setText(""+accountant.getTodayData(Model.MODEL_TYPE_EXPENSE));
-                tv_b_value.setText(""+accountant.getTodayData(Model.MODEL_TYPE_BORROW));
-                tv_l_value.setText(""+accountant.getTodayData(Model.MODEL_TYPE_LENT));
+                tv_i_value.setText(""+incomeRegister.getTotalOfCurrentDay());
+                tv_e_value.setText(""+expenseRegister.getTotalOfCurrentDay());
+                tv_b_value.setText(""+borrowRegister.getTotalOfCurrentDay());
+                tv_l_value.setText(""+lentRegister.getTotalOfCurrentDay());
+                float in = incomeRegister.getTotalOfCurrentDay() +  borrowRegister.getTotalOfCurrentDay();
+                float out = expenseRegister.getTotalOfCurrentDay() + lentRegister.getTotalOfCurrentDay();
+                float net = in - out;
+                cb_net.setText(" Net "+net);
+                cb_in.setText(" Cash In "+in);
+                cb_out.setText(" Cash Out "+out);
 
                 break;
             case CARD_UPCOMING_BORROW:
-                card = (ViewGroup)inflater.inflate(R.layout.card_upcoming_events, mParent, false);
-                if(card == null) return null;
-                iv_card_icon = (ImageView)card.findViewById(R.id.iv_card_icon);
-                tv_title = (TextView)card.findViewById(R.id.tv_card_title);
-                ll_items = (LinearLayout)card.findViewById(R.id.ll_card_events);
+                if(mCardUpcomingBorrow == null) {
+                    mCardUpcomingBorrow = (ViewGroup) inflater.inflate(R.layout.card_upcoming_events, mParent, false);
+                }
+                if(mCardUpcomingBorrow == null) return ;
+                iv_card_icon = (ImageView)mCardUpcomingBorrow.findViewById(R.id.iv_card_icon);
+                tv_title = (TextView)mCardUpcomingBorrow.findViewById(R.id.tv_card_title);
+                ll_items = (LinearLayout)mCardUpcomingBorrow.findViewById(R.id.ll_card_events);
+                no_item = (View)mCardUpcomingBorrow.findViewById(R.id.no_item_view);
 
                 tv_title.setText("UPCOMING BILLS & BORROWS");
-                addUpcomingBorrows(ll_items);
+                ArrayList<Model> listB = borrowRegister.getUpComingEventsOfMonth();
+                if(listB != null && listB.size()>0) {
+                    addUpcomingData(ll_items, listB, Model.MODEL_TYPE_BORROW);
+                    no_item.setVisibility(View.GONE);
+                } else {
+                    no_item.setVisibility(View.VISIBLE);
+                }
 
                 break;
-            case CARD_UPCOMING_LENT:
-                card = (ViewGroup)inflater.inflate(R.layout.card_upcoming_events, mParent, false);
-                if(card == null) return null;
-                iv_card_icon = (ImageView)card.findViewById(R.id.iv_card_icon);
-                tv_title = (TextView)card.findViewById(R.id.tv_card_title);
-                ll_items = (LinearLayout)card.findViewById(R.id.ll_card_events);
 
-                tv_title.setText("UPCOMING LENTS RETURN");
-                addUpcomingLents(ll_items);
+            case CARD_UPCOMING_LENT:
+                if(mCardUpcomingLent == null) {
+                    mCardUpcomingLent = (ViewGroup) inflater.inflate(R.layout.card_upcoming_events, mParent, false);
+                }
+                if(mCardUpcomingLent == null) return ;
+                iv_card_icon = (ImageView)mCardUpcomingLent.findViewById(R.id.iv_card_icon);
+                tv_title = (TextView)mCardUpcomingLent.findViewById(R.id.tv_card_title);
+                ll_items = (LinearLayout)mCardUpcomingLent.findViewById(R.id.ll_card_events);
+                no_item = (View)mCardUpcomingLent.findViewById(R.id.no_item_view);
+
+                tv_title.setText("UPCOMINGS TO TAKE BACK");
+                ArrayList<Model> listL = lentRegister.getUpComingEventsOfMonth();
+                if(listL != null && listL.size()>0) {
+                    addUpcomingData(ll_items, listL, Model.MODEL_TYPE_LENT);
+                    no_item.setVisibility(View.GONE);
+                } else {
+                    no_item.setVisibility(View.VISIBLE);
+                }
                 break;
             case CARD_BUDGET:
-                card = (ViewGroup)inflater.inflate(R.layout.card_budget, mParent, false);
-                if(card == null) return null;
-                iv_card_icon = (ImageView)card.findViewById(R.id.iv_card_icon);
-                tv_title = (TextView)card.findViewById(R.id.tv_card_title);
-                TextView tv_available_value = (TextView)card.findViewById(R.id.tv_card_budget_available_value);
-                TextView tv_expense_value = (TextView)card.findViewById(R.id.tv_card_budget_expense_value);
-                TextView tv_total_budget_value = (TextView)card.findViewById(R.id.tv_card_budget_total_value);
-                ProgressBar pb_budget = (ProgressBar)card.findViewById(R.id.pb_card_budget);
+                if(mCardBudget == null) {
+                    mCardBudget = (ViewGroup) inflater.inflate(R.layout.card_budget, mParent, false);
+                }
+                if(mCardBudget == null) return ;
+                iv_card_icon = (ImageView)mCardBudget.findViewById(R.id.iv_card_icon);
+                tv_title = (TextView)mCardBudget.findViewById(R.id.tv_card_title);
+                TextView tv_available_value = (TextView)mCardBudget.findViewById(R.id.tv_card_budget_available_value);
+                TextView tv_expense_value = (TextView)mCardBudget.findViewById(R.id.tv_card_budget_expense_value);
+                TextView tv_total_budget_value = (TextView)mCardBudget.findViewById(R.id.tv_card_budget_total_value);
+                ProgressBar pb_budget = (ProgressBar)mCardBudget.findViewById(R.id.pb_card_budget);
+                no_item = (View)mCardBudget.findViewById(R.id.no_item_view);
+                ll_items = (LinearLayout)mCardBudget.findViewById(R.id.ll_card_content_frame);
 
                 tv_title.setText("MONTHLY BUDGET");
-
-                tv_available_value.setText("11000");
-                tv_expense_value.setText("9000");
-                tv_total_budget_value.setText("20000");
-                pb_budget.setMax(20000);
-                pb_budget.setProgress(9000);
+                if(accountant.getBudget() > 0) {
+                    tv_available_value.setText("" + (accountant.getBudget() - expenseRegister.getTotalOfCurrentMonth()));
+                    tv_expense_value.setText("" + expenseRegister.getTotalOfCurrentMonth());
+                    tv_total_budget_value.setText("" + accountant.getBudget());
+                    pb_budget.setMax((int) accountant.getBudget());
+                    pb_budget.setProgress((int) expenseRegister.getTotalOfCurrentMonth());
+                    ll_items.setVisibility(View.VISIBLE);
+                    no_item.setVisibility(View.GONE);
+                } else {
+                    ll_items.setVisibility(View.GONE);
+                    no_item.setVisibility(View.VISIBLE);
+                }
                 break;
             case CARD_TOP_SPEND_AREAS:
-                card = (ViewGroup)inflater.inflate(R.layout.card_top_items, mParent, false);
-                if(card == null) return null;
-                iv_card_icon = (ImageView)card.findViewById(R.id.iv_card_icon);
-                tv_title = (TextView)card.findViewById(R.id.tv_card_title);
-                ll_items = (LinearLayout)card.findViewById(R.id.ll_card_top_items);
+                if(mCardTopSpend == null) {
+                    mCardTopSpend = (ViewGroup) inflater.inflate(R.layout.card_top_items, mParent, false);
+                }
+                if(mCardTopSpend == null) return ;
+                iv_card_icon = (ImageView)mCardTopSpend.findViewById(R.id.iv_card_icon);
+                tv_title = (TextView)mCardTopSpend.findViewById(R.id.tv_card_title);
+                ll_items = (LinearLayout)mCardTopSpend.findViewById(R.id.ll_card_top_items);
+                no_item = (View)mCardTopSpend.findViewById(R.id.no_item_view);
 
                 tv_title.setText("Top Spend Areas");
-                addTopItems(ll_items, Model.MODEL_TYPE_CATEGORY);
+                ArrayList<Model> listSP = expenseRegister.getTopItemsOfMonth();
+                if(listSP != null && listSP.size()>0) {
+                    addTopItems(ll_items, listSP, CARD_TOP_SPEND_AREAS);
+                    no_item.setVisibility(View.GONE);
+                } else {
+                    no_item.setVisibility(View.VISIBLE);
+                }
                 break;
             case CARD_TOP_BORROWER:
+                if(mCardTopBorrower == null) {
+                    mCardTopBorrower = (ViewGroup) inflater.inflate(R.layout.card_top_items, mParent, false);
+                }
+                if(mCardTopBorrower == null) return ;
+                iv_card_icon = (ImageView)mCardTopBorrower.findViewById(R.id.iv_card_icon);
+                tv_title = (TextView)mCardTopBorrower.findViewById(R.id.tv_card_title);
+                ll_items = (LinearLayout)mCardTopBorrower.findViewById(R.id.ll_card_top_items);
+                no_item = (View)mCardTopBorrower.findViewById(R.id.no_item_view);
+
+                tv_title.setText("Top Borrowers");
+                ArrayList<Model> listTB = lentRegister.getTopItemsOfMonth();
+                if(listTB != null && listTB.size()>0) {
+                    addTopItems(ll_items, listTB, CARD_TOP_BORROWER);
+                    no_item.setVisibility(View.GONE);
+                } else {
+                    no_item.setVisibility(View.VISIBLE);
+                }
                 break;
             case CARD_TOP_LENDERS:
+                if(mCardTopLender == null) {
+                    mCardTopLender = (ViewGroup) inflater.inflate(R.layout.card_top_items, mParent, false);
+                }
+                if(mCardTopLender == null) return ;
+                iv_card_icon = (ImageView)mCardTopLender.findViewById(R.id.iv_card_icon);
+                tv_title = (TextView)mCardTopLender.findViewById(R.id.tv_card_title);
+                ll_items = (LinearLayout)mCardTopLender.findViewById(R.id.ll_card_top_items);
+                no_item = (View)mCardTopLender.findViewById(R.id.no_item_view);
+
+                tv_title.setText("Top Lenders");
+                ArrayList<Model> listTL = borrowRegister.getTopItemsOfMonth();
+                if(listTL != null && listTL.size()>0) {
+                    addTopItems(ll_items, listTL, CARD_TOP_LENDERS);
+                    no_item.setVisibility(View.GONE);
+                } else {
+                    no_item.setVisibility(View.VISIBLE);
+                }
                 break;
         }
-        return card;
     }
 
-    private void addTopItems(LinearLayout ll_items, int modelType) {
+    private void addTopItems(LinearLayout ll_items, ArrayList<Model> topList, int cardType) {
 
-        switch (modelType) {
+        if(topList == null)return;
+        ll_items.removeAllViews();
+        switch (cardType) {
 
-            case Model.MODEL_TYPE_BORROW:
-
-                break;
-            case Model.MODEL_TYPE_LENT:
-
-                break;
-
-            case Model.MODEL_TYPE_CATEGORY:
-                CategoryManager cm = new CategoryManager(mContext,Model.MODEL_TYPE_EXPENSE);
-                boolean once = true;
-                for(Model m : cm.getItemList()) {
+            case CARD_TOP_BORROWER:// CONTACT who you lent most
+                for(Model m : topList) {
+                    if(m == null){
+                        Log.d("SPLIT","adding TOP ITEM : BORROWER , FOUND NULL");
+                        continue;
+                    }
                     TopSegmentItemView v = new TopSegmentItemView(mContext,null);
+                    float lendings = ((Contact)m).getLentAmountToThis();
                     v.setItemTitle(m.getTitle());
-                    v.setItemValue("3000");
+                    v.setItemValue("" + lendings);
                     ll_items.addView(v);
                 }
                 break;
+            case CARD_TOP_LENDERS://CONTACT whom you borrowed most from
+                for(Model m : topList) {
+                    if(m == null){
+                        Log.d("SPLIT","adding TOP ITEM : LENDERS , FOUND NULL");
+                        continue;
+                    }
+                    TopSegmentItemView v = new TopSegmentItemView(mContext,null);
+                    float borrowed = ((Contact)m).getBorrowedAmountfromThis();
+                    v.setItemTitle(m.getTitle());
+                    v.setItemValue(""+borrowed);
+                    ll_items.addView(v);
+                }
+
+                break;
+
+            case CARD_TOP_SPEND_AREAS:
+                for(Model m : topList) {
+                    if(m == null){
+                        Log.d("SPLIT","adding TOP ITEM : SPEND AREAS , FOUND NULL");
+                        continue;
+                    }
+                    TopSegmentItemView v = new TopSegmentItemView(mContext,null);
+                    float spend = ((Category)m).getSpentAmountOnThis();
+                    v.setItemTitle(m.getTitle());
+                    v.setItemValue(""+spend);
+                    ll_items.addView(v);
+                }
+
+                break;
             default:
-                Log.d("SPLIT", "modelType not found");
+                Log.d("SPLIT", "card not found");
         }
 
     }
 
-    private void addUpcomingBorrows(LinearLayout ll_events) {
-        //TODO: add only upcoming in week or month
-        //just for example I am adding 3 views from borrow
+    private void addUpcomingData(LinearLayout ll_events, ArrayList<Model> upcomings,int modelType) {
 
-        BorrowManager bm = new BorrowManager(mContext);
-        MoneyItemView v1 = new MoneyItemView(mContext,null,Model.MODEL_TYPE_BORROW);
-        MoneyItemView v2 = new MoneyItemView(mContext,null,Model.MODEL_TYPE_BORROW);
-        MoneyItemView v3 = new MoneyItemView(mContext,null,Model.MODEL_TYPE_BORROW);
-        if(bm.getItemList().size() > 2) {
-            v1.initView(bm.getItemList().get(0));
-            v2.initView(bm.getItemList().get(1));
-            v3.initView(bm.getItemList().get(2));
+        if(upcomings == null) return;
+        ll_events.removeAllViews();
+        for(Model model : upcomings) {
+            MoneyItemView v = new MoneyItemView(mContext,null,modelType);
+            v.initView(model);
+            ll_events.addView(v);
         }
-        ll_events.addView(v1);
-        ll_events.addView(v2);
-        ll_events.addView(v3);
-
-    }
-
-    private void addUpcomingLents(LinearLayout ll_events) {
-        //TODO: add only upcoming in week or month
-        //just for example I am adding 3 views from borrow
-
-        LentManager bm = new LentManager(mContext);
-        MoneyItemView v1 = new MoneyItemView(mContext,null,Model.MODEL_TYPE_LENT);
-        MoneyItemView v2 = new MoneyItemView(mContext,null,Model.MODEL_TYPE_LENT);
-        MoneyItemView v3 = new MoneyItemView(mContext,null,Model.MODEL_TYPE_LENT);
-        if(bm.getItemList().size() > 2) {
-            v1.initView(bm.getItemList().get(0));
-            v2.initView(bm.getItemList().get(1));
-            v3.initView(bm.getItemList().get(2));
-        }
-        ll_events.addView(v1);
-        ll_events.addView(v2);
-        ll_events.addView(v3);
 
     }
 

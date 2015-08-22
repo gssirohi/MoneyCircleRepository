@@ -41,7 +41,11 @@
                 android:text="Daily Report"/>
 
         </LinearLayout>
-
+        <include
+            android:id="@+id/no_item_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/no_entry_available" />
         <LinearLayout
             android:id="@+id/ll_card_content_frame"
             android:layout_width="match_parent"

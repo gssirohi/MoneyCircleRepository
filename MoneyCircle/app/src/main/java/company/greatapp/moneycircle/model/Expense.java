@@ -90,11 +90,11 @@ public class Expense extends Model  {
     public void setDescription(String description) {
         this.mDescription = description;
     }
-
+    @Override
     public float getAmount() {
         return mAmount;
     }
-
+    @Override
     public void setAmount(float amount) {
         this.mAmount = amount;
     }
@@ -103,8 +103,28 @@ public class Expense extends Model  {
         return mDateString;
     }
 
+    @Override
+    public String getDueDateString() {
+        return null;
+    }
+
+    @Override
+    public Contact getLinkedContact() {
+        return null;
+    }
+
     public void setDateString(String dateString) {
         this.mDateString = dateString;
+    }
+
+    @Override
+    public void setDueDateString(String dueDateString) {
+
+    }
+
+    @Override
+    public void setLinkedContact(Contact contact) {
+
     }
 
     public Date getDate() {

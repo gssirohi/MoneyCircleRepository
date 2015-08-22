@@ -44,4 +44,5 @@ public class C {
     public static final String CATEGORY_NONE_UID = "noCat";
 
     public static final boolean NEW_ENTRY_DIALOG_TRANSPARENT = false;
+    public static final String ACTION_ACCOUNTANT_DB_UPDATED = "accountant_db_updated";
 }

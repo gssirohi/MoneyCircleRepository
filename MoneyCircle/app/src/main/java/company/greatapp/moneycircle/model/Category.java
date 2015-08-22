@@ -28,6 +28,15 @@ public class Category extends Model  {
     private boolean forLent;
     private boolean forSplit;
 
+    private float spentAmountOnThis;
+
+    public float getSpentAmountOnThis() {
+        return spentAmountOnThis;
+    }
+
+    public void setSpentAmountOnThis(float spentAmountOnThis) {
+        this.spentAmountOnThis = spentAmountOnThis;
+    }
 
     public boolean isForSplit() {
         return forSplit;
@@ -159,6 +168,56 @@ public class Category extends Model  {
     }
 
     @Override
+    public float getAmount() {
+        return spentAmountOnThis;
+    }
+
+    @Override
+    public String getDateString() {
+        return null;
+    }
+
+    @Override
+    public String getDueDateString() {
+        return null;
+    }
+
+    @Override
+    public Contact getLinkedContact() {
+        return null;
+    }
+
+    @Override
+    public String getCategory() {
+        return null;
+    }
+
+    @Override
+    public void setAmount(float amount) {
+        this.spentAmountOnThis = amount;
+    }
+
+    @Override
+    public void setDateString(String dateString) {
+
+    }
+
+    @Override
+    public void setDueDateString(String dueDateString) {
+
+    }
+
+    @Override
+    public void setLinkedContact(Contact contact) {
+
+    }
+
+    @Override
+    public void setCategory(String categoryUid) {
+
+    }
+
+    @Override
     public ContentValues getContentValues() {
         ContentValues values = new ContentValues();
 
@@ -171,6 +230,8 @@ public class Category extends Model  {
         values.put(DB.CATEGORY_FOR_BORROW, isForBorrow()?1:0);
         values.put(DB.CATEGORY_FOR_LENT, isForLent()?1:0);
         values.put(DB.CATEGORY_FOR_SPLIT, isForSplit()?1:0);
+
+        values.put(DB.CATEGORY_SPENT_AMOUNT_ON_THIS, ""+getSpentAmountOnThis());
 
         return values;
     }

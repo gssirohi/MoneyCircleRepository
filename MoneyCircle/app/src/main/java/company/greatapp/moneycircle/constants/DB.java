@@ -52,12 +52,15 @@ public class DB {
     public static final String REGISTERED = "registered";
     public static final String SERVER_NAME = "serverName";
     public static final String SERVER_ID = "serverId";
+    public static final String CONTACT_BORROWED_AMOUNT_FROM_THIS = "borrowed";
+    public static final String CONTACT_LENT_AMOUNT_TO_THIS = "lent";
 
     public static final Uri CONTACT_TABLE_URI = Uri.parse("content://"+DB_AUTHORITY+"/" + CONTACT_TABLE_NAME);
     public static final String[] CONTACT_TABLE_PROJECTION = new String[]{
             DB_ID,UID,
             NAME,PHONE_NUMBER,CONTACT_IMAGE_URI,EMAIL,
             REGISTERED,SERVER_NAME,SERVER_ID,
+            CONTACT_BORROWED_AMOUNT_FROM_THIS,CONTACT_LENT_AMOUNT_TO_THIS,
             JSON_STRING};
 //----------------------------------------------------------------//
     //--------------CIRCLE TABLE--------------------------------------//
@@ -170,6 +173,8 @@ public class DB {
     public static final String CATEGORY_FOR_BORROW = "catBorrow";
     public static final String CATEGORY_FOR_LENT = "catLent";
     public static final String CATEGORY_FOR_SPLIT = "catSplit";
+    public static final String CATEGORY_SPENT_AMOUNT_ON_THIS = "spent";
+
 
 
     public static final Uri CATEGORY_TABLE_URI = Uri.parse("content://"+DB_AUTHORITY+"/" + CATEGORY_TABLE_NAME);
@@ -177,6 +182,7 @@ public class DB {
             DB_ID,UID,
             CATEGORY_NAME,
             CATEGORY_FOR_INCOME,CATEGORY_FOR_EXPENSE,CATEGORY_FOR_BORROW,CATEGORY_FOR_LENT,CATEGORY_FOR_SPLIT,
+            CATEGORY_SPENT_AMOUNT_ON_THIS,
             CATEGORY_TYPE};
 //----------------------------------------------------------------//
 
@@ -208,5 +214,44 @@ public class DB {
     public static final String[] COMMON_TABLE_PROJECTION = new String[]{
             DB_ID,UID,NAME,PHONE_NUMBER,};
 
+//----------------------------------------------------------------//
+
+    //--------------ACCOUNT TABLE--------------------------------------//
+
+
+    public static final String ACCOUNT_TABLE_NAME = "accountTable";
+
+    public static final String ACCOUNT_REGISTER_TYPE = "registerType";
+
+    public static final String ACCOUNT_TOTAL_CURRENT_DAY = "currDayTotal";
+    public static final String ACCOUNT_TOTAL_CURRENT_WEEK = "currWeekTotal";
+    public static final String ACCOUNT_TOTAL_CURRENT_MONTH = "currMonthTotal";
+    public static final String ACCOUNT_TOTAL_CURRENT_YEAR = "currYearTotal";
+
+    public static final String ACCOUNT_TOTAL_LAST_DAY = "lastDayTotal";
+    public static final String ACCOUNT_TOTAL_LAST_WEEK = "lastWeekTotal";
+    public static final String ACCOUNT_TOTAL_LAST_MONTH = "lastMonthTotal";
+    public static final String ACCOUNT_TOTAL_LAST_YEAR = "lastYearTotal";
+
+    public static final String ACCOUNT_TOTAL = "total";
+
+    public static final String ACCOUNT_UPCOMINGS_DAY = "upcmngDay";
+    public static final String ACCOUNT_UPCOMINGS_WEEK = "upcmngWeek";
+    public static final String ACCOUNT_UPCOMINGS_MONTH = "upcmngMonth";
+
+    public static final String ACCOUNT_TOPITEMS_MONTH = "topMonth";
+    public static final String ACCOUNT_TOPITEMS_YEAR = "topYear";
+    public static final String ACCOUNT_TOPITEMS_TOTAL = "topTotal";
+
+    public static final Uri ACCOUNT_TABLE_URI = Uri.parse("content://"+DB_AUTHORITY+"/" + ACCOUNT_TABLE_NAME);
+    public static final String[] ACCOUNT_TABLE_PROJECTION = new String[]{
+            DB_ID,
+            ACCOUNT_REGISTER_TYPE,
+            ACCOUNT_TOTAL_CURRENT_DAY,ACCOUNT_TOTAL_CURRENT_WEEK,ACCOUNT_TOTAL_CURRENT_MONTH,ACCOUNT_TOTAL_CURRENT_YEAR,
+            ACCOUNT_TOTAL_LAST_DAY,ACCOUNT_TOTAL_LAST_WEEK,ACCOUNT_TOTAL_LAST_MONTH,ACCOUNT_TOTAL_LAST_YEAR,
+            ACCOUNT_TOTAL,
+            ACCOUNT_UPCOMINGS_DAY,ACCOUNT_UPCOMINGS_WEEK,ACCOUNT_UPCOMINGS_MONTH,
+            ACCOUNT_TOPITEMS_MONTH,ACCOUNT_TOPITEMS_YEAR,ACCOUNT_TOPITEMS_TOTAL,
+            };
 //----------------------------------------------------------------//
 }

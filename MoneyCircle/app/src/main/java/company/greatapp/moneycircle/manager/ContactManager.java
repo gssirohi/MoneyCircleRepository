@@ -44,7 +44,10 @@ public class ContactManager extends BaseModelManager {
         String email = cursor.getString(cursor.getColumnIndex(DB.EMAIL));
         String imageUri = cursor.getString(cursor.getColumnIndex(DB.CONTACT_IMAGE_URI));
         int registered = cursor.getInt(cursor.getColumnIndex(DB.REGISTERED));
+        float borrowedAmount = Float.parseFloat(cursor.getString(cursor.getColumnIndex(DB.CONTACT_BORROWED_AMOUNT_FROM_THIS)));
+        float lentAmount = Float.parseFloat(cursor.getString(cursor.getColumnIndex(DB.CONTACT_LENT_AMOUNT_TO_THIS)));
         String jsonString = cursor.getString(cursor.getColumnIndex(DB.JSON_STRING));
+
 
         Contact contact = new Contact();
         contact.setDbId(dbId);
@@ -57,6 +60,8 @@ public class ContactManager extends BaseModelManager {
         contact.setEmail(email);
         contact.setImageUri(Uri.parse(imageUri));
         contact.setRegistered(registered);
+        contact.setBorrowedAmountfromThis(borrowedAmount);
+        contact.setLentAmountToThis(lentAmount);
         contact.setJsonString(jsonString);
         return contact;
     }
@@ -73,6 +78,8 @@ public class ContactManager extends BaseModelManager {
         String email = cursor.getString(cursor.getColumnIndex(DB.EMAIL));
         String imageUri = cursor.getString(cursor.getColumnIndex(DB.CONTACT_IMAGE_URI));
         int registered = cursor.getInt(cursor.getColumnIndex(DB.REGISTERED));
+        float borrowedAmount = Float.parseFloat(cursor.getString(cursor.getColumnIndex(DB.CONTACT_BORROWED_AMOUNT_FROM_THIS)));
+        float lentAmount = Float.parseFloat(cursor.getString(cursor.getColumnIndex(DB.CONTACT_LENT_AMOUNT_TO_THIS)));
         String jsonString = cursor.getString(cursor.getColumnIndex(DB.JSON_STRING));
 
         Contact contact = new Contact();
@@ -86,6 +93,8 @@ public class ContactManager extends BaseModelManager {
         contact.setEmail(email);
         contact.setImageUri(Uri.parse(imageUri));
         contact.setRegistered(registered);
+        contact.setBorrowedAmountfromThis(borrowedAmount);
+        contact.setLentAmountToThis(lentAmount);
         contact.setJsonString(jsonString);
         return contact;
     }

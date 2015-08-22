@@ -2,10 +2,10 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_margin="10dp"
+    android:layout_margin="30dp"
     card_view:cardCornerRadius="4dp">
 
     <LinearLayout
@@ -47,11 +47,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
+            <include
+                android:id="@+id/no_item_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                layout="@layout/no_entry_available" />
             <HorizontalScrollView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/horizontalScrollView3" >
+                android:id="@+id/horizontalScrollView3"
+                android:layout_gravity="center_horizontal">
 
                 <LinearLayout
                     android:orientation="horizontal"

@@ -39,6 +39,7 @@ public class CategoryManager extends BaseModelManager  {
      */
     public CategoryManager(Context context) {
         mContext = context;
+        loadItemsFromDB();
     }
 
     /**
@@ -71,12 +72,15 @@ public class CategoryManager extends BaseModelManager  {
         boolean forLent = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY_FOR_LENT)) == 1?true:false;
         boolean forSplit = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY_FOR_SPLIT)) == 1?true:false;
 
+        float spent = Float.parseFloat(cursor.getString(cursor.getColumnIndex(DB.CATEGORY_SPENT_AMOUNT_ON_THIS)));
+
         Category category = new Category(categoryName, dbId, uId, categoryType);
         category.setForIncome(forIncome);
         category.setForExpense(forExpense);
         category.setForBorrow(forBorrow);
         category.setForLent(forLent);
         category.setForSplit(forSplit);
+        category.setSpentAmountOnThis(spent);
         return category;
     }
 
@@ -95,6 +99,7 @@ public class CategoryManager extends BaseModelManager  {
         boolean forBorrow = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY_FOR_BORROW)) == 1?true:false;
         boolean forLent = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY_FOR_LENT)) == 1?true:false;
         boolean forSplit = cursor.getInt(cursor.getColumnIndex(DB.CATEGORY_FOR_SPLIT)) == 1?true:false;
+        float spent = Float.parseFloat(cursor.getString(cursor.getColumnIndex(DB.CATEGORY_SPENT_AMOUNT_ON_THIS)));
 
         Category category = new Category(categoryName, dbId, uId, categoryType);
         category.setForIncome(forIncome);
@@ -102,6 +107,7 @@ public class CategoryManager extends BaseModelManager  {
         category.setForBorrow(forBorrow);
         category.setForLent(forLent);
         category.setForSplit(forSplit);
+        category.setSpentAmountOnThis(spent);
         return category;
     }
 
