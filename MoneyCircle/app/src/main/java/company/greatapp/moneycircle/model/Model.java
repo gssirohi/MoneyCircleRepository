@@ -11,7 +11,7 @@ import company.greatapp.moneycircle.tools.Tools;
 /**
  * Created by gyanendra.sirohi on 6/29/2015.
  */
-public abstract class Model {
+public abstract class Model implements Comparable<Model>{
     public static final String MODEL_TYPE              = "modelType";
     public static final int MODEL_TYPE_CONTACT              = 1;
     public static final int MODEL_TYPE_CIRCLE               = 2;
@@ -94,4 +94,8 @@ public abstract class Model {
         return context.getContentResolver().update(getTableUri(), values, where, selectionArgs);
     }
 
+    @Override
+    public int compareTo(Model anotherModel) {
+        return anotherModel.getUID().compareTo(this.getUID());
+    }
 }

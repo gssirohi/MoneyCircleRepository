@@ -434,13 +434,36 @@ public class Accountant {
         return register;
     }
 
+    private boolean has(ArrayList<Model> list, String uid) {
+        boolean has = false;
+        for(Model model :  list) {
+            if(model.getUID().equals(uid)){
+                return true;
+            }
+        }
+        return has;
+    }
 
     private ArrayList<Model> getArrangedTopItems(ArrayList<Model> list, int registerType) {
-        ArrayList<Model> arrangedList = new ArrayList<Model>(new HashSet<>(list));
+
         Contact c1;
         Contact c2;
         Category ct1;
         Category ct2;
+        if(list == null ) return null;
+
+        ArrayList<Model> arrangedList = new ArrayList<Model>();
+        ArrayList<Model> sortedList = new ArrayList<Model>();
+
+        //remove duplicate items
+        for(Model model : list) {
+            if(!has(arrangedList,model.getUID())) {
+                arrangedList.add(model);
+                sortedList.add(model);
+            }
+        }
+
+        //perform sorting based on register type
         switch(registerType) {
                     case Model.MODEL_TYPE_BORROW:
 
@@ -451,6 +474,8 @@ public class Accountant {
                                if(c1.getBorrowedAmountfromThis() < c2.getBorrowedAmountfromThis()) {
                                    arrangedList.set(i, c2);
                                    arrangedList.set(j,c1);
+                                   c1 = (Contact)arrangedList.get(i);
+                                   c2 = (Contact)arrangedList.get(j);
                                }
                            }
                         }
@@ -464,6 +489,8 @@ public class Accountant {
                                 if(c1.getLentAmountToThis() < c2.getLentAmountToThis()) {
                                     arrangedList.set(i, c2);
                                     arrangedList.set(j,c1);
+                                    c1 = (Contact)arrangedList.get(i);
+                                    c2 = (Contact)arrangedList.get(j);
                                 }
                             }
                         }                        break;
@@ -476,13 +503,14 @@ public class Accountant {
                                 if(ct1.getSpentAmountOnThis() < ct2.getSpentAmountOnThis()) {
                                     arrangedList.set(i, ct2);
                                     arrangedList.set(j,ct1);
+                                    ct1 = (Category)arrangedList.get(i);
+                                    ct2 = (Category)arrangedList.get(j);
                                 }
                             }
                         }
                         break;
                 }
-        Log.d("SPLIT","--------- GETTING ARRANGED TOP ITEMS ----------");
-        Log.d("SPLIT","returning arranged items : "+arrangedList.toString());
+
          return arrangedList;
     }
 

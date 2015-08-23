@@ -423,6 +423,7 @@ public class CardDesigner {
                     no_item.setVisibility(View.GONE);
                 } else {
                     no_item.setVisibility(View.VISIBLE);
+                    addUpcomingData(ll_items, listB, Model.MODEL_TYPE_BORROW);
                 }
 
                 break;
@@ -444,6 +445,7 @@ public class CardDesigner {
                     no_item.setVisibility(View.GONE);
                 } else {
                     no_item.setVisibility(View.VISIBLE);
+                    addUpcomingData(ll_items, listL, Model.MODEL_TYPE_LENT);
                 }
                 break;
             case CARD_BUDGET:
@@ -491,6 +493,7 @@ public class CardDesigner {
                     no_item.setVisibility(View.GONE);
                 } else {
                     no_item.setVisibility(View.VISIBLE);
+                    addTopItems(ll_items, listSP, CARD_TOP_SPEND_AREAS);
                 }
                 break;
             case CARD_TOP_BORROWER:
@@ -509,6 +512,7 @@ public class CardDesigner {
                     addTopItems(ll_items, listTB, CARD_TOP_BORROWER);
                     no_item.setVisibility(View.GONE);
                 } else {
+                    addTopItems(ll_items, listTB, CARD_TOP_BORROWER);
                     no_item.setVisibility(View.VISIBLE);
                 }
                 break;
@@ -529,6 +533,7 @@ public class CardDesigner {
                     no_item.setVisibility(View.GONE);
                 } else {
                     no_item.setVisibility(View.VISIBLE);
+                    addTopItems(ll_items, listTL, CARD_TOP_LENDERS);
                 }
                 break;
         }
