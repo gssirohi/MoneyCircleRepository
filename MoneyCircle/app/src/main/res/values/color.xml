@@ -51,4 +51,5 @@
 
     <color name="text_error">#ef5350</color>
     <color name="text_info">#7cb342</color>
+    <color name="activity_background_opacity">#90000000</color>
 </resources>

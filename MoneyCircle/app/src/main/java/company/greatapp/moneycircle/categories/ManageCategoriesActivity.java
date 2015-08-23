@@ -183,28 +183,29 @@ public class ManageCategoriesActivity extends ActionBarActivity {
             case 0:
                 category = mIncomeCategoryList.get(child);
                 // TODO instead of updating this list need to change to use loader
-//                mIncomeCategoryList.remove(child);
+                mIncomeCategoryList.remove(child);
                 break;
             case 1:
                 category = mExpenseCategoryList.get(child);
-//                mExpenseCategoryList.remove(child);
+                mExpenseCategoryList.remove(child);
                 break;
             case 2:
                 category = mBorrowCategoryList.get(child);
-//                mBorrowCategoryList.remove(child);
+                mBorrowCategoryList.remove(child);
                 break;
             case 3:
                 category = mLentCategoryList.get(child);
-//                mLentCategoryList.remove(child);
+                mLentCategoryList.remove(child);
                 break;
             case 4:
                 category = mSplitCategoryList.get(child);
-//                mSplitCategoryList.remove(child);
+                mSplitCategoryList.remove(child);
                 break;
         }
 
         if (category != null) {
             mCategoryManager.deleteItemFromDB(category);
+            listAdapter.notifyDataSetChanged();
         }
     }
 
@@ -247,30 +248,41 @@ public class ManageCategoriesActivity extends ActionBarActivity {
         Category category = null;
         switch (groupPos) {
             case 0:
-                category = new Category(categoryName, Model.MODEL_TYPE_INCOME);
+                // Income Category List
+                category = new Category(categoryName, Category.SINGLE_MODEL);
+                category.setForIncome(true);
+                mIncomeCategoryList.add(category);
                 // TODO instead of updating this list need to change to use loader
-//        mIncomeCategoryList.add(categoryName);
                 break;
             case 1:
-                category = new Category(categoryName, Model.MODEL_TYPE_EXPENSE);
-//        mExpenseCategoryList.add(categoryName);
+                // Expense Category List
+                category = new Category(categoryName, Category.SINGLE_MODEL);
+                category.setForExpense(true);
+                mExpenseCategoryList.add(category);
                 break;
             case 2:
-                category = new Category(categoryName, Model.MODEL_TYPE_BORROW);
-//        mBorrowCategoryList.add(categoryName);
+                // Borrow Category List
+                category = new Category(categoryName, Category.SINGLE_MODEL);
+                category.setForBorrow(true);
+                mBorrowCategoryList.add(category);
                 break;
             case 3:
-                category = new Category(categoryName, Model.MODEL_TYPE_LENT);
-//        mLentCategoryList.add(categoryName);
+                // Lent Category List
+                category = new Category(categoryName, Category.SINGLE_MODEL);
+                category.setForLent(true);
+                mLentCategoryList.add(category);
                 break;
             case 4:
-                category = new Category(categoryName, Model.MODEL_TYPE_SPLIT);
-//        mSplitCategoryList.add(categoryName);
+                // Split Category List
+                category = new Category(categoryName, Category.SINGLE_MODEL);
+                category.setForSplit(true);
+                mSplitCategoryList.add(category);
                 break;
 
         }
         if (category != null) {
             mCategoryManager.insertItemInDB(category);
+            listAdapter.notifyDataSetChanged();
         }
     }
 

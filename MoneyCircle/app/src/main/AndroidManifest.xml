@@ -72,7 +72,7 @@
         <activity
             android:name=".chooser.ChooserActivity"
             android:label="@string/title_activity_chooser"
-            android:theme="@style/Theme.AppCompat.Dialog" >
+            android:theme="@android:style/Theme.Translucent">
         </activity>
         <activity
             android:name=".ContactAndCircleActivity"
