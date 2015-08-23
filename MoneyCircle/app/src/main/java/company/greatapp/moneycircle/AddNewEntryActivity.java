@@ -322,6 +322,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
                 income.insertItemInDB(this);
 
                 Toast.makeText(this, "Income ENTRY SAVED", Toast.LENGTH_SHORT).show();
+                Tools.sendMoneyTransactionBroadCast(this, income, Model.MODEL_TYPE_INCOME);
                 break;
             case Model.MODEL_TYPE_EXPENSE:
                 Expense expense = new Expense();
@@ -343,6 +344,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
                 cat.updateItemInDb(this);
 
                 Toast.makeText(this, "Expense ENTRY SAVED", Toast.LENGTH_SHORT).show();
+                Tools.sendMoneyTransactionBroadCast(this, expense, Model.MODEL_TYPE_EXPENSE);
                 break;
             case Model.MODEL_TYPE_BORROW:
                 Borrow borrow = new Borrow();
@@ -368,6 +370,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
                     mMember.updateItemInDb(this);//update contact's borrow amount
                 }
                 Toast.makeText(this, "Borrow ENTRY SAVED", Toast.LENGTH_SHORT).show();
+                Tools.sendMoneyTransactionBroadCast(this, borrow, Model.MODEL_TYPE_BORROW);
                 break;
             case Model.MODEL_TYPE_LENT:
                 Lent lent = new Lent();
@@ -394,9 +397,10 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
                     mMember.updateItemInDb(this);//update contact's lent amount
                 }
                 Toast.makeText(this, "Lent ENTRY SAVED", Toast.LENGTH_SHORT).show();
+                Tools.sendMoneyTransactionBroadCast(this,lent,Model.MODEL_TYPE_LENT);
                 break;
         }
-        Tools.sendMoneyTransactionBroadCast(this);
+
         finish();
     }
 
@@ -415,8 +419,8 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
     }
     @Override
     public void setDate(int year, int monthOfYear, int dayOfMonth) {
-        b_new_date.setText(String.format("%d/%d/%d", year, monthOfYear+1, dayOfMonth));
         mDateString = DateUtils.getDateString(year, monthOfYear, dayOfMonth);
+        b_new_date.setText(mDateString);
 //        Toast.makeText(this,"DATE:"+ mDateString,Toast.LENGTH_SHORT).show();
     }
 

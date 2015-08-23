@@ -14,18 +14,21 @@ import company.greatapp.moneycircle.split.SetSplitAmountActivity;
 /**
  * Created by Gyanendrasingh on 8/21/2015.
  */
-public class UpdateAccountRegistersTask extends AsyncTask<Void,Void,String> {
+public class UpdateAccountRegistersTask extends AsyncTask<Intent,Void,String> {
 
     private final Context mContext;
+
+    public static final String TRANSACTION_TYPE = "transactionType";
+    public static final String LAST_TRANSACTION_JSON = "lastTransactionJson";
 
     public UpdateAccountRegistersTask(Context context) {
         mContext = context;
     }
 
     @Override
-    protected String doInBackground(Void... params) {
-        Accountant accountant = new Accountant(mContext,false);
-        accountant.updateAllRegistersInDb();
+    protected String doInBackground(Intent... params) {
+        Accountant accountant = new Accountant(mContext,true);
+        accountant.updateAllRegistersInDb(params[0]);
         return null;
     }
 

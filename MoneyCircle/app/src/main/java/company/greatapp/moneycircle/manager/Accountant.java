@@ -1,20 +1,19 @@
 package company.greatapp.moneycircle.manager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
+import company.greatapp.moneycircle.asynctask.UpdateAccountRegistersTask;
 import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.model.AccountRegister;
-import company.greatapp.moneycircle.model.Borrow;
 import company.greatapp.moneycircle.model.Category;
 import company.greatapp.moneycircle.model.Contact;
-import company.greatapp.moneycircle.model.Income;
-import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
+import company.greatapp.moneycircle.model.Split;
 import company.greatapp.moneycircle.tools.DateUtils;
 import company.greatapp.moneycircle.tools.GreatJSON;
 import company.greatapp.moneycircle.tools.Tools;
@@ -25,11 +24,11 @@ import company.greatapp.moneycircle.tools.Tools;
 public class Accountant {
 
     private Context mContext;
-    AccountRegister mIncomeRegister;
-    AccountRegister mExpenseRegister;
-    AccountRegister mBorrowRegister;
-    AccountRegister mLentRegister;
-    AccountRegister mSplitRegister;
+    AccountRegister mIncomeRegister = new AccountRegister(Model.MODEL_TYPE_INCOME);
+    AccountRegister mExpenseRegister = new AccountRegister(Model.MODEL_TYPE_EXPENSE);
+    AccountRegister mBorrowRegister = new AccountRegister(Model.MODEL_TYPE_BORROW);
+    AccountRegister mLentRegister = new AccountRegister(Model.MODEL_TYPE_LENT);
+    AccountRegister mSplitRegister = new AccountRegister(Model.MODEL_TYPE_SPLIT);
 
     float budget = 18000;
 
@@ -165,9 +164,7 @@ public class Accountant {
         String jsonUpcomingsWeek = cursor.getString(cursor.getColumnIndex(DB.ACCOUNT_UPCOMINGS_WEEK));
         String jsonUpcomingsMonth = cursor.getString(cursor.getColumnIndex(DB.ACCOUNT_UPCOMINGS_MONTH));
 
-        String jsonTopMonth = cursor.getString(cursor.getColumnIndex(DB.ACCOUNT_TOPITEMS_MONTH));
-        String jsonTopYear = cursor.getString(cursor.getColumnIndex(DB.ACCOUNT_TOPITEMS_YEAR));
-        String jsonTopTotal = cursor.getString(cursor.getColumnIndex(DB.ACCOUNT_TOPITEMS_TOTAL));
+        String jsonTopItems = cursor.getString(cursor.getColumnIndex(DB.ACCOUNT_TOPITEMS));
 
         ArrayList<Model> upcomingDays = GreatJSON.getModelListFromJsonString(jsonUpcomingsDay, mContext, registerType);
         ArrayList<Model> upcomingWeek = GreatJSON.getModelListFromJsonString(jsonUpcomingsWeek, mContext, registerType);
@@ -193,9 +190,9 @@ public class Accountant {
             default:
                 Log.d("SPLIT", "registerType not found while loding from cursor");
         }
-        ArrayList<Model> topMonth = GreatJSON.getModelListFromJsonString(jsonTopMonth, mContext, modelType);
-        ArrayList<Model> topYear = GreatJSON.getModelListFromJsonString(jsonTopYear, mContext, modelType);
-        ArrayList<Model> topTotal = GreatJSON.getModelListFromJsonString(jsonTopTotal, mContext, modelType);
+        ArrayList<Model> topItems = GreatJSON.getModelListFromJsonString(jsonTopItems, mContext, modelType);
+
+        String jsonLastTransaction = cursor.getString(cursor.getColumnIndex(DB.ACCOUNT_LAST_TRANSACTION));
 
         AccountRegister register = new AccountRegister(registerType);
 
@@ -215,21 +212,81 @@ public class Accountant {
         register.setUpComingEventsOfWeek(upcomingWeek);
         register.setUpComingEventsOfMonth(upcomingMonth);
 
-        register.setTopItemsOfMonth(topMonth);
-        register.setTopItemsOfYear(topYear);
-        register.setTopItemsOfTotal(topTotal);
+        register.setTopItems(topItems);
 
+        register.setLastTransaction(GreatJSON.getModelFromJsonString(jsonLastTransaction,mContext,registerType));
         setRegister(register);
 
         return register;
     }
 
-    public void updateAllRegistersInDb() {
+    public void updateAllRegistersInDb(Intent updateIntent) {
+        String last_json = updateIntent.getStringExtra(UpdateAccountRegistersTask.LAST_TRANSACTION_JSON);
+        int transaction_model = updateIntent.getIntExtra(UpdateAccountRegistersTask.TRANSACTION_TYPE,0);
+        setLastTransaction(last_json,transaction_model);
         updateRegisterInDb(Model.MODEL_TYPE_INCOME);
         updateRegisterInDb(Model.MODEL_TYPE_EXPENSE);
         updateRegisterInDb(Model.MODEL_TYPE_BORROW);
         updateRegisterInDb(Model.MODEL_TYPE_LENT);
         updateRegisterInDb(Model.MODEL_TYPE_SPLIT);
+    }
+
+    private void setLastTransaction(String last_json, int transaction_model) {
+        switch (transaction_model) {
+            case Model.MODEL_TYPE_INCOME:
+                mIncomeRegister.setLastTransaction(GreatJSON.getModelFromJsonString(last_json,mContext,Model.MODEL_TYPE_INCOME));
+                break;
+            case Model.MODEL_TYPE_EXPENSE:
+                mExpenseRegister.setLastTransaction(GreatJSON.getModelFromJsonString(last_json,mContext,Model.MODEL_TYPE_EXPENSE));
+                break;
+            case Model.MODEL_TYPE_BORROW:
+                mBorrowRegister.setLastTransaction(GreatJSON.getModelFromJsonString(last_json,mContext,Model.MODEL_TYPE_BORROW));
+                break;
+            case Model.MODEL_TYPE_LENT:
+                mLentRegister.setLastTransaction(GreatJSON.getModelFromJsonString(last_json,mContext,Model.MODEL_TYPE_LENT));
+                break;
+            case Model.MODEL_TYPE_SPLIT:
+                Split split = (Split)GreatJSON.getModelFromJsonString(last_json, mContext, Model.MODEL_TYPE_SPLIT);
+                if(split != null) {
+                    mSplitRegister.setLastTransaction(split);
+                    Model lastExpense = GreatJSON.getModelFromJsonString(split.getLinkedExpenseJson(), mContext, Model.MODEL_TYPE_EXPENSE);
+                    ArrayList<Model> lentList = GreatJSON.getModelListFromJsonString(split.getLinkedLentsJson(), mContext, Model.MODEL_TYPE_LENT);
+                    if(lastExpense != null) {
+                        mExpenseRegister.setLastTransaction(lastExpense);
+                    }
+                    if(lentList != null && lentList.size() > 0) {
+                        //add only last item of newly created lent list
+                        mLentRegister.setLastTransaction(lentList.get(lentList.size()-1));
+                    }
+                }
+                break;
+            default:
+                Log.d("SPLIT", "transaction_model not found");
+        }
+    }
+
+    private Model getLastTransaction(int transaction_model) {
+        Model last = null;
+        switch (transaction_model) {
+            case Model.MODEL_TYPE_INCOME:
+                last = mIncomeRegister.getLastTransaction();
+                break;
+            case Model.MODEL_TYPE_EXPENSE:
+                last = mExpenseRegister.getLastTransaction();
+                break;
+            case Model.MODEL_TYPE_BORROW:
+                last = mBorrowRegister.getLastTransaction();
+                break;
+            case Model.MODEL_TYPE_LENT:
+                last = mLentRegister.getLastTransaction();
+                break;
+            case Model.MODEL_TYPE_SPLIT:
+                last = mSplitRegister.getLastTransaction();
+                break;
+            default:
+                Log.d("SPLIT", "transaction_model not found");
+        }
+        return last;
     }
 
     public void updateRegisterInDb(int registerType) {
@@ -298,9 +355,7 @@ public class Accountant {
         ArrayList<Model> upComingEventsOfWeek = new ArrayList<Model>();
         ArrayList<Model> upComingEventsOfMonth = new ArrayList<Model>();
 
-        ArrayList<Model> topItemsOfMonth = new ArrayList<Model>();
-        ArrayList<Model> topItemsOfYear = new ArrayList<Model>();
-        ArrayList<Model> topItemsOfTotal = new ArrayList<Model>();
+        ArrayList<Model> topItems = new ArrayList<Model>();
 
 
         String date = "";
@@ -350,13 +405,13 @@ public class Accountant {
                     || registerType == Model.MODEL_TYPE_SPLIT) {
                 Log.d("SPLIT","---------GETTING UPCOMINGS----------");
                 dueDate = model.getDueDateString();
-                if (DateUtils.isCurrDate(dueDate)) {
+                if (DateUtils.isLiesInNextSevenDays(dueDate)) {
                     upComingEventsOfToday.add(model);
                 }
-                if (DateUtils.isCurrWeek(dueDate) && !DateUtils.isPassed(dueDate)) {
+                if (DateUtils.isLiesInNextFifteenDays(dueDate) && !DateUtils.isPassed(dueDate)) {
                     upComingEventsOfWeek.add(model);
                 }
-                if (DateUtils.isCurrMonth(dueDate) && !DateUtils.isPassed(dueDate)) {
+                if (DateUtils.isLiesInNextThirtyDays(dueDate) && !DateUtils.isPassed(dueDate)) {
                     upComingEventsOfMonth.add(model);
                 }
             }
@@ -368,45 +423,25 @@ public class Accountant {
                     Log.d("SPLIT","---------GETTING TOP BORROW ITEMS----------");
                     Contact contact = model.getLinkedContact();
                     if (contact != null && contact.getBorrowedAmountfromThis() > 0) {
-                        if (DateUtils.isCurrMonth(date)) {
-                            topItemsOfMonth.add(contact);
-                        }
-                        if (DateUtils.isCurrYear(date)) {
-                            topItemsOfYear.add(contact);
-                        }
-                        topItemsOfTotal.add(contact);
+                         topItems.add(contact);
                     }
                 } else if (registerType == Model.MODEL_TYPE_LENT) {
                     Log.d("SPLIT","---------GETTING TOP LENT ITEMS----------");
                     Contact contact = model.getLinkedContact();
                     if (contact != null && contact.getLentAmountToThis() > 0) {
-                        if (DateUtils.isCurrMonth(date)) {
-                            topItemsOfMonth.add(contact);
-                        }
-                        if (DateUtils.isCurrYear(date)) {
-                            topItemsOfYear.add(contact);
-                        }
-                        topItemsOfTotal.add(contact);
+                        topItems.add(contact);
                     }
                 } else if (registerType == Model.MODEL_TYPE_EXPENSE) {
                     Log.d("SPLIT","--------- GETTING TOP SPEND AREAS ----------");
                     Category category = (Category) Tools.getDbInstance(mContext, model.getCategory(), Model.MODEL_TYPE_CATEGORY);
                     if (category != null && category.getSpentAmountOnThis() > 0) {
-                        if (DateUtils.isCurrMonth(date)) {
-                            topItemsOfMonth.add(category);
-                        }
-                        if (DateUtils.isCurrYear(date)) {
-                            topItemsOfYear.add(category);
-                        }
-                        topItemsOfTotal.add(category);
+                        topItems.add(category);
                     }
                 }
             }
 
         }
-        topItemsOfMonth = getArrangedTopItems(topItemsOfMonth, registerType);
-        topItemsOfYear = getArrangedTopItems(topItemsOfYear, registerType);
-        topItemsOfTotal = getArrangedTopItems(topItemsOfTotal, registerType);
+        topItems = getArrangedTopItems(topItems, registerType);
 
         register.setTotalOfCurrentDay(totalOfCurrentDay);
         register.setTotalOfCurrentWeek(totalOfCurrentWeek);
@@ -424,9 +459,11 @@ public class Accountant {
         register.setUpComingEventsOfWeek(upComingEventsOfWeek);
         register.setUpComingEventsOfMonth(upComingEventsOfMonth);
 
-        register.setTopItemsOfMonth(topItemsOfMonth);
-        register.setTopItemsOfYear(topItemsOfYear);
-        register.setTopItemsOfTotal(topItemsOfTotal);
+        register.setTopItems(topItems);
+        Model lastTransaction = getLastTransaction(registerType);
+        if(lastTransaction != null) {
+            register.setLastTransaction(lastTransaction);
+        }
 
         setRegister(register);
         Log.d("SPLIT"," <-----------------REGISTER WRITTEN :--------------------> ");

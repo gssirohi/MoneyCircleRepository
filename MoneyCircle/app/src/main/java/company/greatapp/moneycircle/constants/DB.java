@@ -239,9 +239,9 @@ public class DB {
     public static final String ACCOUNT_UPCOMINGS_WEEK = "upcmngWeek";
     public static final String ACCOUNT_UPCOMINGS_MONTH = "upcmngMonth";
 
-    public static final String ACCOUNT_TOPITEMS_MONTH = "topMonth";
-    public static final String ACCOUNT_TOPITEMS_YEAR = "topYear";
-    public static final String ACCOUNT_TOPITEMS_TOTAL = "topTotal";
+    public static final String ACCOUNT_TOPITEMS = "topMonth";
+
+    public static final String ACCOUNT_LAST_TRANSACTION = "last";
 
     public static final Uri ACCOUNT_TABLE_URI = Uri.parse("content://"+DB_AUTHORITY+"/" + ACCOUNT_TABLE_NAME);
     public static final String[] ACCOUNT_TABLE_PROJECTION = new String[]{
@@ -251,7 +251,8 @@ public class DB {
             ACCOUNT_TOTAL_LAST_DAY,ACCOUNT_TOTAL_LAST_WEEK,ACCOUNT_TOTAL_LAST_MONTH,ACCOUNT_TOTAL_LAST_YEAR,
             ACCOUNT_TOTAL,
             ACCOUNT_UPCOMINGS_DAY,ACCOUNT_UPCOMINGS_WEEK,ACCOUNT_UPCOMINGS_MONTH,
-            ACCOUNT_TOPITEMS_MONTH,ACCOUNT_TOPITEMS_YEAR,ACCOUNT_TOPITEMS_TOTAL,
+            ACCOUNT_TOPITEMS,
+            ACCOUNT_LAST_TRANSACTION
             };
 //----------------------------------------------------------------//
 }

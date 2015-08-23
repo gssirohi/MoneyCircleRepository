@@ -299,7 +299,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
 //        Split dbSplit = (Split)sm.getHeavyItemFromListByUID(split.getUID());
 //        split.setDbId(dbSplit.getDbId());//update db id from db instance
 //        split.updateItemInDb(this);
-        Tools.sendMoneyTransactionBroadCast(this);
+        Tools.sendMoneyTransactionBroadCast(this,split,Model.MODEL_TYPE_SPLIT);
         finish();
 
     }
@@ -638,8 +638,8 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
 
     @Override
     public void setDate(int year, int monthOfYear, int dayOfMonth) {
-        b_new_date.setText(String.format("%d/%d/%d", dayOfMonth, monthOfYear, year));
         mDateString = DateUtils.getDateString(year, monthOfYear, dayOfMonth);
+        b_new_date.setText(mDateString);
     }
 
     private ArrayList<Participant> getParticipants() {

@@ -59,11 +59,11 @@ public abstract class Model implements Comparable<Model>{
     protected abstract Uri getTableUri();
 
     public String printModelData(){
-        String msg = "";
-        msg = "\n====================MODEL===================\n";
-        msg = msg+"DBID["+getDbId()+"] : UID["+getUID()+"]\n";
+        String msg = "PRINT MODEL : ";
+//        msg = "\n====================MODEL===================\n";
+//        msg = msg+"DBID["+getDbId()+"] : UID["+getUID()+"]\n";
         msg = msg+"TITLE : "+getTitle()+"\n";
-        msg = msg+"-----------------------------------------------\n";
+//        msg = msg+"-----------------------------------------------\n";
         Log.d("SPLIT",msg);
         return msg;
     }

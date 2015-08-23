@@ -227,9 +227,8 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
                             + DB.ACCOUNT_UPCOMINGS_WEEK + " text,"
                             + DB.ACCOUNT_UPCOMINGS_MONTH + " text,"
 
-                            + DB.ACCOUNT_TOPITEMS_MONTH + " text,"
-                            + DB.ACCOUNT_TOPITEMS_YEAR + " text,"
-                            + DB.ACCOUNT_TOPITEMS_TOTAL + " text );"
+                            + DB.ACCOUNT_TOPITEMS + " text,"
+                            + DB.ACCOUNT_LAST_TRANSACTION + " text );"
             );
             Log.d("DBhelper","query sent for"+DB.ACCOUNT_TABLE_NAME);
             //=========================================================================//

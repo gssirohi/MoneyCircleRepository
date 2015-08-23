@@ -109,13 +109,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Due On : "
-                android:id="@+id/textView10" />
+                android:id="@+id/textView10"
+                android:textColor="@color/app_secondary" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="25 July 2015"
-                android:id="@+id/tv_due_date" />
+                android:id="@+id/tv_due_date"
+                android:textColor="@color/app_secondary" />
         </LinearLayout>
 
         <HorizontalScrollView

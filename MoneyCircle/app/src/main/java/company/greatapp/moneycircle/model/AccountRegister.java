@@ -5,9 +5,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -31,15 +31,15 @@ public class AccountRegister {
     private float totalOflastMonth;
     private float totalOfLastYear;
 
+    private Model lastTransaction;
+
     private float totalTillNow;
 
     private ArrayList<Model> upComingEventsOfToday;
     private ArrayList<Model> upComingEventsOfWeek;
     private ArrayList<Model> upComingEventsOfMonth;
 
-    private ArrayList<Model> topItemsOfMonth;
-    private ArrayList<Model> topItemsOfYear;
-    private ArrayList<Model> topItemsOfTotal;
+    private ArrayList<Model> topItems;
 
     public AccountRegister(int type) {
         setRegisterType(type);
@@ -47,6 +47,14 @@ public class AccountRegister {
 
     private AccountRegister() {
         //This constructor now can't be used as it is private now.
+    }
+
+    public Model getLastTransaction() {
+        return lastTransaction;
+    }
+
+    public void setLastTransaction(Model lastTransaction) {
+        this.lastTransaction = lastTransaction;
     }
 
     public int getRegisterType() {
@@ -153,29 +161,14 @@ public class AccountRegister {
         this.upComingEventsOfMonth = upComingEventsOfMonth;
     }
 
-    public ArrayList<Model> getTopItemsOfMonth() {
-        return topItemsOfMonth;
+    public ArrayList<Model> getTopItems() {
+        return topItems;
     }
 
-    public void setTopItemsOfMonth(ArrayList<Model> topItemsOfMonth) {
-        this.topItemsOfMonth = topItemsOfMonth;
+    public void setTopItems(ArrayList<Model> topItems) {
+        this.topItems = topItems;
     }
 
-    public ArrayList<Model> getTopItemsOfYear() {
-        return topItemsOfYear;
-    }
-
-    public void setTopItemsOfYear(ArrayList<Model> topItemsOfYear) {
-        this.topItemsOfYear = topItemsOfYear;
-    }
-
-    public ArrayList<Model> getTopItemsOfTotal() {
-        return topItemsOfTotal;
-    }
-
-    public void setTopItemsOfTotal(ArrayList<Model> topItemsOfTotal) {
-        this.topItemsOfTotal = topItemsOfTotal;
-    }
 
     public ContentValues getContentValues() {
         ContentValues row = new ContentValues();
@@ -197,18 +190,16 @@ public class AccountRegister {
         JSONArray array1 = GreatJSON.getJsonArrayForModelList(getUpComingEventsOfToday());
         JSONArray array2 = GreatJSON.getJsonArrayForModelList(getUpComingEventsOfWeek());
         JSONArray array3 = GreatJSON.getJsonArrayForModelList(getUpComingEventsOfMonth());
-        JSONArray array4 = GreatJSON.getJsonArrayForModelList(getTopItemsOfMonth());
-        JSONArray array5 = GreatJSON.getJsonArrayForModelList(getTopItemsOfYear());
-        JSONArray array6 = GreatJSON.getJsonArrayForModelList(getTopItemsOfTotal());
+        JSONArray array4 = GreatJSON.getJsonArrayForModelList(getTopItems());
 
 
         row.put(DB.ACCOUNT_UPCOMINGS_DAY, "" + ((array1 != null) ? array1.toString() : ""));
         row.put(DB.ACCOUNT_UPCOMINGS_WEEK, "" + ((array2 != null) ? array2.toString() : ""));
         row.put(DB.ACCOUNT_UPCOMINGS_MONTH,""+  ((array3 != null) ?array3.toString():""));
 
-        row.put(DB.ACCOUNT_TOPITEMS_MONTH,""+ ((array4 != null)?array4.toString():""));
-        row.put(DB.ACCOUNT_TOPITEMS_YEAR,""+ ((array5 != null)?array5.toString():""));
-        row.put(DB.ACCOUNT_TOPITEMS_TOTAL,""+ ((array6 != null)?array6.toString():""));
+        row.put(DB.ACCOUNT_TOPITEMS,""+ ((array4 != null)?array4.toString():""));
+        JSONObject obj = GreatJSON.getJsonObjectForModel(getLastTransaction());
+        row.put(DB.ACCOUNT_LAST_TRANSACTION,""+((obj != null) ?obj.toString():""));
 
         return row;
     }
@@ -249,9 +240,10 @@ public class AccountRegister {
         Log.i("SPLIT","Upcoming WEEK  : "+getUpComingEventsOfWeek());
         Log.i("SPLIT","Upcoming MONTH  : "+getUpComingEventsOfMonth());
 
-        Log.i("SPLIT","Top Items MONTH : "+getTopItemsOfMonth());
-        Log.i("SPLIT","Top Items YEAR : "+getTopItemsOfYear());
-        Log.i("SPLIT","Top Items TOTAL : "+getTopItemsOfTotal());
+        Log.i("SPLIT","Top Items MONTH : "+ getTopItems());
+
+        Log.i("SPLIT","LAST TRANSACTION : "+ getLastTransaction());
+
     }
 }
 

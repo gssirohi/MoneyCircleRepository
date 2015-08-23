@@ -177,7 +177,7 @@ public class CardDesigner {
         ImageView iv_card_icon;
         TextView tv_title;
         LinearLayout ll_items;
-
+        LinearLayout ll_last;
 
         TextView tv_previous_month_title;
         TextView tv_this_month_title;
@@ -211,6 +211,8 @@ public class CardDesigner {
                 tv_this_year_value = (TextView)mCardIncome.findViewById(R.id.tv_card_content_row_3_value);
                 tv_total_value = (TextView)mCardIncome.findViewById(R.id.tv_card_content_row_4_value);
 
+
+
                 tv_title.setText("INCOME");
                 tv_previous_month_title.setText("Previous month Income");
                 tv_this_month_title.setText("This month Income");
@@ -223,6 +225,19 @@ public class CardDesigner {
                 tv_this_year_value.setText(""+incomeRegister.getTotalOfCurrentYear());
                 tv_total_value.setText(""+incomeRegister.getTotalTillNow());
 
+                ll_last = (LinearLayout)mCardIncome.findViewById(R.id.ll_card_content_row_5);
+                no_item = (View)mCardIncome.findViewById(R.id.no_item_view);
+                if(incomeRegister.getLastTransaction() != null) {
+                    ll_last.removeAllViews();
+                    MoneyItemView v = new MoneyItemView(mContext,null,Model.MODEL_TYPE_INCOME);
+                    v.initView(incomeRegister.getLastTransaction());
+                    ll_last.addView(v);
+                    ll_last.setVisibility(View.VISIBLE);
+                    no_item.setVisibility(View.GONE);
+                } else {
+                    ll_last.setVisibility(View.GONE);
+                    no_item.setVisibility(View.VISIBLE);
+                }
                 i = new Intent(mContext,NewHomeActivity.class);
                 i.putExtra(Model.MODEL_TYPE,Model.MODEL_TYPE_INCOME);
                 tv_title.setOnClickListener(getListener(i));
@@ -246,6 +261,21 @@ public class CardDesigner {
                 tv_this_month_value = (TextView)mCardExpense.findViewById(R.id.tv_card_content_row_2_value);
                 tv_this_year_value = (TextView)mCardExpense.findViewById(R.id.tv_card_content_row_3_value);
                 tv_total_value = (TextView)mCardExpense.findViewById(R.id.tv_card_content_row_4_value);
+
+
+                ll_last = (LinearLayout)mCardExpense.findViewById(R.id.ll_card_content_row_5);
+                no_item = (View)mCardExpense.findViewById(R.id.no_item_view);
+                if(expenseRegister.getLastTransaction() != null) {
+                    ll_last.removeAllViews();
+                    MoneyItemView v = new MoneyItemView(mContext,null,Model.MODEL_TYPE_EXPENSE);
+                    v.initView(expenseRegister.getLastTransaction());
+                    ll_last.addView(v);
+                    ll_last.setVisibility(View.VISIBLE);
+                    no_item.setVisibility(View.GONE);
+                } else {
+                    ll_last.setVisibility(View.GONE);
+                    no_item.setVisibility(View.VISIBLE);
+                }
 
                 tv_title.setText("EXPENSE");
                 tv_previous_month_title.setText("Previous month Expense");
@@ -282,6 +312,21 @@ public class CardDesigner {
                 tv_this_year_value = (TextView)mCardBorrow.findViewById(R.id.tv_card_content_row_3_value);
                 tv_total_value = (TextView)mCardBorrow.findViewById(R.id.tv_card_content_row_4_value);
 
+
+                ll_last = (LinearLayout)mCardBorrow.findViewById(R.id.ll_card_content_row_5);
+                no_item = (View)mCardBorrow.findViewById(R.id.no_item_view);
+                if(borrowRegister.getLastTransaction() != null) {
+                    ll_last.removeAllViews();
+                    MoneyItemView v = new MoneyItemView(mContext,null,Model.MODEL_TYPE_BORROW);
+                    v.initView(borrowRegister.getLastTransaction());
+                    ll_last.addView(v);
+                    ll_last.setVisibility(View.VISIBLE);
+                    no_item.setVisibility(View.GONE);
+                } else {
+                    ll_last.setVisibility(View.GONE);
+                    no_item.setVisibility(View.VISIBLE);
+                }
+
                 tv_title.setText("BORROW");
                 tv_previous_month_title.setText("Previous month BORROW");
                 tv_this_month_title.setText("This month BORROW");
@@ -317,6 +362,21 @@ public class CardDesigner {
                 tv_this_year_value = (TextView)mCardLent.findViewById(R.id.tv_card_content_row_3_value);
                 tv_total_value = (TextView)mCardLent.findViewById(R.id.tv_card_content_row_4_value);
 
+
+                ll_last = (LinearLayout)mCardLent.findViewById(R.id.ll_card_content_row_5);
+                no_item = (View)mCardLent.findViewById(R.id.no_item_view);
+                if(lentRegister.getLastTransaction() != null) {
+                    ll_last.removeAllViews();
+                    MoneyItemView v = new MoneyItemView(mContext,null,Model.MODEL_TYPE_LENT);
+                    v.initView(lentRegister.getLastTransaction());
+                    ll_last.addView(v);
+                    ll_last.setVisibility(View.VISIBLE);
+                    no_item.setVisibility(View.GONE);
+                } else {
+                    ll_last.setVisibility(View.GONE);
+                    no_item.setVisibility(View.VISIBLE);
+                }
+
                 tv_title.setText("LENT");
                 tv_previous_month_title.setText("Previous month LENT");
                 tv_this_month_title.setText("This month LENT");
@@ -350,6 +410,21 @@ public class CardDesigner {
                 tv_this_month_value = (TextView)mCardSplit.findViewById(R.id.tv_card_content_row_2_value);
                 tv_this_year_value = (TextView)mCardSplit.findViewById(R.id.tv_card_content_row_3_value);
                 tv_total_value = (TextView)mCardSplit.findViewById(R.id.tv_card_content_row_4_value);
+
+
+                ll_last = (LinearLayout)mCardSplit.findViewById(R.id.ll_card_content_row_5);
+                no_item = (View)mCardSplit.findViewById(R.id.no_item_view);
+                if(splitRegister.getLastTransaction() != null) {
+                    ll_last.removeAllViews();
+                    MoneyItemView v = new MoneyItemView(mContext,null,Model.MODEL_TYPE_SPLIT);
+                    v.initView(splitRegister.getLastTransaction());
+                    ll_last.addView(v);
+                    ll_last.setVisibility(View.VISIBLE);
+                    no_item.setVisibility(View.GONE);
+                } else {
+                    ll_last.setVisibility(View.GONE);
+                    no_item.setVisibility(View.VISIBLE);
+                }
 
                 tv_title.setText("SPLIT");
                 tv_previous_month_title.setText("Previous month SPLIT");
@@ -487,7 +562,7 @@ public class CardDesigner {
                 no_item = (View)mCardTopSpend.findViewById(R.id.no_item_view);
 
                 tv_title.setText("Top Spend Areas");
-                ArrayList<Model> listSP = expenseRegister.getTopItemsOfMonth();
+                ArrayList<Model> listSP = expenseRegister.getTopItems();
                 if(listSP != null && listSP.size()>0) {
                     addTopItems(ll_items, listSP, CARD_TOP_SPEND_AREAS);
                     no_item.setVisibility(View.GONE);
@@ -507,7 +582,7 @@ public class CardDesigner {
                 no_item = (View)mCardTopBorrower.findViewById(R.id.no_item_view);
 
                 tv_title.setText("Top Borrowers");
-                ArrayList<Model> listTB = lentRegister.getTopItemsOfMonth();
+                ArrayList<Model> listTB = lentRegister.getTopItems();
                 if(listTB != null && listTB.size()>0) {
                     addTopItems(ll_items, listTB, CARD_TOP_BORROWER);
                     no_item.setVisibility(View.GONE);
@@ -527,7 +602,7 @@ public class CardDesigner {
                 no_item = (View)mCardTopLender.findViewById(R.id.no_item_view);
 
                 tv_title.setText("Top Lenders");
-                ArrayList<Model> listTL = borrowRegister.getTopItemsOfMonth();
+                ArrayList<Model> listTL = borrowRegister.getTopItems();
                 if(listTL != null && listTL.size()>0) {
                     addTopItems(ll_items, listTL, CARD_TOP_LENDERS);
                     no_item.setVisibility(View.GONE);

@@ -15,7 +15,7 @@ public class DateUtils {
         String nextDate = "";
         try {
             Calendar today = Calendar.getInstance();
-            DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            DateFormat format = getDateFormat();
             Date date = format.parse(curDate);
             today.setTime(date);
             today.add(Calendar.DAY_OF_YEAR, 1);
@@ -30,7 +30,7 @@ public class DateUtils {
         String nextDate = "";
         try {
             Calendar today = Calendar.getInstance();
-            DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            DateFormat format = getDateFormat();
             Date date = format.parse(curDate);
             today.setTime(date);
             today.add(Calendar.DAY_OF_YEAR, -1);
@@ -46,7 +46,7 @@ public class DateUtils {
         try {
             Calendar today = Calendar.getInstance();
             today.setFirstDayOfWeek(Calendar.SUNDAY);
-            DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            DateFormat format = getDateFormat();
             Date date = format.parse(curDate);
             today.setTime(date);
             today.set(Calendar.DAY_OF_WEEK, today.getActualMinimum(Calendar.DAY_OF_WEEK));
@@ -63,7 +63,7 @@ public class DateUtils {
         try {
             Calendar today = Calendar.getInstance();
             today.setFirstDayOfWeek(Calendar.SUNDAY);
-            DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            DateFormat format = getDateFormat();
             Date date = format.parse(curDate);
             today.setTime(date);
             today.set(Calendar.DAY_OF_WEEK, today.getActualMaximum(Calendar.DAY_OF_WEEK));
@@ -80,7 +80,7 @@ public class DateUtils {
         try {
             Calendar today = Calendar.getInstance();
             today.setFirstDayOfWeek(Calendar.SUNDAY);
-            DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            DateFormat format = getDateFormat();
             Date date = format.parse(curDate);
             today.setTime(date);
             today.set(Calendar.DAY_OF_WEEK, today.getActualMinimum(Calendar.DAY_OF_WEEK));
@@ -97,7 +97,7 @@ public class DateUtils {
         try {
             Calendar today = Calendar.getInstance();
             today.setFirstDayOfWeek(Calendar.SUNDAY);
-            DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            DateFormat format = getDateFormat();
             Date date = format.parse(curDate);
             today.setTime(date);
             today.set(Calendar.DAY_OF_WEEK, today.getActualMaximum(Calendar.DAY_OF_WEEK));
@@ -114,7 +114,7 @@ public class DateUtils {
         String nextDate = "";
         try {
             Calendar calendar = Calendar.getInstance();
-            DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            DateFormat format = getDateFormat();
             Date date = format.parse(curDate);
             calendar.setTime(date);
             calendar.add(Calendar.MONTH, 1);
@@ -131,7 +131,7 @@ public class DateUtils {
         String nextDate = "";
         try {
             Calendar calendar = Calendar.getInstance();
-            DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            DateFormat format = getDateFormat();
             Date date = format.parse(curDate);
             calendar.setTime(date);
             calendar.add(Calendar.MONTH, 1);
@@ -147,7 +147,7 @@ public class DateUtils {
         String nextDate = "";
         try {
             Calendar calendar = Calendar.getInstance();
-            DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            DateFormat format = getDateFormat();
             Date date = format.parse(curDate);
             calendar.setTime(date);
             calendar.add(Calendar.MONTH, -1);
@@ -163,7 +163,7 @@ public class DateUtils {
         String nextDate = "";
         try {
             Calendar calendar = Calendar.getInstance();
-            DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            DateFormat format = getDateFormat();
             Date date = format.parse(curDate);
             calendar.setTime(date);
             calendar.add(Calendar.MONTH, -1);
@@ -179,7 +179,7 @@ public class DateUtils {
         String nextDate = "";
         try {
             Calendar calendar = Calendar.getInstance();
-            DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            DateFormat format = getDateFormat();
             Date date = format.parse(curDate);
             calendar.setTime(date);
             calendar.add(Calendar.YEAR, 1);
@@ -196,7 +196,7 @@ public class DateUtils {
         String nextDate = "";
         try {
             Calendar calendar = Calendar.getInstance();
-            DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            DateFormat format = getDateFormat();
             Date date = format.parse(curDate);
             calendar.setTime(date);
             calendar.add(Calendar.YEAR, 1);
@@ -212,7 +212,7 @@ public class DateUtils {
         String nextDate = "";
         try {
             Calendar calendar = Calendar.getInstance();
-            DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            DateFormat format = getDateFormat();
             Date date = format.parse(curDate);
             calendar.setTime(date);
             calendar.add(Calendar.YEAR, -1);
@@ -228,7 +228,7 @@ public class DateUtils {
         String nextDate = "";
         try {
             Calendar calendar = Calendar.getInstance();
-            DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            DateFormat format = getDateFormat();
             Date date = format.parse(curDate);
             calendar.setTime(date);
             calendar.add(Calendar.YEAR, -1);
@@ -246,7 +246,7 @@ public class DateUtils {
         c.set(Calendar.YEAR,year);
         c.set(Calendar.MONTH,monthOfYear);
         c.set(Calendar.DAY_OF_MONTH,dayOfMonth);
-        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        DateFormat format = getDateFormat();
         dateString = format.format(c.getTime());
         return dateString;
     }
@@ -254,7 +254,7 @@ public class DateUtils {
     public static String getCurrentDate() {
         String dateString = "";
         Calendar c = Calendar.getInstance();
-        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        DateFormat format = getDateFormat();
         dateString = format.format(c.getTime());
         return dateString;
     }
@@ -264,7 +264,7 @@ public class DateUtils {
         Calendar c = Calendar.getInstance();
         c.setFirstDayOfWeek(Calendar.SUNDAY);
         c.set(Calendar.DAY_OF_WEEK, c.getActualMinimum(Calendar.DAY_OF_WEEK));
-        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        DateFormat format = getDateFormat();
         dateString = format.format(c.getTime());
         return dateString;
     }
@@ -274,7 +274,7 @@ public class DateUtils {
         Calendar c = Calendar.getInstance();
         c.setFirstDayOfWeek(Calendar.SUNDAY);
         c.set(Calendar.DAY_OF_WEEK, c.getActualMaximum(Calendar.DAY_OF_WEEK));
-        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        DateFormat format = getDateFormat();
         dateString = format.format(c.getTime());
         return dateString;
     }
@@ -283,7 +283,7 @@ public class DateUtils {
         String dateString = "";
         Calendar c = Calendar.getInstance();
         c.set(Calendar.DATE, c.getActualMinimum(Calendar.DAY_OF_MONTH));
-        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        DateFormat format = getDateFormat();
         dateString = format.format(c.getTime());
         return dateString;
 
@@ -293,7 +293,7 @@ public class DateUtils {
         String dateString = "";
         Calendar c = Calendar.getInstance();
         c.set(Calendar.DATE, c.getActualMaximum(Calendar.DAY_OF_MONTH));
-        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        DateFormat format = getDateFormat();
         dateString = format.format(c.getTime());
         return dateString;
     }
@@ -302,7 +302,7 @@ public class DateUtils {
         String dateString = "";
         Calendar c = Calendar.getInstance();
         c.set(Calendar.DAY_OF_YEAR, c.getActualMinimum(Calendar.DAY_OF_YEAR));
-        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        DateFormat format = getDateFormat();
         dateString = format.format(c.getTime());
         return dateString;
     }
@@ -311,7 +311,7 @@ public class DateUtils {
         String dateString = "";
         Calendar c = Calendar.getInstance();
         c.set(Calendar.DAY_OF_YEAR, c.getActualMaximum(Calendar.DAY_OF_YEAR));
-        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        DateFormat format = getDateFormat();
         dateString = format.format(c.getTime());
         return dateString;
     }
@@ -331,7 +331,7 @@ public class DateUtils {
         boolean isIt;
         try {
             Calendar dateToBeChecked = Calendar.getInstance();
-            DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            DateFormat format = getDateFormat();
             Date dateObj = format.parse(date);
             dateToBeChecked.setTime(dateObj);
 
@@ -364,7 +364,7 @@ public class DateUtils {
         boolean isIt;
         try {
             Calendar dateToBeChecked = Calendar.getInstance();
-            DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            DateFormat format = getDateFormat();
             Date dateObj = format.parse(date);
             dateToBeChecked.setTime(dateObj);
 
@@ -397,7 +397,7 @@ public class DateUtils {
         boolean isIt;
         try {
             Calendar dateToBeChecked = Calendar.getInstance();
-            DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            DateFormat format = getDateFormat();
             Date dateObj = format.parse(date);
             dateToBeChecked.setTime(dateObj);
 
@@ -440,7 +440,7 @@ public class DateUtils {
         boolean isIt;
         try {
             Calendar dateToBeChecked = Calendar.getInstance();
-            DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            DateFormat format = getDateFormat();
             Date dateObj = format.parse(date);
             dateToBeChecked.setTime(dateObj);
 
@@ -474,7 +474,7 @@ public class DateUtils {
         boolean isIt;
         try {
             Calendar dateToBeChecked = Calendar.getInstance();
-            DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            DateFormat format = getDateFormat();
             Date dateObj = format.parse(date);
             dateToBeChecked.setTime(dateObj);
 
@@ -507,7 +507,7 @@ public class DateUtils {
         boolean isIt;
         try {
             Calendar dateToBeChecked = Calendar.getInstance();
-            DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            DateFormat format = getDateFormat();
             Date dateObj = format.parse(date);
             dateToBeChecked.setTime(dateObj);
 
@@ -540,7 +540,7 @@ public class DateUtils {
         boolean isIt;
         try {
             Calendar dateToBeChecked = Calendar.getInstance();
-            DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+            DateFormat format = getDateFormat();
             Date dateObj = format.parse(date);
             dateToBeChecked.setTime(dateObj);
 
@@ -555,5 +555,92 @@ public class DateUtils {
         }
         Log.d("SPLIT", "is Passed  [" + date + "] : " + isIt);
         return isIt;
+    }
+
+    public static boolean isLiesInNextSevenDays(String dueDate) {
+        boolean isIt;
+        try {
+            Calendar dateToBeChecked = Calendar.getInstance();
+            DateFormat format = getDateFormat();
+            Date dateObj = format.parse(dueDate);
+            dateToBeChecked.setTime(dateObj);
+
+            Calendar currDate = Calendar.getInstance();
+            Calendar currNextDate = Calendar.getInstance();
+            currNextDate.add(Calendar.DATE,7);
+            if (dateToBeChecked.after(currDate) || dateToBeChecked.equals(currDate)) {
+                if(dateToBeChecked.before(currNextDate)) {
+                    isIt = true;
+                } else {
+                    isIt = false;
+                }
+            } else {
+                    isIt = false;
+            }
+        } catch (Exception e) {
+            isIt =  false;//fasle is a fail case here hence default
+        }
+        Log.d("SPLIT", "is Lies in Next 7  [" + dueDate + "] : " + isIt);
+        return isIt;
+    }
+
+    public static boolean isLiesInNextFifteenDays(String dueDate) {
+        boolean isIt;
+        try {
+            Calendar dateToBeChecked = Calendar.getInstance();
+            DateFormat format = getDateFormat();
+            Date dateObj = format.parse(dueDate);
+            dateToBeChecked.setTime(dateObj);
+
+            Calendar currDate = Calendar.getInstance();
+            Calendar currNextDate = Calendar.getInstance();
+            currNextDate.add(Calendar.DATE,15);
+            if (dateToBeChecked.after(currDate) || dateToBeChecked.equals(currDate)) {
+                if(dateToBeChecked.before(currNextDate)) {
+                    isIt = true;
+                } else {
+                    isIt = false;
+                }
+            } else {
+                isIt = false;
+            }
+        } catch (Exception e) {
+            isIt =  false;//fasle is a fail case here hence default
+        }
+        Log.d("SPLIT", "is Lies in Next 15  [" + dueDate + "] : " + isIt);
+        return isIt;
+    }
+
+    public static boolean isLiesInNextThirtyDays(String dueDate) {
+        boolean isIt;
+        try {
+            Calendar dateToBeChecked = Calendar.getInstance();
+            DateFormat format = getDateFormat();
+            Date dateObj = format.parse(dueDate);
+            dateToBeChecked.setTime(dateObj);
+
+            Calendar currDate = Calendar.getInstance();
+            Calendar currNextDate = Calendar.getInstance();
+            currNextDate.add(Calendar.DATE,30);
+            if (dateToBeChecked.after(currDate) || dateToBeChecked.equals(currDate)) {
+                if(dateToBeChecked.before(currNextDate)) {
+                    isIt = true;
+                } else {
+                    isIt = false;
+                }
+            } else {
+                isIt = false;
+            }
+        } catch (Exception e) {
+            isIt =  false;//fasle is a fail case here hence default
+        }
+        Log.d("SPLIT", "is Lies in Next 30  [" + dueDate + "] : " + isIt);
+        return isIt;
+    }
+
+    public static DateFormat getDateFormat() {
+        //return new SimpleDateFormat("yyyy/MM/dd");
+        //return new SimpleDateFormat("yyyy/MM/dd");
+        return new SimpleDateFormat("dd MMM yyyy");
     }
 }

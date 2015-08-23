@@ -76,7 +76,7 @@
             </LinearLayout>
 
             <ProgressBar
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                style="@android:style/Widget.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/pb_card_budget"

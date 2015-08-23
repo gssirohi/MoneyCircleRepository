@@ -21,7 +21,7 @@ public class MoneyTransactionReceiver extends BroadcastReceiver{
 
         if(action.equals(MoneyTransactionReceiver.ACTION_MONEY_TRANSACTION)) {
             UpdateAccountRegistersTask task = new UpdateAccountRegistersTask(context);
-            task.execute();
+            task.execute(intent);
         }
     }
 }

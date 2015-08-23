@@ -214,9 +214,7 @@ public class MainActivity extends ActionBarActivity {
             Accountant accountant = new Accountant(this,false);
             accountant.initializeDb();
 
-            Tools.addDummyEntries(this, categoryManager);
-
-            Tools.sendMoneyTransactionBroadCast(this);
+//            Tools.sendMoneyTransactionBroadCast(this);
         }
     }
     private void handleDrawerItemClick(AdapterView<?> parent, View view, int position, long id) {

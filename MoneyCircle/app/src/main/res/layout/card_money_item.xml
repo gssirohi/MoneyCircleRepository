@@ -144,6 +144,27 @@
 
             </LinearLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="LAST TRANSACTION"
+                android:id="@+id/textView12"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="5dp" />
+
+            <include
+                android:id="@+id/no_item_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                layout="@layout/no_entry_available" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/ll_card_content_row_5"></LinearLayout>
+
 
         </LinearLayout>
 
