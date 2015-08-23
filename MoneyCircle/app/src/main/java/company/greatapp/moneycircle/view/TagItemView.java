@@ -1,5 +1,6 @@
 package company.greatapp.moneycircle.view;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
@@ -8,6 +9,7 @@ import android.graphics.drawable.shapes.Shape;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -31,6 +33,7 @@ public class TagItemView extends LinearLayout {
     private String title;
     private RemoveTagListener listener;
     private ViewGroup viewGroup;
+    private TagItemViewCallBacks callbacks;
 
     public TagItemView(Context context,ViewGroup parent, Model model, boolean isCancelable) {
         super(context);
@@ -48,7 +51,7 @@ public class TagItemView extends LinearLayout {
         this.parent = parent;
         this.title = item;
         if(item.equals("SPLIT")) {
-            int color = Tools.getModelColor(getContext(),Model.MODEL_TYPE_SPLIT);
+            int color = Tools.getModelColor(getContext(), Model.MODEL_TYPE_SPLIT);
             setColor(color);
         }
         init(context, isCancelable);
@@ -88,19 +91,31 @@ public class TagItemView extends LinearLayout {
     }
 
     private OnClickListener getListener(final Context context) {
+        setContactTagClickedListener((TagItemViewCallBacks)context);
         return new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getModel() != null)
-                    Toast.makeText(context,""+getModel().getTitle()+" CLICKED",Toast.LENGTH_SHORT).show();
-                else
+                if(getModel() != null) {
+
+
+                        handleContactClicked(context);
+                    //}
+                } else
                     Toast.makeText(context,""+getTitle()+" CLICKED",Toast.LENGTH_SHORT).show();
             }
         };
     }
 
+    private void handleContactClicked(Context context) {
+       this.callbacks.onContactTagClicked(model);
+      //  Toast.makeText(context, "" + getModel().getTitle() + " CLICKED", Toast.LENGTH_SHORT).show();
+    }
+
     public void setRemoveTagListener(RemoveTagListener listener){
         this.listener = listener;
+    }
+    public void setContactTagClickedListener(TagItemViewCallBacks callBacks){
+        this.callbacks = callBacks;
     }
     private void handleCancel(View view) {
         if(parent == null) return;
@@ -118,5 +133,9 @@ public class TagItemView extends LinearLayout {
 
     public interface RemoveTagListener{
         public abstract void OnTagRemoved(TagItemView view);
+    }
+
+    public interface TagItemViewCallBacks {
+        public abstract void onContactTagClicked(Model model);
     }
 }

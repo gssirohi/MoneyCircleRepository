@@ -1,14 +1,20 @@
 package company.greatapp.moneycircle.split;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -45,7 +51,7 @@ import company.greatapp.moneycircle.tools.GreatJSON;
 import company.greatapp.moneycircle.tools.Tools;
 import company.greatapp.moneycircle.view.TagItemView;
 
-public class SplitToolActivity extends ActionBarActivity implements DatePickerFragment.DateSetter {
+public class SplitToolActivity extends ActionBarActivity implements DatePickerFragment.DateSetter,TagItemView.TagItemViewCallBacks{
 
     public static final int SPLIT_AMOUNT_REQUEST = 33;
     private ArrayList<Participant> participants = new ArrayList<Participant>();
@@ -645,6 +651,41 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
     private ArrayList<Participant> getParticipants() {
         return participants;
     }
+    @Override
+    public void onContactTagClicked(Model model) {
+        //Toast.makeText(this,"callback : "+model.getTitle()+"["+model.getModelType()+"]",Toast.LENGTH_SHORT).show();
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.contact_info_dialog_layout, null, false);
 
+        Dialog dialog = new Dialog(this);
+        if(C.CONTACT_INFO_DIALOG_TRANSPARENT) {
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        }
+        dialog.setContentView(viewGroup);
+        TextView tv_name = (TextView)viewGroup.findViewById(R.id.tv_contact_name);
+        TextView tv_value = (TextView)viewGroup.findViewById(R.id.tv_contact_money_value);
+        Contact c = (Contact)model;
+
+        float value = c.getLentAmountToThis() - c.getBorrowedAmountfromThis();
+        String msg = "";
+        if(value > 0) {
+            msg = "owes you "+value;
+            tv_value.setTextColor(getResources().getColor(R.color.lent));
+        } else if(value < 0) {
+            tv_value.setTextColor(getResources().getColor(R.color.borrow));
+            msg = "you owe "+value;
+        } else {
+            tv_value.setTextColor(getResources().getColor(R.color.white));
+            msg = "settled";
+        }
+        tv_value.setText(msg);
+        tv_name.setText(c.getContactName());
+        dialog.setTitle("Contact Cash Flow");
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        if(C.CONTACT_INFO_DIALOG_TRANSPARENT) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        }
+        dialog.show();
+    }
 
 }

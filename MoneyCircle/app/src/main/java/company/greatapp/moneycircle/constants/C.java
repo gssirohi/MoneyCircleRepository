@@ -45,4 +45,5 @@ public class C {
 
     public static final boolean NEW_ENTRY_DIALOG_TRANSPARENT = false;
     public static final String ACTION_ACCOUNTANT_DB_UPDATED = "accountant_db_updated";
+    public static final boolean CONTACT_INFO_DIALOG_TRANSPARENT = true;
 }
