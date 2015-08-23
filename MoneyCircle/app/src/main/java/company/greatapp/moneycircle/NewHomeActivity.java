@@ -264,18 +264,6 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
     }
 
     private void getCategories() {
-        /*if (modelType == Model.MODEL_TYPE_INCOME) {
-            mCategories = new String[]{"All", "Salary", "Share", "RD", "FD"};
-        } else if (modelType == Model.MODEL_TYPE_EXPENSE) {
-            mCategories = new String[]{"Entertainment", "Bills", "Clothing", "Food", "Trip", "Travel"};
-        } else if (modelType == Model.MODEL_TYPE_BORROW) {
-            mCategories = new String[]{"Bank Loan", "Credit Card", "From Friends", "From Family"};
-        } else if (modelType == Model.MODEL_TYPE_LENT) {
-            mCategories = new String[]{"To Family", "To Friends", "To Others"};
-        }
-        else if (modelType == Model.MODEL_TYPE_SPLIT) {
-            mCategories = new String[]{"cat1", "cat2", "cat3"};
-        }*/
         mCategories = new ArrayList<>();
         mCategories.add(new Category("All", "all"));
         CategoryManager categoryManager = new CategoryManager(this, modelType);

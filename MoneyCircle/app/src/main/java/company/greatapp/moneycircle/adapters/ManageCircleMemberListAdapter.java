@@ -74,12 +74,6 @@ public class ManageCircleMemberListAdapter extends BaseAdapter {
 
         holder.memberName.setText(mMemberList.get(position).getTitle());
         holder.deleteMember.setTag(R.string.circle_member_id, position);
-        /*holder.deleteMember.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext,"v :"+(Integer)v.getTag(R.string.circle_member_id),Toast.LENGTH_LONG).show();
-            }
-        });*/
 
         Log.d(LOGTAG, "getView end");
         return convertView;
