@@ -42,6 +42,7 @@ import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.tools.DatePickerFragment;
 import company.greatapp.moneycircle.tools.DateUtils;
 import company.greatapp.moneycircle.tools.Tools;
+import company.greatapp.moneycircle.view.ContactInfoDialog;
 import company.greatapp.moneycircle.view.TagItemView;
 
 public class AddNewEntryActivity extends ActionBarActivity implements DatePickerFragment.DateSetter,TagItemView.TagItemViewCallBacks {
@@ -487,38 +488,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
 
     @Override
     public void onContactTagClicked(Model model) {
-        //Toast.makeText(this,"callback : "+model.getTitle()+"["+model.getModelType()+"]",Toast.LENGTH_SHORT).show();
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.contact_info_dialog_layout, null, false);
-
-        Dialog dialog = new Dialog(this);
-        if(C.CONTACT_INFO_DIALOG_TRANSPARENT) {
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        }
-        dialog.setContentView(viewGroup);
-        TextView tv_name = (TextView)viewGroup.findViewById(R.id.tv_contact_name);
-        TextView tv_value = (TextView)viewGroup.findViewById(R.id.tv_contact_money_value);
-        Contact c = (Contact)model;
-
-        float value = c.getLentAmountToThis() - c.getBorrowedAmountfromThis();
-        String msg = "";
-        if(value > 0) {
-            msg = "owes you "+value;
-            tv_value.setTextColor(getResources().getColor(R.color.lent));
-        } else if(value < 0) {
-            tv_value.setTextColor(getResources().getColor(R.color.borrow));
-            msg = "you owe "+value;
-        } else {
-            tv_value.setTextColor(getResources().getColor(R.color.white));
-            msg = "settled";
-        }
-        tv_value.setText(msg);
-        tv_name.setText(c.getContactName());
-        dialog.setTitle("Contact Cash Flow");
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        if(C.CONTACT_INFO_DIALOG_TRANSPARENT) {
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        }
+        ContactInfoDialog dialog = new ContactInfoDialog(this,(Contact)model);
         dialog.show();
     }
 }

@@ -18,7 +18,9 @@ import company.greatapp.moneycircle.model.AccountRegister;
 import company.greatapp.moneycircle.model.Category;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Model;
+import company.greatapp.moneycircle.view.CashFlowView;
 import company.greatapp.moneycircle.view.CircleButton;
+import company.greatapp.moneycircle.view.CircleItemView;
 import company.greatapp.moneycircle.view.MoneyItemView;
 import company.greatapp.moneycircle.view.TopSegmentItemView;
 
@@ -459,9 +461,7 @@ public class CardDesigner {
                 TextView tv_e_value = (TextView)mCardDailyReport.findViewById(R.id.tv_card_content_row_2_value);
                 TextView tv_b_value = (TextView)mCardDailyReport.findViewById(R.id.tv_card_content_row_3_value);
                 TextView tv_l_value = (TextView)mCardDailyReport.findViewById(R.id.tv_card_content_row_4_value);
-                CircleButton cb_net = (CircleButton)mCardDailyReport.findViewById(R.id.cb_cash_net);
-                CircleButton cb_in = (CircleButton)mCardDailyReport.findViewById(R.id.cb_cash_in);
-                CircleButton cb_out = (CircleButton)mCardDailyReport.findViewById(R.id.cb_cash_out);
+                CashFlowView cash_flow = (CashFlowView)mCardDailyReport.findViewById(R.id.v_cash_flow);
 
                 tv_title.setText("Today's Report");
                 tv_i_title.setText("Today's Income");
@@ -476,9 +476,9 @@ public class CardDesigner {
                 float in = incomeRegister.getTotalOfCurrentDay() +  borrowRegister.getTotalOfCurrentDay();
                 float out = expenseRegister.getTotalOfCurrentDay() + lentRegister.getTotalOfCurrentDay();
                 float net = in - out;
-                cb_net.setText(" Net "+net);
-                cb_in.setText(" Cash In "+in);
-                cb_out.setText(" Cash Out "+out);
+                cash_flow.setCashNet(""+net);
+                cash_flow.setCashIn(""+in);
+                cash_flow.setCashOut(""+out);
 
                 break;
             case CARD_UPCOMING_BORROW:
@@ -530,18 +530,25 @@ public class CardDesigner {
                 if(mCardBudget == null) return ;
                 iv_card_icon = (ImageView)mCardBudget.findViewById(R.id.iv_card_icon);
                 tv_title = (TextView)mCardBudget.findViewById(R.id.tv_card_title);
-                TextView tv_available_value = (TextView)mCardBudget.findViewById(R.id.tv_card_budget_available_value);
-                TextView tv_expense_value = (TextView)mCardBudget.findViewById(R.id.tv_card_budget_expense_value);
-                TextView tv_total_budget_value = (TextView)mCardBudget.findViewById(R.id.tv_card_budget_total_value);
+
                 ProgressBar pb_budget = (ProgressBar)mCardBudget.findViewById(R.id.pb_card_budget);
                 no_item = (View)mCardBudget.findViewById(R.id.no_item_view);
                 ll_items = (LinearLayout)mCardBudget.findViewById(R.id.ll_card_content_frame);
+                CircleItemView civ_total_budget = (CircleItemView)mCardBudget.findViewById(R.id.civ_total_budget);
+                CircleItemView civ_available = (CircleItemView)mCardBudget.findViewById(R.id.civ_available);
+                CircleItemView civ_total_spent = (CircleItemView)mCardBudget.findViewById(R.id.civ_total_spent);
 
                 tv_title.setText("MONTHLY BUDGET");
                 if(accountant.getBudget() > 0) {
-                    tv_available_value.setText("" + (accountant.getBudget() - expenseRegister.getTotalOfCurrentMonth()));
-                    tv_expense_value.setText("" + expenseRegister.getTotalOfCurrentMonth());
-                    tv_total_budget_value.setText("" + accountant.getBudget());
+                    civ_available.setItemName("AVAILABLE BUDGET TO SPEND");
+                    civ_available.setItemValue("" + (accountant.getBudget() - expenseRegister.getTotalOfCurrentMonth()));
+
+                    civ_total_spent.setItemName("THIS MONTH SPENT");
+                    civ_total_spent.setItemValue("" + expenseRegister.getTotalOfCurrentMonth());
+
+                    civ_total_budget.setItemName("THIS MONTH BUDGET");
+                    civ_total_budget.setItemValue(""+accountant.getBudget());
+
                     pb_budget.setMax((int) accountant.getBudget());
                     pb_budget.setProgress((int) expenseRegister.getTotalOfCurrentMonth());
                     ll_items.setVisibility(View.VISIBLE);

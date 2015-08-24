@@ -55,26 +55,6 @@
             android:paddingBottom="5dp">
 
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="Total available to spend"
-                    android:id="@+id/tv_card_budget_available_title"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="9000"
-                    android:id="@+id/tv_card_budget_available_value"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
             <ProgressBar
                 style="@android:style/Widget.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
@@ -90,39 +70,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
+                <view
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="This month expense"
-                    android:id="@+id/tv_card_budget_expense_title"
-                    android:layout_weight="1" />
+                    class="company.greatapp.moneycircle.view.CircleItemView"
+                    android:id="@+id/civ_available"
+                    android:layout_margin="5dp"
+                    android:layout_weight="4"
+                    android:padding="8dp"/>
 
-                <TextView
+                <view
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="9000"
-                    android:id="@+id/tv_card_budget_expense_value"
-                    android:layout_weight="1" />
-            </LinearLayout>
+                    class="company.greatapp.moneycircle.view.CircleItemView"
+                    android:id="@+id/civ_total_budget"
+                    android:layout_margin="5dp"
+                    android:layout_weight="4"
+                    android:padding="8dp"/>
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
+                <view
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Total monthly budget"
-                    android:id="@+id/tv_card_budget_total_title"
-                    android:layout_weight="1" />
+                    class="company.greatapp.moneycircle.view.CircleItemView"
+                    android:id="@+id/civ_total_spent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="4"
+                    android:padding="8dp"/>
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="9000"
-                    android:id="@+id/tv_card_budget_total_value"
-                    android:layout_weight="1" />
             </LinearLayout>
 
 

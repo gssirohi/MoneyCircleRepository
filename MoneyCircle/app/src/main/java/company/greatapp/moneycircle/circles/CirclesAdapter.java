@@ -6,23 +6,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.CursorAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.constants.C;
-import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.manager.CircleManager;
 import company.greatapp.moneycircle.manager.ContactManager;
 import company.greatapp.moneycircle.model.Circle;
 import company.greatapp.moneycircle.model.Contact;
-import company.greatapp.moneycircle.model.Model;
-import company.greatapp.moneycircle.tools.GreatJSON;
 import company.greatapp.moneycircle.view.TagItemView;
 
 /**
@@ -47,7 +42,7 @@ public class CirclesAdapter extends CursorAdapter{
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
         Log.d(LOGTAG, "newView");
 
-        View view = mInflater.inflate(R.layout.circle_item_view, parent, false);
+        View view = mInflater.inflate(R.layout.circle_list_item_view, parent, false);
         ViewHolder holder = new ViewHolder();
         holder.groupName = (TextView)view.findViewById(R.id.tvGroupNameId);
         holder.membersCount = (TextView)view.findViewById(R.id.tvGroupMemberCountId);
