@@ -1,6 +1,9 @@
 package company.greatapp.moneycircle.view;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -36,6 +39,10 @@ public class TopSegmentItemView extends LinearLayout {
             tv_item_title = (TextView)viewGroup.findViewById(R.id.tv_top_segment_item_title);
             tv_item_value = (TextView)viewGroup.findViewById(R.id.tv_top_segment_item_value);
             iv_item_icon = (ImageView)viewGroup.findViewById(R.id.iv_top_segment_item_icon);
+
+//            LayerDrawable bgDrawable = (LayerDrawable)viewGroup.getBackground();
+//            final GradientDrawable shape = (GradientDrawable)bgDrawable.findDrawableByLayerId(R.id.shape_circle_outer_ring_item);
+//            shape.setStroke(10,context.getResources().getColor(R.color.app_basic));
         }
     }
 

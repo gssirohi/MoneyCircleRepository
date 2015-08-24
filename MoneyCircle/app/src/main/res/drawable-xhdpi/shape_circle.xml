@@ -7,8 +7,8 @@
             <solid android:color="@color/white" />
         </shape>
     </item>
-    <item>
-        <shape
+    <item android:id="@+id/shape_circle_outer_ring_item">
+        <shape android:id="@+id/shape_circle_outer_ring"
             android:shape="oval">
             <stroke android:width="5dp"
                 android:color="@color/app_secondary"/>
