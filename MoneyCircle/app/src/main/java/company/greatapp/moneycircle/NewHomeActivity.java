@@ -2,50 +2,38 @@ package company.greatapp.moneycircle;
 
 
 import android.app.ActionBar;
-import android.app.Dialog;
 import android.app.LoaderManager;
-import android.content.Context;
 import android.content.CursorLoader;
 
 import android.content.Loader;
 import android.database.Cursor;
-import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.adapters.MoneyItemAdapter;
-import company.greatapp.moneycircle.constants.C;
-import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.manager.CategoryManager;
 import company.greatapp.moneycircle.model.Category;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.DBFilter;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.Period;
-import company.greatapp.moneycircle.tools.DateUtils;
 import company.greatapp.moneycircle.tools.Tools;
-import company.greatapp.moneycircle.view.ContactInfoDialog;
+import company.greatapp.moneycircle.dialogs.ContactInfoDialog;
 import company.greatapp.moneycircle.view.TagItemView;
 
 public class NewHomeActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor>,TagItemView.TagItemViewCallBacks{

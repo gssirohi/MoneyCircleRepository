@@ -1,20 +1,14 @@
 package company.greatapp.moneycircle.split;
 
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -45,11 +39,11 @@ import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.Participant;
 import company.greatapp.moneycircle.model.Split;
-import company.greatapp.moneycircle.tools.DatePickerFragment;
+import company.greatapp.moneycircle.dialogs.DatePickerFragment;
 import company.greatapp.moneycircle.tools.DateUtils;
 import company.greatapp.moneycircle.tools.GreatJSON;
 import company.greatapp.moneycircle.tools.Tools;
-import company.greatapp.moneycircle.view.ContactInfoDialog;
+import company.greatapp.moneycircle.dialogs.ContactInfoDialog;
 import company.greatapp.moneycircle.view.TagItemView;
 
 public class SplitToolActivity extends ActionBarActivity implements DatePickerFragment.DateSetter,TagItemView.TagItemViewCallBacks{

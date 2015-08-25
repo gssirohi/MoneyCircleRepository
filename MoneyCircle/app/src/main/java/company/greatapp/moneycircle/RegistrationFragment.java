@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import company.greatapp.moneycircle.tools.DatePickerFragment;
+import company.greatapp.moneycircle.dialogs.DatePickerFragment;
 import company.greatapp.moneycircle.tools.DateUtils;
 
 /**

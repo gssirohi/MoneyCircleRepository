@@ -73,12 +73,12 @@ public class MoneyItemView extends LinearLayout {
         switch(mType) {
             case Model.MODEL_TYPE_INCOME:
 
-                tv_amount.setText(""+((Income)model).getAmount());
+                tv_amount.setText(Tools.floatString(((Income)model).getAmount()));
                 tv_date.setText(((Income)model).getDateString());
                 ll_due_date_info.setVisibility(View.GONE);
                 break;
             case Model.MODEL_TYPE_EXPENSE:
-                tv_amount.setText(""+((Expense)model).getAmount());
+                tv_amount.setText(Tools.floatString(((Expense)model).getAmount()));
                 tv_date.setText(((Expense)model).getDateString());
                 if(((Expense)model).isLinkedWithSplit()){
                     f_split.addView(new TagItemView(getContext(), f_split, "SPLIT", false));
@@ -86,7 +86,7 @@ public class MoneyItemView extends LinearLayout {
                 ll_due_date_info.setVisibility(View.GONE);
                 break;
             case Model.MODEL_TYPE_BORROW:
-                tv_amount.setText(""+((Borrow)model).getAmount());
+                tv_amount.setText(Tools.floatString(((Borrow)model).getAmount()));
                 tv_date.setText(((Borrow) model).getDateString());
                 Contact memberB = ((Borrow)model).getLinkedContact();
                 if(memberB != null) {
@@ -104,7 +104,7 @@ public class MoneyItemView extends LinearLayout {
                 tv_due_date.setText(""+((Borrow)model).getDueDateString());
                 break;
             case Model.MODEL_TYPE_LENT:
-                tv_amount.setText(""+((Lent)model).getAmount());
+                tv_amount.setText(Tools.floatString(((Lent)model).getAmount()));
                 tv_date.setText(((Lent)model).getDateString());
                 Contact memberL = ((Lent)model).getLinkedContact();
                 if(memberL != null) {
@@ -125,7 +125,7 @@ public class MoneyItemView extends LinearLayout {
                 tv_due_date.setText(""+((Lent)model).getDueDateString());
                 break;
             case Model.MODEL_TYPE_SPLIT:
-                tv_amount.setText(""+((Split)model).getAmount());
+                tv_amount.setText(Tools.floatString(((Split)model).getAmount()));
                 tv_date.setText(((Split)model).getDateString());
 //                TextView tv = new TextView(getContext());
 //                f_member.addView(tv);

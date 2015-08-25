@@ -17,6 +17,7 @@
             android:baselineAligned="true">
 
             <LinearLayout
+                android:id="@+id/ll_new_entry_options_1"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -45,6 +46,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_new_entry_options_2"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -71,6 +73,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_new_entry_options_3"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -97,6 +100,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_new_entry_options_4"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">

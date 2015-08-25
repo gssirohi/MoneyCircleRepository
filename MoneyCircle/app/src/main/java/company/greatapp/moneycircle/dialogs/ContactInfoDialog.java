@@ -1,4 +1,4 @@
-package company.greatapp.moneycircle.view;
+package company.greatapp.moneycircle.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -14,6 +14,7 @@ import android.widget.Toast;
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.model.Contact;
+import company.greatapp.moneycircle.tools.Tools;
 
 /**
  * Created by Gyanendrasingh on 8/24/2015.
@@ -55,11 +56,11 @@ public class ContactInfoDialog extends Dialog {
         float value_negative = contact.getBorrowedAmountfromThis() - contact.getLentAmountToThis();
         String msg = "";
         if(value > 0) {
-            msg = "owes you "+value;
+            msg = "owes you "+ Tools.floatString(value);
             tv_value.setTextColor(context.getResources().getColor(R.color.text_info));
         } else if(value < 0) {
             tv_value.setTextColor(context.getResources().getColor(R.color.text_error));
-            msg = "you owe "+value_negative;
+            msg = "you owe "+ Tools.floatString(value_negative);
         } else {
             tv_value.setTextColor(context.getResources().getColor(R.color.text_basic_light));
             msg = "settled";

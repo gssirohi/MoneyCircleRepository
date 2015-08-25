@@ -18,6 +18,7 @@ import company.greatapp.moneycircle.model.AccountRegister;
 import company.greatapp.moneycircle.model.Category;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Model;
+import company.greatapp.moneycircle.tools.Tools;
 import company.greatapp.moneycircle.view.CashFlowView;
 import company.greatapp.moneycircle.view.CircleButton;
 import company.greatapp.moneycircle.view.CircleItemView;
@@ -222,10 +223,10 @@ public class CardDesigner {
                 tv_total_title.setText("Total Income");
 
 
-                tv_previous_month_value.setText("" + incomeRegister.getTotalOfLastMonth());
-                tv_this_month_value.setText(""+incomeRegister.getTotalOfCurrentMonth());
-                tv_this_year_value.setText(""+incomeRegister.getTotalOfCurrentYear());
-                tv_total_value.setText(""+incomeRegister.getTotalTillNow());
+                tv_previous_month_value.setText(Tools.floatString(incomeRegister.getTotalOfLastMonth()));
+                tv_this_month_value.setText(Tools.floatString(incomeRegister.getTotalOfCurrentMonth()));
+                tv_this_year_value.setText(Tools.floatString(incomeRegister.getTotalOfCurrentYear()));
+                tv_total_value.setText(Tools.floatString(incomeRegister.getTotalTillNow()));
 
                 ll_last = (LinearLayout)mCardIncome.findViewById(R.id.ll_card_content_row_5);
                 no_item = (View)mCardIncome.findViewById(R.id.no_item_view);
@@ -285,10 +286,10 @@ public class CardDesigner {
                 tv_this_year_title.setText("This year Expense");
                 tv_total_title.setText("Total Expense");
 
-                tv_previous_month_value.setText(""+expenseRegister.getTotalOfLastMonth());
-                tv_this_month_value.setText(""+expenseRegister.getTotalOfCurrentMonth());
-                tv_this_year_value.setText(""+expenseRegister.getTotalOfCurrentYear());
-                tv_total_value.setText(""+expenseRegister.getTotalTillNow());
+                tv_previous_month_value.setText(Tools.floatString(expenseRegister.getTotalOfLastMonth()));
+                tv_this_month_value.setText(Tools.floatString(expenseRegister.getTotalOfCurrentMonth()));
+                tv_this_year_value.setText(Tools.floatString(expenseRegister.getTotalOfCurrentYear()));
+                tv_total_value.setText(Tools.floatString(expenseRegister.getTotalTillNow()));
 
                 i = new Intent(mContext,NewHomeActivity.class);
                 i.putExtra(Model.MODEL_TYPE,Model.MODEL_TYPE_EXPENSE);
@@ -336,10 +337,10 @@ public class CardDesigner {
                 tv_total_title.setText("Total BORROW");
 
 
-                tv_previous_month_value.setText(""+borrowRegister.getTotalOfLastMonth());
-                tv_this_month_value.setText(""+borrowRegister.getTotalOfCurrentMonth());
-                tv_this_year_value.setText(""+borrowRegister.getTotalOfCurrentYear());
-                tv_total_value.setText(""+borrowRegister.getTotalTillNow());
+                tv_previous_month_value.setText(Tools.floatString(borrowRegister.getTotalOfLastMonth()));
+                tv_this_month_value.setText(Tools.floatString(borrowRegister.getTotalOfCurrentMonth()));
+                tv_this_year_value.setText(Tools.floatString(borrowRegister.getTotalOfCurrentYear()));
+                tv_total_value.setText(Tools.floatString(borrowRegister.getTotalTillNow()));
 
                 i = new Intent(mContext,NewHomeActivity.class);
                 i.putExtra(Model.MODEL_TYPE,Model.MODEL_TYPE_BORROW);
@@ -385,10 +386,10 @@ public class CardDesigner {
                 tv_this_year_title.setText("This year LENT");
                 tv_total_title.setText("Total LENT");
 
-                tv_previous_month_value.setText(""+lentRegister.getTotalOfLastMonth());
-                tv_this_month_value.setText(""+lentRegister.getTotalOfCurrentMonth());
-                tv_this_year_value.setText(""+lentRegister.getTotalOfCurrentYear());
-                tv_total_value.setText(""+lentRegister.getTotalTillNow());
+                tv_previous_month_value.setText(Tools.floatString(lentRegister.getTotalOfLastMonth()));
+                tv_this_month_value.setText(Tools.floatString(lentRegister.getTotalOfCurrentMonth()));
+                tv_this_year_value.setText(Tools.floatString(lentRegister.getTotalOfCurrentYear()));
+                tv_total_value.setText(Tools.floatString(lentRegister.getTotalTillNow()));
 
                 i = new Intent(mContext,NewHomeActivity.class);
                 i.putExtra(Model.MODEL_TYPE,Model.MODEL_TYPE_LENT);
@@ -434,10 +435,10 @@ public class CardDesigner {
                 tv_this_year_title.setText("This year SPLIT");
                 tv_total_title.setText("Total SPLIT");
 
-                tv_previous_month_value.setText(""+splitRegister.getTotalOfLastMonth());
-                tv_this_month_value.setText(""+splitRegister.getTotalOfCurrentMonth());
-                tv_this_year_value.setText(""+splitRegister.getTotalOfCurrentYear());
-                tv_total_value.setText(""+splitRegister.getTotalTillNow());
+                tv_previous_month_value.setText(Tools.floatString(splitRegister.getTotalOfLastMonth()));
+                tv_this_month_value.setText(Tools.floatString(splitRegister.getTotalOfCurrentMonth()));
+                tv_this_year_value.setText(Tools.floatString(splitRegister.getTotalOfCurrentYear()));
+                tv_total_value.setText(Tools.floatString(splitRegister.getTotalTillNow()));
 
                 i = new Intent(mContext,NewHomeActivity.class);
                 i.putExtra(Model.MODEL_TYPE,Model.MODEL_TYPE_SPLIT);
@@ -469,16 +470,16 @@ public class CardDesigner {
                 tv_b_title.setText("Today's Borrow");
                 tv_l_title.setText("Today's Lent");
 
-                tv_i_value.setText(""+incomeRegister.getTotalOfCurrentDay());
-                tv_e_value.setText(""+expenseRegister.getTotalOfCurrentDay());
-                tv_b_value.setText(""+borrowRegister.getTotalOfCurrentDay());
-                tv_l_value.setText(""+lentRegister.getTotalOfCurrentDay());
+                tv_i_value.setText(Tools.floatString(incomeRegister.getTotalOfCurrentDay()));
+                tv_e_value.setText(Tools.floatString(expenseRegister.getTotalOfCurrentDay()));
+                tv_b_value.setText(Tools.floatString(borrowRegister.getTotalOfCurrentDay()));
+                tv_l_value.setText(Tools.floatString(lentRegister.getTotalOfCurrentDay()));
                 float in = incomeRegister.getTotalOfCurrentDay() +  borrowRegister.getTotalOfCurrentDay();
                 float out = expenseRegister.getTotalOfCurrentDay() + lentRegister.getTotalOfCurrentDay();
                 float net = in - out;
-                cash_flow.setCashNet(""+net);
-                cash_flow.setCashIn(""+in);
-                cash_flow.setCashOut(""+out);
+                cash_flow.setCashNet(Tools.floatString(net));
+                cash_flow.setCashIn(Tools.floatString(in));
+                cash_flow.setCashOut(Tools.floatString(out));
 
                 break;
             case CARD_UPCOMING_BORROW:
@@ -541,13 +542,13 @@ public class CardDesigner {
                 tv_title.setText("MONTHLY BUDGET");
                 if(accountant.getBudget() > 0) {
                     civ_available.setItemName("AVAILABLE BUDGET TO SPEND");
-                    civ_available.setItemValue("" + (accountant.getBudget() - expenseRegister.getTotalOfCurrentMonth()));
+                    civ_available.setItemValue(Tools.floatString((accountant.getBudget() - expenseRegister.getTotalOfCurrentMonth())));
 
                     civ_total_spent.setItemName("THIS MONTH SPENT");
-                    civ_total_spent.setItemValue("" + expenseRegister.getTotalOfCurrentMonth());
+                    civ_total_spent.setItemValue(Tools.floatString(expenseRegister.getTotalOfCurrentMonth()));
 
                     civ_total_budget.setItemName("THIS MONTH BUDGET");
-                    civ_total_budget.setItemValue(""+accountant.getBudget());
+                    civ_total_budget.setItemValue(Tools.floatString(accountant.getBudget()));
 
                     pb_budget.setMax((int) accountant.getBudget());
                     pb_budget.setProgress((int) expenseRegister.getTotalOfCurrentMonth());
@@ -636,7 +637,7 @@ public class CardDesigner {
                     TopSegmentItemView v = new TopSegmentItemView(mContext,null);
                     float lendings = ((Contact)m).getLentAmountToThis();
                     v.setItemTitle(m.getTitle());
-                    v.setItemValue("" + lendings);
+                    v.setItemValue(Tools.floatString( lendings));
                     ll_items.addView(v);
                 }
                 break;
@@ -649,7 +650,7 @@ public class CardDesigner {
                     TopSegmentItemView v = new TopSegmentItemView(mContext,null);
                     float borrowed = ((Contact)m).getBorrowedAmountfromThis();
                     v.setItemTitle(m.getTitle());
-                    v.setItemValue(""+borrowed);
+                    v.setItemValue(Tools.floatString(borrowed));
                     ll_items.addView(v);
                 }
 
@@ -664,7 +665,7 @@ public class CardDesigner {
                     TopSegmentItemView v = new TopSegmentItemView(mContext,null);
                     float spend = ((Category)m).getSpentAmountOnThis();
                     v.setItemTitle(m.getTitle());
-                    v.setItemValue(""+spend);
+                    v.setItemValue(Tools.floatString(spend));
                     ll_items.addView(v);
                 }
 

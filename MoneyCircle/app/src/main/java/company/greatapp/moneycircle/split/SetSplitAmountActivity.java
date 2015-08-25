@@ -28,6 +28,7 @@ import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.manager.ContactManager;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Participant;
+import company.greatapp.moneycircle.tools.Tools;
 
 
 public class SetSplitAmountActivity extends ActionBarActivity {
@@ -72,7 +73,7 @@ public class SetSplitAmountActivity extends ActionBarActivity {
         tv_total_shares = (TextView) findViewById(R.id.tv_total_shares);
         tb_equally = (ToggleButton) findViewById(R.id.tb_equally);
         TextView tv_total_amount = (TextView) findViewById(R.id.tv_total_amount);
-        tv_total_amount.setText(floatstr(total_amount));
+        tv_total_amount.setText(Tools.floatString(total_amount));
         listview = (ListView) findViewById(R.id.listView2);
         b_done = (Button)findViewById(R.id.b_set_split_amount_done);
         spinner = (Spinner)findViewById(R.id.sp_split_amount_mode);
@@ -108,7 +109,7 @@ public class SetSplitAmountActivity extends ActionBarActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(mAmountRefreshReceiver,
                 new IntentFilter(ACTION_AMOUNT_REFRESH));
 
-        tv_total_shares.setText("" + floatstr(total_shares) + " (" + floatstr(perShareValue) + " per share)");
+        tv_total_shares.setText("" + Tools.floatString(total_shares) + " (" + Tools.floatString(perShareValue) + " per share)");
 
         b_done.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -208,23 +209,23 @@ public class SetSplitAmountActivity extends ActionBarActivity {
     private void refreshAmount() {
         divided_amount = getDividedAmount();
         remaining_amount = total_amount - divided_amount;
-        tv_divided_amount.setText(floatstr(divided_amount));
+        tv_divided_amount.setText(Tools.floatString(divided_amount));
         if((remaining_amount < 1 && remaining_amount > -1)) {
             tv_remaining.setVisibility(View.GONE);
             b_done.setVisibility(View.VISIBLE);
         }
 
         else if(remaining_amount < 0) {
-            tv_remaining.setText(floatstr(remaining_amount) + " exceeded");
+            tv_remaining.setText(Tools.floatString(remaining_amount) + " exceeded");
             tv_remaining.setVisibility(View.VISIBLE);
             b_done.setVisibility(View.GONE);
         }
         else if(remaining_amount > 0) {
-            tv_remaining.setText(floatstr(remaining_amount) + " remaining");
+            tv_remaining.setText(Tools.floatString(remaining_amount) + " remaining");
             tv_remaining.setVisibility(View.VISIBLE);
             b_done.setVisibility(View.GONE);
         }
-        tv_total_shares.setText("" + floatstr(total_shares)+" ("+floatstr(perShareValue)+" per share)");
+        tv_total_shares.setText("" + Tools.floatString(total_shares)+" ("+Tools.floatString(perShareValue)+" per share)");
         printParticipants();
     }
 
@@ -337,8 +338,6 @@ public class SetSplitAmountActivity extends ActionBarActivity {
         }
     }
 
-    private String floatstr(float value) {
-        return new DecimalFormat("##.##").format(value);
-    }
+
 
 }

@@ -1,4 +1,4 @@
-package company.greatapp.moneycircle.tools;
+package company.greatapp.moneycircle.dialogs;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;

@@ -11,6 +11,7 @@ import android.view.View;
 
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.UUID;
@@ -325,5 +326,9 @@ public static String getModelName(int modelType){
             Log.i("SPLIT", "broadCast is set for MONEY_TRANSACTION");
             context.sendBroadcast(intent);
         }
+    }
+
+    public static String floatString(float value) {
+        return new DecimalFormat("##.##").format(value);
     }
 }

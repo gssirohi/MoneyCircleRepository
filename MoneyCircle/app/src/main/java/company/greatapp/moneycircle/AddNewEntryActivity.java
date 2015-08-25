@@ -1,19 +1,13 @@
 package company.greatapp.moneycircle;
 
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -26,12 +20,8 @@ import java.util.ArrayList;
 import company.greatapp.moneycircle.chooser.ChooserActivity;
 import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.manager.BaseModelManager;
-import company.greatapp.moneycircle.manager.BorrowManager;
 import company.greatapp.moneycircle.manager.CategoryManager;
 import company.greatapp.moneycircle.manager.ContactManager;
-import company.greatapp.moneycircle.manager.ExpenseManager;
-import company.greatapp.moneycircle.manager.IncomeManager;
-import company.greatapp.moneycircle.manager.LentManager;
 import company.greatapp.moneycircle.model.Borrow;
 import company.greatapp.moneycircle.model.Category;
 import company.greatapp.moneycircle.model.Contact;
@@ -39,10 +29,10 @@ import company.greatapp.moneycircle.model.Expense;
 import company.greatapp.moneycircle.model.Income;
 import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
-import company.greatapp.moneycircle.tools.DatePickerFragment;
+import company.greatapp.moneycircle.dialogs.DatePickerFragment;
 import company.greatapp.moneycircle.tools.DateUtils;
 import company.greatapp.moneycircle.tools.Tools;
-import company.greatapp.moneycircle.view.ContactInfoDialog;
+import company.greatapp.moneycircle.dialogs.ContactInfoDialog;
 import company.greatapp.moneycircle.view.TagItemView;
 
 public class AddNewEntryActivity extends ActionBarActivity implements DatePickerFragment.DateSetter,TagItemView.TagItemViewCallBacks {
