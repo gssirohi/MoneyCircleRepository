@@ -34,6 +34,7 @@ import company.greatapp.moneycircle.tools.DateUtils;
 import company.greatapp.moneycircle.tools.Tools;
 import company.greatapp.moneycircle.dialogs.ContactInfoDialog;
 import company.greatapp.moneycircle.view.TagItemView;
+import company.greatapp.moneycircle.view.TopSegmentItemView;
 
 public class AddNewEntryActivity extends ActionBarActivity implements DatePickerFragment.DateSetter,TagItemView.TagItemViewCallBacks {
 
@@ -41,12 +42,10 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
     private int mEntryType;     // Entry type means either it is a display or input
 
 
-    private TextView tv_new_title;
     private TextView tv_new_before_type;
     private TextView tv_new_type;
     private TextView tv_new_after_type;
     private TextView tv_new_currency;
-    private TextView tv_new_category;
     private TextView tv_new_item;
     private TextView tv_new_member_add;
     private TextView tv_new_note;
@@ -55,7 +54,6 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
     private EditText et_new_item;
     private EditText et_new_note;
 
-    private Button b_new_category;
     private Button b_new_split;
     private Button b_new_member_add;
     private Button b_new_date;
@@ -63,21 +61,30 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
     private String mCategory;
     private FrameLayout f_member;
     private Contact mMember;
+    private TopSegmentItemView tsiv_new_category;
+    private TextView tv_new_category;
+    private Button b_due_date;
+    private TextView tv_new_due_date;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_entry);
-        tv_new_title = (TextView)findViewById(R.id.tv_new_title);
+        //tv_new_title = (TextView)findViewById(R.id.tv_new_title);
         tv_new_before_type = (TextView)findViewById(R.id.tv_new_before_type);
         tv_new_type = (TextView)findViewById(R.id.tv_new_type);
         tv_new_after_type = (TextView)findViewById(R.id.tv_new_after_type);
         tv_new_currency = (TextView)findViewById(R.id.tv_new_currency);
-        tv_new_category = (TextView)findViewById(R.id.tv_new_category);
+        tsiv_new_category = (TopSegmentItemView)findViewById(R.id.tsiv_new_category);
+        tsiv_new_category.findViewById(R.id.tv_top_segment_item_value).setVisibility(View.GONE);
+        tv_new_category = (TextView)tsiv_new_category.findViewById(R.id.tv_top_segment_item_title);
         tv_new_item = (TextView)findViewById(R.id.tv_new_item);
         tv_new_member_add = (TextView)findViewById(R.id.tv_new_member_add);
         tv_new_note = (TextView)findViewById(R.id.tv_new_note);
+
+        tv_new_due_date = (TextView)findViewById(R.id.tv_new_due_date);
+
 
         et_new_amount = (EditText)findViewById(R.id.et_new_amount);
         et_new_item = (EditText)findViewById(R.id.et_new_item);
@@ -86,7 +93,6 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
         f_member = (FrameLayout)findViewById(R.id.f_member);
         f_member.setVisibility(View.GONE);
 
-        b_new_category = (Button)findViewById(R.id.b_new_category);
         b_new_member_add = (Button)findViewById(R.id.b_new_member_add);
         b_new_member_add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,7 +102,8 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
         });
         b_new_split = (Button)findViewById(R.id.b_new_split);
         b_new_date = (Button)findViewById(R.id.b_new_date);
-        b_new_category.setOnClickListener(new View.OnClickListener() {
+        b_due_date = (Button)findViewById(R.id.b_due_date);
+        tsiv_new_category.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startItemSelection(C.TAG_CATEGORIES, ListView.CHOICE_MODE_SINGLE);
@@ -108,8 +115,12 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
                 showDatePickerDialog();
             }
         });
-        setTextColor();
-        setButtonColor();
+        b_due_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog();
+            }
+        });
         Intent intent = getIntent();
         int entryType = intent.getIntExtra(C.ENTRY_TYPE,C.ENTRY_TYPE_INPUT);
         this.mEntryType = entryType;
@@ -136,31 +147,38 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
 
         setDefaultCategory();
         setDefaultDate();
+        setTextColor();
+        setButtonColor();
     }
 
     private void setButtonColor() {
-        int back = getResources().getColor(R.color.material_deep_teal_200);
-        b_new_category.setBackgroundColor(back);
+        int back = Tools.getModelColorResId(this,mModelType);
+       // int back = getResources().getColor(resId);
+       // int back = getResources().getColor(R.color.app_light);
         b_new_split.setBackgroundColor(back);
         b_new_member_add.setBackgroundColor(back);
         b_new_date.setBackgroundColor(back);
+        b_due_date.setBackgroundColor(back);
     }
 
     private void setTextColor() {
-        int color = getResources().getColor(R.color.material_deep_teal_500);
-        tv_new_title.setTextColor(color);
+        int color = Tools.getModelColorResId(this,mModelType);
+        //int color = getResources().getColor(resId);
+        //int color = getResources().getColor(R.color.app_darkest);
+        //tv_new_title.setTextColor(color);
         tv_new_before_type.setTextColor(color);
         tv_new_type.setTextColor(color);
         tv_new_after_type.setTextColor(color);
         tv_new_currency.setTextColor(color);
         tv_new_category.setTextColor(color);
         tv_new_item.setTextColor(color);
+        tv_new_due_date.setTextColor(color);
         tv_new_member_add.setTextColor(color);
         tv_new_note.setTextColor(color);
     }
 
     private void createBorrowLayout() {
-        tv_new_title.setText("N E W   B O R R O W");
+        //tv_new_title.setText("N E W   B O R R O W");
         tv_new_before_type.setText("I have ");
         tv_new_type.setText("BORROWED ");
         tv_new_after_type.setText("an amount of");
@@ -174,7 +192,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
         et_new_item.setHint("e.g: Purchasing new sun glasses");
         et_new_note.setHint("I don't have any note currently.\n I would like to include later.");
 
-        b_new_category.setText("SELECT CATEGORY");
+        tv_new_category.setText("SELECT CATEGORY");
         b_new_split.setText("SPLIT THIS WITH OTHER MEMBERS");     //HIDDEN
         b_new_member_add.setText("INCLUDE MEMBER");              //NOT HIDDEN
 
@@ -183,9 +201,8 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
         b_new_member_add.setVisibility(View.VISIBLE);     //NOT HIDDEN
     }
 
-
     private void createLendedLayout() {
-        tv_new_title.setText("N E W  L E N D I N G");
+        //tv_new_title.setText("N E W  L E N D I N G");
         tv_new_before_type.setText("I have ");
         tv_new_type.setText("LENDED ");
         tv_new_after_type.setText("an amount of");
@@ -199,7 +216,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
         et_new_item.setHint("e.g: purchasing the new phone");
         et_new_note.setHint("I don't have any note currently.\n I would like to include later");
 
-        b_new_category.setText("SELECT CATEGORY");
+        tv_new_category.setText("SELECT CATEGORY");
         b_new_split.setText("SPLIT THIS WITH OTHER MEMBERS");     //HIDDEN
         b_new_member_add.setText("INCLUDE MEMBER");              //NOT HIDDEN
 
@@ -209,7 +226,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
     }
 
     private void createExpenseLayout() {
-        tv_new_title.setText("N E W   E X P E N S E");
+        //tv_new_title.setText("N E W   E X P E N S E");
         tv_new_before_type.setText("I have a new ");
         tv_new_type.setText("EXPENSE ");
         tv_new_after_type.setText("of worth");
@@ -223,7 +240,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
         et_new_item.setHint("e.g: paying credit card bill");
         et_new_note.setHint("I don't have any note currently.\n I would like to include later");
 
-        b_new_category.setText("SELECT CATEGORY");
+        tv_new_category.setText("SELECT CATEGORY");
         b_new_split.setText("SPLIT THIS WITH OTHER MEMBERS");     //NOT HIDDEN
         b_new_member_add.setText("INCLUDE MEMBER");              //HIDDEN
 
@@ -233,13 +250,13 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
     }
 
     private void createIncomeLayout() {
-        tv_new_title.setText("N E W  I N C O M E");
+        //tv_new_title.setText("N E W  I N C O M E");
         tv_new_before_type.setText("I have a new ");
         tv_new_type.setText("INCOME ");
         tv_new_after_type.setText("of worth");
         tv_new_currency.setText("Rs. ");
         tv_new_category.setText("of type ");
-        tv_new_item.setText("from the source");
+        tv_new_item.setText("from ");
         tv_new_member_add.setText("FROM/TO");                      //HIDDEN
         tv_new_note.setText("and I would like to add below note:");
 
@@ -247,7 +264,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
         et_new_item.setHint("e.g: Salary from Google.Inc");
         et_new_note.setHint("I don't have any note currently.\n I would like to include later");
 
-        b_new_category.setText("SELECT CATEGORY");
+        tv_new_category.setText("SELECT CATEGORY");
         b_new_split.setText("SPLIT THIS WITH OTHER MEMBERS");     //HIDDEN
         b_new_member_add.setText("INCLUDE MEMBER");              //HIDDEN
 
@@ -410,6 +427,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
     public void setDefaultDate() {
         mDateString = DateUtils.getCurrentDate();
         b_new_date.setText(mDateString);
+        b_due_date.setText(mDateString);
     }
     public void setDefaultCategory() {
         mCategory = C.CATEGORY_NONE_UID;
@@ -418,6 +436,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
     public void setDate(int year, int monthOfYear, int dayOfMonth) {
         mDateString = DateUtils.getDateString(year, monthOfYear, dayOfMonth);
         b_new_date.setText(mDateString);
+        b_due_date.setText(mDateString);
 //        Toast.makeText(this,"DATE:"+ mDateString,Toast.LENGTH_SHORT).show();
     }
 
@@ -465,7 +484,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
         CategoryManager cm = new CategoryManager(this, mModelType);
         String title = cm.getHeavyItemFromListByUID(uid).getTitle();
         mCategory = uid;   // TODO This value has to be properly set
-        b_new_category.setText(title);
+        tv_new_category.setText(title);
     }
 
     private void startItemSelection(int requestCode, int mode){

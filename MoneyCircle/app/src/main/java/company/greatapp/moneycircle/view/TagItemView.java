@@ -1,15 +1,11 @@
 package company.greatapp.moneycircle.view;
 
-import android.app.Dialog;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.Shape;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -17,10 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import company.greatapp.moneycircle.R;
-import company.greatapp.moneycircle.chooser.ChooserActivity;
-import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.model.Model;
-import company.greatapp.moneycircle.split.SetSplitAmountActivity;
 import company.greatapp.moneycircle.tools.Tools;
 
 /**
@@ -51,7 +44,7 @@ public class TagItemView extends LinearLayout {
         this.parent = parent;
         this.title = item;
         if(item.equals("SPLIT")) {
-            int color = Tools.getModelColor(getContext(), Model.MODEL_TYPE_SPLIT);
+            int color= Tools.getModelColorResId(context, Model.MODEL_TYPE_SPLIT);
             setColor(color);
         }
         init(context, isCancelable);
@@ -84,7 +77,7 @@ public class TagItemView extends LinearLayout {
             b.setOnClickListener(getListener(context));
 
             if(model != null) {
-                int color = Tools.getModelColor(getContext(),model.getModelType());
+                int color= Tools.getModelColorResId(context, Model.MODEL_TYPE_SPLIT);
                 setColor(color);
             }
         }

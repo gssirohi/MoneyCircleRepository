@@ -1,5 +1,7 @@
 package company.greatapp.moneycircle.tools;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -43,6 +45,7 @@ import company.greatapp.moneycircle.view.TagItemView;
  * Created by gyanendra.sirohi on 6/29/2015.
  */
 public class Tools {
+
 
     public static String generateUniqueId() {
         String uid = UUID.randomUUID().toString();
@@ -295,20 +298,19 @@ public static String getModelName(int modelType){
     return name;
 }
 
-    public static int getModelColor(Context context, int modelType) {
-        Resources res = context.getResources();
+    public static int getModelColorResId(Context context, int modelType) {
         int color = 0;
         if (modelType == Model.MODEL_TYPE_INCOME) {
-            color = res.getColor(R.color.income);
+            color = context.getResources().getColor(R.color.income);
         } else if (modelType == Model.MODEL_TYPE_EXPENSE) {
-            color = res.getColor(R.color.expense);
+            color = context.getResources().getColor(R.color.expense);
         } else if (modelType == Model.MODEL_TYPE_BORROW) {
-            color = res.getColor(R.color.borrow);
+            color = context.getResources().getColor(R.color.borrow);
         } else if (modelType == Model.MODEL_TYPE_LENT) {
-            color = res.getColor(R.color.lent);
+            color = context.getResources().getColor(R.color.lent);
         }
         else if (modelType == Model.MODEL_TYPE_SPLIT) {
-            color = res.getColor(R.color.split);
+            color = context.getResources().getColor(R.color.split);
         }
         return color;
     }
