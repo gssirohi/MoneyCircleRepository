@@ -20,23 +20,22 @@ import java.util.ArrayList;
 import company.greatapp.moneycircle.chooser.ChooserActivity;
 import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.manager.BaseModelManager;
-import company.greatapp.moneycircle.manager.BorrowManager;
 import company.greatapp.moneycircle.manager.CategoryManager;
 import company.greatapp.moneycircle.manager.ContactManager;
-import company.greatapp.moneycircle.manager.ExpenseManager;
-import company.greatapp.moneycircle.manager.IncomeManager;
-import company.greatapp.moneycircle.manager.LentManager;
 import company.greatapp.moneycircle.model.Borrow;
+import company.greatapp.moneycircle.model.Category;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Expense;
 import company.greatapp.moneycircle.model.Income;
 import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
-import company.greatapp.moneycircle.tools.DatePickerFragment;
+import company.greatapp.moneycircle.dialogs.DatePickerFragment;
 import company.greatapp.moneycircle.tools.DateUtils;
+import company.greatapp.moneycircle.tools.Tools;
+import company.greatapp.moneycircle.dialogs.ContactInfoDialog;
 import company.greatapp.moneycircle.view.TagItemView;
 
-public class AddNewEntryActivity extends ActionBarActivity implements DatePickerFragment.DateSetter {
+public class AddNewEntryActivity extends ActionBarActivity implements DatePickerFragment.DateSetter,TagItemView.TagItemViewCallBacks {
 
     private int mModelType;     // Model Type
     private int mEntryType;     // Entry type means either it is a display or input
@@ -135,7 +134,8 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
                 break;
         }
 
-        setCurrentDate();
+        setDefaultCategory();
+        setDefaultDate();
     }
 
     private void setButtonColor() {
@@ -302,46 +302,54 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
 
         BaseModelManager manager = null;
         String description = null;
+        float amount;
         switch (mModelType) {
             case Model.MODEL_TYPE_INCOME:
                 Income income = new Income();
                 income.setDateString(mDateString);
                 income.setTitle(et_new_item.getText().toString());
                 income.setCategory(mCategory);
-                income.setAmount(Float.parseFloat(et_new_amount.getText().toString()));
+                amount = Float.parseFloat(et_new_amount.getText().toString());
+                income.setAmount(amount);
                 description = et_new_note.getText().toString();
                 if (!TextUtils.isEmpty(description)) {
                     income.setDescription(description);
                 }
 
-                manager = new IncomeManager(this);
-                manager.insertItemInDB(income);
+                income.insertItemInDB(this);
 
                 Toast.makeText(this, "Income ENTRY SAVED", Toast.LENGTH_SHORT).show();
+                Tools.sendMoneyTransactionBroadCast(this, income, Model.MODEL_TYPE_INCOME);
                 break;
             case Model.MODEL_TYPE_EXPENSE:
                 Expense expense = new Expense();
                 expense.setDateString(mDateString);
                 expense.setTitle(et_new_item.getText().toString());
                 expense.setCategory(mCategory);
-                expense.setAmount(Float.parseFloat(et_new_amount.getText().toString()));
+                amount = Float.parseFloat(et_new_amount.getText().toString());
+                expense.setAmount(amount);
                 description = et_new_note.getText().toString();
                 if (!TextUtils.isEmpty(description)) {
                     expense.setDescription(description);
                 }
                 // TODO Split with other member entry needs to be included.
 
-                manager = new ExpenseManager(this);
-                manager.insertItemInDB(expense);
+                expense.insertItemInDB(this);
+                Category cat = (Category) Tools.getDbInstance(this, mCategory, Model.MODEL_TYPE_CATEGORY);
+                float spent = cat.getSpentAmountOnThis();
+                cat.setSpentAmountOnThis(spent + amount);
+                cat.updateItemInDb(this);
 
                 Toast.makeText(this, "Expense ENTRY SAVED", Toast.LENGTH_SHORT).show();
+                Tools.sendMoneyTransactionBroadCast(this, expense, Model.MODEL_TYPE_EXPENSE);
                 break;
             case Model.MODEL_TYPE_BORROW:
                 Borrow borrow = new Borrow();
                 borrow.setDateString(mDateString);
                 borrow.setTitle(et_new_item.getText().toString());
                 borrow.setCategory(mCategory);
-                borrow.setAmount(Float.parseFloat(et_new_amount.getText().toString()));
+                amount = Float.parseFloat(et_new_amount.getText().toString());
+                borrow.setAmount(amount);
                 borrow.setLinkedContact(mMember);
                 description = et_new_note.getText().toString();
                 if (!TextUtils.isEmpty(description)) {
@@ -351,10 +359,15 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
                 // TODO Include member field need to be handled
                 //borrow.setLinkedContact(b_new_member_add.getText());
 
-                manager = new BorrowManager(this);
-                manager.insertItemInDB(borrow);
+                borrow.insertItemInDB(this);
 
+                if(!mMember.getUID().equals(C.USER_UNIQUE_ID)) {
+                    float borrowAmount = mMember.getBorrowedAmountfromThis();
+                    mMember.setBorrowedAmountfromThis(borrowAmount + amount);
+                    mMember.updateItemInDb(this);//update contact's borrow amount
+                }
                 Toast.makeText(this, "Borrow ENTRY SAVED", Toast.LENGTH_SHORT).show();
+                Tools.sendMoneyTransactionBroadCast(this, borrow, Model.MODEL_TYPE_BORROW);
                 break;
             case Model.MODEL_TYPE_LENT:
                 Lent lent = new Lent();
@@ -362,7 +375,8 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
                 lent.setTitle(et_new_item.getText().toString());
                 lent.setCategory(mCategory);
                 lent.setLinkedContact(mMember);
-                lent.setAmount(Float.parseFloat(et_new_amount.getText().toString()));
+                amount = Float.parseFloat(et_new_amount.getText().toString());
+                lent.setAmount(amount);
                 description = et_new_note.getText().toString();
                 if (!TextUtils.isEmpty(description)) {
                     lent.setDescription(description);
@@ -371,13 +385,19 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
                 // TODO Include member field need to be handled
 //                lent.setLinkedContact(b_new_member_add.getText());
 
-                manager = new LentManager(this);
                 lent.printModelData();
-                manager.insertItemInDB(lent);
+                lent.insertItemInDB(this);
 
+                if(!mMember.getUID().equals(C.USER_UNIQUE_ID)) {
+                    float lentAmount = mMember.getLentAmountToThis();
+                    mMember.setLentAmountToThis(lentAmount + amount);
+                    mMember.updateItemInDb(this);//update contact's lent amount
+                }
                 Toast.makeText(this, "Lent ENTRY SAVED", Toast.LENGTH_SHORT).show();
+                Tools.sendMoneyTransactionBroadCast(this,lent,Model.MODEL_TYPE_LENT);
                 break;
         }
+
         finish();
     }
 
@@ -387,15 +407,17 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
         datePickerFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
-    public void setCurrentDate() {
+    public void setDefaultDate() {
         mDateString = DateUtils.getCurrentDate();
         b_new_date.setText(mDateString);
     }
-
+    public void setDefaultCategory() {
+        mCategory = C.CATEGORY_NONE_UID;
+    }
     @Override
     public void setDate(int year, int monthOfYear, int dayOfMonth) {
-        b_new_date.setText(String.format("%d/%d/%d", year, monthOfYear+1, dayOfMonth));
         mDateString = DateUtils.getDateString(year, monthOfYear, dayOfMonth);
+        b_new_date.setText(mDateString);
 //        Toast.makeText(this,"DATE:"+ mDateString,Toast.LENGTH_SHORT).show();
     }
 
@@ -452,5 +474,11 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
         i.putExtra(C.CHOOSER_CHOICE_MODE,mode);
         i.putExtra(C.CHOOSER_MODEL, mModelType);
         startActivityForResult(i, requestCode);
+    }
+
+    @Override
+    public void onContactTagClicked(Model model) {
+        ContactInfoDialog dialog = new ContactInfoDialog(this,(Contact)model);
+        dialog.show();
     }
 }

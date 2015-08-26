@@ -17,6 +17,12 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
+        <receiver android:name=".receiver.MoneyTransactionReceiver">
+            <intent-filter>
+                <action android:name="MONEY_TRANSACTION"/>
+            </intent-filter>
+        </receiver>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
@@ -66,7 +72,7 @@
         <activity
             android:name=".chooser.ChooserActivity"
             android:label="@string/title_activity_chooser"
-            android:theme="@style/Theme.AppCompat.Dialog" >
+            android:theme="@android:style/Theme.Translucent">
         </activity>
         <activity
             android:name=".ContactAndCircleActivity"

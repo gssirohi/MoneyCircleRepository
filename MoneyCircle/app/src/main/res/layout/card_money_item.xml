@@ -34,9 +34,9 @@
             <TextView
                 android:id="@+id/tv_card_title"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:textAppearance="@android:style/TextAppearance.Large"
+                android:textAppearance="@android:style/TextAppearance.Medium"
                 android:paddingLeft="20dp"
                 android:text="Daily Report"/>
 
@@ -61,7 +61,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Monthly Income"/>
+                    android:text="previous month"/>
                 <TextView
                     android:id="@+id/tv_card_content_row_1_value"
                     android:layout_width="0dp"
@@ -71,6 +71,7 @@
                     android:text="30000" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/ll_card_content_row_2"
                 android:layout_width="match_parent"
@@ -84,7 +85,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Monthly Income"/>
+                    android:text="This month"/>
                 <TextView
                     android:id="@+id/tv_card_content_row_2_value"
                     android:layout_width="0dp"
@@ -94,6 +95,76 @@
                     android:text="30000" />
 
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_card_content_row_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/tv_card_content_row_3_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="This year"/>
+                <TextView
+                    android:id="@+id/tv_card_content_row_3_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAppearance="@android:style/TextAppearance.Medium"
+                    android:text="30000" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_card_content_row_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/tv_card_content_row_4_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Total till now"/>
+                <TextView
+                    android:id="@+id/tv_card_content_row_4_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAppearance="@android:style/TextAppearance.Medium"
+                    android:text="30000" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="LAST TRANSACTION"
+                android:id="@+id/textView12"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="5dp" />
+
+            <include
+                android:id="@+id/no_item_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                layout="@layout/no_entry_available" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/ll_card_content_row_5"></LinearLayout>
+
 
         </LinearLayout>
 

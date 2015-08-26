@@ -2,9 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="5dp"
+    android:padding="1dp"
     android:layout_margin="5dp"
-    android:background="@color/app_lighter">
+    >
 <LinearLayout
     android:layout_width="match_parent" android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -98,6 +98,27 @@
         </LinearLayout>
 
     </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/ll_due_date_info">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Due On : "
+                android:id="@+id/textView10"
+                android:textColor="@color/app_secondary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="25 July 2015"
+                android:id="@+id/tv_due_date"
+                android:textColor="@color/app_secondary" />
+        </LinearLayout>
 
         <HorizontalScrollView
             android:layout_width="wrap_content"

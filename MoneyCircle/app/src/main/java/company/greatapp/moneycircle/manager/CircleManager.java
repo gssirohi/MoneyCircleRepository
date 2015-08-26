@@ -17,20 +17,20 @@ import company.greatapp.moneycircle.tools.GreatJSON;
  * Created by Ashish on 10-07-2015.
  */
 public class CircleManager extends BaseModelManager {
-    private final ContactManager mContactManager;
+//    private final ContactManager mContactManager;
     Context mContext;
     ArrayList<Model> circles = new ArrayList<Model>();
     ArrayList<String> titles = new ArrayList<String>();
 
     public CircleManager(Context context) {
         this.mContext = context;
-        mContactManager = new ContactManager(context);
+//        mContactManager = new ContactManager(context);
         loadItemsFromDB();
     }
 
     public CircleManager(Context context, ContactManager contactManager) {
         this.mContext = context;
-        mContactManager = contactManager;
+//        mContactManager = contactManager;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class CircleManager extends BaseModelManager {
         circle.setDbId(dbId);
         circle.setContactsJson(contactJson);
         circle.setJsonString(jsonString);
-        circle.setMemberList(GreatJSON.getContactListFromJsonString(contactJson, mContactManager));
+        circle.setMemberList(GreatJSON.getContactListFromJsonString(contactJson, mContext));
 
         return circle;
     }

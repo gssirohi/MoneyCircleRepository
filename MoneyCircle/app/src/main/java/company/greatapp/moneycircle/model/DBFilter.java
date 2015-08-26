@@ -3,10 +3,6 @@ package company.greatapp.moneycircle.model;
 import android.net.Uri;
 import android.util.Log;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 import company.greatapp.moneycircle.constants.DB;
 
 /**

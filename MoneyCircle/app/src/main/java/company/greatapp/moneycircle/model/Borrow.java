@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import java.util.Date;
 
 import company.greatapp.moneycircle.constants.DB;
+import company.greatapp.moneycircle.tools.DateUtils;
 import company.greatapp.moneycircle.tools.GreatJSON;
 import company.greatapp.moneycircle.tools.Tools;
 
@@ -75,7 +76,7 @@ public class Borrow extends Model {
         return linkedContactJson;
     }
 
-    private void setLinkedContactJson(String linkedContactJson) {
+    public void setLinkedContactJson(String linkedContactJson) {
         this.linkedContactJson = linkedContactJson;
     }
 
@@ -110,10 +111,12 @@ public class Borrow extends Model {
         this.mDescription = description;
     }
 
+    @Override
     public float getAmount() {
         return mAmount;
     }
 
+    @Override
     public void setAmount(float amount) {
         this.mAmount = amount;
     }
@@ -124,6 +127,7 @@ public class Borrow extends Model {
 
     public void setDateString(String dateString) {
         this.mDateString = dateString;
+        setDueDateString(DateUtils.getNextWeekLastDate(dateString));
     }
 
     public Date getDate() {

@@ -27,9 +27,8 @@ public class IncomeManager extends BaseModelManager{
 
     public IncomeManager(Context context){
         this.context = context;
-        if (context instanceof NewHomeActivity) {
-            loadItemsFromDB();
-        }
+        loadItemsFromDB();
+
     }
 
 

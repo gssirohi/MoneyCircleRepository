@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import company.greatapp.moneycircle.constants.DB;
+import company.greatapp.moneycircle.tools.DateUtils;
 import company.greatapp.moneycircle.tools.Tools;
 
 /**
@@ -155,8 +156,18 @@ public class Split extends Model {
         return dueDateString;
     }
 
+    @Override
+    public Contact getLinkedContact() {
+        return null;
+    }
+
     public void setDueDateString(String dueDateString) {
         this.dueDateString = dueDateString;
+    }
+
+    @Override
+    public void setLinkedContact(Contact contact) {
+
     }
 
 
@@ -175,11 +186,11 @@ public class Split extends Model {
     public void setDescription(String description) {
         this.description = description;
     }
-
+    @Override
     public float getAmount() {
         return amount;
     }
-
+    @Override
     public void setAmount(float amount) {
         this.amount = amount;
     }
@@ -190,6 +201,7 @@ public class Split extends Model {
 
     public void setDateString(String dateString) {
         this.dateString = dateString;
+        setDueDateString(DateUtils.getNextWeekLastDate(dateString));
     }
 
     public Date getDate() {

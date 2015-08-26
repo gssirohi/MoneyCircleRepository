@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="transparent">#80FFFFFF</color>
     <color name="blue">#ff6600cc</color>
     <color name="green">#ff00ff00</color>
     <color name="white">#ffffffff</color>
@@ -51,4 +52,5 @@
 
     <color name="text_error">#ef5350</color>
     <color name="text_info">#7cb342</color>
+    <color name="activity_background_opacity">#90000000</color>
 </resources>

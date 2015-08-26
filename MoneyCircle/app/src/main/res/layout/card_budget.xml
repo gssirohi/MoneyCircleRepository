@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="10dp"
+    card_view:cardCornerRadius="4dp">
+
+    <LinearLayout
+        android:id="@+id/ll_card_main_frame"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_card_title_frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:background="@color/app_lighter"
+            android:orientation="horizontal"
+            android:paddingTop="3dp"
+            android:padding="3dp">
+
+            <ImageView
+                android:id="@+id/iv_card_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="#F0FFFFFF"
+                android:src="@drawable/ic_income" />
+
+            <TextView
+                android:id="@+id/tv_card_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:paddingLeft="20dp"
+                android:text="Daily Report"/>
+
+        </LinearLayout>
+        <include
+            android:id="@+id/no_item_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            layout="@layout/no_entry_available" />
+        <LinearLayout
+            android:id="@+id/ll_card_content_frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp">
+
+
+            <ProgressBar
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/pb_card_budget"
+                android:max="100"
+                android:progress="40"
+                android:layout_margin="10dp"
+                android:indeterminate="false" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <view
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    class="company.greatapp.moneycircle.view.CircleItemView"
+                    android:id="@+id/civ_available"
+                    android:layout_margin="5dp"
+                    android:layout_weight="4"
+                    android:padding="8dp"/>
+
+                <view
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    class="company.greatapp.moneycircle.view.CircleItemView"
+                    android:id="@+id/civ_total_budget"
+                    android:layout_margin="5dp"
+                    android:layout_weight="4"
+                    android:padding="8dp"/>
+
+                <view
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    class="company.greatapp.moneycircle.view.CircleItemView"
+                    android:id="@+id/civ_total_spent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="4"
+                    android:padding="8dp"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

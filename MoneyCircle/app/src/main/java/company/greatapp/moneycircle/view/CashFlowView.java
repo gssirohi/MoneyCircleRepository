@@ -22,9 +22,9 @@ public class CashFlowView extends LinearLayout {
     private Model model = null;
     private String title;
     private ViewGroup viewGroup;
-    private CircleButton cb_cash_net;
-    private CircleButton cb_cash_in;
-    private CircleButton cb_cash_out;
+    private CircleItemView civ_cash_net;
+    private CircleItemView civ_cash_in;
+    private CircleItemView civ_cash_out;
 
     public CashFlowView(Context context, AttributeSet attr) {
         super(context,attr);
@@ -37,35 +37,30 @@ public class CashFlowView extends LinearLayout {
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if(inflater != null) {
             viewGroup = (ViewGroup)inflater.inflate(R.layout.cash_flow, this, true);
-            cb_cash_net = (CircleButton)viewGroup.findViewById(R.id.cb_cash_net);
-            cb_cash_in = (CircleButton)viewGroup.findViewById(R.id.cb_cash_in);
-            cb_cash_out = (CircleButton)viewGroup.findViewById(R.id.cb_cash_out);
+            civ_cash_net = (CircleItemView)viewGroup.findViewById(R.id.civ_cash_net_flow);
+            civ_cash_in = (CircleItemView)viewGroup.findViewById(R.id.civ_cash_in);
+            civ_cash_out = (CircleItemView)viewGroup.findViewById(R.id.civ_cash_out);
 
-            int color = getResources().getColor(R.color.app_basic);
-            int dark = getResources().getColor(R.color.app_darker);
-            cb_cash_net.setHolo(true);
-            cb_cash_net.setColor(color);
-            cb_cash_net.setTextColor(dark);
-            cb_cash_in.setHolo(true);
-            cb_cash_in.setColor(color);
-            cb_cash_in.setTextColor(dark);
-            cb_cash_out.setHolo(true);
-            cb_cash_out.setColor(color);
-            cb_cash_out.setTextColor(dark);
+            civ_cash_net.setItemName("NET CASH FLOW");
+            civ_cash_in.setItemName("TOTAL CASH IN");
+            civ_cash_out.setItemName("TOTAL CASH OUT");
 
+            setCashIn("00.00");
+            setCashOut("00.00");
+            setCashNet("00.00");
 
         }
     }
 
     public void setCashIn(String cash) {
-        cb_cash_in.setText(cash);
+        civ_cash_in.setItemValue(cash);
     }
 
     public void setCashOut(String cash) {
-        cb_cash_out.setText(cash);
+        civ_cash_out.setItemValue(cash);
     }
 
     public void setCashNet(String cash) {
-        cb_cash_net.setText(cash);
+        civ_cash_net.setItemValue(cash);
     }
 }

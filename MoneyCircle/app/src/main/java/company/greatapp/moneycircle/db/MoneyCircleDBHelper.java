@@ -37,6 +37,8 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
                             + DB.REGISTERED + " int,"
                             + DB.SERVER_NAME + " text,"
                             + DB.SERVER_ID + " text,"
+                            + DB.CONTACT_BORROWED_AMOUNT_FROM_THIS + " text,"
+                            + DB.CONTACT_LENT_AMOUNT_TO_THIS + " text,"
                             + DB.JSON_STRING + " text);"
 
             );
@@ -172,6 +174,8 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
                             + DB.CATEGORY_FOR_BORROW + " int, "
                             + DB.CATEGORY_FOR_LENT + " int, "
                             + DB.CATEGORY_FOR_SPLIT + " int, "
+                            + DB.CATEGORY_SPENT_AMOUNT_ON_THIS + " text, "
+
                             + DB.CATEGORY_TYPE + " int  );"
             );
             Log.d("DBhelper", "query sent for" + DB.CATEGORY_TABLE_NAME);
@@ -198,7 +202,38 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
             );
             Log.d("DBhelper","query sent for"+DB.COMMON_TABLE_NAME);
     //=========================================================================//
-		}
+
+     //=========================================================================//
+
+            db.execSQL(     "create table "     + DB.ACCOUNT_TABLE_NAME + "("
+
+                            + DB.DB_ID + " Integer primary key ,"
+
+                            + DB.ACCOUNT_REGISTER_TYPE + " int,"
+
+                            + DB.ACCOUNT_TOTAL_CURRENT_DAY + " text,"
+                            + DB.ACCOUNT_TOTAL_CURRENT_WEEK + " text,"
+                            + DB.ACCOUNT_TOTAL_CURRENT_MONTH + " text,"
+                            + DB.ACCOUNT_TOTAL_CURRENT_YEAR + " text,"
+
+                            + DB.ACCOUNT_TOTAL_LAST_DAY + " text,"
+                            + DB.ACCOUNT_TOTAL_LAST_WEEK + " text,"
+                            + DB.ACCOUNT_TOTAL_LAST_MONTH + " text,"
+                            + DB.ACCOUNT_TOTAL_LAST_YEAR + " text,"
+
+                            + DB.ACCOUNT_TOTAL + " text,"
+
+                            + DB.ACCOUNT_UPCOMINGS_DAY + " text,"
+                            + DB.ACCOUNT_UPCOMINGS_WEEK + " text,"
+                            + DB.ACCOUNT_UPCOMINGS_MONTH + " text,"
+
+                            + DB.ACCOUNT_TOPITEMS + " text,"
+                            + DB.ACCOUNT_LAST_TRANSACTION + " text );"
+            );
+            Log.d("DBhelper","query sent for"+DB.ACCOUNT_TABLE_NAME);
+            //=========================================================================//
+
+        }
 
 
 		@Override

@@ -31,6 +31,7 @@ import company.greatapp.moneycircle.manager.CircleManager;
 import company.greatapp.moneycircle.manager.ContactManager;
 import company.greatapp.moneycircle.manager.ExpenseManager;
 import company.greatapp.moneycircle.manager.LentManager;
+import company.greatapp.moneycircle.model.Category;
 import company.greatapp.moneycircle.model.Circle;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Expense;
@@ -38,12 +39,14 @@ import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.Participant;
 import company.greatapp.moneycircle.model.Split;
-import company.greatapp.moneycircle.tools.DatePickerFragment;
+import company.greatapp.moneycircle.dialogs.DatePickerFragment;
 import company.greatapp.moneycircle.tools.DateUtils;
 import company.greatapp.moneycircle.tools.GreatJSON;
+import company.greatapp.moneycircle.tools.Tools;
+import company.greatapp.moneycircle.dialogs.ContactInfoDialog;
 import company.greatapp.moneycircle.view.TagItemView;
 
-public class SplitToolActivity extends ActionBarActivity implements DatePickerFragment.DateSetter {
+public class SplitToolActivity extends ActionBarActivity implements DatePickerFragment.DateSetter,TagItemView.TagItemViewCallBacks{
 
     public static final int SPLIT_AMOUNT_REQUEST = 33;
     private ArrayList<Participant> participants = new ArrayList<Participant>();
@@ -128,7 +131,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         b_new_circles_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startItemSelection(C.TAG_CIRCLES,Model.MODEL_TYPE_SPLIT,ListView.CHOICE_MODE_SINGLE);
+                startItemSelection(C.TAG_CIRCLES, Model.MODEL_TYPE_SPLIT, ListView.CHOICE_MODE_SINGLE);
             }
         });
         b_new_date.setOnClickListener(new View.OnClickListener() {
@@ -157,6 +160,14 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         //TODO: ucomment it for circle
         circleManager = new CircleManager(this);
 
+        setDefaultCategory();
+        setDefaultDate();
+    }
+    public void setDefaultDate() {
+        mDateString = DateUtils.getCurrentDate();
+        b_new_date.setText(mDateString);
+    }
+    public void setDefaultCategory() {
         mCategory = C.CATEGORY_NONE_UID;
     }
     private void handleSplitAction() {
@@ -180,7 +191,14 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         ArrayList<Contact> allMembers = new ArrayList<Contact>();
         for(Participant p : participants) {
             Contact c = (Contact)contactManager.getHeavyItemFromListByUID(p.memberUID);
-            allMembers.add(c);
+            if(c != null) {
+                if(!c.getUID().equals(C.USER_UNIQUE_ID)) {
+                    float lent = c.getLentAmountToThis();
+                    c.setLentAmountToThis(lent + p.amount);
+                    c.updateItemInDb(this);//update contact's lent amount
+                }
+                allMembers.add(c);
+            }
         }
 
         JSONArray jArrayParticipants = GreatJSON.getJsonArrayForContactList(allMembers);
@@ -282,7 +300,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
 //        Split dbSplit = (Split)sm.getHeavyItemFromListByUID(split.getUID());
 //        split.setDbId(dbSplit.getDbId());//update db id from db instance
 //        split.updateItemInDb(this);
-
+        Tools.sendMoneyTransactionBroadCast(this,split,Model.MODEL_TYPE_SPLIT);
         finish();
 
     }
@@ -361,6 +379,12 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         expense.setIsLinkedWithSplit(true);
         //expense.setLinkedSplitJson();
         Uri uri = expense.insertItemInDB(this);
+
+        Category cat = (Category)Tools.getDbInstance(this,mCategory,Model.MODEL_TYPE_CATEGORY);
+        float spent = cat.getSpentAmountOnThis();
+        cat.setSpentAmountOnThis(spent + Float.parseFloat(amount));
+        cat.updateItemInDb(this);
+
         if(uri != null)
             return expense;
         else
@@ -615,13 +639,17 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
 
     @Override
     public void setDate(int year, int monthOfYear, int dayOfMonth) {
-        b_new_date.setText(String.format("%d/%d/%d", dayOfMonth, monthOfYear, year));
         mDateString = DateUtils.getDateString(year, monthOfYear, dayOfMonth);
+        b_new_date.setText(mDateString);
     }
 
     private ArrayList<Participant> getParticipants() {
         return participants;
     }
-
+    @Override
+    public void onContactTagClicked(Model model) {
+        ContactInfoDialog dialog = new ContactInfoDialog(this,(Contact)model);
+        dialog.show();
+    }
 
 }

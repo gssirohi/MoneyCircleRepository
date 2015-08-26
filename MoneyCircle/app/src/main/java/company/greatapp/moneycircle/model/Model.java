@@ -11,7 +11,7 @@ import company.greatapp.moneycircle.tools.Tools;
 /**
  * Created by gyanendra.sirohi on 6/29/2015.
  */
-public abstract class Model {
+public abstract class Model implements Comparable<Model>{
     public static final String MODEL_TYPE              = "modelType";
     public static final int MODEL_TYPE_CONTACT              = 1;
     public static final int MODEL_TYPE_CIRCLE               = 2;
@@ -35,22 +35,35 @@ public abstract class Model {
     public abstract void setDbId(int dbId);
     public abstract void setUID(String uid);
     public abstract void setJsonString(String jsonString);
+    public abstract void setAmount(float amount);
+
+    public abstract void setDateString(String dateString);
+    public abstract void setDueDateString(String dueDateString);
+    public abstract void setLinkedContact(Contact contact);
+    public abstract void setCategory(String categoryUid);
+
 
     public abstract String getTitle();
     public abstract int getModelType();
     public abstract String getUID();
     public abstract int getDbId();
     public abstract String getJsonString();
+    public abstract float getAmount();
+
+    public abstract String getDateString();
+    public abstract String getDueDateString();
+    public abstract Contact getLinkedContact();
+    public abstract String getCategory();
 
     public abstract ContentValues getContentValues();
     protected abstract Uri getTableUri();
 
     public String printModelData(){
-        String msg = "";
-        msg = "\n====================MODEL===================\n";
-        msg = msg+"DBID["+getDbId()+"] : UID["+getUID()+"]\n";
+        String msg = "PRINT MODEL : ";
+//        msg = "\n====================MODEL===================\n";
+//        msg = msg+"DBID["+getDbId()+"] : UID["+getUID()+"]\n";
         msg = msg+"TITLE : "+getTitle()+"\n";
-        msg = msg+"-----------------------------------------------\n";
+//        msg = msg+"-----------------------------------------------\n";
         Log.d("SPLIT",msg);
         return msg;
     }
@@ -81,4 +94,8 @@ public abstract class Model {
         return context.getContentResolver().update(getTableUri(), values, where, selectionArgs);
     }
 
+    @Override
+    public int compareTo(Model anotherModel) {
+        return anotherModel.getUID().compareTo(this.getUID());
+    }
 }

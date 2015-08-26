@@ -34,9 +34,9 @@
             <TextView
                 android:id="@+id/tv_card_title"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:textAppearance="@android:style/TextAppearance.Large"
+                android:textAppearance="@android:style/TextAppearance.Medium"
                 android:paddingLeft="20dp"
                 android:text="Daily Report"/>
 

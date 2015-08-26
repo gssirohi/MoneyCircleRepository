@@ -126,4 +126,6 @@
     <string name="action_add_member">Add Member</string>
     <string name="no_member">No Member</string>
 
+    <string name="action_search_hint">Search..</string>
+
 </resources>

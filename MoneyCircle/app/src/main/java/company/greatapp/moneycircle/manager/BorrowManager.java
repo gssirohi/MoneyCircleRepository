@@ -20,7 +20,7 @@ import company.greatapp.moneycircle.tools.GreatJSON;
  * Created by Ashish on 09-07-2015.
  */
 public class BorrowManager extends BaseModelManager  {
-    private final ContactManager mContactManager;
+//    private final ContactManager mContactManager;
     Context context;
     ArrayList<Model> borrows = new ArrayList<Model>();
     ArrayList<String> titles = new ArrayList<String>();
@@ -31,10 +31,8 @@ public class BorrowManager extends BaseModelManager  {
 
     public BorrowManager(Context context){
         this.context = context;
-        mContactManager = new ContactManager(context);
-        if (context instanceof NewHomeActivity) {
-            loadItemsFromDB();
-        }
+//        mContactManager = new ContactManager(context);
+        loadItemsFromDB();
     }
 
 
@@ -65,8 +63,9 @@ public class BorrowManager extends BaseModelManager  {
         borrow.setAmount(Float.parseFloat(amount));
         borrow.setDescription(description);
         borrow.setDueDateString(dueDateString);
+        borrow.setLinkedContactJson(linkedContactJson);
         if(!TextUtils.isEmpty(linkedContactJson)) {
-            Contact member = GreatJSON.getContactFromJsonString(linkedContactJson, mContactManager);
+            Contact member = GreatJSON.getContactFromJsonString(linkedContactJson, context);
             borrow.setLinkedContact(member);
         }
         borrow.setDateString(date_string);
@@ -100,6 +99,7 @@ public class BorrowManager extends BaseModelManager  {
         borrow.setAmount(Float.parseFloat(amount));
         borrow.setDescription(description);
         borrow.setDueDateString(dueDateString);
+        borrow.setLinkedContactJson(linkedContactJson);
 //        if(!TextUtils.isEmpty(linkedContactJson)) {
 //            Contact member = GreatJSON.getContactFromJsonString(linkedContactJson, mContactManager);
 //            borrow.setLinkedContact(member);

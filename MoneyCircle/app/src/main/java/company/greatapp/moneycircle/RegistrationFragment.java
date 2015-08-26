@@ -10,7 +10,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import company.greatapp.moneycircle.tools.DatePickerFragment;
+import company.greatapp.moneycircle.dialogs.DatePickerFragment;
+import company.greatapp.moneycircle.tools.DateUtils;
 
 /**
  * Created by Prateek on 05-07-2015.
@@ -48,7 +49,8 @@ public class RegistrationFragment extends Fragment implements DatePickerFragment
 
     @Override
     public void setDate(int year, int monthOfYear, int dayOfMonth) {
-        tvDateOfBirth.setText(String.format("%d/%d/%d", dayOfMonth, monthOfYear, year));
+       String dateString = DateUtils.getDateString(year, monthOfYear, dayOfMonth);
+        tvDateOfBirth.setText(dateString);
     }
 
     @Override

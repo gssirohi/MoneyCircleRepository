@@ -1,5 +1,6 @@
 package company.greatapp.moneycircle.tools;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -18,12 +19,86 @@ import company.greatapp.moneycircle.model.Circle;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Expense;
 import company.greatapp.moneycircle.model.Lent;
+import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.Split;
 
 /**
  * Created by gyanendra.sirohi on 7/14/2015.
  */
 public class GreatJSON {
+
+    public static JSONArray getJsonArrayForModelList(ArrayList<Model> models) {
+        String jsonString = "";
+        JSONArray array = new JSONArray();
+
+        if(models == null) return null;
+        for(Model m : models) {
+            array.put(getJsonObjectForModel(m));
+        }
+
+        jsonString = array.toString();
+        Log.d("split", "MODEL JSON ARRAY : " + jsonString);
+        return array;
+    }
+
+    public static JSONObject getJsonObjectForModel(Model model) {
+        if(model == null) {
+            Log.d("SPLIT", "JSON Model is Null");
+            return null;
+        }
+
+        model.printModelData();
+        String jsonString = "";
+        JSONObject obj = new JSONObject();
+        try{
+            obj.put("title", model.getTitle());
+            obj.put("uid", model.getUID());
+            obj.put("dbid", model.getDbId());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        jsonString = obj.toString();
+        Log.d("split", "MODEL JSON OBJECT : " + jsonString);
+        return obj;
+    }
+    public static ArrayList<Model> getModelListFromJsonString(String json, Context context, int modelType) {
+        Log.i("SPLIT","getting Model List for JSON : "+json);
+        ArrayList<Model> list = new ArrayList<Model>();
+        try {
+            JSONArray array = new JSONArray(json);
+            int length = array.length();
+            for (int i = 0; i<length;i++) {
+                JSONObject obj = (JSONObject)array.get(i);
+                Model model = getModelFromJsonString(obj.toString(), context, modelType);
+                list.add(model);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.i("SPLIT","returning Model List of Size : "+list.size());
+        return list;
+    }
+
+    public static Model getModelFromJsonString(String json, Context context, int modelType) {
+        Model model = null;
+        if(context == null) return null;
+        if(TextUtils.isEmpty(json)){
+            Log.d("SPLIT","JSON is NULL or EMPTY");
+            return null;
+        }
+        Log.d("SPLIT","getting Model for below json-->");
+        Log.d("SPLIT","JSON : "+json);
+        try {
+            JSONObject obj = new JSONObject(json);
+            String title = obj.getString("title");
+            String uid = obj.getString("uid");
+            String dbid = obj.getString("dbid");
+            model = (Model)Tools.getDbInstance(context,uid, modelType);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return model;
+    }
 
     public static JSONArray getJsonArrayForContactList(ArrayList<Contact> contacts) {
         String jsonString = "";
@@ -59,14 +134,14 @@ public class GreatJSON {
         Log.d("split", "CONTACT JSON OBJECT : " + jsonString);
         return obj;
     }
-    public static ArrayList<Contact> getContactListFromJsonString(String json, ContactManager cm) {
+    public static ArrayList<Contact> getContactListFromJsonString(String json, Context context) {
         ArrayList<Contact> list = new ArrayList<Contact>();
         try {
             JSONArray array = new JSONArray(json);
             int length = array.length();
             for (int i = 0; i<length;i++) {
                 JSONObject obj = (JSONObject)array.get(i);
-                Contact contact = getContactFromJsonString(obj.toString(), cm);
+                Contact contact = getContactFromJsonString(obj.toString(), context);
                 list.add(contact);
             }
         } catch (JSONException e) {
@@ -75,9 +150,9 @@ public class GreatJSON {
         return list;
     }
 
-    public static Contact getContactFromJsonString(String json, ContactManager cm) {
+    public static Contact getContactFromJsonString(String json, Context context) {
         Contact contact = null;
-        if(cm == null) return null;
+        if(context == null) return null;
         if(TextUtils.isEmpty(json)){
             Log.d("SPLIT","JSON is NULL or EMPTY");
             return null;
@@ -89,7 +164,7 @@ public class GreatJSON {
             String title = obj.getString("title");
             String uid = obj.getString("uid");
             String dbid = obj.getString("dbid");
-            contact = (Contact)cm.getHeavyItemFromListByUID(uid);
+            contact = (Contact)Tools.getDbInstance(context,uid, Model.MODEL_TYPE_CONTACT);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -123,15 +198,15 @@ public class GreatJSON {
         Log.d("split", "CIRCLE JSON OBJECT : " + jsonString);
         return obj;
     }
-    public static ArrayList<Circle> getCircleListFromJsonString(String json, CircleManager cm) {
-        if(cm == null) return null;
+    public static ArrayList<Circle> getCircleListFromJsonString(String json, Context context) {
+        if(context == null) return null;
         ArrayList<Circle> list = new ArrayList<Circle>();
         try {
             JSONArray array = new JSONArray(json);
             int length = array.length();
             for (int i = 0; i<length;i++) {
                 JSONObject obj = (JSONObject)array.get(i);
-                Circle circle = getCircleFromJsonString(obj.toString(), cm);
+                Circle circle = getCircleFromJsonString(obj.toString(), context);
                 list.add(circle);
             }
         } catch (JSONException e) {
@@ -140,16 +215,15 @@ public class GreatJSON {
         return list;
     }
 
-    public static Circle getCircleFromJsonString(String json, CircleManager cm) {
-        if(cm == null) return null;
+    public static Circle getCircleFromJsonString(String json, Context context) {
         Circle circle = null;
-        if(cm == null) return circle;
+        if(context == null) return circle;
         try {
             JSONObject obj = new JSONObject(json);
             String title = obj.getString("title");
             String uid = obj.getString("uid");
             String dbid = obj.getString("dbid");
-            circle = (Circle)cm.getHeavyItemFromListByUID(uid);
+            circle = (Circle)Tools.getDbInstance(context, uid, Model.MODEL_TYPE_CIRCLE);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -172,16 +246,15 @@ public class GreatJSON {
         return obj;
     }
 
-    private static Split getSplitFromJsonString(String json, SplitManager cm) {
-        if(cm == null) return null;
+    private static Split getSplitFromJsonString(String json, Context context) {
+        if(context == null) return null;
         Split split = null;
-        if(cm == null) return split;
         try {
             JSONObject obj = new JSONObject(json);
             String title = obj.getString("title");
             String uid = obj.getString("uid");
             String dbid = obj.getString("dbid");
-            split = (Split)cm.getHeavyItemFromListByUID(uid);
+            split = (Split)Tools.getDbInstance(context, uid, Model.MODEL_TYPE_SPLIT);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -204,16 +277,15 @@ public class GreatJSON {
         return obj;
     }
 
-    public static Expense getExpenseFromJsonString(String json, ExpenseManager cm) {
-        if(cm == null) return null;
+    public static Expense getExpenseFromJsonString(String json, Context context) {
+        if(context == null) return null;
         Expense expense = null;
-        if(cm == null) return expense;
         try {
             JSONObject obj = new JSONObject(json);
             String title = obj.getString("title");
             String uid = obj.getString("uid");
             String dbid = obj.getString("dbid");
-            expense = (Expense)cm.getHeavyItemFromListByUID(uid);
+            expense = (Expense)Tools.getDbInstance(context, uid, Model.MODEL_TYPE_EXPENSE);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -248,15 +320,15 @@ public class GreatJSON {
         Log.d("split", "LENT JSON OBJECT : " + jsonString);
         return obj;
     }
-    public static ArrayList<Lent> getLentListFromJsonString(String json, LentManager cm) {
-        if(cm == null) return null;
+    public static ArrayList<Lent> getLentListFromJsonString(String json, Context context) {
+        if(context == null) return null;
         ArrayList<Lent> list = new ArrayList<Lent>();
         try {
             JSONArray array = new JSONArray(json);
             int length = array.length();
             for (int i = 0; i<length;i++) {
                 JSONObject obj = (JSONObject)array.get(i);
-                Lent lent = getLentFromJsonString(obj.toString(), cm);
+                Lent lent = getLentFromJsonString(obj.toString(), context);
                 list.add(lent);
             }
         } catch (JSONException e) {
@@ -265,16 +337,15 @@ public class GreatJSON {
         return list;
     }
 
-    private static Lent getLentFromJsonString(String json, LentManager cm) {
-        if(cm == null) return null;
+    private static Lent getLentFromJsonString(String json, Context context) {
+        if(context == null) return null;
         Lent lent = null;
-        if(cm == null) return lent;
         try {
             JSONObject obj = new JSONObject(json);
             String title = obj.getString("title");
             String uid = obj.getString("uid");
             String dbid = obj.getString("dbid");
-            lent = (Lent)cm.getHeavyItemFromListByUID(uid);
+            lent = (Lent)Tools.getDbInstance(context, uid, Model.MODEL_TYPE_LENT);
         } catch (JSONException e) {
             e.printStackTrace();
         }

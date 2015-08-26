@@ -2,7 +2,5 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="company.greatapp.moneycircle.MainActivity">
-    <item android:id="@+id/action_add_new_entry" android:title="@string/action_add_new_entry"
-        android:icon="@drawable/ic_add"
-        android:orderInCategory="100" app:showAsAction="always" />
+
 </menu>

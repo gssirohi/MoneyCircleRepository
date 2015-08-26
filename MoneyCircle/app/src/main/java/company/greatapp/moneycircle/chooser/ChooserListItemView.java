@@ -22,7 +22,7 @@ public class ChooserListItemView extends LinearLayout {
                                Model model) {
         super(context, attrs);
         this.model = model;
-        ViewGroup viewGroup = (ViewGroup) infaltor.inflate(R.layout.chooser_list_item_layout, this, true);
+        ViewGroup viewGroup = (ViewGroup) infaltor.inflate(R.layout.single_chooser_list_item_layout, this, true);
         TextView tv = (TextView) viewGroup.findViewById(R.id.tv_chooser_item);
         tv.setText(((Contact)model).getContactName());
 

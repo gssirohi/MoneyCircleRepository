@@ -16,7 +16,7 @@ public class CircleView extends LinearLayout {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (inflater != null) {
-            ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.circle_item_view, this, false);
+            ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.circle_list_item_view, this, false);
 
             LinearLayout groupListLinearLayout = (LinearLayout) findViewById(R.id.llGroupListId);
         }

@@ -1,19 +1,20 @@
 package company.greatapp.moneycircle;
 
-import android.app.Activity;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,27 +24,28 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.adapters.NavDrawerListAdapter;
 import company.greatapp.moneycircle.constants.C;
+import company.greatapp.moneycircle.dialogs.AddNewEntryDialog;
+import company.greatapp.moneycircle.manager.Accountant;
 import company.greatapp.moneycircle.manager.CategoryManager;
 import company.greatapp.moneycircle.manager.ContactManager;
 import company.greatapp.moneycircle.manager.PreferenceManager;
+import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.NavDrawerItem;
-import company.greatapp.moneycircle.model.Period;
 import company.greatapp.moneycircle.split.SplitToolActivity;
-import company.greatapp.moneycircle.tools.Tools;
 import company.greatapp.moneycircle.view.CircleButton;
+import company.greatapp.moneycircle.dialogs.ContactInfoDialog;
+import company.greatapp.moneycircle.view.TagItemView;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements TagItemView.TagItemViewCallBacks{
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -64,6 +66,7 @@ public class MainActivity extends ActionBarActivity {
     private LinearLayout tabTrends;
     private TabHost tabHost;
     private TabWidget tabWidget;
+    private CardDesigner mCardDesigner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +78,13 @@ public class MainActivity extends ActionBarActivity {
         //move below init method to the launcher activity always
         initApp();
 
+        FloatingActionButton fb_add_new = (FloatingActionButton)findViewById(R.id.fb_add_new_entry);
+        fb_add_new.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAddOptionsScreen();
+            }
+        });
         tabHost = (TabHost)findViewById(R.id.tabHost);
         initialiseTabHost();
         tabWidget = (TabWidget)findViewById(android.R.id.tabs);
@@ -89,23 +99,9 @@ public class MainActivity extends ActionBarActivity {
         tabDiary = (LinearLayout)findViewById(R.id.ll_tab1);
         tabTrends = (LinearLayout)findViewById(R.id.ll_tab2);
 
-        CardDesigner cdDiary = new CardDesigner(this,null);
-        CardDesigner cdTrends = new CardDesigner(this,null);
+        mCardDesigner = new CardDesigner(this,null);
 
-        View cardIncome = cdDiary.getCardView(CardDesigner.CARD_INCOME);
-        View cardExpense = cdDiary.getCardView(CardDesigner.CARD_EXPENSE);
-        View cardBorrow = cdDiary.getCardView(CardDesigner.CARD_BORROW);
-        View cardLent = cdDiary.getCardView(CardDesigner.CARD_LENT);
-        View cardSplit = cdDiary.getCardView(CardDesigner.CARD_SPLIT);
-        View cardDailyReport = cdDiary.getCardView(CardDesigner.CARD_DAILY_REPORT);
-
-        tabDiary.addView(cardDailyReport);
-        tabDiary.addView(cardIncome);
-        tabDiary.addView(cardExpense);
-        tabDiary.addView(cardBorrow);
-        tabDiary.addView(cardLent);
-        tabDiary.addView(cardSplit);
-
+        initCardViews();
         mTitle = mDrawerTitle = getTitle();
 
         // load slide menu items
@@ -177,7 +173,32 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    private void initCardViews() {
+        tabDiary.removeAllViews();
+        tabTrends.removeAllViews();
+
+    tabDiary.addView(mCardDesigner.getCardView(CardDesigner.CARD_DAILY_REPORT));
+    tabDiary.addView(mCardDesigner.getCardView(CardDesigner.CARD_INCOME));
+    tabDiary.addView(mCardDesigner.getCardView(CardDesigner.CARD_EXPENSE));
+    tabDiary.addView(mCardDesigner.getCardView(CardDesigner.CARD_BORROW));
+    tabDiary.addView(mCardDesigner.getCardView(CardDesigner.CARD_LENT));
+    tabDiary.addView(mCardDesigner.getCardView(CardDesigner.CARD_SPLIT));
+
+        tabTrends.addView(mCardDesigner.getCardView(CardDesigner.CARD_BUDGET));
+        tabTrends.addView(mCardDesigner.getCardView(CardDesigner.CARD_TOP_SPEND_AREAS));
+    tabTrends.addView(mCardDesigner.getCardView(CardDesigner.CARD_UPCOMING_BORROW));
+    tabTrends.addView(mCardDesigner.getCardView(CardDesigner.CARD_TOP_BORROWER));
+        tabTrends.addView(mCardDesigner.getCardView(CardDesigner.CARD_UPCOMING_LENT));
+    tabTrends.addView(mCardDesigner.getCardView(CardDesigner.CARD_TOP_LENDERS));
+
+
+        tabDiary.invalidate();
+        tabTrends.invalidate();
+    }
+
     private void initApp(){
+        registerReceiver(mAccountantUpdatedReceiver, new IntentFilter(C.ACTION_ACCOUNTANT_DB_UPDATED));
+
         PreferenceManager pm = new PreferenceManager(this);
         if(!pm.isDeviceContactsRetrived()) {
             ContactManager contactManager = new ContactManager(this);
@@ -194,7 +215,11 @@ public class MainActivity extends ActionBarActivity {
             SharedPreferences.Editor et = pm.getEditor();
             et.putBoolean(C.PREF_DEFAULT_CATEGORIES_LOADED, true);
             et.commit();
-            Tools.addDummyEntries(this, categoryManager);
+
+            Accountant accountant = new Accountant(this,false);
+            accountant.initializeDb();
+
+//            Tools.sendMoneyTransactionBroadCast(this);
         }
     }
     private void handleDrawerItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -256,131 +281,20 @@ public class MainActivity extends ActionBarActivity {
         }
         // Handle action bar actions click
         switch (item.getItemId()) {
-            case R.id.action_add_new_entry:
-                showAddOptionsScreen();
-                return true;
+//            case R.id.action_add_new_entry:
+//                showAddOptionsScreen();
+//                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+    Dialog dialog;
     private void showAddOptionsScreen() {
-        //TODO: show add option screen
-        //startActivity(new Intent(this,SplitToolActivity.class));
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        ViewGroup viewGroup = (ViewGroup)inflater.inflate(R.layout.new_entry_options_dialog_layout, null, false);
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(viewGroup);
-        dialog.setTitle("Add New Entry");
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-
-        CircleButton b_split = (CircleButton)viewGroup.findViewById(R.id.b_split);
-        CircleButton b_income = (CircleButton)viewGroup.findViewById(R.id.b_income);
-        CircleButton b_expense = (CircleButton)viewGroup.findViewById(R.id.b_expense);
-        CircleButton b_borrow = (CircleButton)viewGroup.findViewById(R.id.b_borrow);
-        CircleButton b_lent = (CircleButton)viewGroup.findViewById(R.id.b_lent);
-        CircleButton b_daily_shop = (CircleButton)viewGroup.findViewById(R.id.b_daily_shop);
-
-        CircleButton b_circle = (CircleButton)viewGroup.findViewById(R.id.b_new_circle);
-        CircleButton b_category = (CircleButton)viewGroup.findViewById(R.id.b_new_category);
-
-        b_daily_shop.setColor(getResources().getColor(R.color.app_light));
-        b_daily_shop.setHolo(true);
-        b_daily_shop.setOnClickListener(getListener(1));
-
-        b_split.setColor(getResources().getColor(R.color.split));
-        b_split.setHolo(true);
-        b_split.setOnClickListener(getListener(2));
-
-        b_income.setColor(getResources().getColor(R.color.income));
-        b_income.setHolo(true);
-        b_income.setOnClickListener(getListener(3));
-
-        b_expense.setColor(getResources().getColor(R.color.expense));
-        b_expense.setHolo(true);
-        b_expense.setOnClickListener(getListener(4));
-
-        b_lent.setColor(getResources().getColor(R.color.lent));
-        b_lent.setHolo(true);
-        b_lent.setOnClickListener(getListener(5));
-
-        b_borrow.setColor(getResources().getColor(R.color.borrow));
-        b_borrow.setHolo(true);
-        b_borrow.setOnClickListener(getListener(6));
-
-        b_category.setColor(getResources().getColor(R.color.category_light));
-        b_category.setOnClickListener(getListener(7));
-
-        b_circle.setColor(getResources().getColor(R.color.circle_light));
-        b_circle.setOnClickListener(getListener(8));
-
-
-       dialog.show();
-
+       AddNewEntryDialog dialog = new AddNewEntryDialog(this);
+       dialog.showDialogWithAnimation();
     }
 
-    private View.OnClickListener getListener(final int type) {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleButtonClick(type);
-            }
-        };
-    }
-
-    private void handleButtonClick(int type) {
-        String msg = "";
-        Intent i = null;
-        switch(type) {
-            case 1:
-                msg = "daily expense";
-                break;
-            case 2:
-                msg = "split";
-                i = new Intent(this,SplitToolActivity.class);
-                startActivity(i);
-                break;
-            case 3:
-                msg = "income";
-                i = new Intent(this,AddNewEntryActivity.class);
-                i.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
-                i.putExtra(C.MODEL_TYPE, Model.MODEL_TYPE_INCOME);
-                startActivity(i);
-                break;
-            case 4:
-                msg = "expense";
-                i = new Intent(this,AddNewEntryActivity.class);
-                i.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
-                i.putExtra(C.MODEL_TYPE, Model.MODEL_TYPE_EXPENSE);
-                startActivity(i);
-                break;
-            case 5:
-                msg = "lent";
-                i = new Intent(this,AddNewEntryActivity.class);
-                i.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
-                i.putExtra(C.MODEL_TYPE, Model.MODEL_TYPE_LENT);
-                startActivity(i);
-                break;
-            case 6:
-                msg = "borrow";
-                i = new Intent(this,AddNewEntryActivity.class);
-                i.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
-                i.putExtra(C.MODEL_TYPE, Model.MODEL_TYPE_BORROW);
-                startActivity(i);
-                break;
-            case 7:
-                msg = "category";
-                break;
-            case 8:
-                msg = "circle";
-                i = new Intent(this, ManageCircleActivity.class);
-                startActivity(i);
-                break;
-        }
-        Toast.makeText(this, "Add new " + msg, Toast.LENGTH_SHORT).show();
-    }
 
     /**
      * Called when invalidateOptionsMenu() is triggered
@@ -417,4 +331,38 @@ public class MainActivity extends ActionBarActivity {
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mAccountantUpdatedReceiver != null)
+        unregisterReceiver(mAccountantUpdatedReceiver);
+    }
+    private  Accountant mAccountant;
+    BroadcastReceiver mAccountantUpdatedReceiver  = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d("SPLIT", "intent action : " + intent.getAction());
+          if(intent.getAction().equals(C.ACTION_ACCOUNTANT_DB_UPDATED)) {
+              Log.d("SPLIT", "intent action : " + intent.getAction());
+              mAccountant = new Accountant(MainActivity.this,true);
+              mCardDesigner.initAllCardViews(mAccountant);
+              Toast.makeText(MainActivity.this,"Accountant Updated",Toast.LENGTH_SHORT).show();
+              //initCardViews();
+          }
+        }
+    };
+
+    @Override
+    public void onContactTagClicked(Model model) {
+        ContactInfoDialog dialog = new ContactInfoDialog(this,(Contact)model);
+        dialog.show();
+    }
+
 }
