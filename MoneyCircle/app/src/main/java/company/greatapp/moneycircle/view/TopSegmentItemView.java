@@ -58,9 +58,34 @@ public class TopSegmentItemView extends LinearLayout {
         tv_item_value.setText(value);
     }
 
-    public void setModeSingleText() {
+    public void setModeOnlyTitle() {
         tv_item_value.setVisibility(View.GONE);
         iv_item_icon.setVisibility(View.GONE);
+        tv_item_title.setVisibility(View.VISIBLE);
+    }
+
+    public void setModeTitleAndValue() {
+        tv_item_value.setVisibility(View.VISIBLE);
+        iv_item_icon.setVisibility(View.GONE);
+        tv_item_title.setVisibility(View.VISIBLE);
+    }
+
+    public void setModeTitleAndIcon() {
+        tv_item_value.setVisibility(View.GONE);
+        iv_item_icon.setVisibility(View.VISIBLE);
+        tv_item_title.setVisibility(View.VISIBLE);
+    }
+
+    public void setModeValueAndIcon() {
+        tv_item_value.setVisibility(View.VISIBLE);
+        iv_item_icon.setVisibility(View.VISIBLE);
+        tv_item_title.setVisibility(View.GONE);
+    }
+
+    public void setModeTitleValueAndIcon() {
+        tv_item_value.setVisibility(View.VISIBLE);
+        iv_item_icon.setVisibility(View.VISIBLE);
+        tv_item_title.setVisibility(View.VISIBLE);
     }
 
     public void setModel(Model model, int modelType) {
@@ -82,11 +107,14 @@ public class TopSegmentItemView extends LinearLayout {
                 }
                 tv_item_value.setText(msg);
                 tv_item_title.setText(contact.getContactName());
+                setModeTitleValueAndIcon();
                 break;
             case Model.MODEL_TYPE_CATEGORY:
                 Category category = (Category)model;
                 tv_item_value.setText(category.getTitle());
                 tv_item_title.setText(Tools.floatString(category.getSpentAmountOnThis()));
+                setModeTitleValueAndIcon();
+                break;
         }
     }
 

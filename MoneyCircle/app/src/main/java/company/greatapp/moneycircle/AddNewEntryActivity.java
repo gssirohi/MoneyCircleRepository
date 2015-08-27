@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +35,7 @@ import company.greatapp.moneycircle.dialogs.ContactInfoDialog;
 import company.greatapp.moneycircle.view.TagItemView;
 import company.greatapp.moneycircle.view.TopSegmentItemView;
 
-public class AddNewEntryActivity extends ActionBarActivity implements DatePickerFragment.DateSetter,TagItemView.TagItemViewCallBacks {
+public class AddNewEntryActivity extends ActionBarActivity implements TagItemView.TagItemViewCallBacks {
 
     private int mModelType;     // Model Type
     private int mEntryType;     // Entry type means either it is a display or input
@@ -102,6 +101,18 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
 
         b_new_split = (Button)findViewById(R.id.b_new_split);
       ///----------------------------------------------------------------------------//
+        tsiv_new_category.setModeOnlyTitle();
+        tsiv_new_category.setItemTitle("SELECT CATEGORY");
+
+        tsiv_new_date.setModeOnlyTitle();
+        tsiv_new_date.setItemTitle("SELECT DATE");
+
+        tsiv_new_member_add.setModeOnlyTitle();
+        tsiv_new_member_add.setItemTitle("SELECT MEMBER");
+
+        tsiv_new_due_date.setModeOnlyTitle();
+        tsiv_new_due_date.setItemTitle("SELECT DUE DATE");
+
 
         tsiv_new_member_add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,14 +134,14 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
                 showDatePickerDialog();
             }
         });
-        tsiv_new_date.setModeSingleText();
+        tsiv_new_date.setModeOnlyTitle();
         tsiv_new_due_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDatePickerDialog();
+                showDueDatePickerDialog();
             }
         });
-        tsiv_new_due_date.setModeSingleText();
+        tsiv_new_due_date.setModeOnlyTitle();
 
         Intent intent = getIntent();
         int entryType = intent.getIntExtra(C.ENTRY_TYPE,C.ENTRY_TYPE_INPUT);
@@ -159,24 +170,25 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
         setDefaultCategory();
         setDefaultDate();
         setDefaultDueDate();
-       // setTextColor();
-       // setButtonColor();
+        //setTextColor();
+        setButtonColor();
     }
 
     private void setButtonColor() {
-        int back = Tools.getModelColorResId(this,mModelType);
+       // int back = Tools.getModelColorResId(this,mModelType);
        // int back = getResources().getColor(resId);
-       // int back = getResources().getColor(R.color.app_light);
+        int back = getResources().getColor(R.color.app_secondary);
         b_new_split.setBackgroundColor(back);
+        b_new_split.setTextColor(getResources().getColor(R.color.white));
        // b_new_member_add.setBackgroundColor(back);
        // b_new_date.setBackgroundColor(back);
        // b_due_date.setBackgroundColor(back);
     }
 
     private void setTextColor() {
-        int color = Tools.getModelColorResId(this,mModelType);
+        //int color = Tools.getModelColorResId(this,mModelType);
         //int color = getResources().getColor(resId);
-        //int color = getResources().getColor(R.color.app_darkest);
+        int color = getResources().getColor(R.color.app_secondary);
         //tv_new_title.setTextColor(color);
         tv_new_before_type.setTextColor(color);
         tv_new_type.setTextColor(color);
@@ -186,6 +198,9 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
         //tv_new_due_date.setTextColor(color);
         tv_new_member_add.setTextColor(color);
         tv_new_note_text.setTextColor(color);
+
+        tv_new_date_text.setTextColor(color);
+        tv_new_due_date_text.setTextColor(color);
     }
 
     private void createBorrowLayout() {
@@ -435,9 +450,26 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
 
     public void showDatePickerDialog() {
         DatePickerFragment datePickerFragment = new DatePickerFragment();
-        datePickerFragment.setListener(this);
+        datePickerFragment.setListener(new DatePickerFragment.DateSetter() {
+            @Override
+            public void setDate(int year, int monthOfYear, int dayOfMonth) {
+                setEntryDate(year, monthOfYear, dayOfMonth);
+            }
+        });
         datePickerFragment.show(getSupportFragmentManager(), "datePicker");
     }
+
+    public void showDueDatePickerDialog() {
+        DatePickerFragment datePickerFragment = new DatePickerFragment();
+        datePickerFragment.setListener(new DatePickerFragment.DateSetter() {
+            @Override
+            public void setDate(int year, int monthOfYear, int dayOfMonth) {
+                setDueDate(year, monthOfYear, dayOfMonth);
+            }
+        });
+        datePickerFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+
 
     public void setDefaultDate() {
         mDateString = DateUtils.getCurrentDate();
@@ -446,20 +478,25 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
 
     public void setDefaultDueDate() {
         mDueDateString = DateUtils.getCurrentWeekLastDate();
-        tsiv_new_due_date.setItemTitle(mDateString);
+        tsiv_new_due_date.setItemTitle(mDueDateString);
     }
 
     public void setDefaultCategory() {
         mCategory = C.CATEGORY_NONE_UID;
     }
-    @Override
-    public void setDate(int year, int monthOfYear, int dayOfMonth) {
+
+    public void setEntryDate(int year, int monthOfYear, int dayOfMonth) {
         mDateString = DateUtils.getDateString(year, monthOfYear, dayOfMonth);
         tsiv_new_date.setItemTitle(mDateString);
-        tsiv_new_due_date.setItemTitle(DateUtils.getNextWeekLastDate(mDateString));
+        mDueDateString = DateUtils.getNextWeekLastDate(mDateString);
+        tsiv_new_due_date.setItemTitle(mDueDateString);
 //        Toast.makeText(this,"DATE:"+ mDateString,Toast.LENGTH_SHORT).show();
     }
-
+    public void setDueDate(int year, int monthOfYear, int dayOfMonth) {
+        mDueDateString = DateUtils.getDateString(year, monthOfYear, dayOfMonth);
+        tsiv_new_due_date.setItemTitle(mDueDateString);
+//        Toast.makeText(this,"DATE:"+ mDateString,Toast.LENGTH_SHORT).show();
+    }
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         Log.d("split", "onActivityResult : requestCode:" + requestCode + "  resultCode:" + resultCode);
