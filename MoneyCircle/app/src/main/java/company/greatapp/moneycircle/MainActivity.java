@@ -14,6 +14,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -67,12 +68,15 @@ public class MainActivity extends ActionBarActivity implements TagItemView.TagIt
     private TabHost tabHost;
     private TabWidget tabWidget;
     private CardDesigner mCardDesigner;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        toolbar = (Toolbar)findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
         //TODO: this is launcher activity now on
         //hence we need to init application settings and requirments here
         //move below init method to the launcher activity always

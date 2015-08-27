@@ -9,7 +9,8 @@
         android:id="@+id/frame_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <TabHost
+
+        <TabHost
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/tabHost"
@@ -20,6 +21,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/tool_bar"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:minHeight="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+                />
+
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

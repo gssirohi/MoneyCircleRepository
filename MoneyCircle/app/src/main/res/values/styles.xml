@@ -4,5 +4,31 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
     </style>
+    <style name="Theme.MoneyCircle" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Set AppCompat’s actionBarStyle -->
+        <!--<item name="actionBarStyle">@style/MyActionBarStyle</item> -->
+
+        <!-- Set AppCompat’s color theming attrs -->
+        <item name="colorPrimary">@color/app_primary</item>
+        <item name="colorPrimaryDark">@color/app_primary_dark</item>
+        <item name="android:textColorPrimary">@color/app_text_primary</item>
+        <item name="android:textColorSecondary">@color/app_text_secondary</item>
+        <item name="android:colorBackground">@color/app_background</item>
+        <item name="colorAccent">@color/app_accent</item>
+        <item name="android:tabWidgetStyle">@style/Theme.MoneyCircle.TabWidget</item>
+        <item name="windowActionBar">false</item>
+        <!-- <item name="statusBarColor">@color/app_primary_dark</item>-->
+
+
+
+        <!-- The rest of your attributes -->
+    </style>
+
+    <style name="Theme.MoneyCircle.TabWidget" parent="Theme.AppCompat.Light">
+        <item name="android:background">@color/app_primary</item>
+        <item name="android:textColorPrimary">@color/lent</item>
+        <item name="android:textColorSecondary">@color/app_text_secondary</item>
+        <!-- Customize your theme here. -->
+    </style>
 
 </resources>

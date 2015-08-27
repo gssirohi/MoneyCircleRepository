@@ -9,6 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -67,6 +69,8 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
     private String mDateString;
     private String mCategory;
     private String mDueDateString;
+    private CheckBox cb_new_add_in_frequent;
+    private boolean mAddInFrequent;
 
 
     @Override
@@ -99,6 +103,8 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         tv_new_note_text = (TextView)findViewById(R.id.tv_new_note_text);
         et_new_note = (EditText)findViewById(R.id.et_new_note);
 
+        cb_new_add_in_frequent = (CheckBox)findViewById(R.id.cb_new_add_in_frequent);
+        
         b_new_split = (Button)findViewById(R.id.b_new_split);
       ///----------------------------------------------------------------------------//
         tsiv_new_category.setModeOnlyTitle();
@@ -128,6 +134,12 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
             }
         });
 
+        cb_new_add_in_frequent.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mAddInFrequent = isChecked;
+            }
+        });
         tsiv_new_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
