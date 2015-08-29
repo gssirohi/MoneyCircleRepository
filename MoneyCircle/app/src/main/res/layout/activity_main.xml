@@ -87,6 +87,9 @@
                     android:id="@+id/fb_add_new_entry"
                     android:layout_gravity="right|bottom"
                     android:src="@android:drawable/ic_input_add"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
                     android:elevation="0dp"/>
             </FrameLayout>
         </LinearLayout>

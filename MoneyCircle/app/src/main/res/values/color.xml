@@ -28,31 +28,40 @@
 
 
     <color name="income">#8bc34a</color>
+    <color name="income_dark">#7CB342</color>
     <color name="income_light">#c5e1a5</color>
 
 
     <color name="expense">#ff5252</color>
+    <color name="expense_dark">#FF1744</color>
     <color name="expense_light">#ffcdd2</color>
 
     <color name="borrow">#795548</color>
+    <color name="borrow_dark">#6D4C41</color>
     <color name="borrow_light">#d7ccc8</color>
 
     <color name="lent">#ab47bc</color>
+    <color name="lent_dark">#9C27B0</color>
     <color name="lent_light">#e1bee7</color>
 
     <color name="split">#0288d1</color>
+    <color name="split_dark">#0277BD</color>
     <color name="split_light">#b3e5fc</color>
 
     <color name="contact">#9e9e9e</color>
+    <color name="contact_dark">#757575</color>
     <color name="contact_light">#e0e0e0</color>
 
     <color name="registered_contact">#ffeb3b</color>
+    <color name="registered_contact_dark">#FDD835</color>
     <color name="registered_contact_light">#fff59d</color>
 
     <color name="circle">#ff4081</color>
+    <color name="circle_dark">#F50057</color>
     <color name="circle_light">#f8bbd0</color>
 
     <color name="category">#00796b</color>
+    <color name="category_dark">#00695C</color>
     <color name="category_light">#b2dfdb</color>
 
     <color name="text_basic">#3e2723</color>

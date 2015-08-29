@@ -17,6 +17,7 @@
         <item name="colorAccent">@color/app_accent</item>
         <item name="android:tabWidgetStyle">@style/Theme.MoneyCircle.TabWidget</item>
         <item name="windowActionBar">false</item>
+        <item name="colorButtonNormal">@color/app_secondary</item>
         <!-- <item name="statusBarColor">@color/app_primary_dark</item>-->
 
 
@@ -26,8 +27,103 @@
 
     <style name="Theme.MoneyCircle.TabWidget" parent="Theme.AppCompat.Light">
         <item name="android:background">@color/app_primary</item>
-
+        <item name="android:textColorPrimary">@color/lent</item>
+        <item name="android:textColorSecondary">@color/app_text_secondary</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <!--############################### MODEL THEME ################################-->
+    <!--INCOME THEME-->
+    <style name="Theme.MoneyCircle.Income" parent="Theme.MoneyCircle">
+
+        <item name="colorPrimary">@color/income</item>
+        <item name="colorPrimaryDark">@color/income_dark</item>
+
+    </style>
+
+    <!--EXPENSE THEME-->
+    <style name="Theme.MoneyCircle.Expense" parent="Theme.MoneyCircle">
+
+        <item name="colorPrimary">@color/expense</item>
+        <item name="colorPrimaryDark">@color/expense_dark</item>
+
+    </style>
+
+    <!--BORROW THEME-->
+    <style name="Theme.MoneyCircle.Borrow" parent="Theme.MoneyCircle">
+
+        <item name="colorPrimary">@color/borrow</item>
+        <item name="colorPrimaryDark">@color/borrow_dark</item>
+
+    </style>
+
+    <!--LENT THEME-->
+    <style name="Theme.MoneyCircle.Lent" parent="Theme.MoneyCircle">
+
+        <item name="colorPrimary">@color/lent</item>
+        <item name="colorPrimaryDark">@color/lent_dark</item>
+
+    </style>
+
+
+    <!--##########################################################################################-->
+
+    <!--############################### TEXT APPEARANCE STYLE ################################-->
+    <style name="MoneyCircle.TextAppearance.Normal.Light" parent="@android:style/TextAppearance">
+
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+    </style>
+
+    <style name="MoneyCircle.TextAppearance.Normal.Dark" parent="@android:style/TextAppearance">
+
+        <item name="android:textColor">@color/text_basic</item>
+        <item name="android:textColorPrimary">@color/text_basic</item>
+        <item name="android:textColorSecondary">@color/text_basic</item>
+    </style>
+
+    <style name="MoneyCircle.TextAppearance.Small.Light" parent="@android:style/TextAppearance.Small">
+
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/text_basic_light</item>
+    </style>
+
+    <style name="MoneyCircle.TextAppearance.Small.Dark" parent="@android:style/TextAppearance.Small">
+
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:textColorPrimary">@color/blue</item>
+        <item name="android:textColorSecondary">@color/app_basic</item>
+    </style>
+
+    <style name="MoneyCircle.TextAppearance.Medium.Light" parent="@android:style/TextAppearance.Medium">
+
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/text_basic_light</item>
+    </style>
+
+    <style name="MoneyCircle.TextAppearance.Medium.Dark" parent="@android:style/TextAppearance.Medium">
+
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:textColorPrimary">@color/blue</item>
+        <item name="android:textColorSecondary">@color/app_basic</item>
+    </style>
+
+    <style name="MoneyCircle.TextAppearance.Large.Light" parent="@android:style/TextAppearance.Large">
+
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/text_basic_light</item>
+    </style>
+
+    <style name="MoneyCircle.TextAppearance.Large.Dark" parent="@android:style/TextAppearance.Large">
+
+        <item name="android:textColor">@color/blue</item>
+        <item name="android:textColorPrimary">@color/blue</item>
+        <item name="android:textColorSecondary">@color/app_basic</item>
+    </style>
+    <!--##########################################################################################-->
 
 </resources>

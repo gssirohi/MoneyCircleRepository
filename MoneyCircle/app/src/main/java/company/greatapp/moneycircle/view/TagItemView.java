@@ -1,6 +1,5 @@
 package company.greatapp.moneycircle.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
@@ -44,7 +43,7 @@ public class TagItemView extends LinearLayout {
         this.parent = parent;
         this.title = item;
         if(item.equals("SPLIT")) {
-            int color= Tools.getModelColorResId(context, Model.MODEL_TYPE_SPLIT);
+            int color= Tools.getModelColor(context, Model.MODEL_TYPE_SPLIT);
             setColor(color);
         }
         init(context, isCancelable);
@@ -77,7 +76,7 @@ public class TagItemView extends LinearLayout {
             b.setOnClickListener(getListener(context));
 
             if(model != null) {
-                int color= Tools.getModelColorResId(context, Model.MODEL_TYPE_SPLIT);
+                int color= Tools.getModelColor(context, Model.MODEL_TYPE_SPLIT);
                 setColor(color);
             }
         }

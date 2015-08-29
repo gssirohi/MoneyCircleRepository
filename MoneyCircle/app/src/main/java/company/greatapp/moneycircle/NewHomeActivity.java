@@ -9,6 +9,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -84,6 +85,7 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
     private final int ARROW_LEFT = 4;
     private final int ARROW_RIGHT = 5;
     private LinearLayout ll_period;
+    private Toolbar mToolbar;
 
 
     @Override
@@ -92,8 +94,9 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
         setContentView(R.layout.activity_new_home);
 
         modelType = getIntent().getIntExtra(Model.MODEL_TYPE,Model.MODEL_TYPE_INCOME);
-        ActionBar ab = getActionBar();
-        if(ab != null)ab.setTitle(Tools.getModelName(modelType));
+        mToolbar = (Toolbar)findViewById(R.id.tool_bar);
+        mToolbar.setTitle(Tools.getModelName(modelType));
+        setSupportActionBar(mToolbar);
         //ab.setSubtitle("sub-title");
 
         lv1 = (ListView)findViewById(R.id.lv_1);

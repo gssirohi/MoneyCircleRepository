@@ -1,6 +1,7 @@
 package company.greatapp.moneycircle;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -9,6 +10,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -72,16 +75,32 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
     private String mDueDateString;
     private CheckBox cb_new_add_in_frequent;
     private boolean mAddInFrequent;
-    private Toolbar toolbar;
+
+    private Toolbar mToolbar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        int entryType = intent.getIntExtra(C.ENTRY_TYPE,C.ENTRY_TYPE_INPUT);
+        this.mEntryType = entryType;
+        mModelType = intent.getIntExtra(C.MODEL_TYPE, Model.MODEL_TYPE_INCOME);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Tools.getModelDarkColor(this, mModelType));
+        }
+
         //setContentView(R.layout.activity_add_new_entry);
+        setTheme(getThemeResId());          // Theme has to be set before calling setContentView()
+
         setContentView(R.layout.new_entry_layout);
-        toolbar = (Toolbar)findViewById(R.id.tool_bar);
-        setSupportActionBar(toolbar);
+
+        mToolbar = (Toolbar)findViewById(R.id.tool_bar);
+        setSupportActionBar(mToolbar);
         //tv_new_title = (TextView)findViewById(R.id.tv_new_title);
         tv_new_before_type = (TextView)findViewById(R.id.tv_new_before_type);
         tv_new_type = (TextView)findViewById(R.id.tv_new_type);
@@ -159,14 +178,10 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         });
         tsiv_new_due_date.setModeOnlyTitle();
 
-        Intent intent = getIntent();
-        int entryType = intent.getIntExtra(C.ENTRY_TYPE,C.ENTRY_TYPE_INPUT);
-        this.mEntryType = entryType;
+
 
         mCategory = C.CATEGORY_NONE_UID;
         // TODO Don't start this activity if entry type is not ENTRY_TYPE_INPUT
-
-        mModelType = intent.getIntExtra(C.MODEL_TYPE, Model.MODEL_TYPE_INCOME);
 
         switch(mModelType) {
             case Model.MODEL_TYPE_INCOME:
@@ -190,8 +205,27 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         setButtonColor();
     }
 
+    private int getThemeResId() {
+        int themeResId = 0;
+        switch(mModelType) {
+            case Model.MODEL_TYPE_INCOME:
+                themeResId = R.style.Theme_MoneyCircle_Income;
+                break;
+            case Model.MODEL_TYPE_EXPENSE:
+                themeResId = R.style.Theme_MoneyCircle_Expense;
+                break;
+            case Model.MODEL_TYPE_BORROW:
+                themeResId = R.style.Theme_MoneyCircle_Borrow;
+                break;
+            case Model.MODEL_TYPE_LENT:
+                themeResId = R.style.Theme_MoneyCircle_Lent;
+                break;
+        }
+        return themeResId;
+    }
+
     private void setButtonColor() {
-       // int back = Tools.getModelColorResId(this,mModelType);
+       // int back = Tools.getModelColor(this,mModelType);
        // int back = getResources().getColor(resId);
         int back = getResources().getColor(R.color.app_secondary);
         b_new_split.setBackgroundColor(back);
@@ -202,7 +236,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
     }
 
     private void setTextColor() {
-        //int color = Tools.getModelColorResId(this,mModelType);
+        //int color = Tools.getModelColor(this,mModelType);
         //int color = getResources().getColor(resId);
         int color = getResources().getColor(R.color.app_secondary);
         //tv_new_title.setTextColor(color);
