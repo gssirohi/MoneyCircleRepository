@@ -2,6 +2,7 @@ package company.greatapp.moneycircle;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -9,10 +10,15 @@ import company.greatapp.moneycircle.R;
 
 public class ViewAndEditProfileActivity extends ActionBarActivity {
 
+    private Toolbar mToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_and_edit_profle);
+
+        mToolbar = (Toolbar)findViewById(R.id.tool_bar);
+        setSupportActionBar(mToolbar);
     }
 
     @Override
