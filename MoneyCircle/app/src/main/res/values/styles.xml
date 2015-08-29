@@ -26,8 +26,7 @@
 
     <style name="Theme.MoneyCircle.TabWidget" parent="Theme.AppCompat.Light">
         <item name="android:background">@color/app_primary</item>
-        <item name="android:textColorPrimary">@color/lent</item>
-        <item name="android:textColorSecondary">@color/app_text_secondary</item>
+
         <!-- Customize your theme here. -->
     </style>
 

@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
+    <include
+        android:id="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        layout="@layout/tool_bar_layout" />
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/scrollView2"
+        android:layout_below="@id/tool_bar"
         android:layout_marginTop="5dp">
 
     <LinearLayout
@@ -108,7 +115,7 @@
                         android:text="of type"
                         android:id="@+id/tv_new_category_text"
                         android:layout_gravity="center"
-                        android:layout_weight="2" />
+                        android:gravity="center" />
                 </FrameLayout>
 
                 <FrameLayout
@@ -123,7 +130,7 @@
                         android:text=" from "
                         android:id="@+id/tv_new_member_add"
                         android:layout_gravity="center"
-                        android:layout_weight="2" />
+                        android:gravity="center" />
                 </FrameLayout>
 
             </LinearLayout>
@@ -168,7 +175,7 @@
                         android:text="on date"
                         android:id="@+id/tv_new_date_text"
                         android:layout_gravity="center"
-                        android:layout_weight="2" />
+                        android:gravity="center" />
                 </FrameLayout>
 
                 <FrameLayout
@@ -183,7 +190,7 @@
                         android:text="due date"
                         android:id="@+id/tv_new_due_date_text"
                         android:layout_gravity="center"
-                        android:layout_weight="2" />
+                        android:gravity="center" />
                 </FrameLayout>
 
             </LinearLayout>

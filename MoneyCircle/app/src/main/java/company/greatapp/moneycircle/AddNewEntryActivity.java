@@ -3,6 +3,7 @@ package company.greatapp.moneycircle;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -71,6 +72,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
     private String mDueDateString;
     private CheckBox cb_new_add_in_frequent;
     private boolean mAddInFrequent;
+    private Toolbar toolbar;
 
 
     @Override
@@ -78,6 +80,8 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_add_new_entry);
         setContentView(R.layout.new_entry_layout);
+        toolbar = (Toolbar)findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
         //tv_new_title = (TextView)findViewById(R.id.tv_new_title);
         tv_new_before_type = (TextView)findViewById(R.id.tv_new_before_type);
         tv_new_type = (TextView)findViewById(R.id.tv_new_type);

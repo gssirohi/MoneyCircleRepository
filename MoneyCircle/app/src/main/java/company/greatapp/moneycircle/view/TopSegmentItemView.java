@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.model.Category;
+import company.greatapp.moneycircle.model.Circle;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.tools.Tools;
@@ -111,9 +112,15 @@ public class TopSegmentItemView extends LinearLayout {
                 break;
             case Model.MODEL_TYPE_CATEGORY:
                 Category category = (Category)model;
-                tv_item_value.setText(category.getTitle());
-                tv_item_title.setText(Tools.floatString(category.getSpentAmountOnThis()));
+                tv_item_title.setText(category.getTitle());
+                tv_item_value.setText(Tools.floatString(category.getSpentAmountOnThis()));
                 setModeTitleValueAndIcon();
+                break;
+            case Model.MODEL_TYPE_CIRCLE:
+                Circle circle = (Circle)model;
+                tv_item_title.setText(circle.getTitle());
+                tv_item_value.setText(""+circle.getMemberCount());
+                setModeTitleAndValue();
                 break;
         }
     }

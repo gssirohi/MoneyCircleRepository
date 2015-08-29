@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <include
+        android:id="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        layout="@layout/tool_bar_layout" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView2"
+        android:layout_below="@id/tool_bar"
+        android:layout_marginTop="5dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="I want to "
+                    android:id="@+id/tv_new_before_type"
+                    android:layout_marginRight="1dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="SPLIT AN EXPENSE "
+                    android:id="@+id/tv_new_type"
+                    android:layout_marginRight="1dp"
+                    android:layout_margin="2dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="amount"
+                    android:id="@+id/tv_new_after_type"
+                    android:layout_marginLeft="1dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                                >
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/et_new_amount"
+                    android:inputType="numberDecimal"
+                    android:textSize="35sp"
+                    android:maxLength="10"
+                    android:minWidth="50dp"
+                    android:hint="00.00" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="2dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="for"
+                    android:id="@+id/tv_new_item"
+                    android:layout_margin="5dp" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/et_new_item"
+                    android:maxLength="25"
+                    android:minWidth="200dp"
+                    android:layout_margin="5dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="5dp">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="of type"
+                            android:id="@+id/tv_new_category"
+                            android:layout_gravity="center"
+                            android:gravity="center" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" with in "
+                            android:id="@+id/tv_new_member_add"
+                            android:layout_gravity="center"
+                            android:gravity="center" />
+                    </FrameLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center">
+
+                    <view
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        class="company.greatapp.moneycircle.view.TopSegmentItemView"
+                        android:id="@+id/tsiv_new_category"
+                        android:layout_weight="3" />
+
+                    <view
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        class="company.greatapp.moneycircle.view.TopSegmentItemView"
+                        android:id="@+id/tsiv_new_member_add"
+                        android:layout_weight="3" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:layout_gravity="center">
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="on date"
+                            android:id="@+id/tv_new_date_text"
+                            android:layout_gravity="center"
+                            android:gravity="center" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:layout_gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="due date"
+                            android:id="@+id/tv_new_due_date_text"
+                            android:layout_gravity="center"
+                            android:gravity="center" />
+                    </FrameLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center">
+
+                    <view
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        class="company.greatapp.moneycircle.view.TopSegmentItemView"
+                        android:id="@+id/tsiv_new_date"
+                        android:layout_weight="3" />
+
+                    <view
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        class="company.greatapp.moneycircle.view.TopSegmentItemView"
+                        android:id="@+id/tsiv_new_due_date"
+                        android:layout_weight="3" />
+                </LinearLayout>
+
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="along with"
+                android:id="@+id/textView4"
+                android:layout_gravity="center_horizontal" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="INCLUDE OTHER CONTACTS"
+                android:id="@+id/b_new_member_add"
+                android:layout_gravity="center_horizontal" />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="and I am included too"
+                android:id="@+id/cb_new_include_me"
+                android:layout_gravity="center_horizontal"
+                android:checked="true" />
+
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/hsv_new_contacts"
+                android:layout_gravity="center_horizontal"
+                android:fillViewport="false">
+
+                <LinearLayout
+                    android:id="@+id/ll_new_contacts"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="no contacts selected"
+                        android:id="@+id/tv_new_tot"
+                        android:layout_marginBottom="5dp" />
+
+                </LinearLayout>
+            </HorizontalScrollView>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="and I want to "
+                    android:id="@+id/textView5" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="EQUALLY"
+                    android:id="@+id/b_new_distribution_type" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="distribute this"
+                    android:id="@+id/textView6" />
+            </LinearLayout>
+
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/horizontalScrollView" >
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Total Member 0(excluding you) and "
+                        android:id="@+id/tv_new_total_members"
+                        android:layout_marginBottom="5dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Your contribution is Rs. 0 and Each member owes you Rs. 0 "
+                        android:id="@+id/tv_new_distribution_details"
+                        android:layout_marginBottom="5dp" />
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="more details are as below"
+                android:id="@+id/tv_new_note_text"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/et_new_note"
+                android:layout_gravity="center_horizontal"
+                android:minWidth="300dp"
+                android:layout_margin="5dp" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add this in frequent items"
+                android:id="@+id/cb_new_add_in_frequent"
+                android:layout_gravity="center_horizontal"
+                android:checked="false"
+                android:layout_margin="5dp" />
+
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

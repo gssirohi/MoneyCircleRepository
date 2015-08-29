@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -45,8 +46,9 @@ import company.greatapp.moneycircle.tools.GreatJSON;
 import company.greatapp.moneycircle.tools.Tools;
 import company.greatapp.moneycircle.dialogs.ContactInfoDialog;
 import company.greatapp.moneycircle.view.TagItemView;
+import company.greatapp.moneycircle.view.TopSegmentItemView;
 
-public class SplitToolActivity extends ActionBarActivity implements DatePickerFragment.DateSetter,TagItemView.TagItemViewCallBacks{
+public class SplitToolActivity extends ActionBarActivity implements TagItemView.TagItemViewCallBacks{
 
     public static final int SPLIT_AMOUNT_REQUEST = 33;
     private ArrayList<Participant> participants = new ArrayList<Participant>();
@@ -61,7 +63,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
     private TextView tv_new_before_type;
     private TextView tv_new_type;
     private TextView tv_new_after_type;
-    private TextView tv_new_currency;
+    //private TextView tv_new_currency;
     private TextView tv_new_category;
     private TextView tv_new_item;
     private TextView tv_new_member_add;
@@ -71,13 +73,16 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
     private EditText et_new_item;
     private EditText et_new_note;
 
-    private Button b_new_category;
-    private Button b_new_split;
     private Button b_new_members_add;
-    private Button b_new_circles_add;
-    private Button b_new_date;
+
+    private TopSegmentItemView tsiv_new_category;
+    private TopSegmentItemView tsiv_new_date;
+    private TopSegmentItemView tsiv_new_circle_add;
+    private TopSegmentItemView tsiv_new_due_date;
+
+
     private LinearLayout ll_new_contacts;
-    private LinearLayout ll_new_circles;
+   // private LinearLayout ll_new_circles;
     private CheckBox cb_include_me;
     private boolean isUserIncluded;
     private Button b_distribution_type;
@@ -86,23 +91,29 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
     private TextView tv_total_members;
     private String mCategory;
     private String mDateString = "";
+    private CheckBox cb_new_add_in_frequent;
+    private boolean mAddInFrequent;
+    private String mDueDateString;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_split_tool);
-
+        setContentView(R.layout.split_tool_layout);
+        //setContentView(R.layout.activity_split_tool);
+        toolbar = (Toolbar)findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+        
         ll_new_contacts = (LinearLayout)findViewById(R.id.ll_new_contacts);
-        ll_new_circles = (LinearLayout)findViewById(R.id.ll_new_circles);
+        //ll_new_circles = (LinearLayout)findViewById(R.id.ll_new_circles);
         tv_new_title = (TextView)findViewById(R.id.tv_new_title);
         tv_new_before_type = (TextView)findViewById(R.id.tv_new_before_type);
         tv_new_type = (TextView)findViewById(R.id.tv_new_type);
         tv_new_after_type = (TextView)findViewById(R.id.tv_new_after_type);
-        tv_new_currency = (TextView)findViewById(R.id.tv_new_currency);
         tv_new_category = (TextView)findViewById(R.id.tv_new_category);
         tv_new_item = (TextView)findViewById(R.id.tv_new_item);
         tv_new_member_add = (TextView)findViewById(R.id.tv_new_member_add);
-        tv_new_note = (TextView)findViewById(R.id.tv_new_note);
+        tv_new_note = (TextView)findViewById(R.id.tv_new_note_text);
         cb_include_me = (CheckBox)findViewById(R.id.cb_new_include_me);
         isUserIncluded = cb_include_me.isChecked();
         et_new_amount = (EditText)findViewById(R.id.et_new_amount);
@@ -111,35 +122,67 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         tv_total_members = (TextView)findViewById(R.id.tv_new_total_members);
         tv_distribution_details = (TextView)findViewById(R.id.tv_new_distribution_details);
         b_distribution_type = (Button)findViewById(R.id.b_new_distribution_type);
-        b_new_category = (Button)findViewById(R.id.b_new_category);
+
+        tsiv_new_category = (TopSegmentItemView)findViewById(R.id.tsiv_new_category);
+        tsiv_new_date = (TopSegmentItemView)findViewById(R.id.tsiv_new_date);
+        tsiv_new_circle_add = (TopSegmentItemView)findViewById(R.id.tsiv_new_member_add);
+        tsiv_new_due_date = (TopSegmentItemView)findViewById(R.id.tsiv_new_due_date);
+
+        cb_new_add_in_frequent = (CheckBox)findViewById(R.id.cb_new_add_in_frequent);
+
+
+
         b_new_members_add = (Button)findViewById(R.id.b_new_member_add);
-        b_new_circles_add = (Button)findViewById(R.id.b_new_add_circles);
-        b_new_split = (Button)findViewById(R.id.b_new_split);
-        b_new_date = (Button)findViewById(R.id.b_new_date);
+
+
+        tsiv_new_category.setModeOnlyTitle();
+        tsiv_new_category.setItemTitle("SELECT CATEGORY");
+
+        tsiv_new_date.setModeOnlyTitle();
+        tsiv_new_date.setItemTitle("SELECT DATE");
+
+        tsiv_new_circle_add.setModeOnlyTitle();
+        tsiv_new_circle_add.setItemTitle("SELECT CIRCLE");
+
+        tsiv_new_due_date.setModeOnlyTitle();
+        tsiv_new_due_date.setItemTitle("SELECT DUE DATE");
+
+
+
         b_new_members_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startItemSelection(C.TAG_CONTACTS,Model.MODEL_TYPE_SPLIT,ListView.CHOICE_MODE_MULTIPLE);
             }
         });
-        b_new_category.setOnClickListener(new View.OnClickListener() {
+        tsiv_new_category.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startItemSelection(C.TAG_CATEGORIES,Model.MODEL_TYPE_SPLIT,ListView.CHOICE_MODE_SINGLE);
             }
         });
-        b_new_circles_add.setOnClickListener(new View.OnClickListener() {
+        tsiv_new_circle_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startItemSelection(C.TAG_CIRCLES, Model.MODEL_TYPE_SPLIT, ListView.CHOICE_MODE_SINGLE);
             }
         });
-        b_new_date.setOnClickListener(new View.OnClickListener() {
+        tsiv_new_circle_add.setModeOnlyTitle();
+        tsiv_new_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePickerDialog();
             }
         });
+        tsiv_new_date.setModeOnlyTitle();
+        tsiv_new_due_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDueDatePickerDialog();
+            }
+        });
+        tsiv_new_due_date.setModeOnlyTitle();
+
         cb_include_me.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -147,6 +190,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
                 refreshParticipants();
             }
         });
+
         isEqually = true;
         b_distribution_type.setText("EQUALLY");
         b_distribution_type.setOnClickListener(new View.OnClickListener() {
@@ -156,20 +200,22 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
             }
         });
 
+        cb_new_add_in_frequent.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mAddInFrequent = isChecked;
+            }
+        });
+
         contactManager = new ContactManager(this);
         //TODO: ucomment it for circle
         circleManager = new CircleManager(this);
 
         setDefaultCategory();
         setDefaultDate();
+        setDefaultDueDate();
     }
-    public void setDefaultDate() {
-        mDateString = DateUtils.getCurrentDate();
-        b_new_date.setText(mDateString);
-    }
-    public void setDefaultCategory() {
-        mCategory = C.CATEGORY_NONE_UID;
-    }
+
     private void handleSplitAction() {
         if(!validateData()) return;
         
@@ -313,7 +359,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         //desc
             String desc = et_new_note.getText().toString();
         //date
-        String dateString = mDateString;
+
         //is split
         boolean isSplit = true;
         // linked split
@@ -332,7 +378,8 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
             lent.setTitle(title);
             lent.setAmount(amount);
             lent.setDescription(desc);
-            lent.setDateString(dateString);
+            lent.setDateString(mDateString);
+            lent.setDueDateString(mDueDateString);
             lent.setIsLinkedWithSplit(true);
             lent.setCategory(mCategory);
             lent.setLinkedContact(linkedMember);
@@ -417,11 +464,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         startActivityForResult(intent, SPLIT_AMOUNT_REQUEST);
     }
 
-    public void showDatePickerDialog() {
-        DatePickerFragment datePickerFragment = new DatePickerFragment();
-        datePickerFragment.setListener(this);
-        datePickerFragment.show(getSupportFragmentManager(), "datePicker");
-    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -445,12 +488,14 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
             if (resultCode == RESULT_OK) {
                 ArrayList<String> returnedResult = data.getStringArrayListExtra("uids");
                 addParticipants(C.TAG_CONTACTS, returnedResult);
-                addTagViews(requestCode);
+                addContactTagViews(requestCode);
             }
         } else if (requestCode == C.TAG_CIRCLES) {
            ArrayList<String> returnedResult = data.getStringArrayListExtra("uids");
            addParticipants(C.TAG_CIRCLES, returnedResult);
-           addTagViews(requestCode);
+          // addContactTagViews(requestCode);
+           String uid = returnedResult.get(0);
+           addCircle(uid);
         } else if(requestCode == SPLIT_AMOUNT_REQUEST) {
            if (resultCode == RESULT_OK) {
                participants = data.getParcelableArrayListExtra("participants");
@@ -466,11 +511,15 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
        }
     }
 
+    private void addCircle(String uid) {
+        Circle circle = (Circle)circleManager.getHeavyItemFromListByUID(uid);
+        tsiv_new_circle_add.setModel(circle,Model.MODEL_TYPE_CIRCLE);
+    }
     private void addCategory(String uid){
         CategoryManager cm = new CategoryManager(this, Model.MODEL_TYPE_SPLIT);
-        String title = cm.getHeavyItemFromListByUID(uid).getTitle();
+        Category category = (Category)cm.getHeavyItemFromListByUID(uid);
         mCategory = uid;   // TODO This value has to be properly set
-        b_new_category.setText(title);
+        tsiv_new_category.setModel(category,Model.MODEL_TYPE_CATEGORY);
     }
 
     private void setDistributedAmountView() {
@@ -479,7 +528,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         for (Participant p : participants) {
             details =  details +"["+ p.memberName+":"+p.amount+"]";
         }
-        tv_total_members.setText("TOTAL:"+total);
+        tv_total_members.setText("TOTAL:" + total);
         tv_distribution_details.setText(details);
     }
 
@@ -561,7 +610,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
         return value;
     }
 
-    private void addTagViews(int type) {
+    private void addContactTagViews(int type) {
         /*TODO returned Result will be uids finally not the String
         so we need to get names/titles of the item from manager classes using these uids
         */
@@ -575,7 +624,7 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
 
                 break;
             case C.TAG_CIRCLES:
-                ll = ll_new_circles;
+                //ll = ll_new_circles;
                 break;
             case C.TAG_CONTACTS:
                 ll = ll_new_contacts;
@@ -637,12 +686,55 @@ public class SplitToolActivity extends ActionBarActivity implements DatePickerFr
 
 
 
-    @Override
-    public void setDate(int year, int monthOfYear, int dayOfMonth) {
-        mDateString = DateUtils.getDateString(year, monthOfYear, dayOfMonth);
-        b_new_date.setText(mDateString);
+    public void showDatePickerDialog() {
+        DatePickerFragment datePickerFragment = new DatePickerFragment();
+        datePickerFragment.setListener(new DatePickerFragment.DateSetter() {
+            @Override
+            public void setDate(int year, int monthOfYear, int dayOfMonth) {
+                setEntryDate(year, monthOfYear, dayOfMonth);
+            }
+        });
+        datePickerFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
+    public void showDueDatePickerDialog() {
+        DatePickerFragment datePickerFragment = new DatePickerFragment();
+        datePickerFragment.setListener(new DatePickerFragment.DateSetter() {
+            @Override
+            public void setDate(int year, int monthOfYear, int dayOfMonth) {
+                setDueDate(year, monthOfYear, dayOfMonth);
+            }
+        });
+        datePickerFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+
+
+    public void setDefaultDate() {
+        mDateString = DateUtils.getCurrentDate();
+        tsiv_new_date.setItemTitle(mDateString);
+    }
+
+    public void setDefaultDueDate() {
+        mDueDateString = DateUtils.getCurrentWeekLastDate();
+        tsiv_new_due_date.setItemTitle(mDueDateString);
+    }
+
+    public void setDefaultCategory() {
+        mCategory = C.CATEGORY_NONE_UID;
+    }
+
+    public void setEntryDate(int year, int monthOfYear, int dayOfMonth) {
+        mDateString = DateUtils.getDateString(year, monthOfYear, dayOfMonth);
+        tsiv_new_date.setItemTitle(mDateString);
+        mDueDateString = DateUtils.getNextWeekLastDate(mDateString);
+        tsiv_new_due_date.setItemTitle(mDueDateString);
+//        Toast.makeText(this,"DATE:"+ mDateString,Toast.LENGTH_SHORT).show();
+    }
+    public void setDueDate(int year, int monthOfYear, int dayOfMonth) {
+        mDueDateString = DateUtils.getDateString(year, monthOfYear, dayOfMonth);
+        tsiv_new_due_date.setItemTitle(mDueDateString);
+//        Toast.makeText(this,"DATE:"+ mDateString,Toast.LENGTH_SHORT).show();
+    }
     private ArrayList<Participant> getParticipants() {
         return participants;
     }

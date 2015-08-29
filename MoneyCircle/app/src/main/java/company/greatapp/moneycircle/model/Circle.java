@@ -23,6 +23,7 @@ public class Circle extends Model  {
     private String mCircleName = "";
     private String mContactsJson;
     private ArrayList<Contact> mMemberList = new ArrayList<Contact>();
+    private int memberCount;
     //--------------------------------//
 
     // In this model Title and Circle Name would be same.
@@ -41,6 +42,14 @@ public class Circle extends Model  {
         mCircleName = circleName;
         mTitle = circleName;
         mUid = uid;
+    }
+
+    public int getMemberCount() {
+        return memberCount;
+    }
+
+    public void setMemberCount(int memberCount) {
+        this.memberCount = memberCount;
     }
 
     @Override
