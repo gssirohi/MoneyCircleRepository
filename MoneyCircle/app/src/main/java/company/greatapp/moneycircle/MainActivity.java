@@ -218,9 +218,13 @@ public class MainActivity extends ActionBarActivity implements TagItemView.TagIt
             case 3://Notification
                 break;
             case 4://profile
+                startActivity(new Intent(this,ViewAndEditProfileActivity.class));
                 break;
-
             case 5://developer
+                startActivity(new Intent(this,ContactUsActivity.class));
+                break;
+            default:
+                break;
 
         }
         mDrawerLayout.closeDrawers();

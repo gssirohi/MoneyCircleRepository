@@ -3,6 +3,7 @@ package company.greatapp.moneycircle;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
@@ -17,10 +18,15 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     private TextView tvPassword;
     private TextView tvCategory;
     private TextView tvProfile;
+    private Toolbar mToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+
+        mToolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(mToolbar);
 
         tvDailyReminder = (TextView) findViewById(R.id.tv_dailyReminderId);
         tvDailyReminder.setOnClickListener(this);
