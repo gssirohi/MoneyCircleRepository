@@ -59,7 +59,7 @@ public class ContactManager extends BaseModelManager {
         contact.setPhone(phone);
         contact.setEmail(email);
         contact.setImageUri(Uri.parse(imageUri));
-        contact.setRegistered(registered);
+        contact.setRegistered((registered == 1)? true : false);
         contact.setBorrowedAmountfromThis(borrowedAmount);
         contact.setLentAmountToThis(lentAmount);
         contact.setJsonString(jsonString);
@@ -92,7 +92,7 @@ public class ContactManager extends BaseModelManager {
         contact.setPhone(phone);
         contact.setEmail(email);
         contact.setImageUri(Uri.parse(imageUri));
-        contact.setRegistered(registered);
+        contact.setRegistered((registered == 1)? true : false);
         contact.setBorrowedAmountfromThis(borrowedAmount);
         contact.setLentAmountToThis(lentAmount);
         contact.setJsonString(jsonString);
@@ -117,7 +117,7 @@ public class ContactManager extends BaseModelManager {
             c.moveToFirst();
             while (!c.isAfterLast()) {
                 Model model = createHeavyItemFromCursor(c);
-                if (((Contact) model).getRegistered() == C.REGISTERED_ON_MONEY_CIRCLE) {
+                if (((Contact) model).isRegistered()) {
                     mRegisteredContactList.add(model);
                 } else {
                     mUnRegisteredContactList.add(model);
@@ -189,4 +189,15 @@ public class ContactManager extends BaseModelManager {
         return (Contact) getHeavyItemFromListByUID(C.USER_UNIQUE_ID);
     }
 
+    public Contact getContactByPhoneNumber(String registeredPhoneNumber) {
+        if(mContactList != null){
+            for(Model model : mContactList) {
+                String phone = ((Contact)model).getPhone();
+                if(phone.equals(registeredPhoneNumber)){
+                    return (Contact)model;
+                }
+            }
+        }
+        return null;
+    }
 }

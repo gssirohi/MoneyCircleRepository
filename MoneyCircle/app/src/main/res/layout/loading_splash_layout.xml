@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal" >
+
+    <ProgressBar
+        android:id="@+id/pb_loading_splash"
+style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="30dp" 
+        android:layout_marginRight="30dp" 
+        android:layout_marginTop="122dp" />
+
+    <TextView
+        android:id="@+id/tv_loading_splash_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="30dp"
+        android:text="Give us few seconds.."
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/app_text_secondary" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView4"
+        android:layout_below="@+id/pb_loading_splash"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="67dp" >
+
+        <TextView
+            android:id="@+id/tv_loading_splash_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/app_text_secondary"
+            android:text="loading..\n"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:gravity="center" />
+    </ScrollView>
+
+</RelativeLayout>

@@ -1,19 +1,40 @@
 package company.greatapp.moneycircle;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import company.greatapp.moneycircle.model.User;
 
-public class WelcomeActivity extends Activity {
+
+public class UserWelcomeActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_welcome_screen);
+        TextView tv_name = (TextView)findViewById(R.id.tv_welcome_name);
+        Button b_continue = (Button)findViewById(R.id.b_welcome_continue);
+        User user = new User(this);
+        tv_name.setText(user.getName());
+        b_continue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleContinue();
+            }
+        });
+    }
+
+    private void handleContinue() {
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     public void onStartButton(View v) {

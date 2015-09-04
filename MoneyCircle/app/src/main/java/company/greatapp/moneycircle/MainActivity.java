@@ -203,28 +203,6 @@ public class MainActivity extends ActionBarActivity implements TagItemView.TagIt
     private void initApp(){
         registerReceiver(mAccountantUpdatedReceiver, new IntentFilter(C.ACTION_ACCOUNTANT_DB_UPDATED));
 
-        PreferenceManager pm = new PreferenceManager(this);
-        if(!pm.isDeviceContactsRetrived()) {
-            ContactManager contactManager = new ContactManager(this);
-            contactManager.retriveContactsFromDevice();//contact initialization
-            //Tools.addDummyEntries(this);
-            SharedPreferences.Editor et =  pm.getEditor();
-            et.putBoolean(C.PREF_CONTACTS_RETRIVED, true);
-            et.commit();
-        }
-
-        if (!pm.isDefaultCategoriesLoadedInDB()) {
-            CategoryManager categoryManager = new CategoryManager(this);
-            categoryManager.insertDefaultCategoriesInDB();
-            SharedPreferences.Editor et = pm.getEditor();
-            et.putBoolean(C.PREF_DEFAULT_CATEGORIES_LOADED, true);
-            et.commit();
-
-            Accountant accountant = new Accountant(this,false);
-            accountant.initializeDb();
-
-//            Tools.sendMoneyTransactionBroadCast(this);
-        }
     }
     private void handleDrawerItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch(position){

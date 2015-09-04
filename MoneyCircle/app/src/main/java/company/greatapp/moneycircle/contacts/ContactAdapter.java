@@ -65,7 +65,7 @@ public class ContactAdapter extends BaseAdapter {
         }
         Contact contact = (Contact)mContactList.get(position);
         holder.contactName.setText(contact.getTitle());
-        if (contact.getRegistered() == C.REGISTERED_ON_MONEY_CIRCLE) {
+        if (contact.isRegistered()) {
             holder.inviteIcon.setVisibility(View.GONE);
             holder.chatIcon.setVisibility(View.VISIBLE);
         } else {

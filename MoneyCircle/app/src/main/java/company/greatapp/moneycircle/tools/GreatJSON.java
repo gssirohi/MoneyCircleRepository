@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import company.greatapp.moneycircle.constants.S;
 import company.greatapp.moneycircle.manager.CircleManager;
 import company.greatapp.moneycircle.manager.ContactManager;
 import company.greatapp.moneycircle.manager.ExpenseManager;
@@ -27,6 +28,40 @@ import company.greatapp.moneycircle.model.Split;
  */
 public class GreatJSON {
 
+    ///=============================== FOR SERVER ================================================//
+    public static JSONArray getPhoneNumberArrayForContactList(ArrayList<Contact> contacts) {
+        String jsonString = "";
+        JSONArray array = new JSONArray();
+
+        for(Contact c : contacts) {
+            array.put(getJsonObjectForPhoneNumber(c));
+        }
+
+        jsonString = array.toString();
+        Log.d("split", "PHONE NUMBER JSON ARRAY : " + jsonString);
+        return array;
+    }
+
+    public static JSONObject getJsonObjectForPhoneNumber(Contact contact) {
+        if(contact == null) {
+            Log.d("SPLIT", "Contact is Null");
+            return null;
+        }
+
+        Log.d("SPLIT","getting json obj for below phoneNumber-->");
+        contact.printModelData();
+        String jsonString = "";
+        JSONObject obj = new JSONObject();
+        try{
+            obj.put(S.PHONE_NUMBER, contact.getPhone());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        jsonString = obj.toString();
+        Log.d("split", "PHONE JSON OBJECT : " + jsonString);
+        return obj;
+    }
+    //============================================================================================//
     public static JSONArray getJsonArrayForModelList(ArrayList<Model> models) {
         String jsonString = "";
         JSONArray array = new JSONArray();

@@ -127,5 +127,7 @@
     <string name="no_member">No Member</string>
 
     <string name="action_search_hint">Search..</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_money_circle_welcome">Money Circle</string>
 
 </resources>
