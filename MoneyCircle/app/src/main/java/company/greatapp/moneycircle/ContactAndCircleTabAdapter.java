@@ -1,14 +1,11 @@
 package company.greatapp.moneycircle;
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import company.greatapp.moneycircle.circles.CirclesViewFragment;
-import company.greatapp.moneycircle.contacts.ContactsViewFragment;
-import company.greatapp.moneycircle.contacts.RegisteredContactsViewFragment;
-import company.greatapp.moneycircle.manager.CircleManager;
+import java.util.List;
+
 import company.greatapp.moneycircle.manager.ContactManager;
 
 /**
@@ -18,22 +15,18 @@ public class ContactAndCircleTabAdapter extends FragmentStatePagerAdapter {
 
     private static final int TOTAL_TABS = 3;
     private ContactManager mContactManager = null;
+    private List<Fragment> mFragmentList = null;
 
-    public ContactAndCircleTabAdapter(Context context, FragmentManager fm) {
+    public ContactAndCircleTabAdapter(FragmentManager fm, List<Fragment> fragmentList) {
         super(fm);
-        mContactManager = new ContactManager(context);
+        mFragmentList = fragmentList;
     }
 
     @Override
     public Fragment getItem(int position) {
 
-        switch (position) {
-            case 0:
-                return new RegisteredContactsViewFragment(mContactManager);
-            case 1:
-                return new ContactsViewFragment(mContactManager);
-            case 2:
-                return new CirclesViewFragment(mContactManager);
+        if (mFragmentList != null) {
+            return mFragmentList.get(position);
         }
         return null;
     }
@@ -42,4 +35,30 @@ public class ContactAndCircleTabAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return TOTAL_TABS;
     }
+
+    /**
+     * This Function is needed if we use PagerTabStrip or PagerTitleStrip
+     * @param position
+     * @return*//*
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+
+        String title = null;
+
+        switch (position) {
+            case 0:
+                title = "Registered Contact";
+                break;
+            case 1:
+                title = "Contacts";
+                break;
+            case 2:
+                title = "Circles";
+                break;
+            default:break;
+        }
+
+        return title;
+    }*/
 }

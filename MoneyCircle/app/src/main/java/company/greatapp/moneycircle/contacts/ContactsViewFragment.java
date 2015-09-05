@@ -7,8 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
 import company.greatapp.moneycircle.R;
@@ -19,12 +17,20 @@ import company.greatapp.moneycircle.manager.ContactManager;
  */
 public class ContactsViewFragment extends Fragment {
 
+    private static ContactsViewFragment mContactsViewFragment;
     private ContactManager mContactManager = null;
 
-    public ContactsViewFragment() {} // Empty constructor
+    private ContactsViewFragment() {} // Empty constructor
 
-    public ContactsViewFragment(ContactManager contactManager) {
+    private ContactsViewFragment(ContactManager contactManager) {
             mContactManager = contactManager;
+    }
+
+    public static final ContactsViewFragment getInstance(ContactManager contactManager) {
+        if (mContactsViewFragment == null) {
+            mContactsViewFragment = new ContactsViewFragment(contactManager);
+        }
+        return mContactsViewFragment;
     }
 
     @Nullable

@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.manager.ContactManager;
-import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Model;
 
 
@@ -27,10 +26,19 @@ public class RegisteredContactsViewFragment extends Fragment {
     private ContactManager mContactManager;
     ArrayList<Model> mRegisteredContactList = null;
 
-    public RegisteredContactsViewFragment() {} // Empty Constructor
+    private static RegisteredContactsViewFragment mRegisteredContactsViewFragment = null;
 
-    public RegisteredContactsViewFragment(ContactManager contactManager) {
+    private RegisteredContactsViewFragment() {} // Empty Constructor
+
+    private RegisteredContactsViewFragment(ContactManager contactManager) {
         mContactManager = contactManager;
+    }
+
+    public static final RegisteredContactsViewFragment getInstance(ContactManager contactManager) {
+        if (mRegisteredContactsViewFragment == null) {
+            mRegisteredContactsViewFragment = new RegisteredContactsViewFragment(contactManager);
+        }
+        return mRegisteredContactsViewFragment;
     }
 
     @Nullable

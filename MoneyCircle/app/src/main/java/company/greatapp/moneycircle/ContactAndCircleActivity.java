@@ -1,88 +1,96 @@
 package company.greatapp.moneycircle;
 
-import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.SimpleOnPageChangeListener;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import company.greatapp.moneycircle.circles.CirclesViewFragment;
+import company.greatapp.moneycircle.contacts.ContactsViewFragment;
+import company.greatapp.moneycircle.contacts.RegisteredContactsViewFragment;
+import company.greatapp.moneycircle.dialogs.ContactInfoDialog;
+import company.greatapp.moneycircle.manager.ContactManager;
+import company.greatapp.moneycircle.model.Contact;
+import company.greatapp.moneycircle.model.Model;
+import company.greatapp.moneycircle.view.TagItemView;
 
 /**
  * Created by prateek02.arora on 30-06-2015.
  */
-public class ContactAndCircleActivity extends AppCompatActivity implements ActionBar.TabListener{
-
-    private static final int TOTAL_TABS = 3;
+public class ContactAndCircleActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, TagItemView.TagItemViewCallBacks{
 
     private ViewPager mViewPager;
     private ContactAndCircleTabAdapter mTabAdapter;
 
-    ActionBar mActionBar;
+    private Toolbar mToolbar;
+    private ContactManager mContactManager;
+    private TabLayout mTabLayout = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts_and_circle);
 
-        mActionBar = getSupportActionBar();
+        mToolbar = (Toolbar)findViewById(R.id.tool_bar);
+        setSupportActionBar(mToolbar);
 
         mViewPager = (ViewPager)findViewById(R.id.contactTabPagerId);
 
-        mTabAdapter = new ContactAndCircleTabAdapter(this, getSupportFragmentManager());
-        mViewPager.setAdapter(mTabAdapter);
+        mTabLayout = (TabLayout)findViewById(R.id.tab_layout);
 
-        mActionBar.setHomeButtonEnabled(false);
-        mActionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        // Create Tabs
+        mTabLayout.addTab(mTabLayout.newTab().setText("Registered Contact"));
+        mTabLayout.addTab(mTabLayout.newTab().setText("Contacts"));
+        mTabLayout.addTab(mTabLayout.newTab().setText("Circles"));
 
-       // for (int i = 0; i < TOTAL_TABS; i++) {
-            mActionBar.addTab(mActionBar.newTab().setText("Registered Contact").setTabListener(this));
-            mActionBar.addTab(mActionBar.newTab().setText("Contacts").setTabListener(this));
-            mActionBar.addTab(mActionBar.newTab().setText("Circles").setTabListener(this));
-       // }
+        mTabLayout.setOnTabSelectedListener(this);
 
-        setPageChangeListener();
+        mContactManager = new ContactManager(this);
+
+        intializeViewPager();
     }
 
-    public void setPageChangeListener() {
-        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+    /**
+     * Initialise ViewPager
+     */
+    private void intializeViewPager() {
 
-            }
+        List<Fragment> fragmentList = new ArrayList<Fragment>();
+        fragmentList.add(RegisteredContactsViewFragment.getInstance(mContactManager));
+        fragmentList.add(ContactsViewFragment.getInstance(mContactManager));
+        fragmentList.add(CirclesViewFragment.getInstance(mContactManager));
 
-            @Override
-            public void onPageSelected(int position) {
+        mTabAdapter = new ContactAndCircleTabAdapter(getSupportFragmentManager(), fragmentList);
+        mViewPager.setAdapter(mTabAdapter);
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
 
-                // When swiping between pages, select the
-                // corresponding tab.
-                Log.d("Prateek", "onPageSelected");
-                mActionBar.setSelectedNavigationItem(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
     }
 
     @Override
-    public void onTabSelected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction ft) {
-
-        // When the tab is selected, switch to the
-        // corresponding page in the ViewPager.
+    public void onTabSelected(TabLayout.Tab tab) {
         mViewPager.setCurrentItem(tab.getPosition());
     }
 
     @Override
-    public void onTabUnselected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction ft) {
+    public void onTabUnselected(TabLayout.Tab tab) {
 
     }
 
     @Override
-    public void onTabReselected(ActionBar.Tab tab, android.support.v4.app.FragmentTransaction ft) {
+    public void onTabReselected(TabLayout.Tab tab) {
 
+    }
+
+    @Override
+    public void onContactTagClicked(Model model) {
+        ContactInfoDialog dialog = new ContactInfoDialog(this,(Contact)model);
+        dialog.show();
     }
 }

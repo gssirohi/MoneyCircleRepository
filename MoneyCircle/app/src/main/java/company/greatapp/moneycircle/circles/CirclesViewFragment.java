@@ -23,6 +23,7 @@ import company.greatapp.moneycircle.manager.ContactManager;
  */
 public class CirclesViewFragment extends Fragment implements android.support.v4.app.LoaderManager.LoaderCallbacks<Cursor> {
 
+    private static CirclesViewFragment mCircleViewFragment = null;
     private final String LOGTAG = getClass().getSimpleName().toString();
 
     private ContactManager mContactManager;
@@ -32,10 +33,17 @@ public class CirclesViewFragment extends Fragment implements android.support.v4.
 
     CirclesAdapter mCircleAdapter = null;
 
-    public CirclesViewFragment() {}     // Empty Constructor
+    private CirclesViewFragment() {}     // Empty Constructor
 
-    public CirclesViewFragment(ContactManager manager) {
+    private CirclesViewFragment(ContactManager manager) {
         mContactManager = manager;
+    }
+
+    public static final CirclesViewFragment getInstance(ContactManager contactManager) {
+        if (mCircleViewFragment == null) {
+            mCircleViewFragment = new CirclesViewFragment(contactManager);
+        }
+        return mCircleViewFragment;
     }
 
     @Nullable
