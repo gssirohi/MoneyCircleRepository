@@ -133,6 +133,24 @@ public class Tools {
         return model;
     }
 
+    public static Contact getContactFromPhoneNumber(Context context, String phoneNumber) {
+        if (context == null || TextUtils.isEmpty(phoneNumber)) {
+            return null;
+        }
+        Contact contact = null;
+
+        String [] projection = null;
+        String selection=DB.PHONE_NUMBER + "=" + "?";
+        String [] selArgs = new String[]{""+phoneNumber};
+        Cursor c = context.getContentResolver().query(DB.CONTACT_TABLE_URI, projection, selection, selArgs, null);
+        if(c != null && c.getCount() > 0) {
+            c.moveToFirst();
+            contact =  (Contact)createLightModelFromCursor(c,Model.MODEL_TYPE_CONTACT);
+            c.close();
+        }
+        return contact;
+    }
+
     public static Model createLightModelFromCursor(Cursor cursor, int modelType) {
         Model model= null;
         switch (modelType) {
@@ -327,6 +345,25 @@ public static String getModelName(int modelType){
             color = context.getResources().getColor(R.color.split_dark);
         }
         return color;
+    }
+
+    public static int getModelThemeResId(int modelType) {
+        int themeResId = 0;
+        switch(modelType) {
+            case Model.MODEL_TYPE_INCOME:
+                themeResId = R.style.Theme_MoneyCircle_Income;
+                break;
+            case Model.MODEL_TYPE_EXPENSE:
+                themeResId = R.style.Theme_MoneyCircle_Expense;
+                break;
+            case Model.MODEL_TYPE_BORROW:
+                themeResId = R.style.Theme_MoneyCircle_Borrow;
+                break;
+            case Model.MODEL_TYPE_LENT:
+                themeResId = R.style.Theme_MoneyCircle_Lent;
+                break;
+        }
+        return themeResId;
     }
 
     public static void sendMoneyTransactionBroadCast(Context context, Model newItem, int type) {

@@ -213,7 +213,7 @@ public class NotificationItemView extends LinearLayout {
                     b_clear.setVisibility(GONE);
                 }
                 break;
-            case S.NOTIFICATION_AGREE_REQUEST:
+            case S.NOTIFICATION_AGREE:
 
                 ll_money_item_frame.setVisibility(VISIBLE);
                 if(isResponded) {
@@ -226,7 +226,7 @@ public class NotificationItemView extends LinearLayout {
                     b_clear.setVisibility(GONE);
                 }
                 break;
-            case S.NOTIFICATION_DISAGREE_REQUEST:
+            case S.NOTIFICATION_DISAGREE:
 
                 ll_money_item_frame.setVisibility(VISIBLE);
                 if(isResponded) {

@@ -6,7 +6,6 @@ package company.greatapp.moneycircle.tools;
 
         import android.content.Context;
         import android.content.Intent;
-        import android.os.AsyncTask;
         import android.util.Log;
         import com.google.android.gcm.GCMRegistrar;
 
@@ -14,7 +13,7 @@ package company.greatapp.moneycircle.tools;
 
         import company.greatapp.moneycircle.constants.C;
         import company.greatapp.moneycircle.constants.S;
-        import company.greatapp.moneycircle.manager.VolleyPlayer;
+        import company.greatapp.moneycircle.manager.Transporter;
         import company.greatapp.moneycircle.model.User;
 
 public class RegistrationUtils {
@@ -67,13 +66,13 @@ public class RegistrationUtils {
     }
 
     public static void registerUserOnAppServer(final Context context) {
-        VolleyPlayer vp = new VolleyPlayer(context);
+        Transporter vp = new Transporter(context);
         vp.registerUserOnAppServer(new User(context));
 
     }
 
     public static void unregisterFromAppServer(Context context, String registrationId) {
-//        VolleyPlayer vp = new VolleyPlayer();
+//        Transporter vp = new Transporter();
 //        vp.unregisterUserFromAppServer();
     }
 
@@ -96,7 +95,7 @@ public class RegistrationUtils {
     }
 
     public static void checkRegisteredContactsInAppServer(Context context,JSONArray phoneNumberJsonArray) {
-        VolleyPlayer vp = new VolleyPlayer(context);
+        Transporter vp = new Transporter(context);
         vp.checkRegisteredContactsInAppServer(phoneNumberJsonArray);
     }
 

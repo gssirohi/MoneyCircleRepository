@@ -82,8 +82,10 @@ public class GCMIntentService extends GCMBaseIntentService {
     	
         // check to see if it is a message
         if (intent.getAction().equals("com.google.android.c2dm.intent.RECEIVE")) {
-           TransactionManager tm = new TransactionManager(context);
-           tm.handleGCM_Message(intent);
+           /*TransactionManager tm = new TransactionManager(context);
+           tm.handleGCM_Message(intent);*/
+            NotificationHandler notificationHandler = new NotificationHandler(context);
+            notificationHandler.handleGCM_Message(intent);
         }
 
     }

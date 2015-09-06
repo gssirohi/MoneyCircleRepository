@@ -1,6 +1,7 @@
 package company.greatapp.moneycircle.tools;
 
 import android.content.Context;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -21,7 +22,9 @@ import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Expense;
 import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
+import company.greatapp.moneycircle.model.Notification;
 import company.greatapp.moneycircle.model.Split;
+import company.greatapp.moneycircle.model.User;
 
 /**
  * Created by gyanendra.sirohi on 7/14/2015.
@@ -385,5 +388,181 @@ public class GreatJSON {
             e.printStackTrace();
         }
         return lent;
+    }
+
+    public static Notification getNotificationFromJSONString(Context context, String json) {
+        Notification notification = null;
+        try {
+            JSONObject obj = new JSONObject(json);
+            String title = obj.getString("title");
+            int notificationType = Integer.parseInt(obj.getString("notificationType"));
+
+            String senderphoneNo = obj.getString("senderPhoneNo");
+
+            Contact senderContact = Tools.getContactFromPhoneNumber(context, senderphoneNo);
+            String senderName = senderContact.getContactName();
+            Uri senderImageUri = senderContact.getImageUri();
+
+            String itemOwnerPhoneNo = obj.getString("itemOwnerPhoneNo");;
+            String itemOwnerName = null;
+            String dateString = obj.getString("dateString");
+            String moneyItemTitle = obj.getString("moneyItemTitle");
+            String moneyReceiverPhoneNo = obj.getString("moneyReceiverphoneNo");;
+            String moneyPayerPhoneNo = obj.getString("moneyPayerphoneNo");
+            String itemOwnerUID = null;
+
+            String dueDateString = obj.getString("dueDateString");;
+
+            String moneyReceiverName = null;
+            String moneyPayerName = null;
+
+            String amount = obj.getString("moneyItemAmount");;
+
+            String message = null;
+
+            User user = new User(context);
+
+            switch (notificationType) {
+                case S.NOTIFICATION_INFORMATION:
+                    break;
+                case S.NOTIFICATION_LENT_REQUEST:
+                    moneyReceiverPhoneNo = obj.getString("moneyReceiverphoneNo");
+                    moneyPayerPhoneNo = obj.getString("moneyPayerphoneNo");
+                    itemOwnerPhoneNo = obj.getString("itemOwnerPhoneNo");
+                    moneyItemTitle = obj.getString("moneyItemTitle");
+                    dueDateString = obj.getString("dueDateString");
+                    amount = obj.getString("moneyItemAmount");
+                    title = obj.getString("title");
+                    break;
+                case S.NOTIFICATION_BORROW_REQUEST:
+                    moneyReceiverPhoneNo = obj.getString("moneyReceiverphoneNo");
+                    moneyPayerPhoneNo = obj.getString("moneyPayerphoneNo");
+                    itemOwnerPhoneNo = obj.getString("itemOwnerPhoneNo");
+                    itemOwnerPhoneNo = obj.getString("itemOwnerPhoneNo");
+                    moneyItemTitle = obj.getString("moneyItemTitle");
+                    title = obj.getString("title");
+                    break;
+                case S.NOTIFICATION_PAY_REQUEST:
+                    moneyReceiverPhoneNo = obj.getString("moneyReceiverphoneNo");
+                    moneyPayerPhoneNo = obj.getString("moneyPayerphoneNo");
+                    itemOwnerPhoneNo = obj.getString("itemOwnerPhoneNo");
+                    title = obj.getString("title");
+                    moneyItemTitle = obj.getString("moneyItemTitle");
+                    break;
+                case S.NOTIFICATION_MODIFY_REQUEST:
+                    moneyReceiverPhoneNo = obj.getString("moneyReceiverphoneNo");
+                    moneyPayerPhoneNo = obj.getString("moneyPayerphoneNo");
+                    itemOwnerPhoneNo = obj.getString("itemOwnerPhoneNo");
+                    title = obj.getString("title");
+                    moneyItemTitle = obj.getString("moneyItemTitle");
+                    break;
+                case S.NOTIFICATION_RECEIVE_REQUEST:
+                    moneyReceiverPhoneNo = obj.getString("moneyReceiverphoneNo");
+                    moneyPayerPhoneNo = obj.getString("moneyPayerphoneNo");
+                    itemOwnerPhoneNo = obj.getString("itemOwnerPhoneNo");
+                    title = obj.getString("title");
+                    moneyItemTitle = obj.getString("moneyItemTitle");
+                    break;
+                case S.NOTIFICATION_SETTLE_REQUEST:
+                    break;
+                case S.NOTIFICATION_REMINDER_REQUEST:
+                    title = obj.getString("title");
+                    itemOwnerPhoneNo = obj.getString("itemOwnerPhoneNo");
+                    moneyItemTitle = obj.getString("moneyItemTitle");
+                    break;
+                case S.NOTIFICATION_AGREE:
+                    title = obj.getString("title");
+                    itemOwnerPhoneNo = obj.getString("itemOwnerPhoneNo");
+                    moneyItemTitle = obj.getString("moneyItemTitle");
+                    break;
+                case S.NOTIFICATION_DISAGREE:
+                    title = obj.getString("title");
+                    itemOwnerPhoneNo = obj.getString("itemOwnerPhoneNo");
+                    moneyItemTitle = obj.getString("moneyItemTitle");
+                    break;
+                case S.NOTIFICATION_DELETE_REQUEST:
+                    title = obj.getString("title");
+                    itemOwnerPhoneNo = obj.getString("itemOwnerPhoneNo");
+                    moneyItemTitle = obj.getString("moneyItemTitle");
+                    break;
+
+                default:
+                    break;
+            }
+            message = getMessage(notificationType, senderName, amount);
+            if (message == null) {
+                message = "";
+            }
+
+            if (moneyReceiverPhoneNo != null && moneyPayerPhoneNo != null) {
+                if (senderphoneNo.equals(moneyReceiverPhoneNo)) {
+                    moneyReceiverName = senderName;
+                    moneyPayerName = user.getName();
+                } else {
+                    moneyPayerName = senderName;
+                    moneyReceiverName = user.getName();
+                }
+            }
+
+
+            String ownerItemUID = obj.getString("ownerItemUID");
+
+            notification = new Notification();
+            notification.setTitle(title);
+            notification.setAmount(Float.parseFloat(amount));
+            notification.setDateString(dateString);
+            notification.setDueDateString(dueDateString);
+            notification.setJsonString(json);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return notification;
+    }
+
+
+    private static String getMessage(int notificationType, String name, String amount) {
+        if (amount == null && (S.NOTIFICATION_INFORMATION != notificationType)) {
+            return null;
+        }
+        String message = null;
+        switch (notificationType) {
+            case S.NOTIFICATION_LENT_REQUEST:
+                message = "YOU OWE "+ amount +" to "+ name + " for this transaction";
+                break;
+            case S.NOTIFICATION_BORROW_REQUEST:
+                message = name + " OWES YOU" + amount + " for this transaction";
+                break;
+            case S.NOTIFICATION_PAY_REQUEST:
+                message = name + " PAYED " + amount + " to YOU for this transaction";
+                break;
+            case S.NOTIFICATION_SETTLE_REQUEST:
+                message = name + " SETTLED UP with YOU";
+                break;
+            case S.NOTIFICATION_REMINDER_REQUEST:
+                message = "REMINDER to pay " + amount + " to " + name;
+                break;
+            case S.NOTIFICATION_AGREE:
+                message = name + " agree to pay "+ amount + " for this transaction";
+                break;
+            case S.NOTIFICATION_DISAGREE:
+                message = name + " disagreed to pay "+ amount + " for this transaction";
+                break;
+            case S.NOTIFICATION_RECEIVE_REQUEST:
+                message = name + " RECEIVED "+ amount + " for this transaction";
+                break;
+            case S.NOTIFICATION_DELETE_REQUEST:
+                message = name + " deleted  this transaction";
+                break;
+            case S.NOTIFICATION_MODIFY_REQUEST:
+                message = name + " modified this transaction";
+                break;
+            case S.NOTIFICATION_INFORMATION:
+                message = "Information Message of Money Circle";
+                break;
+            default:
+                break;
+        }
+        return message;
     }
 }

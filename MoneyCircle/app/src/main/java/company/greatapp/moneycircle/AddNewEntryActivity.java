@@ -95,7 +95,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         }
 
         //setContentView(R.layout.activity_add_new_entry);
-        setTheme(getThemeResId());          // Theme has to be set before calling setContentView()
+        setTheme(Tools.getModelThemeResId(mModelType));          // Theme has to be set before calling setContentView()
 
         setContentView(R.layout.new_entry_layout);
 
@@ -203,25 +203,6 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         setDefaultDueDate();
         //setTextColor();
         setButtonColor();
-    }
-
-    private int getThemeResId() {
-        int themeResId = 0;
-        switch(mModelType) {
-            case Model.MODEL_TYPE_INCOME:
-                themeResId = R.style.Theme_MoneyCircle_Income;
-                break;
-            case Model.MODEL_TYPE_EXPENSE:
-                themeResId = R.style.Theme_MoneyCircle_Expense;
-                break;
-            case Model.MODEL_TYPE_BORROW:
-                themeResId = R.style.Theme_MoneyCircle_Borrow;
-                break;
-            case Model.MODEL_TYPE_LENT:
-                themeResId = R.style.Theme_MoneyCircle_Lent;
-                break;
-        }
-        return themeResId;
     }
 
     private void setButtonColor() {

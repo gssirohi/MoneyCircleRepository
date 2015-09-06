@@ -45,7 +45,20 @@ public class S {
     public static final String URL_APP_SERVER_SETUP_CONTACTS = "http://1-dot-gyan-moneycircle-1727.appspot.com/setupcontacts";
     public static final String SENDER_ID = "470422662474";  // project id app engine
 
+    public static final String NOTIFICATION_TYPE = "notification_type";
+    public static final String NOTIFICATION_JSONSTRING = "notification_jsonstring";
 
 
+    public static final int NOTIFICATION_LENT_REQUEST = 10;
+    public static final int NOTIFICATION_BORROW_REQUEST = 11;
+    public static final int NOTIFICATION_PAY_REQUEST = 12;
+    public static final int NOTIFICATION_SETTLE_REQUEST = 13;
+    public static final int NOTIFICATION_REMINDER_REQUEST = 14;
+    public static final int NOTIFICATION_AGREE = 15;
+    public static final int NOTIFICATION_DISAGREE = 16;
+    public static final int NOTIFICATION_RECEIVE_REQUEST = 17;
+    public static final int NOTIFICATION_DELETE_REQUEST = 18;
+    public static final int NOTIFICATION_MODIFY_REQUEST = 19;
+    public static final int NOTIFICATION_INFORMATION = 20;
 
 }

@@ -23,19 +23,20 @@ import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.constants.S;
 import company.greatapp.moneycircle.model.User;
 import company.greatapp.moneycircle.tools.RegistrationUtils;
+import company.greatapp.moneycircle.tools.RegistrationUtils;
 
 /**
  * Created by Gyanendrasingh on 8/30/2015.
  */
-public class VolleyPlayer {
-    private static final String TAG = "VolleyPlayer";
+public class Transporter {
+    private static final String TAG = "Transporter";
     private static final int REQ_CODE_REGISTRATION = 1;
     private static final int REQ_CODE_SETUP_CONTACTS = 2;
 
     private final Context mContext;
 
 
-    public VolleyPlayer(Context context) {
+    public Transporter(Context context) {
         mContext = context;
     }
     private JsonObjectRequest getJsonObjectRequest(String url,final int reqCode) {
