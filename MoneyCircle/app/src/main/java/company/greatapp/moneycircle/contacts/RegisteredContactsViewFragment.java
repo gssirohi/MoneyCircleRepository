@@ -48,7 +48,7 @@ public class RegisteredContactsViewFragment extends Fragment {
         Log.d("Prateek", "[RegisteredContactsViewFragment] onCreateView");
         View view = inflater.inflate(R.layout.fragment_registered_contact_viewer, container, false);
             mListView = (ListView)view.findViewById(R.id.lvRegisteredContactViewId);
-            Button createCircleButton = (Button)view.findViewById(R.id.btInviteContactId);
+            Button bt_inviteContact = (Button)view.findViewById(R.id.btInviteContactId);
 
         if (mContactManager != null) {
             mContactManager = new ContactManager(getActivity().getBaseContext());
@@ -57,9 +57,9 @@ public class RegisteredContactsViewFragment extends Fragment {
 
         if (mRegisteredContactList == null) {
             mListView.setVisibility(View.GONE);
-            createCircleButton.setVisibility(View.VISIBLE);
+            bt_inviteContact.setVisibility(View.VISIBLE);
         } else {
-            createCircleButton.setVisibility(View.GONE);
+            bt_inviteContact.setVisibility(View.GONE);
             mListView.setVisibility(View.VISIBLE);
             ContactAdapter adapter = new ContactAdapter(getActivity(), mRegisteredContactList);
             mListView.setAdapter(adapter);

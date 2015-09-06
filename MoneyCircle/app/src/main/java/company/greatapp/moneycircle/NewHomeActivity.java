@@ -398,4 +398,18 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
         ContactInfoDialog dialog = new ContactInfoDialog(this,(Contact)model);
         dialog.show();
     }
+
+    public void startNewEntryActivity(View view) {
+
+        Intent intent = null;
+        if (mModelType == Model.MODEL_TYPE_SPLIT) {
+            intent = new Intent(this, SplitToolActivity.class);
+        } else {
+            intent = new Intent(this, AddNewEntryActivity.class);
+            intent.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
+            intent.putExtra(C.MODEL_TYPE, mModelType);
+        }
+        startActivity(intent);
+
+    }
 }
