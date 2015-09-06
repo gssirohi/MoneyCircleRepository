@@ -88,15 +88,15 @@ public class NotificationItemView extends LinearLayout {
     }
 
     public void initView(Notification notification) {
-        int type = notification.getType();
+        int type = notification.getModelType();
         String sender = notification.getSenderName();
 
         String msg = notification.getMessage();
 
-        String moneyItemTitle = notification.getMoneyItemTitle();
-        String amount = ""+notification.getMoneyItemAmount();
-        String dateString = ""+notification.getMoneyItemDateString();
-        String dueDateString = ""+notification.getMoneyItemDueDateString();
+        String moneyItemTitle = notification.getMoneyTitle();
+        String amount = ""+notification.getAmount();
+        String dateString = ""+notification.getMoneyDate();
+        String dueDateString = ""+notification.getMoneyDueDate();
 
         tv_contact_name.setText(sender);
         tv_notification_msg.setText(msg);

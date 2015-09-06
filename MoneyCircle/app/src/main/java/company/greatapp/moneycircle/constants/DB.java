@@ -191,16 +191,29 @@ public class DB {
 
     public static final String NOTIFICATION_TABLE_NAME = "notificationTable";
     public static final String NOTIFICATION_TYPE = "notificationType";
-    public static final String NOTIFICATION_DESCRIPTION = "notificationDescription";
-    public static final String NOTIFICATION_JSON_STRING = "notificationJsonString";
+    public static final String NOTIFICATION_MONEY_RECIEVER ="money requester";
+    public static final String NOTIFICATION_MONEY_PAYER ="money payer";
+    public static final String NOTIFICATION_OWNER_ITEM_UID ="owner item uid";
+    public static final String SENDER_NUMBER ="sender phone number";
+    public static final String NOTIFICATION_IS_RESPONDED ="is responded";
+    public static final String NOTIFICATION_MESSAGE = "notification message";
+    public static final String NOTIFICATION_TITLE = "notification title";
+    public static final String ITEM_TITLE = "money title";
+   // public static final String DATE_STRING = "money date";
+    public static final String NOTIFICATION_MONEY_DUE_DATE = "money due date";
+    public static final String MONEY_ITEM_DESCRIPTION = "money description";
+    public static final String SENDER_NAME = "sender name";
+    public static final String ITEM_OWNER_NAME ="item owner name";
+
 
 
 
 
     public static final Uri NOTIFICATION_TABLE_URI = Uri.parse("content://"+DB_AUTHORITY+"/" + NOTIFICATION_TABLE_NAME);
     public static final String[] NOTIFICATION_TABLE_PROJECTION = new String[]{
-            DB_ID,UID,NAME,PHONE_NUMBER,NOTIFICATION_TYPE,NOTIFICATION_DESCRIPTION,
-                                    NOTIFICATION_JSON_STRING};
+            DB_ID,UID,NAME,PHONE_NUMBER,NOTIFICATION_TYPE,DESCRIPTION,AMOUNT,CATEGORY,TITLE,NOTIFICATION_IS_RESPONDED,SENDER_NUMBER
+    ,NOTIFICATION_MESSAGE, ITEM_TITLE, DATE_STRING,NOTIFICATION_MONEY_DUE_DATE
+    , MONEY_ITEM_DESCRIPTION};
 //----------------------------------------------------------------//
     //--------------COMMON TABLE--------------------------------------//
 

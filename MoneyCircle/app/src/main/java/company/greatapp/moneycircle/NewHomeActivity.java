@@ -1,10 +1,10 @@
 package company.greatapp.moneycircle;
 
 
-import android.app.ActionBar;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
 
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.support.v7.app.ActionBarActivity;
@@ -27,12 +27,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import company.greatapp.moneycircle.adapters.MoneyItemAdapter;
+import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.manager.CategoryManager;
 import company.greatapp.moneycircle.model.Category;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.DBFilter;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.Period;
+import company.greatapp.moneycircle.split.SplitToolActivity;
 import company.greatapp.moneycircle.tools.Tools;
 import company.greatapp.moneycircle.dialogs.ContactInfoDialog;
 import company.greatapp.moneycircle.view.TagItemView;
@@ -64,7 +66,7 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
     private ArrayList<Model> mCategories;
     private ArrayAdapter<Model> adapter;
 
-    private int modelType;
+    private int mModelType;
     private String category;
     private int periodType;
 
@@ -93,9 +95,9 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_home);
 
-        modelType = getIntent().getIntExtra(Model.MODEL_TYPE,Model.MODEL_TYPE_INCOME);
+        mModelType = getIntent().getIntExtra(Model.MODEL_TYPE,Model.MODEL_TYPE_INCOME);
         mToolbar = (Toolbar)findViewById(R.id.tool_bar);
-        mToolbar.setTitle(Tools.getModelName(modelType));
+        mToolbar.setTitle(Tools.getModelName(mModelType));
         setSupportActionBar(mToolbar);
         //ab.setSubtitle("sub-title");
 
@@ -164,13 +166,13 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
     public void init(){
         category = "all";//uid
         periodType = Period.PERIOD_DATE;
-        filter = new DBFilter(modelType,Period.PERIOD_DATE,category);
+        filter = new DBFilter(mModelType,Period.PERIOD_DATE,category);
         setPeriodView();
-        mDailyAdapter = new MoneyItemAdapter(this, null, false, modelType);
-        mWeeklyAdapter = new MoneyItemAdapter(this, null, false, modelType);
-        mMonthlyAdapter = new MoneyItemAdapter(this, null, false, modelType);
-        mYearlyAdapter = new MoneyItemAdapter(this, null, false, modelType);
-        mAllAdapter = new MoneyItemAdapter(this, null, false, modelType);
+        mDailyAdapter = new MoneyItemAdapter(this, null, false, mModelType);
+        mWeeklyAdapter = new MoneyItemAdapter(this, null, false, mModelType);
+        mMonthlyAdapter = new MoneyItemAdapter(this, null, false, mModelType);
+        mYearlyAdapter = new MoneyItemAdapter(this, null, false, mModelType);
+        mAllAdapter = new MoneyItemAdapter(this, null, false, mModelType);
         lv1.setAdapter(mDailyAdapter);
         lv2.setAdapter(mWeeklyAdapter);
         lv3.setAdapter(mMonthlyAdapter);
@@ -226,7 +228,7 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
     }
 
     private void handleArrowButtonTouched(int arrow_value){
-       changeContentView(CHANGE_TYPE_ARROW,arrow_value);
+       changeContentView(CHANGE_TYPE_ARROW, arrow_value);
     }
     private void setView(String type, String item) {
         if(type.equals("category")) {
@@ -265,8 +267,8 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
     private void getCategories() {
         mCategories = new ArrayList<>();
         mCategories.add(new Category("All", "all"));
-        CategoryManager categoryManager = new CategoryManager(this, modelType);
-        mCategories.addAll(categoryManager.getItemListByModel(modelType));
+        CategoryManager categoryManager = new CategoryManager(this, mModelType);
+        mCategories.addAll(categoryManager.getItemListByModel(mModelType));
     }
 
     private void initialiseTabHost() {

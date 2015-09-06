@@ -186,9 +186,21 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
                             + DB.UID + " text,"
                             + DB.NAME + " text,"
                             + DB.PHONE_NUMBER + " text, "
-                            + DB.NOTIFICATION_JSON_STRING + " text, "
+                            + DB.DESCRIPTION + " text, "
                             + DB.NOTIFICATION_TYPE + " text, "
-                            + DB.NOTIFICATION_DESCRIPTION + " text );"
+                            + DB.AMOUNT + " text, "
+                            +DB.TITLE + " text, "
+                            +DB.DATE + " text, "
+                            +DB.DATE_STRING + " text, "
+                            +DB.SENDER_NUMBER + " text, "
+                            +DB.NOTIFICATION_MONEY_PAYER + " text, "
+                            +DB.NOTIFICATION_MONEY_RECIEVER + " text, "
+                            +DB.NOTIFICATION_IS_RESPONDED + " text, "
+                            +DB.NOTIFICATION_OWNER_ITEM_UID + " text, "
+                            +DB.NOTIFICATION_MESSAGE + " text, "
+                            +DB.NOTIFICATION_TITLE + " text, "
+                            + DB.JSON_STRING + " text );"
+
             );
             Log.d("DBhelper","query sent for"+DB.NOTIFICATION_TABLE_NAME);
     //=========================================================================//
