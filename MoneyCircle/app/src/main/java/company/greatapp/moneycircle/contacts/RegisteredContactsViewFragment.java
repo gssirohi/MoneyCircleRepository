@@ -50,7 +50,7 @@ public class RegisteredContactsViewFragment extends Fragment {
             mListView = (ListView)view.findViewById(R.id.lvRegisteredContactViewId);
             Button createCircleButton = (Button)view.findViewById(R.id.btInviteContactId);
 
-        if (mContactManager == null) {
+        if (mContactManager != null) {
             mContactManager = new ContactManager(getActivity().getBaseContext());
             mRegisteredContactList = mContactManager.getRegisteredContactList();
         }
@@ -61,7 +61,7 @@ public class RegisteredContactsViewFragment extends Fragment {
         } else {
             createCircleButton.setVisibility(View.GONE);
             mListView.setVisibility(View.VISIBLE);
-            ContactAdapter adapter = new ContactAdapter(getActivity(), mContactManager.getItemList());
+            ContactAdapter adapter = new ContactAdapter(getActivity(), mRegisteredContactList);
             mListView.setAdapter(adapter);
         }
 

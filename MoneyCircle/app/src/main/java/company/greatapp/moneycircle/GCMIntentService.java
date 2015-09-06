@@ -45,11 +45,11 @@ public class GCMIntentService extends GCMBaseIntentService {
     @Override
     protected void onRegistered(Context context, String registrationId) {
         Log.i(TAG, "Device registered: regId = " + registrationId);
-        RegistrationUtils.displayMessage(context, "Device Registered on GCM Successfully !!");
-        RegistrationUtils.sendGCMRegistrationResult(context, true);
         User u = new User(context);
         u.updateInfo(User.U_GCM_IS_REGISTERED, ""+true);
         u.updateInfo(User.U_REGID, registrationId);
+        RegistrationUtils.displayMessage(context, "Device Registered on GCM Successfully !!");
+        RegistrationUtils.sendGCMRegistrationResult(context, true);
     }
 
     @Override

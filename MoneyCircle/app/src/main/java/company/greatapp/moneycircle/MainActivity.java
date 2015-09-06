@@ -216,6 +216,7 @@ public class MainActivity extends ActionBarActivity implements TagItemView.TagIt
                 break;
 
             case 3://Notification
+                startActivity(new Intent(this,NotificationActivity.class));
                 break;
             case 4://profile
                 startActivity(new Intent(this,ViewAndEditProfileActivity.class));

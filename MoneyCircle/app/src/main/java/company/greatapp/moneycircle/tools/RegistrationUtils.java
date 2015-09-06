@@ -38,8 +38,10 @@ public class RegistrationUtils {
             return false;
         } else {
             User u = new User(context);
-            u.updateInfo(User.U_GCM_IS_REGISTERED, ""+true);
-            u.updateInfo(User.U_REGID,regId);
+            if(!u.isRegisteredOnGCM() ||  !u.getRegId().equals(regId)) {
+                u.updateInfo(User.U_GCM_IS_REGISTERED, "" + true);
+                u.updateInfo(User.U_REGID, regId);
+            }
             return true;
         }
 

@@ -166,15 +166,17 @@ public class ContactManager extends BaseModelManager {
     public void retriveContactsFromDevice() {
         Cursor phones = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
 
+        ArrayList<String> addedPhones = new ArrayList<String>();
         if (phones != null) {
 
             while (phones.moveToNext()) {
-                String Name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                String Number = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                Number = Tools.getFormatedNumber(Number);
-                if (TextUtils.isEmpty(Number)) continue;
-                Contact contact = new Contact(Name, Number);
+                String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                String number = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                number = Tools.getFormatedNumber(number);
+                if (TextUtils.isEmpty(number) || addedPhones.contains(number)) continue;
+                Contact contact = new Contact(name, number);
                 insertItemInDB(contact);
+                addedPhones.add(number);
                 if (phones.isLast()) {
                     break;
                 }
