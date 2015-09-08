@@ -35,7 +35,6 @@ public class NotificationManager extends BaseModelManager  {
         return null;
     }
 
-
     public static Model createLightItemFromCursor(Cursor cursor) {
         if(cursor == null) return null;
 

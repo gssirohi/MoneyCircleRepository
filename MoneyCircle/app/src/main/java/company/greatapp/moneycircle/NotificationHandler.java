@@ -55,13 +55,13 @@ public class NotificationHandler {
                 break;
             case S.NOTIFICATION_REMINDER_REQUEST:
                 break;
-            case S.NOTIFICATION_AGREE:
+            case S.NOTIFICATION_AGREE_LENT:
                 break;
             case S.NOTIFICATION_DISAGREE:
                 break;
             case S.NOTIFICATION_RECEIVE_REQUEST:
                 break;
-            case S.NOTIFICATION_DELETE_REQUEST:
+            case S.NOTIFICATION_DELETE_LENT_REQUEST:
                 break;
             case S.NOTIFICATION_MODIFY_REQUEST:
                 break;
