@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -187,7 +186,7 @@ public class NotificationItemView extends LinearLayout {
                     b_clear.setVisibility(GONE);
                 }
                 break;
-            case S.NOTIFICATION_MODIFY_REQUEST:
+            case S.NOTIFICATION_MODIFY_lENT_REQUEST:
 
                 ll_money_item_frame.setVisibility(VISIBLE);
                 if(isResponded) {
@@ -200,7 +199,7 @@ public class NotificationItemView extends LinearLayout {
                     b_clear.setVisibility(GONE);
                 }
                 break;
-            case S.NOTIFICATION_DELETE_REQUEST:
+            case S.NOTIFICATION_DELETE_LENT_REQUEST:
 
                 ll_money_item_frame.setVisibility(VISIBLE);
                 if(isResponded) {
@@ -213,7 +212,7 @@ public class NotificationItemView extends LinearLayout {
                     b_clear.setVisibility(GONE);
                 }
                 break;
-            case S.NOTIFICATION_AGREE:
+            case S.NOTIFICATION_AGREE_LENT:
 
                 ll_money_item_frame.setVisibility(VISIBLE);
                 if(isResponded) {
@@ -226,7 +225,7 @@ public class NotificationItemView extends LinearLayout {
                     b_clear.setVisibility(GONE);
                 }
                 break;
-            case S.NOTIFICATION_DISAGREE:
+            case S.NOTIFICATION_DISAGREE_LENT:
 
                 ll_money_item_frame.setVisibility(VISIBLE);
                 if(isResponded) {

@@ -449,7 +449,7 @@ public class GreatJSON {
                     title = obj.getString("title");
                     moneyItemTitle = obj.getString("moneyItemTitle");
                     break;
-                case S.NOTIFICATION_MODIFY_REQUEST:
+                case S.NOTIFICATION_MODIFY_lENT_REQUEST:
                     moneyReceiverPhoneNo = obj.getString("moneyReceiverphoneNo");
                     moneyPayerPhoneNo = obj.getString("moneyPayerphoneNo");
                     itemOwnerPhoneNo = obj.getString("itemOwnerPhoneNo");
@@ -470,17 +470,17 @@ public class GreatJSON {
                     itemOwnerPhoneNo = obj.getString("itemOwnerPhoneNo");
                     moneyItemTitle = obj.getString("moneyItemTitle");
                     break;
-                case S.NOTIFICATION_AGREE:
+                case S.NOTIFICATION_AGREE_LENT:
                     title = obj.getString("title");
                     itemOwnerPhoneNo = obj.getString("itemOwnerPhoneNo");
                     moneyItemTitle = obj.getString("moneyItemTitle");
                     break;
-                case S.NOTIFICATION_DISAGREE:
+                case S.NOTIFICATION_DISAGREE_LENT:
                     title = obj.getString("title");
                     itemOwnerPhoneNo = obj.getString("itemOwnerPhoneNo");
                     moneyItemTitle = obj.getString("moneyItemTitle");
                     break;
-                case S.NOTIFICATION_DELETE_REQUEST:
+                case S.NOTIFICATION_DELETE_LENT_REQUEST:
                     title = obj.getString("title");
                     itemOwnerPhoneNo = obj.getString("itemOwnerPhoneNo");
                     moneyItemTitle = obj.getString("moneyItemTitle");
@@ -542,19 +542,19 @@ public class GreatJSON {
             case S.NOTIFICATION_REMINDER_REQUEST:
                 message = "REMINDER to pay " + amount + " to " + name;
                 break;
-            case S.NOTIFICATION_AGREE:
+            case S.NOTIFICATION_AGREE_LENT:
                 message = name + " agree to pay "+ amount + " for this transaction";
                 break;
-            case S.NOTIFICATION_DISAGREE:
+            case S.NOTIFICATION_DISAGREE_LENT:
                 message = name + " disagreed to pay "+ amount + " for this transaction";
                 break;
             case S.NOTIFICATION_RECEIVE_REQUEST:
                 message = name + " RECEIVED "+ amount + " for this transaction";
                 break;
-            case S.NOTIFICATION_DELETE_REQUEST:
+            case S.NOTIFICATION_DELETE_LENT_REQUEST:
                 message = name + " deleted  this transaction";
                 break;
-            case S.NOTIFICATION_MODIFY_REQUEST:
+            case S.NOTIFICATION_MODIFY_lENT_REQUEST:
                 message = name + " modified this transaction";
                 break;
             case S.NOTIFICATION_INFORMATION:

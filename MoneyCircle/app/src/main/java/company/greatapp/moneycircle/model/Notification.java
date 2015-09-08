@@ -77,8 +77,6 @@ public class Notification extends Model {
         this.mUid = uid;
     }
 
-
-
     @Override
     public void setJsonString(String jsonString) {
     this.jsonString = jsonString;
@@ -98,8 +96,6 @@ public class Notification extends Model {
     public void setDueDateString(String dueDateString) {
         this.dueDateString = dueDateString;
     }
-
-
 
     @Override
     public void setLinkedContact(Contact contact) {

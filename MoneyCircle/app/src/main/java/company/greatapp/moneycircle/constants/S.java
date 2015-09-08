@@ -49,16 +49,34 @@ public class S {
     public static final String NOTIFICATION_JSONSTRING = "notification_jsonstring";
 
 
-    public static final int NOTIFICATION_LENT_REQUEST = 10;
-    public static final int NOTIFICATION_BORROW_REQUEST = 11;
+    public static final int NOTIFICATION_INFORMATION = 10;
+
+    public static final int NOTIFICATION_REMINDER_REQUEST = 11;
+
+    // Pay
     public static final int NOTIFICATION_PAY_REQUEST = 12;
-    public static final int NOTIFICATION_SETTLE_REQUEST = 13;
-    public static final int NOTIFICATION_REMINDER_REQUEST = 14;
-    public static final int NOTIFICATION_AGREE = 15;
-    public static final int NOTIFICATION_DISAGREE = 16;
-    public static final int NOTIFICATION_RECEIVE_REQUEST = 17;
-    public static final int NOTIFICATION_DELETE_REQUEST = 18;
-    public static final int NOTIFICATION_MODIFY_REQUEST = 19;
-    public static final int NOTIFICATION_INFORMATION = 20;
+    public static final int NOTIFICATION_AGREE_PAY = 13;
+
+    // Settle
+    public static final int NOTIFICATION_SETTLE_REQUEST = 14;
+    public static final int NOTIFICATION_AGREE_SETTLE = 15;
+
+    // Receive
+    public static final int NOTIFICATION_RECEIVE_REQUEST = 16;
+    public static final int NOTIFICATION_AGREE_RECEIVE = 17;
+
+    // Lent
+    public static final int NOTIFICATION_LENT_REQUEST = 18;
+    public static final int NOTIFICATION_MODIFY_lENT_REQUEST = 19;
+    public static final int NOTIFICATION_AGREE_LENT = 20;
+    public static final int NOTIFICATION_DISAGREE_LENT = 21;
+    public static final int NOTIFICATION_DELETE_LENT_REQUEST = 22;
+
+    // Borrow
+    public static final int NOTIFICATION_BORROW_REQUEST = 23;
+    public static final int NOTIFICATION_MODIFY_BORROW_REQUEST = 24;
+    public static final int NOTIFICATION_AGREE_BORROW = 25;
+    public static final int NOTIFICATION_DISAGREE_BORROW = 26;
+    public static final int NOTIFICATION_DELETE_BORROW_REQUEST = 27;
 
 }
