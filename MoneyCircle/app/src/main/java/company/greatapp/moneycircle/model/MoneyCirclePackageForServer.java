@@ -43,6 +43,8 @@ public class MoneyCirclePackageForServer {
     private String ownerItemId;
     private String associateItemId;
 
+    private String dateString;
+
     private int itemBodyJsonType;
     private String itemBodyJsonString;
 

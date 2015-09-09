@@ -23,6 +23,7 @@ import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Expense;
 import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
+import company.greatapp.moneycircle.model.MoneyCirclePackageFromServer;
 import company.greatapp.moneycircle.model.Notification;
 import company.greatapp.moneycircle.model.Split;
 import company.greatapp.moneycircle.model.User;
@@ -584,6 +585,106 @@ public class GreatJSON {
             e.printStackTrace();
         }
         return notification;
+    }
+
+    public static MoneyCirclePackageFromServer getServerPackageFromJson(Context context, String jsonString) {
+        if (TextUtils.isEmpty(jsonString)) {
+            return null;
+        }
+        MoneyCirclePackageFromServer serverPackage = null;
+
+        try {
+            JSONObject jsonObject = new JSONObject(jsonString);
+            int reqCode = Integer.parseInt(jsonObject.getString("reqCode"));
+            serverPackage.setReqCode(reqCode);
+
+            String senderphoneNo = jsonObject.getString("reqSenderPhone");
+            serverPackage.setReqSenderPhone(senderphoneNo);
+            String receiverPhoneNo = jsonObject.getString("reqReceiverPhone");
+            serverPackage.setReqReceiverPhone(receiverPhoneNo);
+
+            Contact senderContact = Tools.getContactFromPhoneNumber(context, senderphoneNo);
+            String senderName = senderContact.getContactName();
+            serverPackage.setReqSenderName(senderName);
+            Uri senderImageUri = senderContact.getImageUri();
+            serverPackage.setReqSenderImageUri(senderImageUri);
+
+            String itemOwnerPhoneNo = jsonObject.getString("itemOwnerPhone");
+            String itemOwnerName = null;
+            if (itemOwnerPhoneNo.equals(receiverPhoneNo)) {
+                itemOwnerName = "YOU";
+            } else {
+                itemOwnerName = senderName;
+            }
+            serverPackage.setItemOwnerName(itemOwnerName);
+            String itemAssociatePhoneNo = jsonObject.getString("itemAssociatePhone");
+            serverPackage.setItemAssociatePhone(itemAssociatePhoneNo);
+
+            String moneyReceiverPhoneNo = jsonObject.getString("moneyReceiverPhone");
+            serverPackage.setMoneyReceiverPhone(moneyReceiverPhoneNo);
+            String moneyPayerPhoneNo = jsonObject.getString("moneyPayerPhone");
+            serverPackage.setMoneyPayerPhone(moneyPayerPhoneNo);
+
+            int ownerItemType = Integer.parseInt(jsonObject.getString("ownerItemType"));
+            serverPackage.setOwnerItemType(ownerItemType);
+            int associateItemtype = Integer.parseInt(jsonObject.getString("associateItemtype"));
+            serverPackage.setAssociateItemtype(associateItemtype);
+
+            String ownerItemId = jsonObject.getString("ownerItemId");
+            serverPackage.setOwnerItemId(ownerItemId);
+            String associateItemId = jsonObject.getString("associateItemId");
+            serverPackage.setAssociateItemId(associateItemId);
+
+            int itemBodyJsonType = Integer.parseInt(jsonObject.getString("itemBodyJsonType"));
+            serverPackage.setItemBodyJsonType(itemBodyJsonType);
+            String itemBodyJsonString = jsonObject.getString("itemBodyJsonString");
+            serverPackage.setItemBodyJsonString(itemBodyJsonString);
+
+            String message = jsonObject.getString("message");
+            serverPackage.setMessage(message);
+
+            String dateString = jsonObject.getString("dateString");
+            serverPackage.setDateString(dateString);
+
+            updateServerPackageWithItemInfo(serverPackage);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return serverPackage;
+    }
+
+    private static MoneyCirclePackageFromServer updateServerPackageWithItemInfo(MoneyCirclePackageFromServer serverPackage) {
+
+        String itemJsonString = serverPackage.getItemBodyJsonString();
+        if (TextUtils.isEmpty(itemJsonString)) {
+            return serverPackage;
+        }
+
+        try {
+            JSONObject itemJsonObj = new JSONObject(itemJsonString);
+
+            String itemTitle = itemJsonObj.getString("title");
+            serverPackage.setItemTitle(itemTitle);
+
+            String amount = itemJsonObj.getString("moneyItemAmount");
+            serverPackage.setAmount(amount);
+
+            String itemDateString = itemJsonObj.getString("dateString");
+            serverPackage.setItemDateString(itemDateString);
+
+            String itemDueDateString = itemJsonObj.getString("dueDateString");
+            serverPackage.setItemDueDateString(itemDueDateString);
+
+            String itemDescription = itemJsonObj.getString("description");
+            serverPackage.setItemDescription(itemDescription);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return serverPackage;
     }
 
 
