@@ -25,6 +25,10 @@ public class S {
     public static final String VALUE_CONTENT_TYPE_JSON_ARRAY_STRING ="jsonArrayString";
 
     public static final String VALUE_NOT_REGISTERED = "NotRegisteredUser";
+    public static final short RESPONSE_TYPE_STRING = 12;
+
+
+
     public static String VALUE_REGISTERED = "RegisteredUser";
 
 
@@ -43,6 +47,9 @@ public class S {
 
     public static final String URL_APP_SERVER_REGISTRATION = "http://1-dot-gyan-moneycircle-1727.appspot.com/register";
     public static final String URL_APP_SERVER_SETUP_CONTACTS = "http://1-dot-gyan-moneycircle-1727.appspot.com/setupcontacts";
+    public static final String URL_APP_SERVER_TRANSPORT_PACKAGE = "http://1-dot-gyan-moneycircle-1727.appspot.com/transport";
+
+
     public static final String SENDER_ID = "470422662474";  // project id app engine
 
     public static final String NOTIFICATION_TYPE = "notification_type";
@@ -78,5 +85,32 @@ public class S {
     public static final int NOTIFICATION_AGREE_BORROW = 25;
     public static final int NOTIFICATION_DISAGREE_BORROW = 26;
     public static final int NOTIFICATION_DELETE_BORROW_REQUEST = 27;
+
+
+    //--------------------------------------TRANSPORT----------------------------------------//
+    public static final String TRANSPORT_REQ_CODE = "transReqCode";
+    public static final String TRANSPORT_REQ_SENDER_PHONE = "transSenderPhone";
+    public static final String TRANSPORT_REQ_RECEIVER_PHONE = "transReceiverPhone";
+    public static final String TRANSPORT_ITEM_OWNER_PHONE = "transItemOwnerPhone";
+    public static final String TRANSPORT_ITEM_ASSOCIATE_PHONE = "transItemAssoPhone";
+    public static final String TRANSPORT_MONEY_PAYER_PHONE = "transMoneyPayPhone";
+    public static final String TRANSPORT_MONEY_RECEIVER_PHONE = "transMoneyRecPhone";
+    public static final String TRANSPORT_OWNER_ITEM_TYPE = "transOwnerItemType";
+    public static final String TRANSPORT_ASSOCIATE_ITEM_TYPE = "transAssoItemType";
+    public static final String TRANSPORT_OWNER_ITEM_ID = "transOwnerItemId";
+    public static final String TRANSPORT_ASSOCIATE_ITEM_ID = "transAssoItemId";
+    public static final String TRANSPORT_ITEM_BODY_JSON_TYPE = "transItemBodyjsonType";
+    public static final String TRANSPORT_ITEM_BODY_JSON_STRING = "transItemBodyJsonString";
+    public static final String TRANSPORT_MESSAGE = "tranMessage";
+
+    public static final int TRANSPORT_BODY_TYPE_JSON_OBJECT = 1;
+
+    public static final int TRANSPORT_REQUEST_CODE_LENT = 11;
+    public static final short TRANSPORT_REQUEST_CODE_BORROW = 22;
+
+
+    //---------------------------------------------------------------------------------------//
+
+
 
 }

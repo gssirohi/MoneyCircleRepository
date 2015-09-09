@@ -13,16 +13,18 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.constants.S;
+import company.greatapp.moneycircle.model.Borrow;
+import company.greatapp.moneycircle.model.Lent;
+import company.greatapp.moneycircle.model.Model;
+import company.greatapp.moneycircle.model.MoneyCirclePackageForServer;
 import company.greatapp.moneycircle.model.User;
-import company.greatapp.moneycircle.tools.RegistrationUtils;
+import company.greatapp.moneycircle.tools.GreatJSON;
 import company.greatapp.moneycircle.tools.RegistrationUtils;
 
 /**
@@ -278,5 +280,145 @@ public class Transporter {
         mContext.sendBroadcast(i);
     }
 
+
+    public  String transportItem(Model model, int modelType) {
+         String ownerItemId;
+         String itemBodyJsonString;
+         User user = new User(mContext);
+         MoneyCirclePackageForServer outPackage = new MoneyCirclePackageForServer();
+
+        switch(modelType){
+
+            case Model.MODEL_TYPE_LENT:
+                Lent lent = (Lent)model;
+                outPackage.setUrl(S.URL_APP_SERVER_TRANSPORT_PACKAGE);
+                outPackage.setMaxRetryAttempt(0);
+                outPackage.setAttemptCounter(0);
+                outPackage.setReqResponseType(S.RESPONSE_TYPE_STRING);
+                outPackage.setReqType(Request.Method.POST);
+                outPackage.setReqCode(S.TRANSPORT_REQUEST_CODE_LENT);
+                outPackage.setReqSenderPhone(user.getPhoneNumber());
+                outPackage.setReqReceiverPhone(lent.getLinkedContact().getPhone());
+                outPackage.setItemOwnerPhone(user.getPhoneNumber());
+                outPackage.setItemAssociatePhone(lent.getLinkedContact().getPhone());
+                outPackage.setMoneyPayerPhone(lent.getLinkedContact().getPhone());
+                outPackage.setMoneyReceiverPhone(user.getPhoneNumber());
+                outPackage.setOwnerItemType(Model.MODEL_TYPE_LENT);
+                outPackage.setAssociateItemtype(Model.MODEL_TYPE_BORROW);
+
+                ownerItemId = lent.getUID().replaceAll("NEW","DB");
+                outPackage.setOwnerItemId(ownerItemId);
+                outPackage.setAssociateItemId("NA");
+
+                outPackage.setItemBodyJsonType(S.TRANSPORT_BODY_TYPE_JSON_OBJECT);
+                JSONObject obj = GreatJSON.getJsonObjectForLent(lent);
+                if(obj != null) {
+                    itemBodyJsonString = obj.toString();
+                } else {
+                    Log.d("SPLIT","Error is adding itemBodyJsonString");
+                    itemBodyJsonString = "";
+                }
+                outPackage.setItemBodyJsonString(itemBodyJsonString);
+                outPackage.setMessage("NA");
+
+                break;
+
+            case Model.MODEL_TYPE_BORROW:
+
+                Borrow item = (Borrow)model;
+                outPackage.setUrl(S.URL_APP_SERVER_TRANSPORT_PACKAGE);
+                outPackage.setMaxRetryAttempt(0);
+                outPackage.setAttemptCounter(0);
+                outPackage.setReqResponseType(S.RESPONSE_TYPE_STRING);
+                outPackage.setReqType(Request.Method.POST);
+                outPackage.setReqCode(S.TRANSPORT_REQUEST_CODE_BORROW);
+                outPackage.setReqSenderPhone(user.getPhoneNumber());
+                outPackage.setReqReceiverPhone(item.getLinkedContact().getPhone());
+                outPackage.setItemOwnerPhone(user.getPhoneNumber());
+                outPackage.setItemAssociatePhone(item.getLinkedContact().getPhone());
+                outPackage.setMoneyPayerPhone(user.getPhoneNumber());
+                outPackage.setMoneyReceiverPhone(item.getLinkedContact().getPhone());
+                outPackage.setOwnerItemType(Model.MODEL_TYPE_BORROW);
+                outPackage.setAssociateItemtype(Model.MODEL_TYPE_LENT);
+
+                ownerItemId = item.getUID().replaceAll("NEW","DB");
+                outPackage.setOwnerItemId(ownerItemId);
+                outPackage.setAssociateItemId("NA");
+
+                outPackage.setItemBodyJsonType(S.TRANSPORT_BODY_TYPE_JSON_OBJECT);
+                JSONObject objBorrow = GreatJSON.getJsonObjectForBorrow(item);
+                if(objBorrow != null) {
+                    itemBodyJsonString = objBorrow.toString();
+                } else {
+                    Log.d("SPLIT","Error is adding itemBodyJsonString");
+                    itemBodyJsonString = "";
+                }
+                outPackage.setItemBodyJsonString(itemBodyJsonString);
+                outPackage.setMessage("NA");
+                break;
+        }
+
+        transportPackage(outPackage);
+        return outPackage.getTransportId();
+    }
+
+    private  void transportPackage(MoneyCirclePackageForServer outPackage) {
+        if(outPackage == null){
+            return;
+        }
+        Request req = getStringRequestForPackage(outPackage);
+        String tag = "TRANSPORT";
+        outPackage.setAttemptCounter(outPackage.getAttemptCounter() + 1);
+        outPackage.insertInDb(mContext);
+        addToQueue(req, tag);
+    }
+
+    private StringRequest getStringRequestForPackage(final MoneyCirclePackageForServer outPackage) {
+        StringRequest strReq = new StringRequest(outPackage.getReqType(),
+                outPackage.getUrl(), new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, response.toString());
+
+                handlePackageResponse(response, outPackage);
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+
+                handlePackageError(error,outPackage);
+            }
+        }){
+
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+
+                if(outPackage != null) {
+                    params = outPackage.getParams();
+                }
+                return params;
+            }
+
+        };
+        return strReq;
+    }
+
+    private void handlePackageError(VolleyError error, MoneyCirclePackageForServer outPackage) {
+        // deal with error details
+
+        if(outPackage.getMaxRetryAttempt() - outPackage.getAttemptCounter() >= 0){
+            transportPackage(outPackage);
+        } else {
+            Log.e("SPLIT","Package Sending ALL ATTEMPT FAILED");
+        }
+    }
+
+    private void handlePackageResponse(String response, MoneyCirclePackageForServer outPackage) {
+        outPackage.deleteFromDb();
+    }
 
 }

@@ -27,6 +27,7 @@ import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.manager.BaseModelManager;
 import company.greatapp.moneycircle.manager.CategoryManager;
 import company.greatapp.moneycircle.manager.ContactManager;
+import company.greatapp.moneycircle.manager.Transporter;
 import company.greatapp.moneycircle.model.Borrow;
 import company.greatapp.moneycircle.model.Category;
 import company.greatapp.moneycircle.model.Contact;
@@ -465,7 +466,8 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
 
                 lent.printModelData();
                 lent.insertItemInDB(this);
-
+                Transporter transporter = new Transporter(this);
+                String transportId = transporter.transportItem(lent, Model.MODEL_TYPE_LENT);
                 if(!mMember.getUID().equals(C.USER_UNIQUE_ID)) {
                     float lentAmount = mMember.getLentAmountToThis();
                     mMember.setLentAmountToThis(lentAmount + amount);

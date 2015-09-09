@@ -17,6 +17,7 @@ import company.greatapp.moneycircle.manager.ContactManager;
 import company.greatapp.moneycircle.manager.ExpenseManager;
 import company.greatapp.moneycircle.manager.LentManager;
 import company.greatapp.moneycircle.manager.SplitManager;
+import company.greatapp.moneycircle.model.Borrow;
 import company.greatapp.moneycircle.model.Circle;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Expense;
@@ -113,7 +114,7 @@ public class GreatJSON {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.i("SPLIT","returning Model List of Size : "+list.size());
+        Log.i("SPLIT", "returning Model List of Size : " + list.size());
         return list;
     }
 
@@ -329,6 +330,7 @@ public class GreatJSON {
         }
         return expense;
     }
+
     public static JSONArray getJsonArrayForLentList(ArrayList<Lent> lents) {
         if(lents == null) return null;
         String jsonString = "";
@@ -389,6 +391,70 @@ public class GreatJSON {
         }
         return lent;
     }
+
+
+
+    public static JSONArray getJsonArrayForBorrowList(ArrayList<Borrow> borrows) {
+        if(borrows == null) return null;
+        String jsonString = "";
+        JSONArray array = new JSONArray();
+
+        for(Borrow c : borrows) {
+            array.put(getJsonObjectForBorrow(c));
+        }
+
+        jsonString = array.toString();
+        Log.d("split", "BORROW JSON ARRAY : " + jsonString);
+        return array;
+    }
+
+    public static JSONObject getJsonObjectForBorrow(Borrow borrow) {
+        if(borrow == null) return null;
+        String jsonString = "";
+        JSONObject obj = new JSONObject();
+        try{
+            obj.put("title", borrow.getTitle());
+            obj.put("uid", borrow.getUID());
+            obj.put("dbid", borrow.getDbId());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        jsonString = obj.toString();
+        Log.d("split", "BORROW JSON OBJECT : " + jsonString);
+        return obj;
+    }
+    public static ArrayList<Borrow> getBorrowListFromJsonString(String json, Context context) {
+        if(context == null) return null;
+        ArrayList<Borrow> list = new ArrayList<Borrow>();
+        try {
+            JSONArray array = new JSONArray(json);
+            int length = array.length();
+            for (int i = 0; i<length;i++) {
+                JSONObject obj = (JSONObject)array.get(i);
+                Borrow borrow = getBorrowFromJsonString(obj.toString(), context);
+                list.add(borrow);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    private static Borrow getBorrowFromJsonString(String json, Context context) {
+        if(context == null) return null;
+        Borrow borrow = null;
+        try {
+            JSONObject obj = new JSONObject(json);
+            String title = obj.getString("title");
+            String uid = obj.getString("uid");
+            String dbid = obj.getString("dbid");
+            borrow = (Borrow)Tools.getDbInstance(context, uid, Model.MODEL_TYPE_BORROW);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return borrow;
+    }
+
 
     public static Notification getNotificationFromJSONString(Context context, String json) {
         Notification notification = null;
