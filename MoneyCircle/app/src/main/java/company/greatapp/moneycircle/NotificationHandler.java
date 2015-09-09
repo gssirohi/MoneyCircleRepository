@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import company.greatapp.moneycircle.constants.S;
-import company.greatapp.moneycircle.model.Notification;
+import company.greatapp.moneycircle.model.MoneyCirclePackageFromServer;
 import company.greatapp.moneycircle.tools.GreatJSON;
 
 /**
@@ -31,18 +31,20 @@ public class NotificationHandler {
         }
 
 //        int notificationType = intent.getIntExtra(S.NOTIFICATION_TYPE, S.NOTIFICATION_INFORMATION);
-        String notificationJsonString = intent.getStringExtra(S.NOTIFICATION_JSONSTRING);
-        if (TextUtils.isEmpty(notificationJsonString)) {
+        String messageJsonString = intent.getStringExtra(S.NOTIFICATION_JSONSTRING);
+        if (TextUtils.isEmpty(messageJsonString)) {
             return;
         }
 
-        Notification notification = GreatJSON.getNotificationFromJSONString(mContext, notificationJsonString);
+//        Notification notification = GreatJSON.getNotificationFromJSONString(mContext, notificationJsonString);
+
+        MoneyCirclePackageFromServer packageFromServer = GreatJSON.getServerPackageFromJson(mContext, messageJsonString);
 
         if (mIsNotifyToUser) {
 //            showCustomNotification(notification.getMoneyTitle(), notification.getMessage());
         }
 
-        notification.insertItemInDB(mContext);
+//        notification.insertItemInDB(mContext);
 
         /*switch (notificationType) {
             case S.NOTIFICATION_LENT_REQUEST:
