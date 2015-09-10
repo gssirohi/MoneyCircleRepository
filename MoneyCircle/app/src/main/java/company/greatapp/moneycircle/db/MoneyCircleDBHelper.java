@@ -270,7 +270,7 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
                             +DB.MESSAGE                + " text,"
                             +DB.ITEM_DUE_DATE_STRING   + " text,"
                             +DB.ITEM_DESCRIPTION       + " text,"
-                            +DB.IS_RESPONDED           + " int"
+                            +DB.IS_RESPONDED           + " int,"
                             + DB.ITEM_BODY_JSON_STRING + " text );"
             );
             Log.d("DBhelper","query sent for"+DB.PACKAGE_FROM_SERVER_TABLE_NAME);
