@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 
-import company.greatapp.moneycircle.manager.NotificationManager;
 import company.greatapp.moneycircle.model.MoneyCirclePackageFromServer;
 import company.greatapp.moneycircle.view.NotificationItemView;
 

@@ -1,17 +1,23 @@
 package company.greatapp.moneycircle.model;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.net.Uri;
+import android.util.Log;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.constants.S;
+import company.greatapp.moneycircle.tools.Tools;
 
 /**
  * Created by Gyanendrasingh on 9/8/2015.
  */
 public class MoneyCirclePackageForServer {
 
+    private static final String LOG_TAG = MoneyCirclePackageForServer.class.getSimpleName();
 
     private int maxRetryAttempt;
     private int attemptCounter;
@@ -43,8 +49,6 @@ public class MoneyCirclePackageForServer {
     private String ownerItemId;
     private String associateItemId;
 
-    private String dateString;
-
     private int itemBodyJsonType;
     private String itemBodyJsonString;
 
@@ -52,7 +56,7 @@ public class MoneyCirclePackageForServer {
 //----------------------------------------------------------------------------------------//
 
     public MoneyCirclePackageForServer() {
-
+        transportId = Tools.generateUniqueId();
     }
 
     public String getAssociateItemId() {
@@ -223,7 +227,9 @@ public class MoneyCirclePackageForServer {
         this.url = url;
     }
 
-
+    public Uri getTableUri() {
+        return DB.PACKAGE_FORSERVER_TABLE_URI;
+    }
 
     public Map<String,String> getParams() {
         Map<String, String> params = new HashMap<String, String>();
@@ -248,14 +254,48 @@ public class MoneyCirclePackageForServer {
         return params;
     }
 
-    public void insertInDb(Context context) {
+    public ContentValues getContentValues() {
 
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DB.UID, getTransportId());
+        contentValues.put(S.TRANSPORT_ITEM_OWNER_PHONE, getItemOwnerPhone());
+        contentValues.put(S.TRANSPORT_ITEM_ASSOCIATE_PHONE, getItemAssociatePhone());
+        contentValues.put(DB.MAX_RETRY_ATTEMPT, getMaxRetryAttempt());
+        contentValues.put(DB.ATTEMPT_COUNTER, getAttemptCounter());
+        contentValues.put(DB.URL, getUrl());
+        contentValues.put(DB.REQ_RESPONSE_TYPE, getReqResponseType());
+        contentValues.put(DB.REQ_TYPE, getReqType());
+        contentValues.put(S.TRANSPORT_REQ_CODE, getReqCode());
+        contentValues.put(S.TRANSPORT_REQ_SENDER_PHONE, getReqSenderPhone());
+        contentValues.put(S.TRANSPORT_REQ_RECEIVER_PHONE, getReqReceiverPhone());
+        contentValues.put(S.TRANSPORT_MONEY_RECEIVER_PHONE, getMoneyReceiverPhone());
+        contentValues.put(S.TRANSPORT_MONEY_PAYER_PHONE, getMoneyPayerPhone());
+        contentValues.put(S.TRANSPORT_OWNER_ITEM_TYPE, getOwnerItemType());
+        contentValues.put(S.TRANSPORT_ASSOCIATE_ITEM_TYPE, getAssociateItemtype());
+        contentValues.put(S.TRANSPORT_OWNER_ITEM_ID, getOwnerItemId());
+        contentValues.put(S.TRANSPORT_ASSOCIATE_ITEM_ID, getAssociateItemId());
+        contentValues.put(S.TRANSPORT_ITEM_BODY_JSON_TYPE, getItemBodyJsonType());
+        contentValues.put(S.TRANSPORT_ITEM_BODY_JSON_STRING, getItemBodyJsonString());
+        contentValues.put(S.TRANSPORT_MESSAGE, getMessage());
+
+        return contentValues;
+    }
+
+    public Uri insertInDb(Context context) {
+        Log.d(LOG_TAG, "MODEL: INSERTING :----->");
+        return context.getContentResolver().insert(getTableUri(), getContentValues());
 
     }
 
-    public void deleteFromDb() {
+    public int deleteFromDb(Context context) {
+        String where = DB.DB_ID + "=" + getReqDBId();
+        Log.d(LOG_TAG, "MODEL: : DELETING :----->");
+        return context.getContentResolver().delete(getTableUri(), where, null);
+    }
 
-
-
+    public int updateInDb(Context context) {
+        String where = DB.DB_ID + "=" + getReqDBId();
+        Log.d(LOG_TAG, "MODEL: : UPDATING :----->");
+        return context.getContentResolver().update(getTableUri(), getContentValues(), where, null);
     }
 }

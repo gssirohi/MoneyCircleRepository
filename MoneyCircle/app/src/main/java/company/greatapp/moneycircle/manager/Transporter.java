@@ -418,7 +418,7 @@ public class Transporter {
     }
 
     private void handlePackageResponse(String response, MoneyCirclePackageForServer outPackage) {
-        outPackage.deleteFromDb();
+        outPackage.deleteFromDb(mContext);
     }
 
 }

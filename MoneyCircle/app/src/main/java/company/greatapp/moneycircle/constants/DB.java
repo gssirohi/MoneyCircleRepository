@@ -176,7 +176,6 @@ public class DB {
     public static final String CATEGORY_SPENT_AMOUNT_ON_THIS = "spent";
 
 
-
     public static final Uri CATEGORY_TABLE_URI = Uri.parse("content://"+DB_AUTHORITY+"/" + CATEGORY_TABLE_NAME);
     public static final String[] CATEGORY_TABLE_PROJECTION = new String[]{
             DB_ID,UID,
@@ -184,20 +183,6 @@ public class DB {
             CATEGORY_FOR_INCOME,CATEGORY_FOR_EXPENSE,CATEGORY_FOR_BORROW,CATEGORY_FOR_LENT,CATEGORY_FOR_SPLIT,
             CATEGORY_SPENT_AMOUNT_ON_THIS,
             CATEGORY_TYPE};
-//----------------------------------------------------------------//
-
-    //--------------NOTIFICATION TABLE--------------------------------------//
-
-
-    public static final String NOTIFICATION_TABLE_NAME = "notificationTable";
-    public static final String NOTIFICATION_TYPE = "notificationType";
-
-
-
-
-    public static final Uri NOTIFICATION_TABLE_URI = Uri.parse("content://"+DB_AUTHORITY+"/" + NOTIFICATION_TABLE_NAME);
-    public static final String[] NOTIFICATION_TABLE_PROJECTION = new String[]{
-            DB_ID,UID,NAME,PHONE_NUMBER,NOTIFICATION_TYPE};
 //----------------------------------------------------------------//
 
     // ------------------ MONEY CIRCLE PACKAGE FROM SERVER TABLE --------//
@@ -228,9 +213,24 @@ public class DB {
             ITEM_BODY_JSON_TYPE,ITEM_BODY_JSON_STRING,MESSAGE,ITEM_TITLE,ITEM_DATE_STRING,
             ITEM_DUE_DATE_STRING,ITEM_DESCRIPTION,IS_RESPONDED};
 
+    //--------------MONEY CIRCLE PACKAGE FOR SERVER TABLE--------------------------------------//
 
 
+    public static final String PACKAGE_FORSERVER_TABLE_NAME = "packageforserverTable";
+    /*public static final String ITEM_OWNER_PHONE = "itemOwnerPhone";
+    public static final String ITEM_ASSOCIATE_PHONE = "itemAssociatePhone";*/
+    public static final String URL ="url";
+    public static final String MAX_RETRY_ATTEMPT = "maxRetryAttempt";
+    public static final String ATTEMPT_COUNTER ="attemptCounter";
+    public static final String REQ_RESPONSE_TYPE ="reqResponseType";
+    public static final String REQ_TYPE = "reqType";
 
+    public static final Uri PACKAGE_FORSERVER_TABLE_URI = Uri.parse("content://"+DB_AUTHORITY+"/" + PACKAGE_FORSERVER_TABLE_NAME);
+    public static final String[] PACKAGE_FORSERVER_TABLE_PROJECTION = new String[]{
+            DB_ID, UID, S.TRANSPORT_ITEM_OWNER_PHONE, S.TRANSPORT_ITEM_ASSOCIATE_PHONE, MAX_RETRY_ATTEMPT, ATTEMPT_COUNTER, URL, REQ_RESPONSE_TYPE, REQ_TYPE,
+            S.TRANSPORT_REQ_CODE, S.TRANSPORT_REQ_SENDER_PHONE, S.TRANSPORT_REQ_RECEIVER_PHONE, S.TRANSPORT_MONEY_RECEIVER_PHONE, S.TRANSPORT_MONEY_PAYER_PHONE, S.TRANSPORT_OWNER_ITEM_TYPE, S.TRANSPORT_ASSOCIATE_ITEM_TYPE,
+            S.TRANSPORT_OWNER_ITEM_ID, S.TRANSPORT_ASSOCIATE_ITEM_ID, S.TRANSPORT_ITEM_BODY_JSON_TYPE, S.TRANSPORT_ITEM_BODY_JSON_STRING, S.TRANSPORT_MESSAGE};
+//----------------------------------------------------------------//
     //--------------COMMON TABLE--------------------------------------//
 
 

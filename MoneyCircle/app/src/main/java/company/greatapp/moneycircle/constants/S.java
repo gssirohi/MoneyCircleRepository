@@ -27,8 +27,6 @@ public class S {
     public static final String VALUE_NOT_REGISTERED = "NotRegisteredUser";
     public static final short RESPONSE_TYPE_STRING = 12;
 
-
-
     public static String VALUE_REGISTERED = "RegisteredUser";
 
 
@@ -53,7 +51,7 @@ public class S {
     public static final String SENDER_ID = "470422662474";  // project id app engine
 
     public static final String NOTIFICATION_TYPE = "notification_type";
-    public static final String NOTIFICATION_JSONSTRING = "notification_jsonstring";
+    public static final String PACKAGE_FROMSERVER_JSON_STRING = "packageFromServerJsonString";
 
 
     public static final int NOTIFICATION_INFORMATION = 10;

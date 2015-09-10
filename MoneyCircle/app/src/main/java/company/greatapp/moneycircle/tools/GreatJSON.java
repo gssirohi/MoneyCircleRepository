@@ -12,11 +12,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import company.greatapp.moneycircle.constants.S;
-import company.greatapp.moneycircle.manager.CircleManager;
-import company.greatapp.moneycircle.manager.ContactManager;
-import company.greatapp.moneycircle.manager.ExpenseManager;
-import company.greatapp.moneycircle.manager.LentManager;
-import company.greatapp.moneycircle.manager.SplitManager;
 import company.greatapp.moneycircle.model.Borrow;
 import company.greatapp.moneycircle.model.Circle;
 import company.greatapp.moneycircle.model.Contact;
@@ -24,7 +19,6 @@ import company.greatapp.moneycircle.model.Expense;
 import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.MoneyCirclePackageFromServer;
-
 import company.greatapp.moneycircle.model.Split;
 import company.greatapp.moneycircle.model.User;
 
@@ -457,8 +451,8 @@ public class GreatJSON {
     }
 
 
-    public static MoneyCirclePackageFromServer getNotificationFromJSONString(Context context, String json) {
-        MoneyCirclePackageFromServer notification = null;
+    /*public static Notification getNotificationFromJSONString(Context context, String json) {
+        Notification notification = null;
         try {
             JSONObject obj = new JSONObject(json);
             String title = obj.getString("title");
@@ -574,20 +568,18 @@ public class GreatJSON {
 
             String ownerItemUID = obj.getString("ownerItemUID");
 
-            notification = new MoneyCirclePackageFromServer();
-
-            //todo Ashu
-//            notification.setTitle(title);
-//            notification.setAmount(Float.parseFloat(amount));
-//            notification.setDateString(dateString);
-//            notification.setDueDateString(dueDateString);
-//            notification.setJsonString(json);
+            notification = new Notification();
+            notification.setTitle(title);
+            notification.setAmount(Float.parseFloat(amount));
+            notification.setDateString(dateString);
+            notification.setDueDateString(dueDateString);
+            notification.setJsonString(json);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return notification;
-    }
+    }*/
 
     public static MoneyCirclePackageFromServer getServerPackageFromJson(Context context, String jsonString) {
         if (TextUtils.isEmpty(jsonString)) {
@@ -597,12 +589,12 @@ public class GreatJSON {
 
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
-            int reqCode = Integer.parseInt(jsonObject.getString("reqCode"));
+            int reqCode = Integer.parseInt(jsonObject.getString(S.TRANSPORT_REQ_CODE));
             serverPackage.setReqCode(reqCode);
 
-            String senderphoneNo = jsonObject.getString("reqSenderPhone");
+            String senderphoneNo = jsonObject.getString(S.TRANSPORT_REQ_SENDER_PHONE);
             serverPackage.setReqSenderPhone(senderphoneNo);
-            String receiverPhoneNo = jsonObject.getString("reqReceiverPhone");
+            String receiverPhoneNo = jsonObject.getString(S.TRANSPORT_REQ_RECEIVER_PHONE);
             serverPackage.setReqReceiverPhone(receiverPhoneNo);
 
             Contact senderContact = Tools.getContactFromPhoneNumber(context, senderphoneNo);
@@ -611,7 +603,7 @@ public class GreatJSON {
             Uri senderImageUri = senderContact.getImageUri();
             serverPackage.setReqSenderImageUri(senderImageUri);
 
-            String itemOwnerPhoneNo = jsonObject.getString("itemOwnerPhone");
+            String itemOwnerPhoneNo = jsonObject.getString(S.TRANSPORT_ITEM_OWNER_PHONE);
             String itemOwnerName = null;
             if (itemOwnerPhoneNo.equals(receiverPhoneNo)) {
                 itemOwnerName = "YOU";
@@ -619,30 +611,30 @@ public class GreatJSON {
                 itemOwnerName = senderName;
             }
             serverPackage.setItemOwnerName(itemOwnerName);
-            String itemAssociatePhoneNo = jsonObject.getString("itemAssociatePhone");
+            String itemAssociatePhoneNo = jsonObject.getString(S.TRANSPORT_ITEM_ASSOCIATE_PHONE);
             serverPackage.setItemAssociatePhone(itemAssociatePhoneNo);
 
-            String moneyReceiverPhoneNo = jsonObject.getString("moneyReceiverPhone");
+            String moneyReceiverPhoneNo = jsonObject.getString(S.TRANSPORT_MONEY_RECEIVER_PHONE);
             serverPackage.setMoneyReceiverPhone(moneyReceiverPhoneNo);
-            String moneyPayerPhoneNo = jsonObject.getString("moneyPayerPhone");
+            String moneyPayerPhoneNo = jsonObject.getString(S.TRANSPORT_MONEY_PAYER_PHONE);
             serverPackage.setMoneyPayerPhone(moneyPayerPhoneNo);
 
-            int ownerItemType = Integer.parseInt(jsonObject.getString("ownerItemType"));
+            int ownerItemType = Integer.parseInt(jsonObject.getString(S.TRANSPORT_OWNER_ITEM_TYPE));
             serverPackage.setOwnerItemType(ownerItemType);
-            int associateItemtype = Integer.parseInt(jsonObject.getString("associateItemtype"));
+            int associateItemtype = Integer.parseInt(jsonObject.getString(S.TRANSPORT_ASSOCIATE_ITEM_TYPE));
             serverPackage.setAssociateItemtype(associateItemtype);
 
-            String ownerItemId = jsonObject.getString("ownerItemId");
+            String ownerItemId = jsonObject.getString(S.TRANSPORT_OWNER_ITEM_ID);
             serverPackage.setOwnerItemId(ownerItemId);
-            String associateItemId = jsonObject.getString("associateItemId");
+            String associateItemId = jsonObject.getString(S.TRANSPORT_ASSOCIATE_ITEM_ID);
             serverPackage.setAssociateItemId(associateItemId);
 
-            int itemBodyJsonType = Integer.parseInt(jsonObject.getString("itemBodyJsonType"));
+            int itemBodyJsonType = Integer.parseInt(jsonObject.getString(S.TRANSPORT_ITEM_BODY_JSON_TYPE));
             serverPackage.setItemBodyJsonType(itemBodyJsonType);
-            String itemBodyJsonString = jsonObject.getString("itemBodyJsonString");
+            String itemBodyJsonString = jsonObject.getString(S.TRANSPORT_ITEM_BODY_JSON_STRING);
             serverPackage.setItemBodyJsonString(itemBodyJsonString);
 
-            String message = jsonObject.getString("message");
+            String message = jsonObject.getString(S.TRANSPORT_MESSAGE);
             serverPackage.setMessage(message);
 
             String dateString = jsonObject.getString("dateString");

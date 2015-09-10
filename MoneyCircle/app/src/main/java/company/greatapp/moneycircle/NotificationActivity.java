@@ -67,8 +67,8 @@ public class NotificationActivity extends ActionBarActivity implements LoaderMan
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if(id == LODER_ID) {
             Log.d("Split", "onCreateLoader notifications loader");
-            return new CursorLoader(this, DB.NOTIFICATION_TABLE_URI,
-                    DB.NOTIFICATION_TABLE_PROJECTION, null, null,
+            return new CursorLoader(this, DB.PACKAGE_FROM_SERVER_TABLE_URI,
+                    DB.PACKAGE_FROM_SERVER_TABLE_PROJECTION, null, null,
                     "data DESC");
         }
 

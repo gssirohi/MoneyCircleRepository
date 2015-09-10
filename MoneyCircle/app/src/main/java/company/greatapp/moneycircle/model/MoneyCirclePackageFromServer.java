@@ -274,7 +274,6 @@ public class MoneyCirclePackageFromServer {
         this.itemDescription = itemDescription;
     }
 
-
     public int getItemBodyJsonType() {
         return itemBodyJsonType;
     }

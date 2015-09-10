@@ -26,17 +26,15 @@ public class NotificationHandler {
 
     public void handleGCM_Message(Intent intent) {
 
-        if (intent == null || /*!(intent.hasExtra(S.NOTIFICATION_TYPE)) ||*/ !(intent.hasExtra(S.NOTIFICATION_JSONSTRING))) {
+        if (intent == null || /*!(intent.hasExtra(S.NOTIFICATION_TYPE)) ||*/ !(intent.hasExtra(S.PACKAGE_FROMSERVER_JSON_STRING))) {
             return;
         }
 
 //        int notificationType = intent.getIntExtra(S.NOTIFICATION_TYPE, S.NOTIFICATION_INFORMATION);
-        String messageJsonString = intent.getStringExtra(S.NOTIFICATION_JSONSTRING);
+        String messageJsonString = intent.getStringExtra(S.PACKAGE_FROMSERVER_JSON_STRING);
         if (TextUtils.isEmpty(messageJsonString)) {
             return;
         }
-
-//        Notification notification = GreatJSON.getNotificationFromJSONString(mContext, notificationJsonString);
 
         MoneyCirclePackageFromServer packageFromServer = GreatJSON.getServerPackageFromJson(mContext, messageJsonString);
 

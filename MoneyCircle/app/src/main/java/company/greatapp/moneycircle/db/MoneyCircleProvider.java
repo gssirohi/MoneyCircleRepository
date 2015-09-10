@@ -40,7 +40,7 @@ public class MoneyCircleProvider extends ContentProvider{
     static final int LENT_TABLE_INDEX         = 6;
     static final int SPLIT_TABLE_INDEX        = 7;
     static final int CATEGORY_TABLE_INDEX     = 8;
-    static final int NOTIFICATION_TABLE_INDEX = 9;
+    static final int PACKAGE_FORSERVER_TABLE_INDEX = 9;
     static final int COMMON_TABLE_INDEX       = 10;
     static final int ACCOUNT_TABLE_INDEX       = 11;
     static final int PACKAGE_FROM_SERVER_TABLE_INDEX =12;
@@ -56,7 +56,7 @@ public class MoneyCircleProvider extends ContentProvider{
         uriMatcher.addURI(DB.DB_AUTHORITY,DB.LENT_TABLE_NAME, LENT_TABLE_INDEX);
         uriMatcher.addURI(DB.DB_AUTHORITY,DB.SPLIT_TABLE_NAME, SPLIT_TABLE_INDEX);
         uriMatcher.addURI(DB.DB_AUTHORITY,DB.CATEGORY_TABLE_NAME, CATEGORY_TABLE_INDEX);
-        uriMatcher.addURI(DB.DB_AUTHORITY,DB.NOTIFICATION_TABLE_NAME, NOTIFICATION_TABLE_INDEX);
+        uriMatcher.addURI(DB.DB_AUTHORITY,DB.PACKAGE_FORSERVER_TABLE_NAME, PACKAGE_FORSERVER_TABLE_INDEX);
         uriMatcher.addURI(DB.DB_AUTHORITY,DB.COMMON_TABLE_NAME, COMMON_TABLE_INDEX);
         uriMatcher.addURI(DB.DB_AUTHORITY,DB.ACCOUNT_TABLE_NAME, ACCOUNT_TABLE_INDEX);
         uriMatcher.addURI(DB.DB_AUTHORITY,DB.PACKAGE_FROM_SERVER_TABLE_NAME, PACKAGE_FROM_SERVER_TABLE_INDEX);
@@ -176,13 +176,13 @@ public class MoneyCircleProvider extends ContentProvider{
             }
 
 
-            case NOTIFICATION_TABLE_INDEX:
+            case PACKAGE_FORSERVER_TABLE_INDEX:
             {
                 //this method will accept a row(values) and and insert into the table
-                long rowId = qpinionDBinstance.insert(DB.NOTIFICATION_TABLE_NAME, null, newRow);
+                long rowId = qpinionDBinstance.insert(DB.PACKAGE_FORSERVER_TABLE_NAME, null, newRow);
                 //Toast.makeText(getContext(), "Inserted", Toast.LENGTH_SHORT).show();
                 if (rowId > 0) {
-                    Log.d("in cp","inserted in "+DB.NOTIFICATION_TABLE_NAME);
+                    Log.d("in cp","inserted in "+DB.PACKAGE_FORSERVER_TABLE_NAME);
                     Uri objUri = ContentUris.withAppendedId(uri, rowId);
                     getContext().getContentResolver().notifyChange(objUri, null);
                 }
@@ -323,12 +323,12 @@ public class MoneyCircleProvider extends ContentProvider{
             }
 
 
-            case NOTIFICATION_TABLE_INDEX:
+            case PACKAGE_FORSERVER_TABLE_INDEX:
 
             {
-                Log.d("in cp","Quering data from "+DB.NOTIFICATION_TABLE_NAME);
-                c = qpinionDBinstance.query(DB.NOTIFICATION_TABLE_NAME, projection, selection, selectionArgs, null, null, null);
-                Log.d("in CP", "cursor returned from " + DB.NOTIFICATION_TABLE_NAME);
+                Log.d("in cp","Quering data from "+DB.PACKAGE_FORSERVER_TABLE_NAME);
+                c = qpinionDBinstance.query(DB.PACKAGE_FORSERVER_TABLE_NAME, projection, selection, selectionArgs, null, null, null);
+                Log.d("in CP", "cursor returned from " + DB.PACKAGE_FORSERVER_TABLE_NAME);
                 c.setNotificationUri(getContext().getContentResolver(),uri);
                 return c;
             }
@@ -496,16 +496,16 @@ public class MoneyCircleProvider extends ContentProvider{
 
             }
 
-            case NOTIFICATION_TABLE_INDEX:
+            case PACKAGE_FORSERVER_TABLE_INDEX:
             {
-                long rowId = qpinionDBinstance.update(DB.NOTIFICATION_TABLE_NAME, values, selection, selectionArgs);
+                long rowId = qpinionDBinstance.update(DB.PACKAGE_FORSERVER_TABLE_NAME, values, selection, selectionArgs);
                // Toast.makeText(getContext(),"Inserted", Toast.LENGTH_SHORT).show();
 
                 if(rowId > 0) {
 
                     Uri objUri = ContentUris.withAppendedId(uri, rowId);
                     getContext().getContentResolver().notifyChange(objUri , null);
-                    Log.d("in cp","updated :"+DB.NOTIFICATION_TABLE_NAME);
+                    Log.d("in cp","updated :"+DB.PACKAGE_FORSERVER_TABLE_NAME);
                 }
                 break;
 
@@ -680,11 +680,11 @@ public class MoneyCircleProvider extends ContentProvider{
         }
 
 
-        case NOTIFICATION_TABLE_INDEX:
+        case PACKAGE_FORSERVER_TABLE_INDEX:
 
         {
-            Log.d("in cp","Deleting data from "+DB.NOTIFICATION_TABLE_NAME);
-            long rowId = qpinionDBinstance.delete(DB.NOTIFICATION_TABLE_NAME, selection, selectionArgs);
+            Log.d("in cp","Deleting data from "+DB.PACKAGE_FORSERVER_TABLE_NAME);
+            long rowId = qpinionDBinstance.delete(DB.PACKAGE_FORSERVER_TABLE_NAME, selection, selectionArgs);
 
             if(rowId > 0) {
                 Uri objUri = ContentUris.withAppendedId(uri, rowId);
