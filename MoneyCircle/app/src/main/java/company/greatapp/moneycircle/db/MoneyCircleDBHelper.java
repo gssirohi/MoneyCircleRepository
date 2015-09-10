@@ -204,7 +204,7 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
                             + S.TRANSPORT_ASSOCIATE_ITEM_ID + " text,"
                             + S.TRANSPORT_ITEM_BODY_JSON_TYPE + " int,"
                             + S.TRANSPORT_ITEM_BODY_JSON_STRING + " text,"
-                            + S.TRANSPORT_MESSAGE + " text,"
+                            + S.TRANSPORT_MESSAGE + " text);"
             );
             Log.d("DBhelper", "query sent for" + DB.PACKAGE_FORSERVER_TABLE_NAME);
     //=========================================================================//
