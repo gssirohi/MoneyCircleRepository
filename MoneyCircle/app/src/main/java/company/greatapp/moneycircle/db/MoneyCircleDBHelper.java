@@ -184,21 +184,6 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
 
                             + DB.DB_ID + " Integer primary key ,"
                             + DB.UID + " text,"
-                            + DB.NAME + " text,"
-                            + DB.PHONE_NUMBER + " text, "
-                            + DB.DESCRIPTION + " text, "
-                            + DB.NOTIFICATION_TYPE + " text, "
-                            + DB.AMOUNT + " text, "
-                            +DB.TITLE + " text, "
-                            +DB.DATE + " text, "
-                            +DB.DATE_STRING + " text, "
-                            +DB.SENDER_NUMBER + " text, "
-                            +DB.NOTIFICATION_MONEY_PAYER + " text, "
-                            +DB.NOTIFICATION_MONEY_RECIEVER + " text, "
-                            +DB.NOTIFICATION_IS_RESPONDED + " text, "
-                            +DB.NOTIFICATION_OWNER_ITEM_UID + " text, "
-                            +DB.NOTIFICATION_MESSAGE + " text, "
-                            +DB.NOTIFICATION_TITLE + " text, "
                             + DB.JSON_STRING + " text );"
 
             );
@@ -244,6 +229,34 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
             );
             Log.d("DBhelper","query sent for"+DB.ACCOUNT_TABLE_NAME);
             //=========================================================================//
+
+            //=========================================================================//
+
+            db.execSQL(     "create table "     + DB.PACKAGE_FROM_SERVER_TABLE_NAME + "("
+
+                            + DB.DB_ID + " Integer primary key ,"
+                            + DB.UID + " text,"
+                            +DB.REQUEST_CODE + " int,"
+                            +DB.REQUEST_SENDER_PHONE + " text,"
+                            +DB.REQUEST_RECIEVER_PHONE + " text,"
+                            +DB.ITEM_OWNER_PHONE       + " text,"
+                            +DB.ITEM_ASSOCIATE_PHONE   + " text,"
+                            +DB.MONEY_RECIEVER_PHONE   + " text,"
+                            +DB.MONEY_PAYER_PHONE      + " text,"
+                            +DB.OWNER_ITEM_TYPE        +  " text,"
+                            +DB.ASSOCIATE_ITEM_TYPE    + " text,"
+                            +DB.ITEM_BODY_JSON_TYPE    + " text,"
+                            +DB.ITEM_TITLE             + " text,"
+                            +DB.ITEM_DATE_STRING       + " text,"
+                            +DB.MESSAGE                + " text,"
+                            +DB.ITEM_DUE_DATE_STRING   + " text,"
+                            +DB.ITEM_DESCRIPTION       + " text,"
+                            +DB.IS_RESPONDED           + " int"
+                            + DB.ITEM_BODY_JSON_STRING + " text );"
+            );
+            Log.d("DBhelper","query sent for"+DB.PACKAGE_FROM_SERVER_TABLE_NAME);
+            //=========================================================================//
+
 
         }
 

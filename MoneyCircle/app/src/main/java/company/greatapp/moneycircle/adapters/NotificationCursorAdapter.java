@@ -7,8 +7,7 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 
 import company.greatapp.moneycircle.manager.NotificationManager;
-import company.greatapp.moneycircle.model.Notification;
-import company.greatapp.moneycircle.view.MoneyItemView;
+import company.greatapp.moneycircle.model.MoneyCirclePackageFromServer;
 import company.greatapp.moneycircle.view.NotificationItemView;
 
 /**
@@ -36,7 +35,9 @@ public class NotificationCursorAdapter extends CursorAdapter {
         int p = (c -pos +1);
         //cursor.move(p -pos);
         cursor.moveToPosition(p - 1);
-        Notification notification =(Notification) NotificationManager.createLightItemFromCursor(cursor);
-        ((NotificationItemView) view).initView(notification);
+
+        //todo Ashish
+        MoneyCirclePackageFromServer moneyCirclePackageFromServer = new MoneyCirclePackageFromServer(cursor);
+        ((NotificationItemView) view).initView(moneyCirclePackageFromServer);
     }
 }

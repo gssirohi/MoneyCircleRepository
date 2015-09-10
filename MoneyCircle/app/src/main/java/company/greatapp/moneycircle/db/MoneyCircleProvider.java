@@ -43,6 +43,7 @@ public class MoneyCircleProvider extends ContentProvider{
     static final int NOTIFICATION_TABLE_INDEX = 9;
     static final int COMMON_TABLE_INDEX       = 10;
     static final int ACCOUNT_TABLE_INDEX       = 11;
+    static final int PACKAGE_FROM_SERVER_TABLE_INDEX =12;
 
 	static {
 	    uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -58,6 +59,7 @@ public class MoneyCircleProvider extends ContentProvider{
         uriMatcher.addURI(DB.DB_AUTHORITY,DB.NOTIFICATION_TABLE_NAME, NOTIFICATION_TABLE_INDEX);
         uriMatcher.addURI(DB.DB_AUTHORITY,DB.COMMON_TABLE_NAME, COMMON_TABLE_INDEX);
         uriMatcher.addURI(DB.DB_AUTHORITY,DB.ACCOUNT_TABLE_NAME, ACCOUNT_TABLE_INDEX);
+        uriMatcher.addURI(DB.DB_AUTHORITY,DB.PACKAGE_FROM_SERVER_TABLE_NAME, PACKAGE_FROM_SERVER_TABLE_INDEX);
 
 	}
 	
@@ -213,6 +215,19 @@ public class MoneyCircleProvider extends ContentProvider{
                 break;
             }
 
+            case PACKAGE_FROM_SERVER_TABLE_INDEX:
+            {
+                //this method will accept a row(values) and and insert into the table
+                long rowId = qpinionDBinstance.insert(DB.PACKAGE_FROM_SERVER_TABLE_NAME, null, newRow);
+                //Toast.makeText(getContext(), "Inserted", Toast.LENGTH_SHORT).show();
+                if (rowId > 0) {
+                    Log.d("in cp","inserted in "+DB.PACKAGE_FROM_SERVER_TABLE_NAME);
+                    Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                    getContext().getContentResolver().notifyChange(objUri, null);
+                }
+                break;
+            }
+
 
 		default:
 			Log.e("in cp","URI NOT MATCHED for Inserting!!!");
@@ -334,6 +349,16 @@ public class MoneyCircleProvider extends ContentProvider{
                 Log.d("in cp","Quering data from "+DB.ACCOUNT_TABLE_NAME);
                 c = qpinionDBinstance.query(DB.ACCOUNT_TABLE_NAME, projection, selection, selectionArgs, null, null, null);
                 Log.d("in CP", "cursor returned from " + DB.ACCOUNT_TABLE_NAME);
+                c.setNotificationUri(getContext().getContentResolver(),uri);
+                return c;
+            }
+
+            case PACKAGE_FROM_SERVER_TABLE_INDEX:
+
+            {
+                Log.d("in cp","Quering data from "+DB.PACKAGE_FROM_SERVER_TABLE_NAME);
+                c = qpinionDBinstance.query(DB.PACKAGE_FROM_SERVER_TABLE_NAME, projection, selection, selectionArgs, null, null, null);
+                Log.d("in CP", "cursor returned from " + DB.PACKAGE_FROM_SERVER_TABLE_NAME);
                 c.setNotificationUri(getContext().getContentResolver(),uri);
                 return c;
             }
@@ -511,6 +536,21 @@ public class MoneyCircleProvider extends ContentProvider{
                     Uri objUri = ContentUris.withAppendedId(uri, rowId);
                     getContext().getContentResolver().notifyChange(objUri , null);
                     Log.d("in cp","updated :"+DB.ACCOUNT_TABLE_NAME);
+                }
+                break;
+
+            }
+
+            case PACKAGE_FROM_SERVER_TABLE_INDEX:
+            {
+                long rowId = qpinionDBinstance.update(DB.PACKAGE_FROM_SERVER_TABLE_NAME, values, selection, selectionArgs);
+//                Toast.makeText(getContext(),"Inserted", Toast.LENGTH_SHORT).show();
+
+                if(rowId > 0) {
+
+                    Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                    getContext().getContentResolver().notifyChange(objUri , null);
+                    Log.d("in cp","updated :"+DB.PACKAGE_FROM_SERVER_TABLE_NAME);
                 }
                 break;
 

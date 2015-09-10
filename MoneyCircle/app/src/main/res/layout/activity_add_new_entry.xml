@@ -27,7 +27,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    style="@style/MoneyCircle.TextAppearance.Medium.Dark"
                     android:text="I have a new "
                     android:id="@+id/tv_new_before_type"
                     android:layout_gravity="center_vertical"
@@ -36,7 +36,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    style="@style/MoneyCircle.TextAppearance.Medium.Dark"
                     android:text="INCOME "
                     android:id="@+id/tv_new_type"
                     android:layout_gravity="center_vertical" />
@@ -44,7 +44,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    style="@style/MoneyCircle.TextAppearance.Medium.Dark"
                     android:text="on"
                     android:id="@+id/textView9"
                     android:layout_gravity="center_vertical"
@@ -62,7 +62,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                style="@style/MoneyCircle.TextAppearance.Medium.Dark"
                 android:text="of worth "
                 android:id="@+id/tv_new_after_type"
                 android:layout_gravity="center_vertical|center_horizontal"
@@ -108,7 +108,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    style="@style/MoneyCircle.TextAppearance.Medium.Dark"
                     android:text="from"
                     android:id="@+id/tv_new_item"
                     android:layout_gravity="center_vertical"
@@ -134,7 +134,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    style="@style/MoneyCircle.TextAppearance.Medium.Dark"
                     android:text="payble to "
                     android:id="@+id/tv_new_member_add"
                     android:layout_gravity="center_vertical" />
@@ -181,7 +181,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                style="@style/MoneyCircle.TextAppearance.Medium.Dark"
                 android:text="and want to include below note"
                 android:id="@+id/tv_new_note"
                 android:layout_gravity="center_horizontal"

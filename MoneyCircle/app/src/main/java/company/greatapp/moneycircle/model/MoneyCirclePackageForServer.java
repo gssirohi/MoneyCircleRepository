@@ -248,7 +248,7 @@ public class MoneyCirclePackageForServer {
         return params;
     }
 
-    public void insertInDb(Context mContext) {
+    public void insertInDb(Context context) {
 
 
     }

@@ -191,30 +191,46 @@ public class DB {
 
     public static final String NOTIFICATION_TABLE_NAME = "notificationTable";
     public static final String NOTIFICATION_TYPE = "notificationType";
-    public static final String NOTIFICATION_MONEY_RECIEVER ="money requester";
-    public static final String NOTIFICATION_MONEY_PAYER ="money payer";
-    public static final String NOTIFICATION_OWNER_ITEM_UID ="owner item uid";
-    public static final String SENDER_NUMBER ="sender phone number";
-    public static final String NOTIFICATION_IS_RESPONDED ="is responded";
-    public static final String NOTIFICATION_MESSAGE = "notification message";
-    public static final String NOTIFICATION_TITLE = "notification title";
-    public static final String ITEM_TITLE = "money title";
-   // public static final String DATE_STRING = "money date";
-    public static final String NOTIFICATION_MONEY_DUE_DATE = "money due date";
-    public static final String MONEY_ITEM_DESCRIPTION = "money description";
-    public static final String SENDER_NAME = "sender name";
-    public static final String ITEM_OWNER_NAME ="item owner name";
-
 
 
 
 
     public static final Uri NOTIFICATION_TABLE_URI = Uri.parse("content://"+DB_AUTHORITY+"/" + NOTIFICATION_TABLE_NAME);
     public static final String[] NOTIFICATION_TABLE_PROJECTION = new String[]{
-            DB_ID,UID,NAME,PHONE_NUMBER,NOTIFICATION_TYPE,DESCRIPTION,AMOUNT,CATEGORY,TITLE,NOTIFICATION_IS_RESPONDED,SENDER_NUMBER
-    ,NOTIFICATION_MESSAGE, ITEM_TITLE, DATE_STRING,NOTIFICATION_MONEY_DUE_DATE
-    , MONEY_ITEM_DESCRIPTION};
+            DB_ID,UID,NAME,PHONE_NUMBER,NOTIFICATION_TYPE};
 //----------------------------------------------------------------//
+
+    // ------------------ MONEY CIRCLE PACKAGE FROM SERVER TABLE --------//
+
+    public static final String PACKAGE_FROM_SERVER_TABLE_NAME   = "fromServerTable";
+    public static final String REQUEST_CODE                     ="requestCode";
+    public static final String REQUEST_SENDER_PHONE             =  "requestSenderPhone";
+    public static final String REQUEST_RECIEVER_PHONE           = "requestRecieverPhone";
+    public static final String ITEM_OWNER_PHONE                 = "itemOwnerPhone";
+    public static final String ITEM_ASSOCIATE_PHONE             = "itemAssociatePhone";
+    public static final String MONEY_RECIEVER_PHONE             = "moneyRecieverPhone";
+    public static final String MONEY_PAYER_PHONE                ="moneyPayerPhone";
+    public static final String OWNER_ITEM_TYPE                  = "ownerItemType";
+    public static final String ASSOCIATE_ITEM_TYPE              = "associateItemType";
+    public static final String ITEM_BODY_JSON_TYPE              = "jsonType";
+    public static final String ITEM_BODY_JSON_STRING            = "jsonString";
+    public static final String MESSAGE                          = "message";
+    public static final String ITEM_TITLE                       = "itemTitle";
+    public static final String ITEM_DATE_STRING                 = "itemDate";
+    public static final String ITEM_DUE_DATE_STRING             = "itemDueDate";
+    public static final String ITEM_DESCRIPTION                 = "itemDescription";
+    public static final String IS_RESPONDED                     = "isResponded";
+
+    public static final Uri PACKAGE_FROM_SERVER_TABLE_URI = Uri.parse("content://"+DB_AUTHORITY+"/" + PACKAGE_FROM_SERVER_TABLE_NAME);
+    public static final String[] PACKAGE_FROM_SERVER_TABLE_PROJECTION = new String[]{
+            DB_ID,UID, REQUEST_CODE,REQUEST_SENDER_PHONE,REQUEST_RECIEVER_PHONE,ITEM_OWNER_PHONE
+    ,ITEM_ASSOCIATE_PHONE,MONEY_RECIEVER_PHONE,MONEY_PAYER_PHONE,OWNER_ITEM_TYPE,ASSOCIATE_ITEM_TYPE,
+            ITEM_BODY_JSON_TYPE,ITEM_BODY_JSON_STRING,MESSAGE,ITEM_TITLE,ITEM_DATE_STRING,
+            ITEM_DUE_DATE_STRING,ITEM_DESCRIPTION,IS_RESPONDED};
+
+
+
+
     //--------------COMMON TABLE--------------------------------------//
 
 

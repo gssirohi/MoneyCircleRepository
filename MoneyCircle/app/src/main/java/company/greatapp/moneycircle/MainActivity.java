@@ -215,7 +215,7 @@ public class MainActivity extends ActionBarActivity implements TagItemView.TagIt
                 startActivity(new Intent(this,SettingActivity.class));
                 break;
 
-            case 3://Notification
+            case 3://MoneyCirclePackageFromServer
                 startActivity(new Intent(this,NotificationActivity.class));
                 break;
             case 4://profile

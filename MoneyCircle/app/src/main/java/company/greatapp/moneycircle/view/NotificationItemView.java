@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.constants.S;
-import company.greatapp.moneycircle.model.Notification;
+import company.greatapp.moneycircle.model.MoneyCirclePackageFromServer;
 
 /**
  * Created by Gyanendrasingh on 9/6/2015.
@@ -36,6 +36,7 @@ public class NotificationItemView extends LinearLayout {
     private final Button b_add_expense_entry;
     private final Button b_edit_resend;
     private final Button b_clear;
+    private boolean isResponded =true;
 
     public NotificationItemView(Context context, AttributeSet attrs) {
 
@@ -86,16 +87,18 @@ public class NotificationItemView extends LinearLayout {
         }
     }
 
-    public void initView(Notification notification) {
-        int type = notification.getModelType();
-        String sender = notification.getSenderName();
+    public void initView(MoneyCirclePackageFromServer moneyCirclePackageFromServer) {
+       int type = moneyCirclePackageFromServer.getReqCode();
 
-        String msg = notification.getMessage();
 
-        String moneyItemTitle = notification.getMoneyTitle();
-        String amount = ""+notification.getAmount();
-        String dateString = ""+notification.getMoneyDate();
-        String dueDateString = ""+notification.getMoneyDueDate();
+        String sender = moneyCirclePackageFromServer.getReqSenderName();
+
+        String msg = moneyCirclePackageFromServer.getMessage();
+
+        String moneyItemTitle = moneyCirclePackageFromServer.getItemTitle();
+        String amount = ""+ moneyCirclePackageFromServer.getAmount();
+        String dateString = ""+ moneyCirclePackageFromServer.getItemDateString();
+        String dueDateString = ""+ moneyCirclePackageFromServer.getItemDueDateString();
 
         tv_contact_name.setText(sender);
         tv_notification_msg.setText(msg);
@@ -103,7 +106,7 @@ public class NotificationItemView extends LinearLayout {
         tv_amount.setText(""+amount);
         tv_date.setText(dateString);
         tv_due_date.setText("due on " + dueDateString);
-        boolean isResponded = notification.isResponded();
+        boolean isResponded = moneyCirclePackageFromServer.isResponded();
 
 
         switch(type) {

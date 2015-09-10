@@ -1,6 +1,13 @@
 package company.greatapp.moneycircle.model;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
+import android.util.Log;
+
+import company.greatapp.moneycircle.constants.DB;
 
 /**
  * Created by Prateek on 09-09-2015.
@@ -44,6 +51,52 @@ public class MoneyCirclePackageFromServer {
     private String itemDueDateString;
 
     private String itemDescription;
+
+
+    private String uid;
+    private int dbId;
+
+    private boolean isResponded;
+    public MoneyCirclePackageFromServer(){
+
+    }
+    public MoneyCirclePackageFromServer(Cursor c){
+        setUid(c.getString(c.getColumnIndex(DB.UID)));
+        setReqCode(c.getInt(c.getColumnIndex(DB.REQUEST_CODE)));
+        setReqSenderPhone(c.getString(c.getColumnIndex(DB.REQUEST_SENDER_PHONE)));
+        setReqReceiverPhone(c.getString(c.getColumnIndex(DB.REQUEST_RECIEVER_PHONE)));
+        setItemOwnerPhone(c.getString(c.getColumnIndex(DB.ITEM_OWNER_PHONE)));
+        setItemAssociatePhone(c.getString(c.getColumnIndex(DB.ITEM_ASSOCIATE_PHONE)));
+        setMoneyReceiverPhone(c.getString(c.getColumnIndex(DB.MONEY_RECIEVER_PHONE)));
+        setMoneyPayerPhone(c.getString(c.getColumnIndex(DB.MONEY_PAYER_PHONE)));
+        setOwnerItemType(c.getInt(c.getColumnIndex(DB.OWNER_ITEM_TYPE)));
+        setAssociateItemtype(c.getInt(c.getColumnIndex(DB.ASSOCIATE_ITEM_TYPE)));
+        setItemBodyJsonType(c.getInt(c.getColumnIndex(DB.ITEM_BODY_JSON_TYPE)));
+        setItemBodyJsonString(c.getString(c.getColumnIndex(DB.ITEM_BODY_JSON_STRING)));
+        setMessage(c.getString(c.getColumnIndex(DB.MESSAGE)));
+        setItemTitle(c.getString(c.getColumnIndex(DB.ITEM_TITLE)));
+        setItemDateString(c.getString(c.getColumnIndex(DB.ITEM_DATE_STRING)));
+        setItemDueDateString(c.getString(c.getColumnIndex(DB.ITEM_DUE_DATE_STRING)));
+        setItemDescription(c.getString(c.getColumnIndex(DB.ITEM_DESCRIPTION)));
+        int responded = c.getInt(c.getColumnIndex(DB.IS_RESPONDED));
+        setIsResponded((responded==1)?true:false);
+    }
+
+    public boolean isResponded() {
+        return isResponded;
+    }
+
+    public void setIsResponded(boolean isResponded) {
+        this.isResponded = isResponded;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     public int getReqCode() {
         return reqCode;
@@ -221,6 +274,7 @@ public class MoneyCirclePackageFromServer {
         this.itemDescription = itemDescription;
     }
 
+
     public int getItemBodyJsonType() {
         return itemBodyJsonType;
     }
@@ -229,4 +283,45 @@ public class MoneyCirclePackageFromServer {
         this.itemBodyJsonType = itemBodyJsonType;
     }
 
+    public Uri insertItemInDB(Context context) {
+        if(context == null)
+            Log.d("PACKAGEFROM", "context is NULL");
+        ContentResolver resolver = context.getContentResolver();
+        if(resolver == null)
+            Log.d("PACKAGEFROM","context is NULL");
+        ContentValues values = getContentValues();
+        return resolver.insert(DB.PACKAGE_FROM_SERVER_TABLE_URI, values);
+    }
+
+    public ContentValues getContentValues() {
+        ContentValues row = new ContentValues();
+
+        row.put(DB.UID,getUid());
+        row.put(DB.REQUEST_CODE,getReqCode());
+        row.put(DB.REQUEST_SENDER_PHONE,getReqSenderPhone());
+        row.put(DB.REQUEST_RECIEVER_PHONE,getReqReceiverPhone());
+        row.put(DB.ITEM_OWNER_PHONE,getItemOwnerPhone());
+        row.put(DB.ITEM_ASSOCIATE_PHONE,getItemAssociatePhone());
+        row.put(DB.MONEY_RECIEVER_PHONE,getMoneyReceiverPhone());
+        row.put(DB.MONEY_PAYER_PHONE,getMoneyPayerPhone());
+        row.put(DB.OWNER_ITEM_TYPE,getOwnerItemType());
+        row.put(DB.ASSOCIATE_ITEM_TYPE,getAssociateItemtype());
+        row.put(DB.ITEM_BODY_JSON_TYPE,getItemBodyJsonType());
+        row.put(DB.ITEM_BODY_JSON_STRING,getItemBodyJsonString());
+        row.put(DB.MESSAGE,getMessage());
+        row.put(DB.ITEM_TITLE,getItemTitle());
+        row.put(DB.ITEM_DATE_STRING,getDateString());
+        row.put(DB.ITEM_DUE_DATE_STRING,getItemDueDateString());
+        row.put(DB.ITEM_DESCRIPTION,getItemDescription());
+        row.put(DB.IS_RESPONDED,isResponded()?1:0);
+        return row;
+    }
+
+    public int getDbId() {
+        return dbId;
+    }
+
+    public void setDbId(int dbId) {
+        this.dbId = dbId;
+    }
 }

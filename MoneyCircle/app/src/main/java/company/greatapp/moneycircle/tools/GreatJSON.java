@@ -24,7 +24,7 @@ import company.greatapp.moneycircle.model.Expense;
 import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.MoneyCirclePackageFromServer;
-import company.greatapp.moneycircle.model.Notification;
+
 import company.greatapp.moneycircle.model.Split;
 import company.greatapp.moneycircle.model.User;
 
@@ -457,8 +457,8 @@ public class GreatJSON {
     }
 
 
-    public static Notification getNotificationFromJSONString(Context context, String json) {
-        Notification notification = null;
+    public static MoneyCirclePackageFromServer getNotificationFromJSONString(Context context, String json) {
+        MoneyCirclePackageFromServer notification = null;
         try {
             JSONObject obj = new JSONObject(json);
             String title = obj.getString("title");
@@ -574,12 +574,14 @@ public class GreatJSON {
 
             String ownerItemUID = obj.getString("ownerItemUID");
 
-            notification = new Notification();
-            notification.setTitle(title);
-            notification.setAmount(Float.parseFloat(amount));
-            notification.setDateString(dateString);
-            notification.setDueDateString(dueDateString);
-            notification.setJsonString(json);
+            notification = new MoneyCirclePackageFromServer();
+
+            //todo Ashu
+//            notification.setTitle(title);
+//            notification.setAmount(Float.parseFloat(amount));
+//            notification.setDateString(dateString);
+//            notification.setDueDateString(dueDateString);
+//            notification.setJsonString(json);
 
         } catch (JSONException e) {
             e.printStackTrace();

@@ -2,7 +2,6 @@ package company.greatapp.moneycircle.model;
 
 import android.content.ContentValues;
 import android.net.Uri;
-import android.util.Log;
 
 import org.json.JSONObject;
 
