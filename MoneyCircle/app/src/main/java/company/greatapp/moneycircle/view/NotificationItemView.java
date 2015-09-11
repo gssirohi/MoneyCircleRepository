@@ -88,12 +88,17 @@ public class NotificationItemView extends LinearLayout {
     }
 
     public void initView(MoneyCirclePackageFromServer moneyCirclePackageFromServer) {
-       int type = moneyCirclePackageFromServer.getReqCode();
+       int reqCode = moneyCirclePackageFromServer.getReqCode();
 
 
         String sender = moneyCirclePackageFromServer.getReqSenderName();
 
-        String msg = moneyCirclePackageFromServer.getMessage();
+        String msg;
+        if(reqCode != S.TRANSPORT_REQUEST_CODE_NOTIFICATION) {
+            msg = moneyCirclePackageFromServer.createNotificationMessage();
+        } else {
+            msg = moneyCirclePackageFromServer.getMessage();
+        }
 
         String moneyItemTitle = moneyCirclePackageFromServer.getItemTitle();
         String amount = ""+ moneyCirclePackageFromServer.getAmount();
@@ -109,22 +114,9 @@ public class NotificationItemView extends LinearLayout {
         boolean isResponded = moneyCirclePackageFromServer.isResponded();
 
 
-        switch(type) {
+        switch(reqCode) {
 
-            case S.NOTIFICATION_LENT_REQUEST:
-
-                ll_money_item_frame.setVisibility(VISIBLE);
-                if(isResponded) {
-                    ll_agree_frame.setVisibility(GONE);
-                    ll_remove_entry_frame.setVisibility(GONE);
-                    b_clear.setVisibility(VISIBLE);
-                } else {
-                    ll_agree_frame.setVisibility(VISIBLE);
-                    ll_remove_entry_frame.setVisibility(GONE);
-                    b_clear.setVisibility(GONE);
-                }
-                break;
-            case S.NOTIFICATION_BORROW_REQUEST:
+            case S.TRANSPORT_REQUEST_CODE_LENT:
 
                 ll_money_item_frame.setVisibility(VISIBLE);
                 if(isResponded) {
@@ -137,7 +129,7 @@ public class NotificationItemView extends LinearLayout {
                     b_clear.setVisibility(GONE);
                 }
                 break;
-            case S.NOTIFICATION_PAY_REQUEST:
+            case S.TRANSPORT_REQUEST_CODE_BORROW:
 
                 ll_money_item_frame.setVisibility(VISIBLE);
                 if(isResponded) {
@@ -150,7 +142,7 @@ public class NotificationItemView extends LinearLayout {
                     b_clear.setVisibility(GONE);
                 }
                 break;
-            case S.NOTIFICATION_RECEIVE_REQUEST:
+            case S.TRANSPORT_REQUEST_CODE_PAY:
 
                 ll_money_item_frame.setVisibility(VISIBLE);
                 if(isResponded) {
@@ -163,7 +155,20 @@ public class NotificationItemView extends LinearLayout {
                     b_clear.setVisibility(GONE);
                 }
                 break;
-            case S.NOTIFICATION_SETTLE_REQUEST:
+            case S.TRANSPORT_REQUEST_CODE_RECEIVE:
+
+                ll_money_item_frame.setVisibility(VISIBLE);
+                if(isResponded) {
+                    ll_agree_frame.setVisibility(GONE);
+                    ll_remove_entry_frame.setVisibility(GONE);
+                    b_clear.setVisibility(VISIBLE);
+                } else {
+                    ll_agree_frame.setVisibility(VISIBLE);
+                    ll_remove_entry_frame.setVisibility(GONE);
+                    b_clear.setVisibility(GONE);
+                }
+                break;
+            case S.TRANSPORT_REQUEST_CODE_SETTLE:
 
                 ll_money_item_frame.setVisibility(GONE);
                 if(isResponded) {
@@ -176,7 +181,7 @@ public class NotificationItemView extends LinearLayout {
                     b_clear.setVisibility(GONE);
                 }
                 break;
-            case S.NOTIFICATION_REMINDER_REQUEST:
+            case S.TRANSPORT_REQUEST_CODE_REMINDER:
 
                 ll_money_item_frame.setVisibility(VISIBLE);
                 if(isResponded) {
@@ -189,7 +194,7 @@ public class NotificationItemView extends LinearLayout {
                     b_clear.setVisibility(GONE);
                 }
                 break;
-            case S.NOTIFICATION_MODIFY_lENT_REQUEST:
+            case S.TRANSPORT_REQUEST_CODE_MODIFY:
 
                 ll_money_item_frame.setVisibility(VISIBLE);
                 if(isResponded) {
@@ -202,7 +207,7 @@ public class NotificationItemView extends LinearLayout {
                     b_clear.setVisibility(GONE);
                 }
                 break;
-            case S.NOTIFICATION_DELETE_LENT_REQUEST:
+            case S.TRANSPORT_REQUEST_CODE_DELETE:
 
                 ll_money_item_frame.setVisibility(VISIBLE);
                 if(isResponded) {
@@ -215,7 +220,7 @@ public class NotificationItemView extends LinearLayout {
                     b_clear.setVisibility(GONE);
                 }
                 break;
-            case S.NOTIFICATION_AGREE_LENT:
+            case S.TRANSPORT_REQUEST_CODE_AGREE:
 
                 ll_money_item_frame.setVisibility(VISIBLE);
                 if(isResponded) {
@@ -228,7 +233,7 @@ public class NotificationItemView extends LinearLayout {
                     b_clear.setVisibility(GONE);
                 }
                 break;
-            case S.NOTIFICATION_DISAGREE_LENT:
+            case S.TRANSPORT_REQUEST_CODE_DISAGREE:
 
                 ll_money_item_frame.setVisibility(VISIBLE);
                 if(isResponded) {
@@ -240,11 +245,19 @@ public class NotificationItemView extends LinearLayout {
                     ll_remove_entry_frame.setVisibility(GONE);
                     b_clear.setVisibility(GONE);
                 }
+                break;
+
+            case S.TRANSPORT_REQUEST_CODE_NOTIFICATION:
+
+                ll_money_item_frame.setVisibility(VISIBLE);
+                    ll_agree_frame.setVisibility(GONE);
+                    ll_remove_entry_frame.setVisibility(GONE);
+                    b_clear.setVisibility(VISIBLE);
+
                 break;
 
 
         }
-        makeResponded(isResponded);
 
     }
 }

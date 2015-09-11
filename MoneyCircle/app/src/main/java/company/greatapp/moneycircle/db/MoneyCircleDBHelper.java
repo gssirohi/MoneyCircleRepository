@@ -257,6 +257,7 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
                             + DB.UID + " text,"
                             +DB.REQUEST_CODE + " int,"
                             +DB.REQUEST_SENDER_PHONE + " text,"
+                            +DB.REQUEST_SENDER_NAME + " text,"
                             +DB.REQUEST_RECIEVER_PHONE + " text,"
                             +DB.ITEM_OWNER_PHONE       + " text,"
                             +DB.ITEM_ASSOCIATE_PHONE   + " text,"
@@ -270,8 +271,8 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
                             +DB.ITEM_DATE_STRING       + " text,"
                             +DB.MESSAGE                + " text,"
                             +DB.ITEM_DUE_DATE_STRING   + " text,"
-                            +DB.ITEM_DESCRIPTION       + " text,"
                             +DB.IS_RESPONDED           + " int,"
+                            +DB.ITEM_DESCRIPTION       + " text,"
                             + DB.ITEM_BODY_JSON_STRING + " text );"
             );
             Log.d("DBhelper","query sent for"+DB.PACKAGE_FROM_SERVER_TABLE_NAME);

@@ -105,7 +105,15 @@ public class S {
 
     public static final int TRANSPORT_REQUEST_CODE_LENT = 11;
     public static final short TRANSPORT_REQUEST_CODE_BORROW = 22;
-
+    public static final short TRANSPORT_REQUEST_CODE_PAY = 33;
+    public static final short TRANSPORT_REQUEST_CODE_RECEIVE = 44;
+    public static final short TRANSPORT_REQUEST_CODE_SETTLE = 55;
+    public static final short TRANSPORT_REQUEST_CODE_REMINDER = 66;
+    public static final short TRANSPORT_REQUEST_CODE_MODIFY = 77;
+    public static final short TRANSPORT_REQUEST_CODE_DELETE = 88;
+    public static final short TRANSPORT_REQUEST_CODE_AGREE = 99;
+    public static final short TRANSPORT_REQUEST_CODE_DISAGREE = 109;
+    public static final short TRANSPORT_REQUEST_CODE_NOTIFICATION = 119;
 
     //---------------------------------------------------------------------------------------//
 

@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import company.greatapp.moneycircle.constants.DB;
+import company.greatapp.moneycircle.constants.S;
 
 /**
  * Created by Prateek on 09-09-2015.
@@ -64,6 +65,7 @@ public class MoneyCirclePackageFromServer {
         setUid(c.getString(c.getColumnIndex(DB.UID)));
         setReqCode(c.getInt(c.getColumnIndex(DB.REQUEST_CODE)));
         setReqSenderPhone(c.getString(c.getColumnIndex(DB.REQUEST_SENDER_PHONE)));
+        setReqSenderName(c.getString(c.getColumnIndex(DB.REQUEST_SENDER_NAME)));
         setReqReceiverPhone(c.getString(c.getColumnIndex(DB.REQUEST_RECIEVER_PHONE)));
         setItemOwnerPhone(c.getString(c.getColumnIndex(DB.ITEM_OWNER_PHONE)));
         setItemAssociatePhone(c.getString(c.getColumnIndex(DB.ITEM_ASSOCIATE_PHONE)));
@@ -303,6 +305,7 @@ public class MoneyCirclePackageFromServer {
         row.put(DB.UID,getUid());
         row.put(DB.REQUEST_CODE,getReqCode());
         row.put(DB.REQUEST_SENDER_PHONE,getReqSenderPhone());
+        row.put(DB.REQUEST_SENDER_NAME,getReqSenderName());
         row.put(DB.REQUEST_RECIEVER_PHONE,getReqReceiverPhone());
         row.put(DB.ITEM_OWNER_PHONE,getItemOwnerPhone());
         row.put(DB.ITEM_ASSOCIATE_PHONE,getItemAssociatePhone());
@@ -328,5 +331,57 @@ public class MoneyCirclePackageFromServer {
 
     public void setDbId(int dbId) {
         this.dbId = dbId;
+    }
+
+
+    public String createNotificationMessage() {
+
+        String message = null;
+        switch (getReqCode()) {
+
+            case S.TRANSPORT_REQUEST_CODE_LENT:
+                message = "YOU OWE "+ getAmount() +" to "+ getReqSenderName() + " for this transaction";
+                break;
+
+            case S.TRANSPORT_REQUEST_CODE_BORROW:
+                message = getReqSenderName() + " OWES YOU" + getAmount() + " for this transaction";
+                break;
+//            case S.NOTIFICATION_LENT_REQUEST:
+//                message = "YOU OWE "+ amount +" to "+ name + " for this transaction";
+//                break;
+//            case S.NOTIFICATION_BORROW_REQUEST:
+//                message = name + " OWES YOU" + amount + " for this transaction";
+//                break;
+//            case S.NOTIFICATION_PAY_REQUEST:
+//                message = name + " PAYED " + amount + " to YOU for this transaction";
+//                break;
+//            case S.NOTIFICATION_SETTLE_REQUEST:
+//                message = name + " SETTLED UP with YOU";
+//                break;
+//            case S.NOTIFICATION_REMINDER_REQUEST:
+//                message = "REMINDER to pay " + amount + " to " + name;
+//                break;
+//            case S.NOTIFICATION_AGREE_LENT:
+//                message = name + " agree to pay "+ amount + " for this transaction";
+//                break;
+//            case S.NOTIFICATION_DISAGREE_LENT:
+//                message = name + " disagreed to pay "+ amount + " for this transaction";
+//                break;
+//            case S.NOTIFICATION_RECEIVE_REQUEST:
+//                message = name + " RECEIVED "+ amount + " for this transaction";
+//                break;
+//            case S.NOTIFICATION_DELETE_LENT_REQUEST:
+//                message = name + " deleted  this transaction";
+//                break;
+//            case S.NOTIFICATION_MODIFY_lENT_REQUEST:
+//                message = name + " modified this transaction";
+//                break;
+//            case S.NOTIFICATION_INFORMATION:
+//                message = "Information Message of Money Circle";
+//                break;
+            default:
+                break;
+        }
+        return message;
     }
 }

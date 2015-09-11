@@ -139,7 +139,7 @@ public class Tools {
         }
         Contact contact = null;
 
-        String [] projection = null;
+        String [] projection = DB.CONTACT_TABLE_PROJECTION;
         String selection=DB.PHONE_NUMBER + "=" + "?";
         String [] selArgs = new String[]{""+phoneNumber};
         Cursor c = context.getContentResolver().query(DB.CONTACT_TABLE_URI, projection, selection, selArgs, null);

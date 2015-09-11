@@ -97,7 +97,7 @@ public class GreatJSON {
         return obj;
     }
     public static ArrayList<Model> getModelListFromJsonString(String json, Context context, int modelType) {
-        Log.i("SPLIT","getting Model List for JSON : "+json);
+        Log.i("SPLIT", "getting Model List for JSON : " + json);
         ArrayList<Model> list = new ArrayList<Model>();
         try {
             JSONArray array = new JSONArray(json);
@@ -556,7 +556,7 @@ public class GreatJSON {
                 default:
                     break;
             }
-            message = getMessage(notificationType, senderName, amount);
+            message = createNotificationMessage(notificationType, senderName, amount);
             if (message == null) {
                 message = "";
             }
@@ -605,7 +605,7 @@ public class GreatJSON {
 
             Contact senderContact = Tools.getContactFromPhoneNumber(context, senderphoneNo);
             String senderName = senderContact.getContactName();
-            serverPackage.setReqSenderName(senderName);
+            Log.i("GreatJson","Sender : "+senderName+" ["+senderphoneNo+"]");
             Uri senderImageUri = senderContact.getImageUri();
             serverPackage.setReqSenderImageUri(senderImageUri);
 
@@ -682,6 +682,9 @@ public class GreatJSON {
             String itemDescription = itemJsonObj.getString(DB.DESCRIPTION);
             serverPackage.setItemDescription(itemDescription);
 
+            String message = itemJsonObj.getString(DB.MESSAGE);
+            serverPackage.setMessage(message);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -690,48 +693,4 @@ public class GreatJSON {
     }
 
 
-    private static String getMessage(int notificationType, String name, String amount) {
-        if (amount == null && (S.NOTIFICATION_INFORMATION != notificationType)) {
-            return null;
-        }
-        String message = null;
-        switch (notificationType) {
-            case S.NOTIFICATION_LENT_REQUEST:
-                message = "YOU OWE "+ amount +" to "+ name + " for this transaction";
-                break;
-            case S.NOTIFICATION_BORROW_REQUEST:
-                message = name + " OWES YOU" + amount + " for this transaction";
-                break;
-            case S.NOTIFICATION_PAY_REQUEST:
-                message = name + " PAYED " + amount + " to YOU for this transaction";
-                break;
-            case S.NOTIFICATION_SETTLE_REQUEST:
-                message = name + " SETTLED UP with YOU";
-                break;
-            case S.NOTIFICATION_REMINDER_REQUEST:
-                message = "REMINDER to pay " + amount + " to " + name;
-                break;
-            case S.NOTIFICATION_AGREE_LENT:
-                message = name + " agree to pay "+ amount + " for this transaction";
-                break;
-            case S.NOTIFICATION_DISAGREE_LENT:
-                message = name + " disagreed to pay "+ amount + " for this transaction";
-                break;
-            case S.NOTIFICATION_RECEIVE_REQUEST:
-                message = name + " RECEIVED "+ amount + " for this transaction";
-                break;
-            case S.NOTIFICATION_DELETE_LENT_REQUEST:
-                message = name + " deleted  this transaction";
-                break;
-            case S.NOTIFICATION_MODIFY_lENT_REQUEST:
-                message = name + " modified this transaction";
-                break;
-            case S.NOTIFICATION_INFORMATION:
-                message = "Information Message of Money Circle";
-                break;
-            default:
-                break;
-        }
-        return message;
-    }
 }

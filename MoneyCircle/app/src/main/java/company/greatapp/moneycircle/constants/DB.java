@@ -190,6 +190,7 @@ public class DB {
     public static final String PACKAGE_FROM_SERVER_TABLE_NAME   = "fromServerTable";
     public static final String REQUEST_CODE                     ="requestCode";
     public static final String REQUEST_SENDER_PHONE             =  "requestSenderPhone";
+    public static final String REQUEST_SENDER_NAME             =  "requestSenderName";
     public static final String REQUEST_RECIEVER_PHONE           = "requestRecieverPhone";
     public static final String ITEM_OWNER_PHONE                 = "itemOwnerPhone";
     public static final String ITEM_ASSOCIATE_PHONE             = "itemAssociatePhone";
@@ -208,7 +209,7 @@ public class DB {
 
     public static final Uri PACKAGE_FROM_SERVER_TABLE_URI = Uri.parse("content://"+DB_AUTHORITY+"/" + PACKAGE_FROM_SERVER_TABLE_NAME);
     public static final String[] PACKAGE_FROM_SERVER_TABLE_PROJECTION = new String[]{
-            DB_ID,UID, REQUEST_CODE,REQUEST_SENDER_PHONE,REQUEST_RECIEVER_PHONE,ITEM_OWNER_PHONE
+            DB_ID,UID, REQUEST_CODE,REQUEST_SENDER_PHONE,REQUEST_SENDER_NAME,REQUEST_RECIEVER_PHONE,ITEM_OWNER_PHONE
     ,ITEM_ASSOCIATE_PHONE,MONEY_RECIEVER_PHONE,MONEY_PAYER_PHONE,OWNER_ITEM_TYPE,ASSOCIATE_ITEM_TYPE,
             ITEM_BODY_JSON_TYPE,ITEM_BODY_JSON_STRING,MESSAGE,ITEM_TITLE,AMOUNT,ITEM_DATE_STRING,
             ITEM_DUE_DATE_STRING,ITEM_DESCRIPTION,IS_RESPONDED};
