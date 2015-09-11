@@ -378,7 +378,8 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
     }
 
     private void saveData() {
-
+        Transporter transporter = new Transporter(this);
+        String transportId="";
         BaseModelManager manager = null;
         String description = null;
         float amount;
@@ -440,6 +441,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
 
                 borrow.insertItemInDB(this);
 
+                transportId = transporter.transportItem(borrow, Model.MODEL_TYPE_BORROW);
                 if(!mMember.getUID().equals(C.USER_UNIQUE_ID)) {
                     float borrowAmount = mMember.getBorrowedAmountfromThis();
                     mMember.setBorrowedAmountfromThis(borrowAmount + amount);
@@ -466,8 +468,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
 
                 lent.printModelData();
                 lent.insertItemInDB(this);
-                Transporter transporter = new Transporter(this);
-                String transportId = transporter.transportItem(lent, Model.MODEL_TYPE_LENT);
+                transportId = transporter.transportItem(lent, Model.MODEL_TYPE_LENT);
                 if(!mMember.getUID().equals(C.USER_UNIQUE_ID)) {
                     float lentAmount = mMember.getLentAmountToThis();
                     mMember.setLentAmountToThis(lentAmount + amount);

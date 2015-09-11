@@ -24,9 +24,7 @@ import android.util.Log;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.google.android.gcm.GCMRegistrar;
 
-import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.constants.S;
-import company.greatapp.moneycircle.manager.TransactionManager;
 import company.greatapp.moneycircle.model.User;
 import company.greatapp.moneycircle.tools.RegistrationUtils;
 
@@ -75,7 +73,7 @@ public class GCMIntentService extends GCMBaseIntentService {
     protected void onMessage(Context context, Intent intent) {
     	User u = new User(context);
     	Log.d(TAG,"GCM MESSAGE RECEIVED");
-    	if(!(u.isRegisteredOnGCM() && u.isRegisteredOnQpinion())){ // need to check proper User initialization
+    	if(!(u.isRegisteredOnGCM() && u.isRegisteredOnMoneyCircle())){ // need to check proper User initialization
     		Log.i(TAG, "Received message but not registered");
     		return;
     	}

@@ -32,6 +32,7 @@ import company.greatapp.moneycircle.manager.CircleManager;
 import company.greatapp.moneycircle.manager.ContactManager;
 import company.greatapp.moneycircle.manager.ExpenseManager;
 import company.greatapp.moneycircle.manager.LentManager;
+import company.greatapp.moneycircle.manager.Transporter;
 import company.greatapp.moneycircle.model.Category;
 import company.greatapp.moneycircle.model.Circle;
 import company.greatapp.moneycircle.model.Contact;
@@ -330,6 +331,7 @@ public class SplitToolActivity extends ActionBarActivity implements TagItemView.
 //            split.setLinkedExpense(dbExpense);
         }
 
+        Transporter transporter = new Transporter(this);
 
         LentManager lm = new LentManager(this);
         ArrayList<Lent> dbLents = new ArrayList<Lent>();
@@ -337,8 +339,10 @@ public class SplitToolActivity extends ActionBarActivity implements TagItemView.
             if (l != null) {
                 Lent dbLent = (Lent)lm.getHeavyItemFromListByUID(l.getUID());
                 dbLent.setLinkedSplitJson(jsonStringSplit);
+                String transportId = transporter.transportItem(dbLent, Model.MODEL_TYPE_LENT);
                 dbLent.updateItemInDb(this);
                 dbLents.add(dbLent);
+
             }
         }
 //        split.setLinkedLents(dbLents);

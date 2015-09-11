@@ -40,7 +40,7 @@ public class User {
     public static final String PREFS_PHONE_NUMBER = "phoneNumber";
     public static final String PREFS_EMAIL_ID = "emailId";
     public static final String PREFS_IS_REGISTERED_ON_GCM = "isRegisteredOnGCM";
-    public static final String PREFS_IS_REGISTERED_ON_QPINION = "isRegisteredOnQpinion";
+    public static final String PREFS_IS_REGISTERED_ON_QPINION = "isRegisteredOnMoneyCircle";
     public static final String PREFS_GENDER = "gender";
     public static final String PREFS_AVATOR = "avator";
     public static final String PREFS_SID = "sid";
@@ -120,7 +120,7 @@ public class User {
         Log.d(TAG,"user email : "+getEmail());
         Log.d(TAG,"user gender: "+getGender());
         Log.d(TAG, "user GCM: " + isRegisteredOnGCM());
-        Log.d(TAG, "user Qpinion: " + isRegisteredOnQpinion());
+        Log.d(TAG, "user Qpinion: " + isRegisteredOnMoneyCircle());
         Log.d(TAG, "user regId: " + getRegId());
     }
 
@@ -163,7 +163,7 @@ public class User {
 
 
 
-    public boolean isRegisteredOnQpinion() {
+    public boolean isRegisteredOnMoneyCircle() {
         return qpinion_is_registered;
     }
 

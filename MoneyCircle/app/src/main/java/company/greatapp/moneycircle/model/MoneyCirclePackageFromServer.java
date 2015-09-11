@@ -75,6 +75,7 @@ public class MoneyCirclePackageFromServer {
         setItemBodyJsonString(c.getString(c.getColumnIndex(DB.ITEM_BODY_JSON_STRING)));
         setMessage(c.getString(c.getColumnIndex(DB.MESSAGE)));
         setItemTitle(c.getString(c.getColumnIndex(DB.ITEM_TITLE)));
+        setAmount(c.getString(c.getColumnIndex(DB.AMOUNT)));
         setItemDateString(c.getString(c.getColumnIndex(DB.ITEM_DATE_STRING)));
         setItemDueDateString(c.getString(c.getColumnIndex(DB.ITEM_DUE_DATE_STRING)));
         setItemDescription(c.getString(c.getColumnIndex(DB.ITEM_DESCRIPTION)));
@@ -283,11 +284,15 @@ public class MoneyCirclePackageFromServer {
     }
 
     public Uri insertItemInDB(Context context) {
-        if(context == null)
+        if(context == null) {
             Log.d("PACKAGEFROM", "context is NULL");
+            return null;
+        }
         ContentResolver resolver = context.getContentResolver();
-        if(resolver == null)
-            Log.d("PACKAGEFROM","context is NULL");
+        if(resolver == null) {
+            Log.d("PACKAGEFROM", "context is NULL");
+            return null;
+        }
         ContentValues values = getContentValues();
         return resolver.insert(DB.PACKAGE_FROM_SERVER_TABLE_URI, values);
     }
@@ -309,6 +314,7 @@ public class MoneyCirclePackageFromServer {
         row.put(DB.ITEM_BODY_JSON_STRING,getItemBodyJsonString());
         row.put(DB.MESSAGE,getMessage());
         row.put(DB.ITEM_TITLE,getItemTitle());
+        row.put(DB.AMOUNT,""+getAmount());
         row.put(DB.ITEM_DATE_STRING,getDateString());
         row.put(DB.ITEM_DUE_DATE_STRING,getItemDueDateString());
         row.put(DB.ITEM_DESCRIPTION,getItemDescription());

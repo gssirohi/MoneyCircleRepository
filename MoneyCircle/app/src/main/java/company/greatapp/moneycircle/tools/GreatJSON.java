@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.constants.S;
 import company.greatapp.moneycircle.model.Borrow;
 import company.greatapp.moneycircle.model.Circle;
@@ -345,9 +346,14 @@ public class GreatJSON {
         String jsonString = "";
         JSONObject obj = new JSONObject();
         try{
-            obj.put("title", lent.getTitle());
-            obj.put("uid", lent.getUID());
-            obj.put("dbid", lent.getDbId());
+            obj.put(DB.TITLE, lent.getTitle());
+            obj.put(DB.UID, lent.getUID());
+            obj.put(DB.DB_ID, lent.getDbId());
+            obj.put(DB.AMOUNT,lent.getAmount());
+            obj.put(DB.DATE_STRING,lent.getDateString());
+            obj.put(DB.DUE_DATE_STRING,lent.getDueDateString());
+            obj.put(DB.DESCRIPTION,lent.getDescription());
+            obj.put(DB.CATEGORY,lent.getCategory());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -377,9 +383,9 @@ public class GreatJSON {
         Lent lent = null;
         try {
             JSONObject obj = new JSONObject(json);
-            String title = obj.getString("title");
-            String uid = obj.getString("uid");
-            String dbid = obj.getString("dbid");
+            String title = obj.getString(DB.TITLE);
+            String uid = obj.getString(DB.UID);
+            String dbid = obj.getString(DB.DB_ID);
             lent = (Lent)Tools.getDbInstance(context, uid, Model.MODEL_TYPE_LENT);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -585,7 +591,7 @@ public class GreatJSON {
         if (TextUtils.isEmpty(jsonString)) {
             return null;
         }
-        MoneyCirclePackageFromServer serverPackage = null;
+        MoneyCirclePackageFromServer serverPackage = new MoneyCirclePackageFromServer();
 
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
@@ -610,6 +616,8 @@ public class GreatJSON {
             } else {
                 itemOwnerName = senderName;
             }
+            serverPackage.setReqSenderPhone(senderphoneNo);
+            serverPackage.setReqSenderName(senderName);
             serverPackage.setItemOwnerName(itemOwnerName);
             String itemAssociatePhoneNo = jsonObject.getString(S.TRANSPORT_ITEM_ASSOCIATE_PHONE);
             serverPackage.setItemAssociatePhone(itemAssociatePhoneNo);
@@ -637,8 +645,8 @@ public class GreatJSON {
             String message = jsonObject.getString(S.TRANSPORT_MESSAGE);
             serverPackage.setMessage(message);
 
-            String dateString = jsonObject.getString("dateString");
-            serverPackage.setDateString(dateString);
+            //String dateString = jsonObject.getString("dateString");
+            serverPackage.setDateString(DateUtils.getCurrentDate());
 
             updateServerPackageWithItemInfo(serverPackage);
 
@@ -659,19 +667,19 @@ public class GreatJSON {
         try {
             JSONObject itemJsonObj = new JSONObject(itemJsonString);
 
-            String itemTitle = itemJsonObj.getString("title");
+            String itemTitle = itemJsonObj.getString(DB.TITLE);
             serverPackage.setItemTitle(itemTitle);
 
-            String amount = itemJsonObj.getString("moneyItemAmount");
+            String amount = itemJsonObj.getString(DB.AMOUNT);
             serverPackage.setAmount(amount);
 
-            String itemDateString = itemJsonObj.getString("dateString");
+            String itemDateString = itemJsonObj.getString(DB.DATE_STRING);
             serverPackage.setItemDateString(itemDateString);
 
-            String itemDueDateString = itemJsonObj.getString("dueDateString");
+            String itemDueDateString = itemJsonObj.getString(DB.DUE_DATE_STRING);
             serverPackage.setItemDueDateString(itemDueDateString);
 
-            String itemDescription = itemJsonObj.getString("description");
+            String itemDescription = itemJsonObj.getString(DB.DESCRIPTION);
             serverPackage.setItemDescription(itemDescription);
 
         } catch (JSONException e) {

@@ -376,7 +376,7 @@ public static String getModelName(int modelType){
             JSONObject obj = GreatJSON.getJsonObjectForModel(newItem);
             intent.putExtra(UpdateAccountRegistersTask.LAST_TRANSACTION_JSON,((obj != null)?obj.toString():""));
             intent.putExtra(UpdateAccountRegistersTask.TRANSACTION_TYPE,type);
-            Log.i("SPLIT", "broadCast is set for MONEY_TRANSACTION");
+            Log.i("SPLIT", "broadCast is sent for MONEY_TRANSACTION");
             context.sendBroadcast(intent);
         }
     }

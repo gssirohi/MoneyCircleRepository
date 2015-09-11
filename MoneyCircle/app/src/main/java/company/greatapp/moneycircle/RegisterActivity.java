@@ -218,6 +218,8 @@ public class RegisterActivity extends ActionBarActivity {
     private void handleAppServerRegistrationResult(Intent intent) {
         boolean success = intent.getBooleanExtra(S.KEY_APP_SERVER_REGISTRATION,false);
         if(success) {
+            User user = new User(this);
+            user.updateInfo(User.U_APP_SERVER_IS_REGISTERED,""+true);
             updateProgressBy(30);
             tv_progress.setText("Registering profile to Server .........");
             displayMessage("App Server Registraion successfull!");

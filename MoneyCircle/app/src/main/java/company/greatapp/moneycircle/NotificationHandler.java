@@ -38,6 +38,8 @@ public class NotificationHandler {
 
         MoneyCirclePackageFromServer packageFromServer = GreatJSON.getServerPackageFromJson(mContext, messageJsonString);
 
+        packageFromServer.insertItemInDB(mContext);
+
         if (mIsNotifyToUser) {
 //            showCustomNotification(notification.getMoneyTitle(), notification.getMessage());
         }
