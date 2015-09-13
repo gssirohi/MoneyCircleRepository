@@ -99,7 +99,7 @@ public class NotificationHandler {
         // use System.currentTimeMillis() to have a unique ID for the pending intent
         PendingIntent pIntent = PendingIntent.getActivity(mContext, (int) System.currentTimeMillis(), intent, 0);
 
-   //     Uri sound = Uri.parse("android.resource://" + mContext.getPackageName() + "/" + R.raw.notifysnd);
+       Uri sound = Uri.parse("android.resource://" + mContext.getPackageName() + "/" + R.raw.notifysnd);
 
 
 
@@ -114,8 +114,8 @@ public class NotificationHandler {
         notificationBuilder.setContentText(message);
         notificationBuilder.setContentIntent(pIntent);
         notificationBuilder.setAutoCancel(true);
-       // notificationBuilder.setSound(sound);
-        notificationBuilder.setDefaults(Notification.DEFAULT_SOUND);
+        notificationBuilder.setSound(sound);
+      //  notificationBuilder.setDefaults(Notification.DEFAULT_SOUND);
 
 
         android.app.NotificationManager notificationManager = (android.app.NotificationManager)
