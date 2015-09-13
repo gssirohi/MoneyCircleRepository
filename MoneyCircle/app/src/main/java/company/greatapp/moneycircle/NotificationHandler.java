@@ -1,19 +1,20 @@
 package company.greatapp.moneycircle;
 
-import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
-import android.util.Log;
-
-import java.util.Random;
 
 import company.greatapp.moneycircle.constants.S;
+import company.greatapp.moneycircle.constants.States;
+import company.greatapp.moneycircle.model.Borrow;
+import company.greatapp.moneycircle.model.Contact;
+import company.greatapp.moneycircle.model.Lent;
+import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.MoneyCirclePackageFromServer;
+import company.greatapp.moneycircle.model.User;
 import company.greatapp.moneycircle.tools.GreatJSON;
+import company.greatapp.moneycircle.tools.Tools;
 
 /**
  * Created by Prateek on 06-09-2015.
@@ -36,7 +37,7 @@ public class NotificationHandler {
             return;
         }
 
-        int notificationType = intent.getIntExtra(S.NOTIFICATION_TYPE, S.NOTIFICATION_INFORMATION);
+//        int notificationType = intent.getIntExtra(S.NOTIFICATION_TYPE, S.NOTIFICATION_INFORMATION);
         String messageJsonString = intent.getStringExtra(S.PACKAGE_FROMSERVER_JSON_STRING);
         if (TextUtils.isEmpty(messageJsonString)) {
             return;
@@ -44,45 +45,140 @@ public class NotificationHandler {
 
         MoneyCirclePackageFromServer packageFromServer = GreatJSON.getServerPackageFromJson(mContext, messageJsonString);
 
-        packageFromServer.insertItemInDB(mContext);
 
-        if (mIsNotifyToUser) {
-            showCustomNotification(packageFromServer.getItemTitle(), packageFromServer.getMessage());
-            Log.d("Ashu","message"+packageFromServer.getMessage());
+
+        if (isCustomNotificationRequired(packageFromServer)) {
+//            showCustomNotification(notification.getMoneyTitle(), notification.getMessage());
         }
 
 
+        computeReceivedPackage(packageFromServer);
+
+        packageFromServer.insertItemInDB(mContext);
+    }
+
+    private boolean isCustomNotificationRequired(MoneyCirclePackageFromServer packageFromServer) {
+        return true;
+    }
+
+    private void computeReceivedPackage(MoneyCirclePackageFromServer inPackage) {
+
+        User user = new User(mContext);
+        String borrowUid = "";
+        String lentUid = "";
+        String contactUid = "";
+        Contact contact;
+        Borrow borrow;
+        Lent lent;
+        switch(inPackage.getReqCode()){
+            case S.TRANSPORT_REQUEST_CODE_LENT:
+                inPackage.setIsRespondable(true);
+                //You have borrowed some amount and, lent owner has sent request for same
+                // Before creating this Borrow you need to approve this
+
+                break;
 
 
-//        notification.insertItemInDB(mContext);
+            case S.TRANSPORT_REQUEST_CODE_AGREE_LENT:
+                //Lent created by you has been approved by Associate
+                //You need to wait for payment
+                lentUid = inPackage.getOwnerItemId();
+                lent = (Lent)Tools.getDbInstance(mContext,lentUid, Model.MODEL_TYPE_LENT);
+                lent.setState(States.LENT_WAITING_FOR_PAYMENT);
+                lent.updateItemInDb(mContext);
+                break;
 
-        /*switch (notificationType) {
-            case S.NOTIFICATION_LENT_REQUEST:
+            case S.TRANSPORT_REQUEST_CODE_DISAGREE_LENT:
+                //Lent created by you has been declined by Associate
+                //Now We give you some choices,You need to choose one
+                lentUid = inPackage.getOwnerItemId();
+                lent = (Lent)Tools.getDbInstance(mContext,lentUid, Model.MODEL_TYPE_LENT);
+                lent.setState(States.LENT_DISAPPROVED_ACTION_PENDING);
+                lent.updateItemInDb(mContext);
                 break;
-            case S.NOTIFICATION_BORROW_REQUEST:
-                break;
-            case S.NOTIFICATION_PAY_REQUEST:
-                break;
-            case S.NOTIFICATION_SETTLE_REQUEST:
-                break;
-            case S.NOTIFICATION_REMINDER_REQUEST:
-                break;
-            case S.NOTIFICATION_AGREE_LENT:
-                break;
-            case S.NOTIFICATION_DISAGREE:
-                break;
-            case S.NOTIFICATION_RECEIVE_REQUEST:
-                break;
-            case S.NOTIFICATION_DELETE_LENT_REQUEST:
-                break;
-            case S.NOTIFICATION_MODIFY_REQUEST:
-                break;
-            case S.NOTIFICATION_INFORMATION:
-                break;
-            default:
-                break;
-        }*/
 
+
+            case S.TRANSPORT_REQUEST_CODE_BORROW:
+            //You have borrowed some amount and, lent owner has sent request for same
+            // Before creating this Borrow you need to approve this
+                inPackage.setIsRespondable(true);
+                break;
+
+            case S.TRANSPORT_REQUEST_CODE_AGREE_BORROW:
+                // Borrow item created by you has been approved by Associate(Lent owner)
+                // Now he is waiting for payment, you need to make payment.
+                borrowUid = inPackage.getOwnerItemId();
+                borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid, Model.MODEL_TYPE_BORROW);
+                borrow.setState(States.BORROW_PAYMENT_PENDING);
+                borrow.updateItemInDb(mContext);
+                break;
+            case S.TRANSPORT_REQUEST_CODE_DISAGREE_BORROW:
+                //Borrow item created by you has been declined by Associate
+                //Now we give you some choices, You need to choose one action
+                borrowUid = inPackage.getOwnerItemId();
+                borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid, Model.MODEL_TYPE_BORROW);
+                borrow.setState(States.BORROW_DISAPPROVED_ACTION_PENDING);
+                borrow.updateItemInDb(mContext);
+                break;
+            case S.TRANSPORT_REQUEST_CODE_PAY:
+                //borrower has made a payment, user need to approve
+                inPackage.setIsRespondable(true);
+
+                lentUid = inPackage.getOwnerItemId();
+                lent = (Lent)Tools.getDbInstance(mContext,lentUid, Model.MODEL_TYPE_LENT);
+                lent.setState(States.LENT_PAYMENT_RECEIVED_DISAPPROVED_ACTION_PENDING);
+                lent.updateItemInDb(mContext);
+                break;
+
+            case S.TRANSPORT_REQUEST_CODE_AGREE_PAY:
+                // You made a payment and that is approved now by Lent owner
+                //
+
+                if(user.getPhoneNumber().equals(inPackage.getItemAssociatePhone())) {
+                    borrowUid = inPackage.getAssociateItemId();
+                } else {
+                    //you are owner of this borrow item
+                    borrowUid = inPackage.getOwnerItemId();
+                }
+
+                borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid, Model.MODEL_TYPE_BORROW);
+                borrow.setState(States.BORROW_PAYMENT_CLEARED);
+                borrow.updateItemInDb(mContext);
+
+                break;
+            case S.TRANSPORT_REQUEST_CODE_DISAGREE_PAY:
+                // You made a payment and that is declined by Lent owner
+                // We give you some choices now , perform any action
+
+                if(user.getPhoneNumber().equals(inPackage.getItemAssociatePhone())) {
+                    borrowUid = inPackage.getAssociateItemId();
+                } else {
+                    //you are owner of this borrow item
+                    borrowUid = inPackage.getOwnerItemId();
+                }
+
+                borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid, Model.MODEL_TYPE_BORROW);
+                borrow.setState(States.BORROW_PAYMENT_PAID_DISAPPROVED_ACTION_PENDING);
+                borrow.updateItemInDb(mContext);
+
+                break;
+            case S.TRANSPORT_REQUEST_CODE_RECEIVE:
+                // Giver has received return payment for his lent, He wants to notify you
+                // You should update your borrow item as paid
+                if(user.getPhoneNumber().equals(inPackage.getItemAssociatePhone())) {
+                    borrowUid = inPackage.getAssociateItemId();
+                } else {
+                    //you are owner of this borrow item
+                    borrowUid = inPackage.getOwnerItemId();
+                }
+
+                borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid, Model.MODEL_TYPE_BORROW);
+                borrow.setState(States.BORROW_PAYMENT_CLEARED);
+                borrow.updateItemInDb(mContext);
+
+                break;
+
+        }
     }
 
     public void showCustomNotification(String title, String message) {
@@ -91,44 +187,25 @@ public class NotificationHandler {
             return;
         }
 
-//        else {
-//            message = "YOU OWE "+ Amount +" to "+ reqSenderName + " for this transaction";
-//        }
-
         Intent intent = new Intent(mContext, NotificationActivity.class);
         // use System.currentTimeMillis() to have a unique ID for the pending intent
         PendingIntent pIntent = PendingIntent.getActivity(mContext, (int) System.currentTimeMillis(), intent, 0);
 
-   //     Uri sound = Uri.parse("android.resource://" + mContext.getPackageName() + "/" + R.raw.notifysnd);
-
-
-
         // build notification
         // the addAction re-use the same intent to keep the example short
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext);
+        android.app.Notification.Builder notificationBuilder = new android.app.Notification.Builder(mContext);
         if (!TextUtils.isEmpty(title)) {
-            notificationBuilder.setContentTitle(title);
+            notificationBuilder.setContentTitle("New mail from " + "test@gmail.com");
         }
 
-        notificationBuilder.setSmallIcon(R.drawable.home_icon);
         notificationBuilder.setContentText(message);
         notificationBuilder.setContentIntent(pIntent);
         notificationBuilder.setAutoCancel(true);
-       // notificationBuilder.setSound(sound);
-        notificationBuilder.setDefaults(Notification.DEFAULT_SOUND);
 
 
         android.app.NotificationManager notificationManager = (android.app.NotificationManager)
                 mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(new Random().nextInt(), notificationBuilder.build());
+        notificationManager.notify(0, notificationBuilder.build());
     }
-
-
-
-
-
-
-
-
 }
