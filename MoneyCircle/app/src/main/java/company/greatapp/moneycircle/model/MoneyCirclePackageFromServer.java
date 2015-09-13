@@ -15,6 +15,8 @@ import company.greatapp.moneycircle.constants.S;
  */
 public class MoneyCirclePackageFromServer {
 
+    private static final String LOG_TAG = MoneyCirclePackageFromServer.class.getSimpleName();
+	
     public static final int RESPONSE_STATE_NOT_RESPONDED            = 13;
     public static final int RESPONSE_STATE_AGREED                   = 14;
     public static final int RESPONSE_STATE_DISAGREED                = 15;
@@ -303,18 +305,8 @@ public class MoneyCirclePackageFromServer {
         this.itemBodyJsonType = itemBodyJsonType;
     }
 
-    public Uri insertItemInDB(Context context) {
-        if(context == null) {
-            Log.d("PACKAGEFROM", "context is NULL");
-            return null;
-        }
-        ContentResolver resolver = context.getContentResolver();
-        if(resolver == null) {
-            Log.d("PACKAGEFROM", "context is NULL");
-            return null;
-        }
-        ContentValues values = getContentValues();
-        return resolver.insert(DB.PACKAGE_FROM_SERVER_TABLE_URI, values);
+    public Uri getTableUri() {
+        return DB.PACKAGE_FROM_SERVER_TABLE_URI;
     }
 
     public ContentValues getContentValues() {
@@ -344,7 +336,7 @@ public class MoneyCirclePackageFromServer {
         return row;
     }
 
-    public int getDbId() {
+    public int getDBId() {
         return dbId;
     }
 
@@ -402,5 +394,32 @@ public class MoneyCirclePackageFromServer {
                 break;
         }
         return message;
+    }
+
+
+    public Uri insertItemInDB(Context context) {
+        if(context == null) {
+            Log.d("PACKAGEFROM", "context is NULL");
+            return null;
+        }
+        ContentResolver resolver = context.getContentResolver();
+        if(resolver == null) {
+            Log.d("PACKAGEFROM", "context is NULL");
+            return null;
+        }
+        ContentValues values = getContentValues();
+        return resolver.insert(getTableUri(), values);
+    }
+
+    public int deleteFromDb(Context context) {
+        String where = DB.DB_ID + "=" + getDBId();
+        Log.d(LOG_TAG, "MODEL: : DELETING :----->");
+        return context.getContentResolver().delete(getTableUri(), where, null);
+    }
+
+    public int updateItemInDb(Context context) {
+        String where = DB.DB_ID + "=" + getDBId();
+        Log.d(LOG_TAG, "MODEL: : UPDATING :----->");
+        return context.getContentResolver().update(getTableUri(), getContentValues(), where, null);
     }
 }

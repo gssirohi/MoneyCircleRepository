@@ -348,7 +348,7 @@ public class SplitToolActivity extends ActionBarActivity implements TagItemView.
 //        split.setLinkedLents(dbLents);
 //        SplitManager sm = new SplitManager(this);
 //        Split dbSplit = (Split)sm.getHeavyItemFromListByUID(split.getUID());
-//        split.setDbId(dbSplit.getDbId());//update db id from db instance
+//        split.setDbId(dbSplit.getDBId());//update db id from db instance
 //        split.updateItemInDb(this);
         Tools.sendMoneyTransactionBroadCast(this,split,Model.MODEL_TYPE_SPLIT);
         finish();

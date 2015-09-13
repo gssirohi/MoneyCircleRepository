@@ -71,14 +71,14 @@ public class OutPackageManager {
         String message     = cursor.getString(cursor.getColumnIndex(S.TRANSPORT_MESSAGE));
 
         /*MoneyCirclePackageForServer outPackage = new MoneyCirclePackageForServer();
-        outPackage.setReqDBId(reqDbId);
+        outPackage.setdBId(reqDbId);
         outPackage.setTransportId(transportId);
-        outPackage.setReqDBId(reqDbId);
-        outPackage.setReqDBId(reqDbId);
-        outPackage.setReqDBId(reqDbId);
-        outPackage.setReqDBId(reqDbId);
-        outPackage.setReqDBId(reqDbId);
-        outPackage.setReqDBId(reqDbId);*/
+        outPackage.setdBId(reqDbId);
+        outPackage.setdBId(reqDbId);
+        outPackage.setdBId(reqDbId);
+        outPackage.setdBId(reqDbId);
+        outPackage.setdBId(reqDbId);
+        outPackage.setdBId(reqDbId);*/
         //return notification;
         return null;
     }

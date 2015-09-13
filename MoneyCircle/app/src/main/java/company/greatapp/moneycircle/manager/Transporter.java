@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import company.greatapp.moneycircle.constants.S;
+import company.greatapp.moneycircle.constants.States;
 import company.greatapp.moneycircle.model.Borrow;
 import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
@@ -181,7 +182,7 @@ public class Transporter {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d(TAG, response.toString());
-                        handleJsonObjectResponse(response,reqCode);
+                        handleJsonObjectResponse(response, reqCode);
                     }
                 }, new Response.ErrorListener() {
 
@@ -294,7 +295,7 @@ public class Transporter {
             case Model.MODEL_TYPE_LENT:
 
                 Lent lent = (Lent)model;
-                lent.setState(States.STATE_LENT_SENDING);
+                lent.setState(States.LENT_SENDING);
                 lent.updateItemInDb(mContext);
 
                 outPackage.setUrl(S.URL_APP_SERVER_TRANSPORT_PACKAGE);
@@ -333,7 +334,7 @@ public class Transporter {
 
                 Borrow item = (Borrow)model;
 
-                item.setState(States.STATE_BORROW_SENDING);
+                item.setState(States.BORROW_SENDING);
                 item.updateItemInDb(mContext);
 
                 outPackage.setUrl(S.URL_APP_SERVER_TRANSPORT_PACKAGE);
@@ -666,14 +667,14 @@ public class Transporter {
 
                 lentUid = outPackage.getOwnerItemId();
                 lent = (Lent)Tools.getDbInstance(mContext,lentUid,Model.MODEL_TYPE_LENT);
-                lent.setState(States.STATE_LENT_NOT_SENT);
+                lent.setState(States.LENT_NOT_SENT);
                 lent.updateItemInDb(mContext);
                 break;
             case S.TRANSPORT_REQUEST_CODE_BORROW:
 
                 borrowUid = outPackage.getOwnerItemId();
                 borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid,Model.MODEL_TYPE_BORROW);
-                borrow.setState(States.STATE_BORROW_NOT_SENT);
+                borrow.setState(States.BORROW_NOT_SENT);
                 borrow.updateItemInDb(mContext);
                 break;
 
@@ -693,14 +694,14 @@ public class Transporter {
 
                 lentUid = outPackage.getOwnerItemId();
                 lent = (Lent)Tools.getDbInstance(mContext,lentUid,Model.MODEL_TYPE_LENT);
-                lent.setState(States.STATE_LENT_APPROVAL_PENDING);
+                lent.setState(States.LENT_APPROVAL_PENDING);
                 lent.updateItemInDb(mContext);
                 break;
             case S.TRANSPORT_REQUEST_CODE_BORROW:
 
                 borrowUid = outPackage.getOwnerItemId();
                 borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid,Model.MODEL_TYPE_BORROW);
-                borrow.setState(States.STATE_BORROW_APPROVAL_PENDING);
+                borrow.setState(States.BORROW_APPROVAL_PENDING);
                 borrow.updateItemInDb(mContext);
                 break;
 

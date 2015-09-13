@@ -168,7 +168,7 @@ public class NotificationItemView extends LinearLayout {
         switch(mMoneyCirclePackageFromServer.getReqCode()) {
             case S.TRANSPORT_REQUEST_CODE_LENT:
                 //Get new borrow item with state PAYMENT_PENDING
-                borrow = new Borrow(mMoneyCirclePackageFromServer);
+                borrow = new Borrow(getContext(), mMoneyCirclePackageFromServer);
 
                 borrow.insertItemInDB(getContext());
 
@@ -182,7 +182,7 @@ public class NotificationItemView extends LinearLayout {
                 break;
             case S.TRANSPORT_REQUEST_CODE_BORROW:
                 //Get new lent item with state WAITING FOR PAYMENT
-                lent = new Lent(mMoneyCirclePackageFromServer);
+                lent = new Lent(getContext(), mMoneyCirclePackageFromServer);
                 lent.insertItemInDB(getContext());
 
                 mMoneyCirclePackageFromServer.setResponseState(MoneyCirclePackageFromServer.RESPONSE_STATE_AGREED);

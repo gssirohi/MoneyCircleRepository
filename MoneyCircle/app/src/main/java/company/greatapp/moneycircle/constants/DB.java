@@ -37,6 +37,9 @@ public class DB {
 
     public static final String LINKED_CONTACT_JSON = "linkedContactJson";
 
+    public static final String OWNER_ITEM_ID = "ownerItemUid";
+    public static final String STATE = "state";
+
 
 //-----------------------------------------------------------------//
 
@@ -59,7 +62,7 @@ public class DB {
     public static final String[] CONTACT_TABLE_PROJECTION = new String[]{
             DB_ID,UID,
             NAME,PHONE_NUMBER,CONTACT_IMAGE_URI,EMAIL,
-            REGISTERED,SERVER_NAME,SERVER_ID,
+            REGISTERED,SERVER_NAME,SERVER_ID, STATE,
             CONTACT_BORROWED_AMOUNT_FROM_THIS,CONTACT_LENT_AMOUNT_TO_THIS,
             JSON_STRING};
 //----------------------------------------------------------------//
@@ -115,7 +118,7 @@ public class DB {
 
     public static final String[] BORROW_TABLE_PROJECTION = new String[]{
             DB_ID,UID,
-            TITLE,CATEGORY,DESCRIPTION,AMOUNT,
+            TITLE,CATEGORY,DESCRIPTION,AMOUNT, STATE,
             LINKED_CONTACT_JSON,
             DUE_DATE_STRING,
             DATE_STRING,DATE, DAY_OF_MONTH, WEEK_OF_MONTH,MONTH,YEAR,
@@ -130,7 +133,7 @@ public class DB {
 
     public static final String[] LENT_TABLE_PROJECTION = new String[]{
             DB_ID,UID,
-            TITLE,CATEGORY,DESCRIPTION,AMOUNT,
+            TITLE,CATEGORY,DESCRIPTION,AMOUNT, STATE,
             LINKED_CONTACT_JSON,
             DUE_DATE_STRING,
             IS_LINKED_WITH_SPLIT,LINKED_SPLIT_JSON,

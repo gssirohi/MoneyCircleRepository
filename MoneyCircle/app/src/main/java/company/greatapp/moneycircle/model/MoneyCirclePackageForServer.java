@@ -26,7 +26,7 @@ public class MoneyCirclePackageForServer {
 
     private int reqResponseType;
 
-    private String reqDBId;
+    private String dBId;
     private String transportId;
     private int reqType;   // GET OR POST
 
@@ -171,12 +171,12 @@ public class MoneyCirclePackageForServer {
         this.reqCode = reqCode;
     }
 
-    public String getReqDBId() {
-        return reqDBId;
+    public String getdBId() {
+        return dBId;
     }
 
-    public void setReqDBId(String reqDBId) {
-        this.reqDBId = reqDBId;
+    public void setdBId(String dBId) {
+        this.dBId = dBId;
     }
 
     public String getReqReceiverPhone() {
@@ -288,13 +288,13 @@ public class MoneyCirclePackageForServer {
     }
 
     public int deleteFromDb(Context context) {
-        String where = DB.DB_ID + "=" + getReqDBId();
+        String where = DB.DB_ID + "=" + getdBId();
         Log.d(LOG_TAG, "MODEL: : DELETING :----->");
         return context.getContentResolver().delete(getTableUri(), where, null);
     }
 
-    public int updateInDb(Context context) {
-        String where = DB.DB_ID + "=" + getReqDBId();
+    public int updateItemInDb(Context context) {
+        String where = DB.DB_ID + "=" + getdBId();
         Log.d(LOG_TAG, "MODEL: : UPDATING :----->");
         return context.getContentResolver().update(getTableUri(), getContentValues(), where, null);
     }
