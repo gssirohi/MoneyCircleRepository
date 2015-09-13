@@ -197,7 +197,7 @@ public class NotificationHandler {
         // the addAction re-use the same intent to keep the example short
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext);
         if (!TextUtils.isEmpty(title)) {
-            notificationBuilder.setContentTitle("New mail from " + "test@gmail.com");
+            notificationBuilder.setContentTitle(title);
         }
 
         notificationBuilder.setContentText(message);
