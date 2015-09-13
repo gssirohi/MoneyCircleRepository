@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.constants.S;
@@ -21,6 +22,8 @@ import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.MoneyCirclePackageFromServer;
 import company.greatapp.moneycircle.model.User;
 import company.greatapp.moneycircle.tools.Tools;
+
+import static android.widget.Toast.makeText;
 
 /**
  * Created by Gyanendrasingh on 9/6/2015.
@@ -74,6 +77,7 @@ public class NotificationItemView extends LinearLayout {
 
         ll_agree_frame = (LinearLayout)viewGroup.findViewById(R.id.ll_notification_agree_disagree_frame);
         b_agree = (Button)viewGroup.findViewById(R.id.b_notification_agree);
+
         b_disagree = (Button)viewGroup.findViewById(R.id.b_notification_disagree);
 
 
@@ -337,6 +341,7 @@ public class NotificationItemView extends LinearLayout {
             msg = moneyCirclePackageFromServer.createNotificationMessage();
         } else {
             msg = moneyCirclePackageFromServer.getMessage();
+
         }
 
         String moneyItemTitle = moneyCirclePackageFromServer.getItemTitle();
@@ -511,4 +516,17 @@ public class NotificationItemView extends LinearLayout {
         }
 
     }
+
+//    @Override
+//    public void onClick(View view){
+//
+//        switch(view.getId()){
+//
+//            case R.id.b_notification_agree:
+//
+//
+//        }
+//    }
+
+
 }
