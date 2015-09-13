@@ -360,8 +360,24 @@ public class MoneyCirclePackageFromServer {
                 message = "YOU OWE "+ getAmount() +" to "+ getReqSenderName() + " for this transaction";
                 break;
 
+            case S.TRANSPORT_REQUEST_CODE_AGREE_LENT:
+                message = getReqSenderName() + " AGREED YOUR Lent Request";
+                break;
+
+            case S.TRANSPORT_REQUEST_CODE_DISAGREE_LENT:
+                message = getReqSenderName() + " DISAGREED YOUR Lent Request";
+                break;
+
             case S.TRANSPORT_REQUEST_CODE_BORROW:
-                message = getReqSenderName() + " OWES YOU" + getAmount() + " for this transaction";
+                message = getReqSenderName() + " OWES YOU " + getAmount() + " for this transaction";
+                break;
+
+            case S.TRANSPORT_REQUEST_CODE_AGREE_BORROW:
+                message = getReqSenderName() + " AGREED YOUR borrow Request";
+                break;
+
+            case S.TRANSPORT_REQUEST_CODE_DISAGREE_BORROW:
+                message = getReqSenderName() + " DISAGREED YOUR borrow Request";
                 break;
 //            case S.NOTIFICATION_LENT_REQUEST:
 //                message = "YOU OWE "+ amount +" to "+ name + " for this transaction";
