@@ -21,7 +21,6 @@ import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.MoneyCirclePackageFromServer;
 import company.greatapp.moneycircle.model.Split;
-import company.greatapp.moneycircle.model.User;
 
 /**
  * Created by gyanendra.sirohi on 7/14/2015.
@@ -597,6 +596,8 @@ public class GreatJSON {
             JSONObject jsonObject = new JSONObject(jsonString);
             int reqCode = Integer.parseInt(jsonObject.getString(S.TRANSPORT_REQ_CODE));
             serverPackage.setReqCode(reqCode);
+            serverPackage.setResponseState(MoneyCirclePackageFromServer.RESPONSE_STATE_NOT_RESPONDED);
+            serverPackage.setIsRespondable(false);//modify it later with reqcode
 
             String senderphoneNo = jsonObject.getString(S.TRANSPORT_REQ_SENDER_PHONE);
             serverPackage.setReqSenderPhone(senderphoneNo);
@@ -682,8 +683,7 @@ public class GreatJSON {
             String itemDescription = itemJsonObj.getString(DB.DESCRIPTION);
             serverPackage.setItemDescription(itemDescription);
 
-            String message = itemJsonObj.getString(DB.MESSAGE);
-            serverPackage.setMessage(message);
+
 
         } catch (JSONException e) {
             e.printStackTrace();

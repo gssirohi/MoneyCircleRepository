@@ -15,6 +15,13 @@ import company.greatapp.moneycircle.constants.S;
  */
 public class MoneyCirclePackageFromServer {
 
+    public static final int RESPONSE_STATE_NOT_RESPONDED            = 13;
+    public static final int RESPONSE_STATE_AGREED                   = 14;
+    public static final int RESPONSE_STATE_DISAGREED                = 15;
+    public static final int RESPONSE_STATE_REMOVE_ITEM              = 16;
+    public static final int RESPONSE_STATE_KEEP_ITEM                = 17;
+    public static final int RESPONSE_STATE_RESEND                   = 18;
+
     private int reqCode;
 
     private String reqSenderPhone;
@@ -57,7 +64,9 @@ public class MoneyCirclePackageFromServer {
     private String uid;
     private int dbId;
 
-    private boolean isResponded;
+    private boolean isRespondable;
+    private int responseState;
+
     public MoneyCirclePackageFromServer(){
 
     }
@@ -82,15 +91,24 @@ public class MoneyCirclePackageFromServer {
         setItemDueDateString(c.getString(c.getColumnIndex(DB.ITEM_DUE_DATE_STRING)));
         setItemDescription(c.getString(c.getColumnIndex(DB.ITEM_DESCRIPTION)));
         int responded = c.getInt(c.getColumnIndex(DB.IS_RESPONDED));
-        setIsResponded((responded==1)?true:false);
+        setIsRespondable((responded == 1) ? true : false);
+        setResponseState(c.getInt(c.getColumnIndex(DB.RESPONSE_STATE)));
     }
 
-    public boolean isResponded() {
-        return isResponded;
+    public int getResponseState() {
+        return responseState;
     }
 
-    public void setIsResponded(boolean isResponded) {
-        this.isResponded = isResponded;
+    public void setResponseState(int responseState) {
+        this.responseState = responseState;
+    }
+
+    public boolean isRespondable() {
+        return isRespondable;
+    }
+
+    public void setIsRespondable(boolean isRespondable) {
+        this.isRespondable = isRespondable;
     }
 
     public String getUid() {
@@ -321,7 +339,8 @@ public class MoneyCirclePackageFromServer {
         row.put(DB.ITEM_DATE_STRING,getDateString());
         row.put(DB.ITEM_DUE_DATE_STRING,getItemDueDateString());
         row.put(DB.ITEM_DESCRIPTION,getItemDescription());
-        row.put(DB.IS_RESPONDED,isResponded()?1:0);
+        row.put(DB.IS_RESPONDED, isRespondable()?1:0);
+        row.put(DB.RESPONSE_STATE,getResponseState());
         return row;
     }
 

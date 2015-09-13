@@ -6,8 +6,15 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import company.greatapp.moneycircle.constants.S;
+import company.greatapp.moneycircle.constants.States;
+import company.greatapp.moneycircle.model.Borrow;
+import company.greatapp.moneycircle.model.Contact;
+import company.greatapp.moneycircle.model.Lent;
+import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.MoneyCirclePackageFromServer;
+import company.greatapp.moneycircle.model.User;
 import company.greatapp.moneycircle.tools.GreatJSON;
+import company.greatapp.moneycircle.tools.Tools;
 
 /**
  * Created by Prateek on 06-09-2015.
@@ -38,41 +45,140 @@ public class NotificationHandler {
 
         MoneyCirclePackageFromServer packageFromServer = GreatJSON.getServerPackageFromJson(mContext, messageJsonString);
 
-        packageFromServer.insertItemInDB(mContext);
 
-        if (mIsNotifyToUser) {
+
+        if (isCustomNotificationRequired(packageFromServer)) {
 //            showCustomNotification(notification.getMoneyTitle(), notification.getMessage());
         }
 
-//        notification.insertItemInDB(mContext);
 
-        /*switch (notificationType) {
-            case S.NOTIFICATION_LENT_REQUEST:
-                break;
-            case S.NOTIFICATION_BORROW_REQUEST:
-                break;
-            case S.NOTIFICATION_PAY_REQUEST:
-                break;
-            case S.NOTIFICATION_SETTLE_REQUEST:
-                break;
-            case S.NOTIFICATION_REMINDER_REQUEST:
-                break;
-            case S.NOTIFICATION_AGREE_LENT:
-                break;
-            case S.NOTIFICATION_DISAGREE:
-                break;
-            case S.NOTIFICATION_RECEIVE_REQUEST:
-                break;
-            case S.NOTIFICATION_DELETE_LENT_REQUEST:
-                break;
-            case S.NOTIFICATION_MODIFY_REQUEST:
-                break;
-            case S.NOTIFICATION_INFORMATION:
-                break;
-            default:
-                break;
-        }*/
+        computeReceivedPackage(packageFromServer);
 
+        packageFromServer.insertItemInDB(mContext);
+    }
+
+    private boolean isCustomNotificationRequired(MoneyCirclePackageFromServer packageFromServer) {
+        return true;
+    }
+
+    private void computeReceivedPackage(MoneyCirclePackageFromServer inPackage) {
+
+        User user = new User(mContext);
+        String borrowUid = "";
+        String lentUid = "";
+        String contactUid = "";
+        Contact contact;
+        Borrow borrow;
+        Lent lent;
+        switch(inPackage.getReqCode()){
+            case S.TRANSPORT_REQUEST_CODE_LENT:
+                inPackage.setIsRespondable(true);
+                //You have borrowed some amount and, lent owner has sent request for same
+                // Before creating this Borrow you need to approve this
+
+                break;
+
+
+            case S.TRANSPORT_REQUEST_CODE_AGREE_LENT:
+                //Lent created by you has been approved by Associate
+                //You need to wait for payment
+                lentUid = inPackage.getOwnerItemId();
+                lent = (Lent)Tools.getDbInstance(mContext,lentUid, Model.MODEL_TYPE_LENT);
+                lent.setState(States.LENT_WAITING_FOR_PAYMENT);
+                lent.updateItemInDb(mContext);
+                break;
+
+            case S.TRANSPORT_REQUEST_CODE_DISAGREE_LENT:
+                //Lent created by you has been declined by Associate
+                //Now We give you some choices,You need to choose one
+                lentUid = inPackage.getOwnerItemId();
+                lent = (Lent)Tools.getDbInstance(mContext,lentUid, Model.MODEL_TYPE_LENT);
+                lent.setState(States.LENT_DISAPPROVED_ACTION_PENDING);
+                lent.updateItemInDb(mContext);
+                break;
+
+
+            case S.TRANSPORT_REQUEST_CODE_BORROW:
+            //You have borrowed some amount and, lent owner has sent request for same
+            // Before creating this Borrow you need to approve this
+                inPackage.setIsRespondable(true);
+                break;
+
+            case S.TRANSPORT_REQUEST_CODE_AGREE_BORROW:
+                // Borrow item created by you has been approved by Associate(Lent owner)
+                // Now he is waiting for payment, you need to make payment.
+                borrowUid = inPackage.getOwnerItemId();
+                borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid, Model.MODEL_TYPE_BORROW);
+                borrow.setState(States.BORROW_PAYMENT_PENDING);
+                borrow.updateItemInDb(mContext);
+                break;
+            case S.TRANSPORT_REQUEST_CODE_DISAGREE_BORROW:
+                //Borrow item created by you has been declined by Associate
+                //Now we give you some choices, You need to choose one action
+                borrowUid = inPackage.getOwnerItemId();
+                borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid, Model.MODEL_TYPE_BORROW);
+                borrow.setState(States.BORROW_DISAPPROVED_ACTION_PENDING);
+                borrow.updateItemInDb(mContext);
+                break;
+            case S.TRANSPORT_REQUEST_CODE_PAY:
+                //borrower has made a payment, user need to approve
+                inPackage.setIsRespondable(true);
+
+                lentUid = inPackage.getOwnerItemId();
+                lent = (Lent)Tools.getDbInstance(mContext,lentUid, Model.MODEL_TYPE_LENT);
+                lent.setState(States.LENT_PAYMENT_RECEIVED_DISAPPROVED_ACTION_PENDING);
+                lent.updateItemInDb(mContext);
+                break;
+
+            case S.TRANSPORT_REQUEST_CODE_AGREE_PAY:
+                // You made a payment and that is approved now by Lent owner
+                //
+
+                if(user.getPhoneNumber().equals(inPackage.getItemAssociatePhone())) {
+                    borrowUid = inPackage.getAssociateItemId();
+                } else {
+                    //you are owner of this borrow item
+                    borrowUid = inPackage.getOwnerItemId();
+                }
+
+                borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid, Model.MODEL_TYPE_BORROW);
+                borrow.setState(States.BORROW_PAYMENT_CLEARED);
+                borrow.updateItemInDb(mContext);
+
+                break;
+            case S.TRANSPORT_REQUEST_CODE_DISAGREE_PAY:
+                // You made a payment and that is declined by Lent owner
+                // We give you some choices now , perform any action
+
+                if(user.getPhoneNumber().equals(inPackage.getItemAssociatePhone())) {
+                    borrowUid = inPackage.getAssociateItemId();
+                } else {
+                    //you are owner of this borrow item
+                    borrowUid = inPackage.getOwnerItemId();
+                }
+
+                borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid, Model.MODEL_TYPE_BORROW);
+                borrow.setState(States.BORROW_PAYMENT_PAID_DISAPPROVED_ACTION_PENDING);
+                borrow.updateItemInDb(mContext);
+
+                break;
+            case S.TRANSPORT_REQUEST_CODE_RECEIVE:
+                // Giver has received return payment for his lent, He wants to notify you
+                // You should update your borrow item as paid
+                if(user.getPhoneNumber().equals(inPackage.getItemAssociatePhone())) {
+                    borrowUid = inPackage.getAssociateItemId();
+                } else {
+                    //you are owner of this borrow item
+                    borrowUid = inPackage.getOwnerItemId();
+                }
+
+                borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid, Model.MODEL_TYPE_BORROW);
+                borrow.setState(States.BORROW_PAYMENT_CLEARED);
+                borrow.updateItemInDb(mContext);
+
+                break;
+
+        }
     }
 
     public void showCustomNotification(String title, String message) {

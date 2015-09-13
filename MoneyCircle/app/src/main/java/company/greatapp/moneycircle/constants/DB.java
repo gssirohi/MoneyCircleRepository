@@ -205,14 +205,15 @@ public class DB {
     public static final String ITEM_DATE_STRING                 = "itemDate";
     public static final String ITEM_DUE_DATE_STRING             = "itemDueDate";
     public static final String ITEM_DESCRIPTION                 = "itemDescription";
-    public static final String IS_RESPONDED                     = "isResponded";
+    public static final String IS_RESPONDED                     = "isRespondable";
+    public static final String RESPONSE_STATE                   = "responseState";
 
     public static final Uri PACKAGE_FROM_SERVER_TABLE_URI = Uri.parse("content://"+DB_AUTHORITY+"/" + PACKAGE_FROM_SERVER_TABLE_NAME);
     public static final String[] PACKAGE_FROM_SERVER_TABLE_PROJECTION = new String[]{
             DB_ID,UID, REQUEST_CODE,REQUEST_SENDER_PHONE,REQUEST_SENDER_NAME,REQUEST_RECIEVER_PHONE,ITEM_OWNER_PHONE
     ,ITEM_ASSOCIATE_PHONE,MONEY_RECIEVER_PHONE,MONEY_PAYER_PHONE,OWNER_ITEM_TYPE,ASSOCIATE_ITEM_TYPE,
             ITEM_BODY_JSON_TYPE,ITEM_BODY_JSON_STRING,MESSAGE,ITEM_TITLE,AMOUNT,ITEM_DATE_STRING,
-            ITEM_DUE_DATE_STRING,ITEM_DESCRIPTION,IS_RESPONDED};
+            ITEM_DUE_DATE_STRING,ITEM_DESCRIPTION,IS_RESPONDED,RESPONSE_STATE};
 
     //--------------MONEY CIRCLE PACKAGE FOR SERVER TABLE--------------------------------------//
 
@@ -284,5 +285,6 @@ public class DB {
             ACCOUNT_TOPITEMS,
             ACCOUNT_LAST_TRANSACTION
             };
+
 //----------------------------------------------------------------//
 }

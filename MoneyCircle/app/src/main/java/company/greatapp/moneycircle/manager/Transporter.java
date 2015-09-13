@@ -23,9 +23,11 @@ import company.greatapp.moneycircle.model.Borrow;
 import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.MoneyCirclePackageForServer;
+import company.greatapp.moneycircle.model.MoneyCirclePackageFromServer;
 import company.greatapp.moneycircle.model.User;
 import company.greatapp.moneycircle.tools.GreatJSON;
 import company.greatapp.moneycircle.tools.RegistrationUtils;
+import company.greatapp.moneycircle.tools.Tools;
 
 /**
  * Created by Gyanendrasingh on 8/30/2015.
@@ -290,7 +292,11 @@ public class Transporter {
         switch(modelType){
 
             case Model.MODEL_TYPE_LENT:
+
                 Lent lent = (Lent)model;
+                lent.setState(States.STATE_LENT_SENDING);
+                lent.updateItemInDb(mContext);
+
                 outPackage.setUrl(S.URL_APP_SERVER_TRANSPORT_PACKAGE);
                 outPackage.setMaxRetryAttempt(0);
                 outPackage.setAttemptCounter(0);
@@ -326,6 +332,10 @@ public class Transporter {
             case Model.MODEL_TYPE_BORROW:
 
                 Borrow item = (Borrow)model;
+
+                item.setState(States.STATE_BORROW_SENDING);
+                item.updateItemInDb(mContext);
+
                 outPackage.setUrl(S.URL_APP_SERVER_TRANSPORT_PACKAGE);
                 outPackage.setMaxRetryAttempt(0);
                 outPackage.setAttemptCounter(0);
@@ -373,6 +383,226 @@ public class Transporter {
         addToQueue(req, tag);
     }
 
+    public String transportPackageApproval(MoneyCirclePackageFromServer fromPackage,boolean approved) {
+
+    MoneyCirclePackageForServer outPackage = new MoneyCirclePackageForServer();
+        User user = new User(mContext);
+        switch(fromPackage.getReqCode()) {
+
+            case S.TRANSPORT_REQUEST_CODE_LENT:
+
+                outPackage.setUrl(S.URL_APP_SERVER_TRANSPORT_PACKAGE);
+                outPackage.setMaxRetryAttempt(0);
+                outPackage.setAttemptCounter(0);
+                outPackage.setReqResponseType(S.RESPONSE_TYPE_STRING);
+                outPackage.setReqType(Request.Method.POST);
+                if(approved) {
+                    outPackage.setReqCode(S.TRANSPORT_REQUEST_CODE_AGREE_LENT);//changed
+                    outPackage.setMessage("Lent Approved");//changed
+                } else {
+                    outPackage.setReqCode(S.TRANSPORT_REQUEST_CODE_DISAGREE_LENT);//changed
+                    outPackage.setMessage("Lent Disapproved");//changed
+                }
+                outPackage.setReqSenderPhone(user.getPhoneNumber());//changed
+                outPackage.setReqReceiverPhone(fromPackage.getReqSenderPhone());//changed
+                outPackage.setItemOwnerPhone(fromPackage.getItemOwnerPhone());
+                outPackage.setItemAssociatePhone(fromPackage.getItemAssociatePhone());
+                outPackage.setMoneyPayerPhone(fromPackage.getMoneyPayerPhone());
+                outPackage.setMoneyReceiverPhone(fromPackage.getMoneyReceiverPhone());
+                outPackage.setOwnerItemType(fromPackage.getOwnerItemType());
+                outPackage.setAssociateItemtype(fromPackage.getAssociateItemtype());
+
+
+                outPackage.setOwnerItemId(fromPackage.getOwnerItemId());
+
+                outPackage.setAssociateItemId(fromPackage.getAssociateItemId());//changed
+
+                outPackage.setItemBodyJsonType(fromPackage.getItemBodyJsonType());
+
+                outPackage.setItemBodyJsonString(fromPackage.getItemBodyJsonString());
+
+
+                break;
+
+            case S.TRANSPORT_REQUEST_CODE_BORROW:
+
+                outPackage.setUrl(S.URL_APP_SERVER_TRANSPORT_PACKAGE);
+                outPackage.setMaxRetryAttempt(0);
+                outPackage.setAttemptCounter(0);
+                outPackage.setReqResponseType(S.RESPONSE_TYPE_STRING);
+                outPackage.setReqType(Request.Method.POST);
+                if(approved) {
+                    outPackage.setReqCode(S.TRANSPORT_REQUEST_CODE_AGREE_BORROW);//changed
+                    outPackage.setMessage("Borrow Approved");//changed
+                } else {
+                    outPackage.setReqCode(S.TRANSPORT_REQUEST_CODE_DISAGREE_BORROW);//changed
+                    outPackage.setMessage("Borrow Disapproved");//changed
+                }
+                outPackage.setReqSenderPhone(user.getPhoneNumber());//changed
+                outPackage.setReqReceiverPhone(fromPackage.getReqSenderPhone());//changed
+                outPackage.setItemOwnerPhone(fromPackage.getItemOwnerPhone());
+                outPackage.setItemAssociatePhone(fromPackage.getItemAssociatePhone());
+                outPackage.setMoneyPayerPhone(fromPackage.getMoneyPayerPhone());
+                outPackage.setMoneyReceiverPhone(fromPackage.getMoneyReceiverPhone());
+                outPackage.setOwnerItemType(fromPackage.getOwnerItemType());
+                outPackage.setAssociateItemtype(fromPackage.getAssociateItemtype());
+
+
+                outPackage.setOwnerItemId(fromPackage.getOwnerItemId());
+
+                outPackage.setAssociateItemId(fromPackage.getAssociateItemId());//changed
+
+                outPackage.setItemBodyJsonType(fromPackage.getItemBodyJsonType());
+
+                outPackage.setItemBodyJsonString(fromPackage.getItemBodyJsonString());
+
+
+                break;
+
+            case S.TRANSPORT_REQUEST_CODE_PAY:
+
+                outPackage.setUrl(S.URL_APP_SERVER_TRANSPORT_PACKAGE);
+                outPackage.setMaxRetryAttempt(0);
+                outPackage.setAttemptCounter(0);
+                outPackage.setReqResponseType(S.RESPONSE_TYPE_STRING);
+                outPackage.setReqType(Request.Method.POST);
+                if(approved) {
+                    outPackage.setReqCode(S.TRANSPORT_REQUEST_CODE_AGREE_PAY);//changed
+                    outPackage.setMessage("Payment Approved");//changed
+                } else {
+                    outPackage.setReqCode(S.TRANSPORT_REQUEST_CODE_DISAGREE_PAY);//changed
+                    outPackage.setMessage("Payment Disapproved");//changed
+                }
+                outPackage.setReqSenderPhone(user.getPhoneNumber());//changed
+                outPackage.setReqReceiverPhone(fromPackage.getReqSenderPhone());//changed
+                outPackage.setItemOwnerPhone(fromPackage.getItemOwnerPhone());
+                outPackage.setItemAssociatePhone(fromPackage.getItemAssociatePhone());
+                outPackage.setMoneyPayerPhone(fromPackage.getMoneyPayerPhone());
+                outPackage.setMoneyReceiverPhone(fromPackage.getMoneyReceiverPhone());
+                outPackage.setOwnerItemType(fromPackage.getOwnerItemType());
+                outPackage.setAssociateItemtype(fromPackage.getAssociateItemtype());
+
+
+                outPackage.setOwnerItemId(fromPackage.getOwnerItemId());
+
+                outPackage.setAssociateItemId(fromPackage.getAssociateItemId());//changed
+
+                outPackage.setItemBodyJsonType(fromPackage.getItemBodyJsonType());
+
+                outPackage.setItemBodyJsonString(fromPackage.getItemBodyJsonString());
+
+
+                break;
+
+            case S.TRANSPORT_REQUEST_CODE_SETTLE:
+
+                outPackage.setUrl(S.URL_APP_SERVER_TRANSPORT_PACKAGE);
+                outPackage.setMaxRetryAttempt(0);
+                outPackage.setAttemptCounter(0);
+                outPackage.setReqResponseType(S.RESPONSE_TYPE_STRING);
+                outPackage.setReqType(Request.Method.POST);
+                if(approved) {
+                    outPackage.setReqCode(S.TRANSPORT_REQUEST_CODE_AGREE_SETTLE);//changed
+                    outPackage.setMessage("Settle Approved");//changed
+                } else {
+                    outPackage.setReqCode(S.TRANSPORT_REQUEST_CODE_DISAGREE_SETTLE);//changed
+                    outPackage.setMessage("Settle Disapproved");//changed
+                }
+                outPackage.setReqSenderPhone(user.getPhoneNumber());//changed
+                outPackage.setReqReceiverPhone(fromPackage.getReqSenderPhone());//changed
+                outPackage.setItemOwnerPhone(fromPackage.getItemOwnerPhone());
+                outPackage.setItemAssociatePhone(fromPackage.getItemAssociatePhone());
+                outPackage.setMoneyPayerPhone(fromPackage.getMoneyPayerPhone());
+                outPackage.setMoneyReceiverPhone(fromPackage.getMoneyReceiverPhone());
+                outPackage.setOwnerItemType(fromPackage.getOwnerItemType());
+                outPackage.setAssociateItemtype(fromPackage.getAssociateItemtype());
+
+
+                outPackage.setOwnerItemId(fromPackage.getOwnerItemId());
+
+                outPackage.setAssociateItemId(fromPackage.getAssociateItemId());//changed
+
+                outPackage.setItemBodyJsonType(fromPackage.getItemBodyJsonType());
+
+                outPackage.setItemBodyJsonString(fromPackage.getItemBodyJsonString());
+
+
+                break;
+
+            case S.TRANSPORT_REQUEST_CODE_MODIFY_BORROW:
+
+                outPackage.setUrl(S.URL_APP_SERVER_TRANSPORT_PACKAGE);
+                outPackage.setMaxRetryAttempt(0);
+                outPackage.setAttemptCounter(0);
+                outPackage.setReqResponseType(S.RESPONSE_TYPE_STRING);
+                outPackage.setReqType(Request.Method.POST);
+                if(approved) {
+                    outPackage.setReqCode(S.TRANSPORT_REQUEST_CODE_AGREE_MODIFY);//changed
+                    outPackage.setMessage("Modify Borrow request Approved");//changed
+                } else {
+                    outPackage.setReqCode(S.TRANSPORT_REQUEST_CODE_DISAGREE_MODIFY);//changed
+                    outPackage.setMessage("Modify Borrow request Disapproved");//changed
+                }
+                outPackage.setReqSenderPhone(user.getPhoneNumber());//changed
+                outPackage.setReqReceiverPhone(fromPackage.getReqSenderPhone());//changed
+                outPackage.setItemOwnerPhone(fromPackage.getItemOwnerPhone());
+                outPackage.setItemAssociatePhone(fromPackage.getItemAssociatePhone());
+                outPackage.setMoneyPayerPhone(fromPackage.getMoneyPayerPhone());
+                outPackage.setMoneyReceiverPhone(fromPackage.getMoneyReceiverPhone());
+                outPackage.setOwnerItemType(fromPackage.getOwnerItemType());
+                outPackage.setAssociateItemtype(fromPackage.getAssociateItemtype());
+
+
+                outPackage.setOwnerItemId(fromPackage.getOwnerItemId());
+
+                outPackage.setAssociateItemId(fromPackage.getAssociateItemId());//changed
+
+                outPackage.setItemBodyJsonType(fromPackage.getItemBodyJsonType());
+
+                outPackage.setItemBodyJsonString(fromPackage.getItemBodyJsonString());
+
+
+                break;
+            case S.TRANSPORT_REQUEST_CODE_MODIFY_LENT:
+
+                outPackage.setUrl(S.URL_APP_SERVER_TRANSPORT_PACKAGE);
+                outPackage.setMaxRetryAttempt(0);
+                outPackage.setAttemptCounter(0);
+                outPackage.setReqResponseType(S.RESPONSE_TYPE_STRING);
+                outPackage.setReqType(Request.Method.POST);
+                if(approved) {
+                    outPackage.setReqCode(S.TRANSPORT_REQUEST_CODE_AGREE_MODIFY);//changed
+                    outPackage.setMessage("Modify Lent request Approved");//changed
+                } else {
+                    outPackage.setReqCode(S.TRANSPORT_REQUEST_CODE_DISAGREE_MODIFY);//changed
+                    outPackage.setMessage("Modify Lent request Disapproved");//changed
+                }
+                outPackage.setReqSenderPhone(user.getPhoneNumber());//changed
+                outPackage.setReqReceiverPhone(fromPackage.getReqSenderPhone());//changed
+                outPackage.setItemOwnerPhone(fromPackage.getItemOwnerPhone());
+                outPackage.setItemAssociatePhone(fromPackage.getItemAssociatePhone());
+                outPackage.setMoneyPayerPhone(fromPackage.getMoneyPayerPhone());
+                outPackage.setMoneyReceiverPhone(fromPackage.getMoneyReceiverPhone());
+                outPackage.setOwnerItemType(fromPackage.getOwnerItemType());
+                outPackage.setAssociateItemtype(fromPackage.getAssociateItemtype());
+
+
+                outPackage.setOwnerItemId(fromPackage.getOwnerItemId());
+
+                outPackage.setAssociateItemId(fromPackage.getAssociateItemId());//changed
+
+                outPackage.setItemBodyJsonType(fromPackage.getItemBodyJsonType());
+
+                outPackage.setItemBodyJsonString(fromPackage.getItemBodyJsonString());
+
+
+                break;
+        }
+
+        transportPackage(outPackage);
+        return outPackage.getTransportId();
+    }
+
     private StringRequest getStringRequestForPackage(final MoneyCirclePackageForServer outPackage) {
         StringRequest strReq = new StringRequest(outPackage.getReqType(),
                 outPackage.getUrl(), new Response.Listener<String>() {
@@ -414,11 +644,69 @@ public class Transporter {
             transportPackage(outPackage);
         } else {
             Log.e("SPLIT","Package Sending ALL ATTEMPT FAILED");
+            handleNotSentPackageItemState(outPackage);
         }
     }
 
+
     private void handlePackageResponse(String response, MoneyCirclePackageForServer outPackage) {
         outPackage.deleteFromDb(mContext);
+        handleSentPackageItemState(outPackage);
     }
+
+    private void handleNotSentPackageItemState(MoneyCirclePackageForServer outPackage) {
+
+        String lentUid = "";
+        String borrowUid = "";
+        Lent lent;
+        Borrow borrow;
+        switch(outPackage.getReqCode()) {
+
+            case S.TRANSPORT_REQUEST_CODE_LENT:
+
+                lentUid = outPackage.getOwnerItemId();
+                lent = (Lent)Tools.getDbInstance(mContext,lentUid,Model.MODEL_TYPE_LENT);
+                lent.setState(States.STATE_LENT_NOT_SENT);
+                lent.updateItemInDb(mContext);
+                break;
+            case S.TRANSPORT_REQUEST_CODE_BORROW:
+
+                borrowUid = outPackage.getOwnerItemId();
+                borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid,Model.MODEL_TYPE_BORROW);
+                borrow.setState(States.STATE_BORROW_NOT_SENT);
+                borrow.updateItemInDb(mContext);
+                break;
+
+
+        }
+    }
+
+    private void handleSentPackageItemState(MoneyCirclePackageForServer outPackage) {
+
+        String lentUid = "";
+        String borrowUid = "";
+        Lent lent;
+        Borrow borrow;
+        switch(outPackage.getReqCode()) {
+
+            case S.TRANSPORT_REQUEST_CODE_LENT:
+
+                lentUid = outPackage.getOwnerItemId();
+                lent = (Lent)Tools.getDbInstance(mContext,lentUid,Model.MODEL_TYPE_LENT);
+                lent.setState(States.STATE_LENT_APPROVAL_PENDING);
+                lent.updateItemInDb(mContext);
+                break;
+            case S.TRANSPORT_REQUEST_CODE_BORROW:
+
+                borrowUid = outPackage.getOwnerItemId();
+                borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid,Model.MODEL_TYPE_BORROW);
+                borrow.setState(States.STATE_BORROW_APPROVAL_PENDING);
+                borrow.updateItemInDb(mContext);
+                break;
+
+
+        }
+    }
+
 
 }
