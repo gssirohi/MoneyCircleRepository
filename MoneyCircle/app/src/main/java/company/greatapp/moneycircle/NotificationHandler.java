@@ -1,8 +1,10 @@
 package company.greatapp.moneycircle;
 
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
 import company.greatapp.moneycircle.constants.S;
@@ -48,7 +50,7 @@ public class NotificationHandler {
 
 
         if (isCustomNotificationRequired(packageFromServer)) {
-//            showCustomNotification(notification.getMoneyTitle(), notification.getMessage());
+            showCustomNotification(packageFromServer.getItemTitle(), packageFromServer.getMessage());
         }
 
 
@@ -193,14 +195,15 @@ public class NotificationHandler {
 
         // build notification
         // the addAction re-use the same intent to keep the example short
-        android.app.Notification.Builder notificationBuilder = new android.app.Notification.Builder(mContext);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(mContext);
         if (!TextUtils.isEmpty(title)) {
-            notificationBuilder.setContentTitle("New mail from " + "test@gmail.com");
+            notificationBuilder.setContentTitle(title);
         }
 
         notificationBuilder.setContentText(message);
         notificationBuilder.setContentIntent(pIntent);
         notificationBuilder.setAutoCancel(true);
+        notificationBuilder.setDefaults(Notification.DEFAULT_SOUND);
 
 
         android.app.NotificationManager notificationManager = (android.app.NotificationManager)
