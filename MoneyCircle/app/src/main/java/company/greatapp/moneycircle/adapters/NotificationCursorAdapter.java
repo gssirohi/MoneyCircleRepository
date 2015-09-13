@@ -35,7 +35,7 @@ public class NotificationCursorAdapter extends CursorAdapter {
         //cursor.move(p -pos);
         cursor.moveToPosition(p - 1);
 
-
+        //todo Ashish
         MoneyCirclePackageFromServer moneyCirclePackageFromServer = new MoneyCirclePackageFromServer(cursor);
         ((NotificationItemView) view).initView(moneyCirclePackageFromServer);
     }

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.constants.S;
+import company.greatapp.moneycircle.constants.States;
 import company.greatapp.moneycircle.model.Borrow;
 import company.greatapp.moneycircle.model.Circle;
 import company.greatapp.moneycircle.model.Contact;
@@ -21,7 +22,6 @@ import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.MoneyCirclePackageFromServer;
 import company.greatapp.moneycircle.model.Split;
-import company.greatapp.moneycircle.model.User;
 
 /**
  * Created by gyanendra.sirohi on 7/14/2015.
@@ -414,9 +414,15 @@ public class GreatJSON {
         String jsonString = "";
         JSONObject obj = new JSONObject();
         try{
-            obj.put("title", borrow.getTitle());
-            obj.put("uid", borrow.getUID());
-            obj.put("dbid", borrow.getDbId());
+            obj.put(DB.TITLE, borrow.getTitle());
+            obj.put(DB.UID, borrow.getUID());
+            obj.put(DB.DB_ID, borrow.getDbId());
+            obj.put(DB.CATEGORY, borrow.getCategory());
+            obj.put(DB.DESCRIPTION, borrow.getDescription());
+            obj.put(DB.DATE_STRING, borrow.getDateString());
+            obj.put(DB.DUE_DATE_STRING, borrow.getDueDateString());
+            obj.put(DB.AMOUNT, borrow.getAmount());
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -446,9 +452,9 @@ public class GreatJSON {
         Borrow borrow = null;
         try {
             JSONObject obj = new JSONObject(json);
-            String title = obj.getString("title");
-            String uid = obj.getString("uid");
-            String dbid = obj.getString("dbid");
+            String title = obj.getString(DB.TITLE);
+            String uid = obj.getString(DB.UID);
+            String dbid = obj.getString(DB.DB_ID);
             borrow = (Borrow)Tools.getDbInstance(context, uid, Model.MODEL_TYPE_BORROW);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -597,6 +603,8 @@ public class GreatJSON {
             JSONObject jsonObject = new JSONObject(jsonString);
             int reqCode = Integer.parseInt(jsonObject.getString(S.TRANSPORT_REQ_CODE));
             serverPackage.setReqCode(reqCode);
+            serverPackage.setResponseState(MoneyCirclePackageFromServer.RESPONSE_STATE_NOT_RESPONDED);
+            serverPackage.setIsRespondable(false);//modify it later with reqcode
 
             String senderphoneNo = jsonObject.getString(S.TRANSPORT_REQ_SENDER_PHONE);
             serverPackage.setReqSenderPhone(senderphoneNo);
@@ -643,8 +651,6 @@ public class GreatJSON {
             serverPackage.setItemBodyJsonString(itemBodyJsonString);
 
             String message = jsonObject.getString(S.TRANSPORT_MESSAGE);
-
-
             serverPackage.setMessage(message);
 
             //String dateString = jsonObject.getString("dateString");
@@ -684,15 +690,52 @@ public class GreatJSON {
             String itemDescription = itemJsonObj.getString(DB.DESCRIPTION);
             serverPackage.setItemDescription(itemDescription);
 
-            String message = itemJsonObj.getString(DB.MESSAGE);
 
-            serverPackage.setMessage(message);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         return serverPackage;
+    }
+
+    public static void updateModelFieldsFromInPackage(Context context, MoneyCirclePackageFromServer inPackage, int modelType, Model model) {
+
+        if (inPackage == null || (TextUtils.isEmpty(inPackage.getItemBodyJsonString()))) {
+            return;
+        }
+
+        String itemJsonString = inPackage.getItemBodyJsonString();
+        JSONObject object = null;
+
+        try {
+            object = new JSONObject(itemJsonString);
+
+            model.setTitle(object.getString(DB.TITLE));                         // Title
+            model.setModelType(modelType);
+            model.setCategory(object.getString(DB.CATEGORY));
+
+            if (modelType == Model.MODEL_TYPE_BORROW) {
+                ((Borrow)model).setLinkedContactItemId(object.getString(DB.UID));       // Item Owner Id
+                ((Borrow) model).setDescription(object.getString(DB.DESCRIPTION));
+                ((Borrow) model).setState(States.BORROW_PAYMENT_PENDING);
+            } else if (modelType == Model.MODEL_TYPE_LENT){
+                ((Lent)model).setLinkedContactItemId(object.getString(DB.UID));       // Item Owner Id
+                ((Lent) model).setDescription(object.getString(DB.DESCRIPTION));
+                ((Lent) model).setState(States.LENT_WAITING_FOR_PAYMENT);
+            }
+
+            model.setAmount(Float.parseFloat(object.getString(DB.AMOUNT)));
+            model.setDateString(DateUtils.getCurrentDate());
+            model.setDueDateString(object.getString(DB.DUE_DATE_STRING));
+
+            Contact senderContact = Tools.getContactFromPhoneNumber(context, inPackage.getReqSenderPhone());
+            model.setLinkedContact(senderContact);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
 
