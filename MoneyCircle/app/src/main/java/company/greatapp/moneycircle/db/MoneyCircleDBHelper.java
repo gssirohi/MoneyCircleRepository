@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import company.greatapp.moneycircle.constants.DB;
+import company.greatapp.moneycircle.constants.S;
 
 
 public class MoneyCircleDBHelper extends SQLiteOpenHelper {
@@ -37,6 +38,7 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
                             + DB.REGISTERED + " int,"
                             + DB.SERVER_NAME + " text,"
                             + DB.SERVER_ID + " text,"
+                            + DB.STATE + " int, "
                             + DB.CONTACT_BORROWED_AMOUNT_FROM_THIS + " text,"
                             + DB.CONTACT_LENT_AMOUNT_TO_THIS + " text,"
                             + DB.JSON_STRING + " text);"
@@ -103,6 +105,7 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
                             + DB.CATEGORY + " text,"
                             + DB.DESCRIPTION + " text,"
                             + DB.AMOUNT + " text, "
+                            + DB.STATE + " int, "
                             + DB.LINKED_CONTACT_JSON + " text, "
                             + DB.DUE_DATE_STRING + " text, "
                             + DB.DATE_STRING + " text, "
@@ -124,6 +127,7 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
                             + DB.CATEGORY + " text,"
                             + DB.DESCRIPTION + " text,"
                             + DB.AMOUNT + " text, "
+                            + DB.STATE + " int, "
                             + DB.DUE_DATE_STRING + " text, "
                             + DB.LINKED_CONTACT_JSON + " text, "
                             + DB.IS_LINKED_WITH_SPLIT + " int,"
@@ -179,18 +183,33 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
                             + DB.CATEGORY_TYPE + " int  );"
             );
             Log.d("DBhelper", "query sent for" + DB.CATEGORY_TABLE_NAME);
+
     //=========================================================================//
-            db.execSQL(     "create table "     + DB.NOTIFICATION_TABLE_NAME + "("
+            db.execSQL(     "create table "     + DB.PACKAGE_FORSERVER_TABLE_NAME + "("
 
                             + DB.DB_ID + " Integer primary key ,"
                             + DB.UID + " text,"
-                            + DB.NAME + " text,"
-                            + DB.PHONE_NUMBER + " text, "
-                            + DB.NOTIFICATION_JSON_STRING + " text, "
-                            + DB.NOTIFICATION_TYPE + " text, "
-                            + DB.NOTIFICATION_DESCRIPTION + " text );"
+                            + S.TRANSPORT_ITEM_OWNER_PHONE + " text,"
+                            + S.TRANSPORT_ITEM_ASSOCIATE_PHONE + " text,"
+                            + DB.MAX_RETRY_ATTEMPT + " int,"
+                            + DB.ATTEMPT_COUNTER + " int,"
+                            + DB.URL + " text,"
+                            + DB.REQ_RESPONSE_TYPE + " int,"
+                            + DB.REQ_TYPE + " int,"
+                            + S.TRANSPORT_REQ_CODE + " int,"
+                            + S.TRANSPORT_REQ_SENDER_PHONE + " text,"
+                            + S.TRANSPORT_REQ_RECEIVER_PHONE + " text,"
+                            + S.TRANSPORT_MONEY_RECEIVER_PHONE + " text,"
+                            + S.TRANSPORT_MONEY_PAYER_PHONE + " text,"
+                            + S.TRANSPORT_OWNER_ITEM_TYPE + " int,"
+                            + S.TRANSPORT_ASSOCIATE_ITEM_TYPE + " int,"
+                            + S.TRANSPORT_OWNER_ITEM_ID + " text,"
+                            + S.TRANSPORT_ASSOCIATE_ITEM_ID + " text,"
+                            + S.TRANSPORT_ITEM_BODY_JSON_TYPE + " int,"
+                            + S.TRANSPORT_ITEM_BODY_JSON_STRING + " text,"
+                            + S.TRANSPORT_MESSAGE + " text);"
             );
-            Log.d("DBhelper","query sent for"+DB.NOTIFICATION_TABLE_NAME);
+            Log.d("DBhelper", "query sent for" + DB.PACKAGE_FORSERVER_TABLE_NAME);
     //=========================================================================//
 
             db.execSQL(     "create table "     + DB.COMMON_TABLE_NAME + "("
@@ -232,6 +251,39 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
             );
             Log.d("DBhelper","query sent for"+DB.ACCOUNT_TABLE_NAME);
             //=========================================================================//
+
+            //=========================================================================//
+
+            db.execSQL(     "create table "     + DB.PACKAGE_FROM_SERVER_TABLE_NAME + "("
+
+                            + DB.DB_ID + " Integer primary key ,"
+                            + DB.UID + " text,"
+                            +DB.REQUEST_CODE + " int,"
+                            +DB.REQUEST_SENDER_PHONE + " text,"
+                            +DB.REQUEST_SENDER_NAME + " text,"
+                            +DB.REQUEST_RECIEVER_PHONE + " text,"
+                            +DB.ITEM_OWNER_PHONE       + " text,"
+                            +DB.ITEM_ASSOCIATE_PHONE   + " text,"
+                            +DB.MONEY_RECIEVER_PHONE   + " text,"
+                            +DB.MONEY_PAYER_PHONE      + " text,"
+                            +DB.OWNER_ITEM_TYPE        +  " text,"
+                            +DB.ASSOCIATE_ITEM_TYPE    + " text,"
+                            + DB.OWNER_ITEM_ID         + " text,"
+                            + DB.ASSOCIATE_ITEM_ID     + " text,"
+                            +DB.ITEM_BODY_JSON_TYPE    + " text,"
+                            +DB.ITEM_TITLE             + " text,"
+                            +DB.AMOUNT                 + " text,"
+                            +DB.ITEM_DATE_STRING       + " text,"
+                            +DB.MESSAGE                + " text,"
+                            +DB.ITEM_DUE_DATE_STRING   + " text,"
+                            +DB.IS_RESPONDABLE         + " int,"
+                            +DB.RESPONSE_STATE         + " int,"
+                            +DB.ITEM_DESCRIPTION       + " text,"
+                            + DB.ITEM_BODY_JSON_STRING + " text );"
+            );
+            Log.d("DBhelper","query sent for"+DB.PACKAGE_FROM_SERVER_TABLE_NAME);
+            //=========================================================================//
+
 
         }
 

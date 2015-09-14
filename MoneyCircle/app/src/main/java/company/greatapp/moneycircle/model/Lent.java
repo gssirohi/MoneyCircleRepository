@@ -1,14 +1,15 @@
 package company.greatapp.moneycircle.model;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
 
 import org.json.JSONObject;
 
 import java.util.Date;
 
 import company.greatapp.moneycircle.constants.DB;
+import company.greatapp.moneycircle.constants.States;
 import company.greatapp.moneycircle.tools.DateUtils;
 import company.greatapp.moneycircle.tools.GreatJSON;
 import company.greatapp.moneycircle.tools.Tools;
@@ -37,6 +38,8 @@ public class Lent extends Model {
     private String dueDateString = "";
     private String linkedContactJson;
     private Contact linkedContact;
+    private String linkedContactItemId;
+    private int mState = States.LENT_IDEAL;
 
     private boolean isLinkedWithSplit;
     private Split linkedSplit;
@@ -55,6 +58,14 @@ public class Lent extends Model {
     public Lent(int dbId, String uid) {
         mDbId = dbId;
         mUid = uid;
+    }
+
+    public Lent (Context context, MoneyCirclePackageFromServer inPackage) {
+        mUid = Tools.generateUniqueId();
+        isLinkedWithSplit = false;
+        linkedSplit = null;
+        linkedSplitJson = "NA";
+        GreatJSON.updateModelFieldsFromInPackage(context, inPackage, Model.MODEL_TYPE_LENT, this);
     }
 
     @Override
@@ -206,6 +217,22 @@ public class Lent extends Model {
         return mDbId;
     }
 
+    public String getLinkedContactItemId() {
+        return linkedContactItemId;
+    }
+
+    public void setLinkedContactItemId(String linkedContactItemId) {
+        this.linkedContactItemId = linkedContactItemId;
+    }
+
+    public int getState() {
+        return mState;
+    }
+
+    public void setState(int state) {
+        this.mState = state;
+    }
+
     @Override
     public ContentValues getContentValues() {
 
@@ -214,7 +241,7 @@ public class Lent extends Model {
         row.put(DB.TITLE , getTitle());
         row.put(DB.CATEGORY , getCategory());
         row.put(DB.DESCRIPTION , getDescription());
-        row.put(DB.AMOUNT, getAmount());
+        row.put(DB.AMOUNT, ""+getAmount());
 
         row.put(DB.LINKED_CONTACT_JSON, getLinkedContactJson());
 
@@ -224,6 +251,7 @@ public class Lent extends Model {
         row.put(DB.DUE_DATE_STRING, getDueDateString());
 
         row.put(DB.DATE_STRING ,getDateString());
+        row.put(DB.STATE, getState());
 //        Calendar cal = Calendar.getInstance();
 //        cal.setTime(getDate());
 //

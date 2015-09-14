@@ -14,6 +14,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -40,6 +41,7 @@ import company.greatapp.moneycircle.manager.PreferenceManager;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.NavDrawerItem;
+import company.greatapp.moneycircle.services.PendingPackageTransportService;
 import company.greatapp.moneycircle.split.SplitToolActivity;
 import company.greatapp.moneycircle.view.CircleButton;
 import company.greatapp.moneycircle.dialogs.ContactInfoDialog;
@@ -67,12 +69,15 @@ public class MainActivity extends ActionBarActivity implements TagItemView.TagIt
     private TabHost tabHost;
     private TabWidget tabWidget;
     private CardDesigner mCardDesigner;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        toolbar = (Toolbar)findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
         //TODO: this is launcher activity now on
         //hence we need to init application settings and requirments here
         //move below init method to the launcher activity always
@@ -171,6 +176,10 @@ public class MainActivity extends ActionBarActivity implements TagItemView.TagIt
             // on first time display view for first nav item
             //displayView(0);
         }
+
+        //Trying to send pending packages
+
+        startService(new Intent(this, PendingPackageTransportService.class));
     }
 
     private void initCardViews() {
@@ -199,28 +208,6 @@ public class MainActivity extends ActionBarActivity implements TagItemView.TagIt
     private void initApp(){
         registerReceiver(mAccountantUpdatedReceiver, new IntentFilter(C.ACTION_ACCOUNTANT_DB_UPDATED));
 
-        PreferenceManager pm = new PreferenceManager(this);
-        if(!pm.isDeviceContactsRetrived()) {
-            ContactManager contactManager = new ContactManager(this);
-            contactManager.retriveContactsFromDevice();//contact initialization
-            //Tools.addDummyEntries(this);
-            SharedPreferences.Editor et =  pm.getEditor();
-            et.putBoolean(C.PREF_CONTACTS_RETRIVED, true);
-            et.commit();
-        }
-
-        if (!pm.isDefaultCategoriesLoadedInDB()) {
-            CategoryManager categoryManager = new CategoryManager(this);
-            categoryManager.insertDefaultCategoriesInDB();
-            SharedPreferences.Editor et = pm.getEditor();
-            et.putBoolean(C.PREF_DEFAULT_CATEGORIES_LOADED, true);
-            et.commit();
-
-            Accountant accountant = new Accountant(this,false);
-            accountant.initializeDb();
-
-//            Tools.sendMoneyTransactionBroadCast(this);
-        }
     }
     private void handleDrawerItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch(position){
@@ -233,12 +220,17 @@ public class MainActivity extends ActionBarActivity implements TagItemView.TagIt
                 startActivity(new Intent(this,SettingActivity.class));
                 break;
 
-            case 3://Notification
+            case 3://MoneyCirclePackageFromServer
+                startActivity(new Intent(this,NotificationActivity.class));
                 break;
             case 4://profile
+                startActivity(new Intent(this,ViewAndEditProfileActivity.class));
                 break;
-
             case 5://developer
+                startActivity(new Intent(this,ContactUsActivity.class));
+                break;
+            default:
+                break;
 
         }
         mDrawerLayout.closeDrawers();

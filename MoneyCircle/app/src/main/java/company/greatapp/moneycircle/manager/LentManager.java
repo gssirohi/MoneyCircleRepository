@@ -54,6 +54,7 @@ public class LentManager extends BaseModelManager  {
         String splitJson     = cursor.getString(cursor.getColumnIndex(DB.LINKED_SPLIT_JSON));
         String json_string     = cursor.getString(cursor.getColumnIndex(DB.JSON_STRING));
         String date_string     = cursor.getString(cursor.getColumnIndex(DB.DATE_STRING));
+        int state              = cursor.getInt(cursor.getColumnIndex(DB.STATE));
         int date               = cursor.getInt(cursor.getColumnIndex(DB.DATE));
         int dateOfMonth             = cursor.getInt(cursor.getColumnIndex(DB.DAY_OF_MONTH));
         int weekOfMonth             = cursor.getInt(cursor.getColumnIndex(DB.WEEK_OF_MONTH));
@@ -68,6 +69,7 @@ public class LentManager extends BaseModelManager  {
         lent.setDescription(description);
         lent.setDueDateString(dueDateString);
         lent.setLinkedContactJson(linkedContactJson);
+        lent.setState(state);
         if(!TextUtils.isEmpty(linkedContactJson)) {
             Contact member = GreatJSON.getContactFromJsonString(linkedContactJson, context);
             lent.setLinkedContact(member);
@@ -95,6 +97,7 @@ public class LentManager extends BaseModelManager  {
         String splitJson     = cursor.getString(cursor.getColumnIndex(DB.LINKED_SPLIT_JSON));
         String json_string     = cursor.getString(cursor.getColumnIndex(DB.JSON_STRING));
         String date_string     = cursor.getString(cursor.getColumnIndex(DB.DATE_STRING));
+        int state              = cursor.getInt(cursor.getColumnIndex(DB.STATE));
         int date               = cursor.getInt(cursor.getColumnIndex(DB.DATE));
         int dateOfMonth             = cursor.getInt(cursor.getColumnIndex(DB.DAY_OF_MONTH));
         int weekOfMonth             = cursor.getInt(cursor.getColumnIndex(DB.WEEK_OF_MONTH));
@@ -109,6 +112,7 @@ public class LentManager extends BaseModelManager  {
         lent.setDescription(description);
         lent.setDueDateString(dueDateString);
         lent.setLinkedContactJson(linkedContactJson);
+        lent.setState(state);
 //        if(!TextUtils.isEmpty(linkedContactJson)) {
 //            Contact member = GreatJSON.getContactFromJsonString(linkedContactJson, mContactManager);
 //            lent.setLinkedContact(member);
@@ -143,7 +147,8 @@ public class LentManager extends BaseModelManager  {
                 c.moveToNext();
             }
             c.close();
-        }}
+        }
+    }
 
     @Override
     protected Context getContext() {

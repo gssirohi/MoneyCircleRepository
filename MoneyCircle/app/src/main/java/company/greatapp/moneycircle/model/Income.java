@@ -27,6 +27,7 @@ public class Income extends Model {
     private String mDateString ="";
     private Date date;
 
+
     public Income() {      // Empty Constructor
         setUID(Tools.generateUniqueId());
     }

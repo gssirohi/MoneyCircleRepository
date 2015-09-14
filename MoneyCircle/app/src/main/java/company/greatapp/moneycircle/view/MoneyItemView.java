@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import company.greatapp.moneycircle.R;
+import company.greatapp.moneycircle.constants.States;
 import company.greatapp.moneycircle.model.Borrow;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Expense;
@@ -39,6 +40,7 @@ public class MoneyItemView extends LinearLayout {
     private final LinearLayout ll_split_member;
     private final LinearLayout ll_due_date_info;
     private final TextView tv_due_date;
+    private final TextView tv_item_state;
     private Income income;
     public MoneyItemView(Context context, AttributeSet attrs, int type) {
 
@@ -55,6 +57,9 @@ public class MoneyItemView extends LinearLayout {
         tv_amount = (TextView)viewGroup.findViewById(R.id.tv_item_amount);
         tv_date = (TextView)viewGroup.findViewById(R.id.tv_item_date);
         tv_due_date = (TextView)viewGroup.findViewById(R.id.tv_due_date);
+
+        tv_item_state = (TextView)viewGroup.findViewById(R.id.tv_money_item_state);
+
         f_member = (FrameLayout)viewGroup.findViewById(R.id.f_member);
         f_split = (FrameLayout)viewGroup.findViewById(R.id.f_split);
         ll_split_member = (LinearLayout)viewGroup.findViewById(R.id.ll_split_member);
@@ -67,6 +72,8 @@ public class MoneyItemView extends LinearLayout {
         f_member.removeAllViews();
         f_split.removeAllViews();
         ll_split_member.removeAllViews();
+
+        tv_item_state.setVisibility(View.GONE);
 
         tv_title.setText(model.getTitle());
 
@@ -86,9 +93,11 @@ public class MoneyItemView extends LinearLayout {
                 ll_due_date_info.setVisibility(View.GONE);
                 break;
             case Model.MODEL_TYPE_BORROW:
-                tv_amount.setText(Tools.floatString(((Borrow)model).getAmount()));
+                tv_amount.setText(Tools.floatString(((Borrow) model).getAmount()));
                 tv_date.setText(((Borrow) model).getDateString());
                 Contact memberB = ((Borrow)model).getLinkedContact();
+                tv_item_state.setVisibility(View.VISIBLE);
+                tv_item_state.setText(States.getStateString(((Borrow) model).getState()));
                 if(memberB != null) {
                     f_member.addView(new TagItemView(getContext(), f_member, memberB, false));
                 } else {
@@ -107,6 +116,10 @@ public class MoneyItemView extends LinearLayout {
                 tv_amount.setText(Tools.floatString(((Lent)model).getAmount()));
                 tv_date.setText(((Lent)model).getDateString());
                 Contact memberL = ((Lent)model).getLinkedContact();
+
+                tv_item_state.setVisibility(View.VISIBLE);
+                tv_item_state.setText(States.getStateString(((Lent) model).getState()));
+
                 if(memberL != null) {
                     f_member.addView(new TagItemView(getContext(), f_member, memberL, false));
                 } else {

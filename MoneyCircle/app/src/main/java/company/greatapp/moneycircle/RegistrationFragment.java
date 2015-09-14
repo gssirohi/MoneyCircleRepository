@@ -60,7 +60,7 @@ public class RegistrationFragment extends Fragment implements DatePickerFragment
                 showDatePickerDialog();
                 break;
             case R.id.bt_continue:
-                Intent intent = new Intent(getActivity(), WelcomeActivity.class);
+                Intent intent = new Intent(getActivity(), UserWelcomeActivity.class);
                 startActivity(intent);
                 getActivity().finish();
                 break;

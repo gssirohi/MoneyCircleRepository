@@ -4,10 +4,6 @@ import android.content.ContentValues;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-
 import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.tools.Tools;
@@ -32,7 +28,7 @@ public class Contact extends Model {
     String email = "";
     Bitmap imageBitmap;
     Uri imageUri ;
-    int registered;
+    boolean registered;
     String serverName = "";// Name choosen by user while registering
     String serverId = "";//id provided by 3rd party server
 
@@ -124,11 +120,11 @@ public class Contact extends Model {
         this.imageUri = imageUri;
     }
 
-    public int getRegistered() {
+    public boolean isRegistered() {
         return registered;
     }
 
-    public void setRegistered(int registered) {
+    public void setRegistered(boolean registered) {
         this.registered = registered;
     }
 
@@ -257,7 +253,7 @@ public class Contact extends Model {
         row.put(DB.PHONE_NUMBER , getPhone());
         row.put(DB.EMAIL , getEmail());
         row.put(DB.CONTACT_IMAGE_URI , ""+getImageUri());
-        row.put(DB.REGISTERED ,getRegistered());
+        row.put(DB.REGISTERED ,(isRegistered())?1:0);
         row.put(DB.CONTACT_BORROWED_AMOUNT_FROM_THIS,""+getBorrowedAmountfromThis());
         row.put(DB.CONTACT_LENT_AMOUNT_TO_THIS,""+getLentAmountToThis());
         row.put(DB.SERVER_NAME , getServerName());

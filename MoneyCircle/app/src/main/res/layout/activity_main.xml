@@ -9,7 +9,8 @@
         android:id="@+id/frame_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <TabHost
+
+        <TabHost
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/tabHost"
@@ -20,6 +21,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <include
+                android:id="@+id/tool_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                layout="@layout/tool_bar_layout" />
+
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -79,6 +87,9 @@
                     android:id="@+id/fb_add_new_entry"
                     android:layout_gravity="right|bottom"
                     android:src="@android:drawable/ic_input_add"
+                    android:layout_marginBottom="@dimen/fab_margin_bottom"
+                    android:layout_marginEnd="@dimen/fab_margin_right"
+                    android:layout_marginRight="@dimen/fab_margin_right"
                     android:elevation="0dp"/>
             </FrameLayout>
         </LinearLayout>

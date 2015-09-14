@@ -47,7 +47,8 @@ public class Tools {
     public static String generateUniqueId() {
         String uid = UUID.randomUUID().toString();
         uid = uid.replaceAll("-","");
-        return "NEW"+uid;
+        //return "NEW"+uid;
+        return uid;
     }
 
 
@@ -131,6 +132,24 @@ public class Tools {
             c.close();
         }
         return model;
+    }
+
+    public static Contact getContactFromPhoneNumber(Context context, String phoneNumber) {
+        if (context == null || TextUtils.isEmpty(phoneNumber)) {
+            return null;
+        }
+        Contact contact = null;
+
+        String [] projection = DB.CONTACT_TABLE_PROJECTION;
+        String selection=DB.PHONE_NUMBER + "=" + "?";
+        String [] selArgs = new String[]{""+phoneNumber};
+        Cursor c = context.getContentResolver().query(DB.CONTACT_TABLE_URI, projection, selection, selArgs, null);
+        if(c != null && c.getCount() > 0) {
+            c.moveToFirst();
+            contact =  (Contact)createLightModelFromCursor(c,Model.MODEL_TYPE_CONTACT);
+            c.close();
+        }
+        return contact;
     }
 
     public static Model createLightModelFromCursor(Cursor cursor, int modelType) {
@@ -296,23 +315,72 @@ public static String getModelName(int modelType){
 }
 
     public static int getModelColor(Context context, int modelType) {
-        Resources res = context.getResources();
         int color = 0;
         if (modelType == Model.MODEL_TYPE_INCOME) {
-            color = res.getColor(R.color.income);
+            color = context.getResources().getColor(R.color.income);
         } else if (modelType == Model.MODEL_TYPE_EXPENSE) {
-            color = res.getColor(R.color.expense);
+            color = context.getResources().getColor(R.color.expense);
         } else if (modelType == Model.MODEL_TYPE_BORROW) {
-            color = res.getColor(R.color.borrow);
+            color = context.getResources().getColor(R.color.borrow);
         } else if (modelType == Model.MODEL_TYPE_LENT) {
-            color = res.getColor(R.color.lent);
+            color = context.getResources().getColor(R.color.lent);
         }
         else if (modelType == Model.MODEL_TYPE_SPLIT) {
-            color = res.getColor(R.color.split);
+            color = context.getResources().getColor(R.color.split);
         }
         return color;
     }
 
+    public static int getModelDarkColor(Context context, int modelType) {
+        int color = 0;
+        if (modelType == Model.MODEL_TYPE_INCOME) {
+            color = context.getResources().getColor(R.color.income_dark);
+        } else if (modelType == Model.MODEL_TYPE_EXPENSE) {
+            color = context.getResources().getColor(R.color.expense_dark);
+        } else if (modelType == Model.MODEL_TYPE_BORROW) {
+            color = context.getResources().getColor(R.color.borrow_dark);
+        } else if (modelType == Model.MODEL_TYPE_LENT) {
+            color = context.getResources().getColor(R.color.lent_dark);
+        }
+        else if (modelType == Model.MODEL_TYPE_SPLIT) {
+            color = context.getResources().getColor(R.color.split_dark);
+        }
+        return color;
+    }
+
+    public static int getModelThemeResId(int modelType) {
+        int themeResId = 0;
+        switch(modelType) {
+            case Model.MODEL_TYPE_INCOME:
+                themeResId = R.style.Theme_MoneyCircle_Income;
+                break;
+            case Model.MODEL_TYPE_EXPENSE:
+                themeResId = R.style.Theme_MoneyCircle_Expense;
+                break;
+            case Model.MODEL_TYPE_BORROW:
+                themeResId = R.style.Theme_MoneyCircle_Borrow;
+                break;
+            case Model.MODEL_TYPE_LENT:
+                themeResId = R.style.Theme_MoneyCircle_Lent;
+                break;
+        }
+        return themeResId;
+    }
+
+    public static void sendTransactionBroadCast(Context context, Model newItem, int type) {
+//        if(newItem != null) {
+//            String uid = newItem.getUID().replaceAll("NEW","DB");
+//            newItem.setUID(uid);
+//            Intent intent = new Intent(MoneyTransactionReceiver.ACTION_MONEY_TRANSACTION);
+//            // You can also include some extra data.
+//            intent.putExtra("message", "This is my message!");
+//            JSONObject obj = GreatJSON.getJsonObjectForModel(newItem);
+//            intent.putExtra(UpdateAccountRegistersTask.LAST_TRANSACTION_JSON,((obj != null)?obj.toString():""));
+//            intent.putExtra(UpdateAccountRegistersTask.TRANSACTION_TYPE,type);
+//            Log.i("SPLIT", "broadCast is sent for MONEY_TRANSACTION");
+//            context.sendBroadcast(intent);
+//        }
+    }
     public static void sendMoneyTransactionBroadCast(Context context, Model newItem, int type) {
         if(newItem != null) {
             String uid = newItem.getUID().replaceAll("NEW","DB");
@@ -323,7 +391,7 @@ public static String getModelName(int modelType){
             JSONObject obj = GreatJSON.getJsonObjectForModel(newItem);
             intent.putExtra(UpdateAccountRegistersTask.LAST_TRANSACTION_JSON,((obj != null)?obj.toString():""));
             intent.putExtra(UpdateAccountRegistersTask.TRANSACTION_TYPE,type);
-            Log.i("SPLIT", "broadCast is set for MONEY_TRANSACTION");
+            Log.i("SPLIT", "broadCast is sent for MONEY_TRANSACTION");
             context.sendBroadcast(intent);
         }
     }

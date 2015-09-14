@@ -37,6 +37,8 @@ public class DB {
 
     public static final String LINKED_CONTACT_JSON = "linkedContactJson";
 
+    public static final String STATE = "state";
+
 
 //-----------------------------------------------------------------//
 
@@ -59,7 +61,7 @@ public class DB {
     public static final String[] CONTACT_TABLE_PROJECTION = new String[]{
             DB_ID,UID,
             NAME,PHONE_NUMBER,CONTACT_IMAGE_URI,EMAIL,
-            REGISTERED,SERVER_NAME,SERVER_ID,
+            REGISTERED,SERVER_NAME,SERVER_ID, STATE,
             CONTACT_BORROWED_AMOUNT_FROM_THIS,CONTACT_LENT_AMOUNT_TO_THIS,
             JSON_STRING};
 //----------------------------------------------------------------//
@@ -115,7 +117,7 @@ public class DB {
 
     public static final String[] BORROW_TABLE_PROJECTION = new String[]{
             DB_ID,UID,
-            TITLE,CATEGORY,DESCRIPTION,AMOUNT,
+            TITLE,CATEGORY,DESCRIPTION,AMOUNT, STATE,
             LINKED_CONTACT_JSON,
             DUE_DATE_STRING,
             DATE_STRING,DATE, DAY_OF_MONTH, WEEK_OF_MONTH,MONTH,YEAR,
@@ -130,7 +132,7 @@ public class DB {
 
     public static final String[] LENT_TABLE_PROJECTION = new String[]{
             DB_ID,UID,
-            TITLE,CATEGORY,DESCRIPTION,AMOUNT,
+            TITLE,CATEGORY,DESCRIPTION,AMOUNT, STATE,
             LINKED_CONTACT_JSON,
             DUE_DATE_STRING,
             IS_LINKED_WITH_SPLIT,LINKED_SPLIT_JSON,
@@ -176,7 +178,6 @@ public class DB {
     public static final String CATEGORY_SPENT_AMOUNT_ON_THIS = "spent";
 
 
-
     public static final Uri CATEGORY_TABLE_URI = Uri.parse("content://"+DB_AUTHORITY+"/" + CATEGORY_TABLE_NAME);
     public static final String[] CATEGORY_TABLE_PROJECTION = new String[]{
             DB_ID,UID,
@@ -186,21 +187,55 @@ public class DB {
             CATEGORY_TYPE};
 //----------------------------------------------------------------//
 
-    //--------------NOTIFICATION TABLE--------------------------------------//
+    // ------------------ MONEY CIRCLE PACKAGE FROM SERVER TABLE --------//
+
+    public static final String PACKAGE_FROM_SERVER_TABLE_NAME   = "fromServerTable";
+    public static final String REQUEST_CODE                     ="requestCode";
+    public static final String REQUEST_SENDER_PHONE             =  "requestSenderPhone";
+    public static final String REQUEST_SENDER_NAME             =  "requestSenderName";
+    public static final String REQUEST_RECIEVER_PHONE           = "requestRecieverPhone";
+    public static final String ITEM_OWNER_PHONE                 = "itemOwnerPhone";
+    public static final String ITEM_ASSOCIATE_PHONE             = "itemAssociatePhone";
+    public static final String MONEY_RECIEVER_PHONE             = "moneyRecieverPhone";
+    public static final String MONEY_PAYER_PHONE                = "moneyPayerPhone";
+    public static final String OWNER_ITEM_TYPE                  = "ownerItemType";
+    public static final String ASSOCIATE_ITEM_TYPE              = "associateItemType";
+    public static final String ITEM_BODY_JSON_TYPE              = "jsonType";
+    public static final String ITEM_BODY_JSON_STRING            = "jsonString";
+    public static final String MESSAGE                          = "message";
+    public static final String ITEM_TITLE                       = "itemTitle";
+    public static final String ITEM_DATE_STRING                 = "itemDate";
+    public static final String ITEM_DUE_DATE_STRING             = "itemDueDate";
+    public static final String ITEM_DESCRIPTION                 = "itemDescription";
+    public static final String IS_RESPONDABLE                   = "isRespondable";
+    public static final String RESPONSE_STATE                   = "responseState";
+    public static final String OWNER_ITEM_ID                    = "ownerItemId";
+    public static final String ASSOCIATE_ITEM_ID                =  "associateItemId";
+
+    public static final Uri PACKAGE_FROM_SERVER_TABLE_URI = Uri.parse("content://"+DB_AUTHORITY+"/" + PACKAGE_FROM_SERVER_TABLE_NAME);
+    public static final String[] PACKAGE_FROM_SERVER_TABLE_PROJECTION = new String[]{
+            DB_ID,UID, REQUEST_CODE,REQUEST_SENDER_PHONE,REQUEST_SENDER_NAME,REQUEST_RECIEVER_PHONE,ITEM_OWNER_PHONE
+    ,ITEM_ASSOCIATE_PHONE,MONEY_RECIEVER_PHONE,MONEY_PAYER_PHONE,OWNER_ITEM_TYPE,ASSOCIATE_ITEM_TYPE, OWNER_ITEM_ID, ASSOCIATE_ITEM_ID,
+            ITEM_BODY_JSON_TYPE,ITEM_BODY_JSON_STRING,MESSAGE,ITEM_TITLE,AMOUNT,ITEM_DATE_STRING,
+            ITEM_DUE_DATE_STRING,ITEM_DESCRIPTION, IS_RESPONDABLE,RESPONSE_STATE};
+
+    //--------------MONEY CIRCLE PACKAGE FOR SERVER TABLE--------------------------------------//
 
 
-    public static final String NOTIFICATION_TABLE_NAME = "notificationTable";
-    public static final String NOTIFICATION_TYPE = "notificationType";
-    public static final String NOTIFICATION_DESCRIPTION = "notificationDescription";
-    public static final String NOTIFICATION_JSON_STRING = "notificationJsonString";
+    public static final String PACKAGE_FORSERVER_TABLE_NAME = "packageforserverTable";
+    /*public static final String ITEM_OWNER_PHONE = "itemOwnerPhone";
+    public static final String ITEM_ASSOCIATE_PHONE = "itemAssociatePhone";*/
+    public static final String URL ="url";
+    public static final String MAX_RETRY_ATTEMPT = "maxRetryAttempt";
+    public static final String ATTEMPT_COUNTER ="attemptCounter";
+    public static final String REQ_RESPONSE_TYPE ="reqResponseType";
+    public static final String REQ_TYPE = "reqType";
 
-
-
-
-    public static final Uri NOTIFICATION_TABLE_URI = Uri.parse("content://"+DB_AUTHORITY+"/" + NOTIFICATION_TABLE_NAME);
-    public static final String[] NOTIFICATION_TABLE_PROJECTION = new String[]{
-            DB_ID,UID,NAME,PHONE_NUMBER,NOTIFICATION_TYPE,NOTIFICATION_DESCRIPTION,
-                                    NOTIFICATION_JSON_STRING};
+    public static final Uri PACKAGE_FORSERVER_TABLE_URI = Uri.parse("content://"+DB_AUTHORITY+"/" + PACKAGE_FORSERVER_TABLE_NAME);
+    public static final String[] PACKAGE_FORSERVER_TABLE_PROJECTION = new String[]{
+            DB_ID, UID, S.TRANSPORT_ITEM_OWNER_PHONE, S.TRANSPORT_ITEM_ASSOCIATE_PHONE, MAX_RETRY_ATTEMPT, ATTEMPT_COUNTER, URL, REQ_RESPONSE_TYPE, REQ_TYPE,
+            S.TRANSPORT_REQ_CODE, S.TRANSPORT_REQ_SENDER_PHONE, S.TRANSPORT_REQ_RECEIVER_PHONE, S.TRANSPORT_MONEY_RECEIVER_PHONE, S.TRANSPORT_MONEY_PAYER_PHONE, S.TRANSPORT_OWNER_ITEM_TYPE, S.TRANSPORT_ASSOCIATE_ITEM_TYPE,
+            S.TRANSPORT_OWNER_ITEM_ID, S.TRANSPORT_ASSOCIATE_ITEM_ID, S.TRANSPORT_ITEM_BODY_JSON_TYPE, S.TRANSPORT_ITEM_BODY_JSON_STRING, S.TRANSPORT_MESSAGE};
 //----------------------------------------------------------------//
     //--------------COMMON TABLE--------------------------------------//
 
@@ -254,5 +289,6 @@ public class DB {
             ACCOUNT_TOPITEMS,
             ACCOUNT_LAST_TRANSACTION
             };
+
 //----------------------------------------------------------------//
 }

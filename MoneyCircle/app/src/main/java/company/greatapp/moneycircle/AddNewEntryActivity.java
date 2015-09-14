@@ -1,16 +1,21 @@
 package company.greatapp.moneycircle;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +27,7 @@ import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.manager.BaseModelManager;
 import company.greatapp.moneycircle.manager.CategoryManager;
 import company.greatapp.moneycircle.manager.ContactManager;
+import company.greatapp.moneycircle.manager.Transporter;
 import company.greatapp.moneycircle.model.Borrow;
 import company.greatapp.moneycircle.model.Category;
 import company.greatapp.moneycircle.model.Contact;
@@ -34,90 +40,149 @@ import company.greatapp.moneycircle.tools.DateUtils;
 import company.greatapp.moneycircle.tools.Tools;
 import company.greatapp.moneycircle.dialogs.ContactInfoDialog;
 import company.greatapp.moneycircle.view.TagItemView;
+import company.greatapp.moneycircle.view.TopSegmentItemView;
 
-public class AddNewEntryActivity extends ActionBarActivity implements DatePickerFragment.DateSetter,TagItemView.TagItemViewCallBacks {
+public class AddNewEntryActivity extends ActionBarActivity implements TagItemView.TagItemViewCallBacks {
 
     private int mModelType;     // Model Type
     private int mEntryType;     // Entry type means either it is a display or input
 
 
-    private TextView tv_new_title;
     private TextView tv_new_before_type;
     private TextView tv_new_type;
     private TextView tv_new_after_type;
-    private TextView tv_new_currency;
-    private TextView tv_new_category;
-    private TextView tv_new_item;
+    private TextView tv_new_item_title_text;
     private TextView tv_new_member_add;
-    private TextView tv_new_note;
+    private TextView tv_new_note_text;
 
     private EditText et_new_amount;
     private EditText et_new_item;
     private EditText et_new_note;
 
-    private Button b_new_category;
     private Button b_new_split;
-    private Button b_new_member_add;
-    private Button b_new_date;
+
+
+    private Contact mMember;
+    private TopSegmentItemView tsiv_new_category;
+    private TextView tv_new_category_text;
+    private TextView tv_new_date_text;
+    private TopSegmentItemView tsiv_new_date;
+    private TopSegmentItemView tsiv_new_member_add;
+    private TextView tv_new_due_date_text;
+    private TopSegmentItemView tsiv_new_due_date;
+
     private String mDateString;
     private String mCategory;
-    private FrameLayout f_member;
-    private Contact mMember;
+    private String mDueDateString;
+    private CheckBox cb_new_add_in_frequent;
+    private boolean mAddInFrequent;
+
+    private Toolbar mToolbar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_new_entry);
-        tv_new_title = (TextView)findViewById(R.id.tv_new_title);
+
+        Intent intent = getIntent();
+        int entryType = intent.getIntExtra(C.ENTRY_TYPE,C.ENTRY_TYPE_INPUT);
+        this.mEntryType = entryType;
+        mModelType = intent.getIntExtra(C.MODEL_TYPE, Model.MODEL_TYPE_INCOME);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Tools.getModelDarkColor(this, mModelType));
+        }
+
+        //setContentView(R.layout.activity_add_new_entry);
+        setTheme(Tools.getModelThemeResId(mModelType));          // Theme has to be set before calling setContentView()
+
+        setContentView(R.layout.new_entry_layout);
+
+        mToolbar = (Toolbar)findViewById(R.id.tool_bar);
+        setSupportActionBar(mToolbar);
+        //tv_new_title = (TextView)findViewById(R.id.tv_new_title);
         tv_new_before_type = (TextView)findViewById(R.id.tv_new_before_type);
         tv_new_type = (TextView)findViewById(R.id.tv_new_type);
         tv_new_after_type = (TextView)findViewById(R.id.tv_new_after_type);
-        tv_new_currency = (TextView)findViewById(R.id.tv_new_currency);
-        tv_new_category = (TextView)findViewById(R.id.tv_new_category);
-        tv_new_item = (TextView)findViewById(R.id.tv_new_item);
-        tv_new_member_add = (TextView)findViewById(R.id.tv_new_member_add);
-        tv_new_note = (TextView)findViewById(R.id.tv_new_note);
 
         et_new_amount = (EditText)findViewById(R.id.et_new_amount);
-        et_new_item = (EditText)findViewById(R.id.et_new_item);
+
+        tv_new_item_title_text = (TextView)findViewById(R.id.tv_new_item_title_text);
+        et_new_item = (EditText)findViewById(R.id.et_new_item_title);
+
+        tv_new_category_text = (TextView)findViewById(R.id.tv_new_category_text);
+        tsiv_new_category = (TopSegmentItemView)findViewById(R.id.tsiv_new_category);
+
+        tv_new_date_text = (TextView)findViewById(R.id.tv_new_date_text);
+        tsiv_new_date = (TopSegmentItemView)findViewById(R.id.tsiv_new_date);
+
+        tv_new_member_add = (TextView)findViewById(R.id.tv_new_member_add);
+        tsiv_new_member_add = (TopSegmentItemView)findViewById(R.id.tsiv_new_member_add);
+
+        tv_new_due_date_text = (TextView)findViewById(R.id.tv_new_due_date_text);
+        tsiv_new_due_date = (TopSegmentItemView)findViewById(R.id.tsiv_new_due_date);
+
+        tv_new_note_text = (TextView)findViewById(R.id.tv_new_note_text);
         et_new_note = (EditText)findViewById(R.id.et_new_note);
 
-        f_member = (FrameLayout)findViewById(R.id.f_member);
-        f_member.setVisibility(View.GONE);
+        cb_new_add_in_frequent = (CheckBox)findViewById(R.id.cb_new_add_in_frequent);
+        
+        b_new_split = (Button)findViewById(R.id.b_new_split);
+      ///----------------------------------------------------------------------------//
+        tsiv_new_category.setModeOnlyTitle();
+        tsiv_new_category.setItemTitle("SELECT CATEGORY");
 
-        b_new_category = (Button)findViewById(R.id.b_new_category);
-        b_new_member_add = (Button)findViewById(R.id.b_new_member_add);
-        b_new_member_add.setOnClickListener(new View.OnClickListener() {
+        tsiv_new_date.setModeOnlyTitle();
+        tsiv_new_date.setItemTitle("SELECT DATE");
+
+        tsiv_new_member_add.setModeOnlyTitle();
+        tsiv_new_member_add.setItemTitle("SELECT MEMBER");
+
+        tsiv_new_due_date.setModeOnlyTitle();
+        tsiv_new_due_date.setItemTitle("SELECT DUE DATE");
+
+
+        tsiv_new_member_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startItemSelection(C.TAG_CONTACTS, ListView.CHOICE_MODE_SINGLE);
             }
         });
-        b_new_split = (Button)findViewById(R.id.b_new_split);
-        b_new_date = (Button)findViewById(R.id.b_new_date);
-        b_new_category.setOnClickListener(new View.OnClickListener() {
+
+        tsiv_new_category.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startItemSelection(C.TAG_CATEGORIES, ListView.CHOICE_MODE_SINGLE);
             }
         });
-        b_new_date.setOnClickListener(new View.OnClickListener() {
+
+        cb_new_add_in_frequent.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mAddInFrequent = isChecked;
+            }
+        });
+        tsiv_new_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePickerDialog();
             }
         });
-        setTextColor();
-        setButtonColor();
-        Intent intent = getIntent();
-        int entryType = intent.getIntExtra(C.ENTRY_TYPE,C.ENTRY_TYPE_INPUT);
-        this.mEntryType = entryType;
+        tsiv_new_date.setModeOnlyTitle();
+        tsiv_new_due_date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDueDatePickerDialog();
+            }
+        });
+        tsiv_new_due_date.setModeOnlyTitle();
+
+
 
         mCategory = C.CATEGORY_NONE_UID;
         // TODO Don't start this activity if entry type is not ENTRY_TYPE_INPUT
-
-        mModelType = intent.getIntExtra(C.MODEL_TYPE, Model.MODEL_TYPE_INCOME);
 
         switch(mModelType) {
             case Model.MODEL_TYPE_INCOME:
@@ -136,124 +201,138 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
 
         setDefaultCategory();
         setDefaultDate();
+        setDefaultDueDate();
+        //setTextColor();
+        setButtonColor();
     }
 
     private void setButtonColor() {
-        int back = getResources().getColor(R.color.material_deep_teal_200);
-        b_new_category.setBackgroundColor(back);
+       // int back = Tools.getModelColor(this,mModelType);
+       // int back = getResources().getColor(resId);
+        int back = getResources().getColor(R.color.app_secondary);
         b_new_split.setBackgroundColor(back);
-        b_new_member_add.setBackgroundColor(back);
-        b_new_date.setBackgroundColor(back);
+        b_new_split.setTextColor(getResources().getColor(R.color.white));
+       // b_new_member_add.setBackgroundColor(back);
+       // b_new_date.setBackgroundColor(back);
+       // b_due_date.setBackgroundColor(back);
     }
 
     private void setTextColor() {
-        int color = getResources().getColor(R.color.material_deep_teal_500);
-        tv_new_title.setTextColor(color);
+        //int color = Tools.getModelColor(this,mModelType);
+        //int color = getResources().getColor(resId);
+        int color = getResources().getColor(R.color.app_secondary);
+        //tv_new_title.setTextColor(color);
         tv_new_before_type.setTextColor(color);
         tv_new_type.setTextColor(color);
         tv_new_after_type.setTextColor(color);
-        tv_new_currency.setTextColor(color);
-        tv_new_category.setTextColor(color);
-        tv_new_item.setTextColor(color);
+        tv_new_category_text.setTextColor(color);
+        tv_new_item_title_text.setTextColor(color);
+        //tv_new_due_date.setTextColor(color);
         tv_new_member_add.setTextColor(color);
-        tv_new_note.setTextColor(color);
+        tv_new_note_text.setTextColor(color);
+
+        tv_new_date_text.setTextColor(color);
+        tv_new_due_date_text.setTextColor(color);
     }
 
     private void createBorrowLayout() {
-        tv_new_title.setText("N E W   B O R R O W");
+        //tv_new_title.setText("N E W   B O R R O W");
         tv_new_before_type.setText("I have ");
         tv_new_type.setText("BORROWED ");
         tv_new_after_type.setText("an amount of");
-        tv_new_currency.setText("Rs. ");
-        tv_new_category.setText("of type ");
-        tv_new_item.setText("for ");                               //<---CHANGED
+        tv_new_category_text.setText("of type ");
+        tv_new_item_title_text.setText("for ");                               //<---CHANGED
         tv_new_member_add.setText("from ");                      // CHANGED and NOT HIDDEN
-        tv_new_note.setText("and I would like to add below note:");
+        tv_new_note_text.setText("more details:");
 
         et_new_amount.setHint("00.00");
         et_new_item.setHint("e.g: Purchasing new sun glasses");
-        et_new_note.setHint("I don't have any note currently.\n I would like to include later.");
+        et_new_note.setHint("I would like to include later.");
 
-        b_new_category.setText("SELECT CATEGORY");
+        tsiv_new_category.setItemTitle("SELECT CATEGORY");
         b_new_split.setText("SPLIT THIS WITH OTHER MEMBERS");     //HIDDEN
-        b_new_member_add.setText("INCLUDE MEMBER");              //NOT HIDDEN
+        tsiv_new_member_add.setItemTitle("INCLUDE MEMBER");              //NOT HIDDEN
 
         tv_new_member_add.setVisibility(View.VISIBLE);    //NOT HIDDEN
+        tv_new_due_date_text.setVisibility(View.VISIBLE);    //NOT HIDDEN
         b_new_split.setVisibility(View.GONE);             //HIDDEN
-        b_new_member_add.setVisibility(View.VISIBLE);     //NOT HIDDEN
+        tsiv_new_member_add.setVisibility(View.VISIBLE);     //NOT HIDDEN
+        tsiv_new_due_date.setVisibility(View.VISIBLE);     //NOT HIDDEN
     }
 
-
     private void createLendedLayout() {
-        tv_new_title.setText("N E W  L E N D I N G");
+        //tv_new_title.setText("N E W  L E N D I N G");
         tv_new_before_type.setText("I have ");
         tv_new_type.setText("LENDED ");
         tv_new_after_type.setText("an amount of");
-        tv_new_currency.setText("Rs. ");
-        tv_new_category.setText("of type ");
-        tv_new_item.setText("for ");                               //<---CHANGED
+        tv_new_category_text.setText("of type ");
+        tv_new_item_title_text.setText("for ");                               //<---CHANGED
         tv_new_member_add.setText("TO");                      // CHANGED and NOT HIDDEN
-        tv_new_note.setText("and I would like to add below note:");
+        tv_new_note_text.setText("more details:");
 
         et_new_amount.setHint("00.00");
         et_new_item.setHint("e.g: purchasing the new phone");
-        et_new_note.setHint("I don't have any note currently.\n I would like to include later");
+        et_new_note.setHint("I would like to include later");
 
-        b_new_category.setText("SELECT CATEGORY");
+        tsiv_new_category.setItemTitle("SELECT CATEGORY");
         b_new_split.setText("SPLIT THIS WITH OTHER MEMBERS");     //HIDDEN
-        b_new_member_add.setText("INCLUDE MEMBER");              //NOT HIDDEN
+        tsiv_new_member_add.setItemTitle("INCLUDE MEMBER");              //NOT HIDDEN
 
         tv_new_member_add.setVisibility(View.VISIBLE);    //NOT HIDDEN
+        tv_new_due_date_text.setVisibility(View.VISIBLE);    //NOT HIDDEN
         b_new_split.setVisibility(View.GONE);             //HIDDEN
-        b_new_member_add.setVisibility(View.VISIBLE);     //NOT HIDDEN
+        tsiv_new_member_add.setVisibility(View.VISIBLE);     //NOT HIDDEN
+        tsiv_new_due_date.setVisibility(View.VISIBLE);     //NOT HIDDEN
     }
 
     private void createExpenseLayout() {
-        tv_new_title.setText("N E W   E X P E N S E");
+        //tv_new_title.setText("N E W   E X P E N S E");
         tv_new_before_type.setText("I have a new ");
         tv_new_type.setText("EXPENSE ");
         tv_new_after_type.setText("of worth");
-        tv_new_currency.setText("Rs. ");
-        tv_new_category.setText("of type ");
-        tv_new_item.setText("for ");                       //<---
+        tv_new_category_text.setText("of type ");
+        tv_new_item_title_text.setText("for ");                       //<---
         tv_new_member_add.setText("FROM/TO");                      //HIDDEN
-        tv_new_note.setText("and I would like to add below note:");
+        tv_new_note_text.setText("more details:");
 
         et_new_amount.setHint("00.00");
         et_new_item.setHint("e.g: paying credit card bill");
-        et_new_note.setHint("I don't have any note currently.\n I would like to include later");
+        et_new_note.setHint("This is a transaction message entry");
 
-        b_new_category.setText("SELECT CATEGORY");
+        tsiv_new_category.setItemTitle("SELECT CATEGORY");
         b_new_split.setText("SPLIT THIS WITH OTHER MEMBERS");     //NOT HIDDEN
-        b_new_member_add.setText("INCLUDE MEMBER");              //HIDDEN
+        tsiv_new_member_add.setItemTitle("INCLUDE MEMBER");              //HIDDEN
 
         tv_new_member_add.setVisibility(View.GONE);
+        tv_new_due_date_text.setVisibility(View.GONE);    //NOT HIDDEN
         b_new_split.setVisibility(View.VISIBLE);     //NOT HIDDEN
-        b_new_member_add.setVisibility(View.GONE);              //HIDDEN
+        tsiv_new_member_add.setVisibility(View.GONE);              //HIDDEN
+        tsiv_new_due_date.setVisibility(View.GONE);     //HIDDEN
     }
 
     private void createIncomeLayout() {
-        tv_new_title.setText("N E W  I N C O M E");
+        //tv_new_title.setText("N E W  I N C O M E");
         tv_new_before_type.setText("I have a new ");
         tv_new_type.setText("INCOME ");
         tv_new_after_type.setText("of worth");
-        tv_new_currency.setText("Rs. ");
-        tv_new_category.setText("of type ");
-        tv_new_item.setText("from the source");
-        tv_new_member_add.setText("FROM/TO");                      //HIDDEN
-        tv_new_note.setText("and I would like to add below note:");
+        tv_new_category_text.setText("of type ");
+        tv_new_item_title_text.setText("from ");
+        tv_new_member_add.setText("INCLUDE MEMBER");                      //HIDDEN
+        tv_new_note_text.setText("more details:");
 
         et_new_amount.setHint("00.00");
         et_new_item.setHint("e.g: Salary from Google.Inc");
-        et_new_note.setHint("I don't have any note currently.\n I would like to include later");
+        et_new_note.setHint("I would like to include later");
 
-        b_new_category.setText("SELECT CATEGORY");
+        tsiv_new_category.setItemTitle("SELECT CATEGORY");
         b_new_split.setText("SPLIT THIS WITH OTHER MEMBERS");     //HIDDEN
-        b_new_member_add.setText("INCLUDE MEMBER");              //HIDDEN
+        tsiv_new_member_add.setItemTitle("FROM");              //HIDDEN
 
-        tv_new_member_add.setVisibility(View.GONE);   //HIDDEN
+        tv_new_member_add.setVisibility(View.GONE);
+        tv_new_due_date_text.setVisibility(View.GONE);    //NOT HIDDEN
         b_new_split.setVisibility(View.GONE);     // HIDDEN
-        b_new_member_add.setVisibility(View.GONE);              //HIDDEN
+        tsiv_new_due_date.setVisibility(View.GONE);              //HIDDEN
+        tsiv_new_member_add.setVisibility(View.GONE);              //HIDDEN
     }
 
     @Override
@@ -299,7 +378,8 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
     }
 
     private void saveData() {
-
+        Transporter transporter = new Transporter(this);
+        String transportId="";
         BaseModelManager manager = null;
         String description = null;
         float amount;
@@ -361,6 +441,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
 
                 borrow.insertItemInDB(this);
 
+                transportId = transporter.transportItem(borrow, Model.MODEL_TYPE_BORROW);
                 if(!mMember.getUID().equals(C.USER_UNIQUE_ID)) {
                     float borrowAmount = mMember.getBorrowedAmountfromThis();
                     mMember.setBorrowedAmountfromThis(borrowAmount + amount);
@@ -387,7 +468,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
 
                 lent.printModelData();
                 lent.insertItemInDB(this);
-
+                transportId = transporter.transportItem(lent, Model.MODEL_TYPE_LENT);
                 if(!mMember.getUID().equals(C.USER_UNIQUE_ID)) {
                     float lentAmount = mMember.getLentAmountToThis();
                     mMember.setLentAmountToThis(lentAmount + amount);
@@ -403,24 +484,53 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
 
     public void showDatePickerDialog() {
         DatePickerFragment datePickerFragment = new DatePickerFragment();
-        datePickerFragment.setListener(this);
+        datePickerFragment.setListener(new DatePickerFragment.DateSetter() {
+            @Override
+            public void setDate(int year, int monthOfYear, int dayOfMonth) {
+                setEntryDate(year, monthOfYear, dayOfMonth);
+            }
+        });
         datePickerFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
+    public void showDueDatePickerDialog() {
+        DatePickerFragment datePickerFragment = new DatePickerFragment();
+        datePickerFragment.setListener(new DatePickerFragment.DateSetter() {
+            @Override
+            public void setDate(int year, int monthOfYear, int dayOfMonth) {
+                setDueDate(year, monthOfYear, dayOfMonth);
+            }
+        });
+        datePickerFragment.show(getSupportFragmentManager(), "datePicker");
+    }
+
+
     public void setDefaultDate() {
         mDateString = DateUtils.getCurrentDate();
-        b_new_date.setText(mDateString);
+        tsiv_new_date.setItemTitle(mDateString);
     }
+
+    public void setDefaultDueDate() {
+        mDueDateString = DateUtils.getCurrentWeekLastDate();
+        tsiv_new_due_date.setItemTitle(mDueDateString);
+    }
+
     public void setDefaultCategory() {
         mCategory = C.CATEGORY_NONE_UID;
     }
-    @Override
-    public void setDate(int year, int monthOfYear, int dayOfMonth) {
+
+    public void setEntryDate(int year, int monthOfYear, int dayOfMonth) {
         mDateString = DateUtils.getDateString(year, monthOfYear, dayOfMonth);
-        b_new_date.setText(mDateString);
+        tsiv_new_date.setItemTitle(mDateString);
+        mDueDateString = DateUtils.getNextWeekLastDate(mDateString);
+        tsiv_new_due_date.setItemTitle(mDueDateString);
 //        Toast.makeText(this,"DATE:"+ mDateString,Toast.LENGTH_SHORT).show();
     }
-
+    public void setDueDate(int year, int monthOfYear, int dayOfMonth) {
+        mDueDateString = DateUtils.getDateString(year, monthOfYear, dayOfMonth);
+        tsiv_new_due_date.setItemTitle(mDueDateString);
+//        Toast.makeText(this,"DATE:"+ mDateString,Toast.LENGTH_SHORT).show();
+    }
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         Log.d("split", "onActivityResult : requestCode:" + requestCode + "  resultCode:" + resultCode);
@@ -441,31 +551,34 @@ public class AddNewEntryActivity extends ActionBarActivity implements DatePicker
         if(TextUtils.isEmpty(s))return;
         ContactManager cm = new ContactManager(this);
         Contact member = (Contact)cm.getHeavyItemFromListByUID(s);
-        TagItemView tagView = new TagItemView(this,f_member,member,true);
-        TagItemView.RemoveTagListener listener = new TagItemView.RemoveTagListener() {
-            @Override
-            public void OnTagRemoved(TagItemView view) {
-                handleMemberRemoved(view);
-            }
-        };
-        tagView.setRemoveTagListener(listener);
-        f_member.addView(tagView);
-        b_new_member_add.setVisibility(View.GONE);
-        f_member.setVisibility(View.VISIBLE);
+//        TagItemView tagView = new TagItemView(this,f_member,member,true);
+//        TagItemView.RemoveTagListener listener = new TagItemView.RemoveTagListener() {
+//            @Override
+//            public void OnTagRemoved(TagItemView view) {
+//                handleMemberRemoved(view);
+//            }
+//        };
+//        tagView.setRemoveTagListener(listener);
+//        f_member.addView(tagView);
+//        b_new_member_add.setVisibility(View.GONE);
+//        f_member.setVisibility(View.VISIBLE);
+        tsiv_new_member_add.setModel(member,Model.MODEL_TYPE_CONTACT);
         mMember = member;
     }
 
     private void handleMemberRemoved(TagItemView view) {
-        b_new_member_add.setVisibility(View.VISIBLE);
-        f_member.setVisibility(View.GONE);
-        mMember = null;
+//        b_new_member_add.setVisibility(View.VISIBLE);
+//        f_member.setVisibility(View.GONE);
+//        mMember = null;
     }
 
     private void addCategory(String uid){
         CategoryManager cm = new CategoryManager(this, mModelType);
-        String title = cm.getHeavyItemFromListByUID(uid).getTitle();
+        Category category = (Category)cm.getHeavyItemFromListByUID(uid);
+        String title = category.getTitle();
         mCategory = uid;   // TODO This value has to be properly set
-        b_new_category.setText(title);
+        tsiv_new_category.setModel(category,Model.MODEL_TYPE_CATEGORY);
+        //tv_new_category_text.setText(title);
     }
 
     private void startItemSelection(int requestCode, int mode){

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -44,12 +45,14 @@ public class ManageCircleActivity extends AppCompatActivity {
 
     private String mCircleName;
     private ContactManager mContactManager;
+    private Toolbar toolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_circles);
-
+        toolbar = (Toolbar)findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
         /*mRegisteredContactList.add(new Contact("Prateek"));
         mRegisteredContactList.add(new Contact("Gyanendra"));
         mRegisteredContactList.add(new Contact("Ashish"));

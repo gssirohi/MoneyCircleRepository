@@ -1,6 +1,7 @@
 package company.greatapp.moneycircle.tools;
 
 import android.content.Context;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -10,16 +11,16 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import company.greatapp.moneycircle.manager.CircleManager;
-import company.greatapp.moneycircle.manager.ContactManager;
-import company.greatapp.moneycircle.manager.ExpenseManager;
-import company.greatapp.moneycircle.manager.LentManager;
-import company.greatapp.moneycircle.manager.SplitManager;
+import company.greatapp.moneycircle.constants.DB;
+import company.greatapp.moneycircle.constants.S;
+import company.greatapp.moneycircle.constants.States;
+import company.greatapp.moneycircle.model.Borrow;
 import company.greatapp.moneycircle.model.Circle;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Expense;
 import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
+import company.greatapp.moneycircle.model.MoneyCirclePackageFromServer;
 import company.greatapp.moneycircle.model.Split;
 
 /**
@@ -27,6 +28,40 @@ import company.greatapp.moneycircle.model.Split;
  */
 public class GreatJSON {
 
+    ///=============================== FOR SERVER ================================================//
+    public static JSONArray getPhoneNumberArrayForContactList(ArrayList<Contact> contacts) {
+        String jsonString = "";
+        JSONArray array = new JSONArray();
+
+        for(Contact c : contacts) {
+            array.put(getJsonObjectForPhoneNumber(c));
+        }
+
+        jsonString = array.toString();
+        Log.d("split", "PHONE NUMBER JSON ARRAY : " + jsonString);
+        return array;
+    }
+
+    public static JSONObject getJsonObjectForPhoneNumber(Contact contact) {
+        if(contact == null) {
+            Log.d("SPLIT", "Contact is Null");
+            return null;
+        }
+
+        Log.d("SPLIT","getting json obj for below phoneNumber-->");
+        contact.printModelData();
+        String jsonString = "";
+        JSONObject obj = new JSONObject();
+        try{
+            obj.put(S.PHONE_NUMBER, contact.getPhone());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        jsonString = obj.toString();
+        Log.d("split", "PHONE JSON OBJECT : " + jsonString);
+        return obj;
+    }
+    //============================================================================================//
     public static JSONArray getJsonArrayForModelList(ArrayList<Model> models) {
         String jsonString = "";
         JSONArray array = new JSONArray();
@@ -62,7 +97,7 @@ public class GreatJSON {
         return obj;
     }
     public static ArrayList<Model> getModelListFromJsonString(String json, Context context, int modelType) {
-        Log.i("SPLIT","getting Model List for JSON : "+json);
+        Log.i("SPLIT", "getting Model List for JSON : " + json);
         ArrayList<Model> list = new ArrayList<Model>();
         try {
             JSONArray array = new JSONArray(json);
@@ -75,7 +110,7 @@ public class GreatJSON {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.i("SPLIT","returning Model List of Size : "+list.size());
+        Log.i("SPLIT", "returning Model List of Size : " + list.size());
         return list;
     }
 
@@ -291,6 +326,7 @@ public class GreatJSON {
         }
         return expense;
     }
+
     public static JSONArray getJsonArrayForLentList(ArrayList<Lent> lents) {
         if(lents == null) return null;
         String jsonString = "";
@@ -310,9 +346,14 @@ public class GreatJSON {
         String jsonString = "";
         JSONObject obj = new JSONObject();
         try{
-            obj.put("title", lent.getTitle());
-            obj.put("uid", lent.getUID());
-            obj.put("dbid", lent.getDbId());
+            obj.put(DB.TITLE, lent.getTitle());
+            obj.put(DB.UID, lent.getUID());
+            obj.put(DB.DB_ID, lent.getDbId());
+            obj.put(DB.AMOUNT,lent.getAmount());
+            obj.put(DB.DATE_STRING,lent.getDateString());
+            obj.put(DB.DUE_DATE_STRING,lent.getDueDateString());
+            obj.put(DB.DESCRIPTION,lent.getDescription());
+            obj.put(DB.CATEGORY,lent.getCategory());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -342,13 +383,355 @@ public class GreatJSON {
         Lent lent = null;
         try {
             JSONObject obj = new JSONObject(json);
-            String title = obj.getString("title");
-            String uid = obj.getString("uid");
-            String dbid = obj.getString("dbid");
+            String title = obj.getString(DB.TITLE);
+            String uid = obj.getString(DB.UID);
+            String dbid = obj.getString(DB.DB_ID);
             lent = (Lent)Tools.getDbInstance(context, uid, Model.MODEL_TYPE_LENT);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return lent;
     }
+
+
+
+    public static JSONArray getJsonArrayForBorrowList(ArrayList<Borrow> borrows) {
+        if(borrows == null) return null;
+        String jsonString = "";
+        JSONArray array = new JSONArray();
+
+        for(Borrow c : borrows) {
+            array.put(getJsonObjectForBorrow(c));
+        }
+
+        jsonString = array.toString();
+        Log.d("split", "BORROW JSON ARRAY : " + jsonString);
+        return array;
+    }
+
+    public static JSONObject getJsonObjectForBorrow(Borrow borrow) {
+        if(borrow == null) return null;
+        String jsonString = "";
+        JSONObject obj = new JSONObject();
+        try{
+            obj.put(DB.TITLE, borrow.getTitle());
+            obj.put(DB.UID, borrow.getUID());
+            obj.put(DB.DB_ID, borrow.getDbId());
+            obj.put(DB.CATEGORY, borrow.getCategory());
+            obj.put(DB.DESCRIPTION, borrow.getDescription());
+            obj.put(DB.DATE_STRING, borrow.getDateString());
+            obj.put(DB.DUE_DATE_STRING, borrow.getDueDateString());
+            obj.put(DB.AMOUNT, borrow.getAmount());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        jsonString = obj.toString();
+        Log.d("split", "BORROW JSON OBJECT : " + jsonString);
+        return obj;
+    }
+    public static ArrayList<Borrow> getBorrowListFromJsonString(String json, Context context) {
+        if(context == null) return null;
+        ArrayList<Borrow> list = new ArrayList<Borrow>();
+        try {
+            JSONArray array = new JSONArray(json);
+            int length = array.length();
+            for (int i = 0; i<length;i++) {
+                JSONObject obj = (JSONObject)array.get(i);
+                Borrow borrow = getBorrowFromJsonString(obj.toString(), context);
+                list.add(borrow);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    private static Borrow getBorrowFromJsonString(String json, Context context) {
+        if(context == null) return null;
+        Borrow borrow = null;
+        try {
+            JSONObject obj = new JSONObject(json);
+            String title = obj.getString(DB.TITLE);
+            String uid = obj.getString(DB.UID);
+            String dbid = obj.getString(DB.DB_ID);
+            borrow = (Borrow)Tools.getDbInstance(context, uid, Model.MODEL_TYPE_BORROW);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return borrow;
+    }
+
+
+    /*public static Notification getNotificationFromJSONString(Context context, String json) {
+        Notification notification = null;
+        try {
+            JSONObject obj = new JSONObject(json);
+            String title = obj.getString("title");
+            int notificationType = Integer.parseInt(obj.getString("notificationType"));
+
+            String senderphoneNo = obj.getString("senderPhoneNo");
+
+            Contact senderContact = Tools.getContactFromPhoneNumber(context, senderphoneNo);
+            String senderName = senderContact.getContactName();
+            Uri senderImageUri = senderContact.getImageUri();
+
+            String itemOwnerPhoneNo = obj.getString("itemOwnerPhoneNo");;
+            String itemOwnerName = null;
+            String dateString = obj.getString("dateString");
+            String moneyItemTitle = obj.getString("moneyItemTitle");
+            String moneyReceiverPhoneNo = obj.getString("moneyReceiverphoneNo");;
+            String moneyPayerPhoneNo = obj.getString("moneyPayerphoneNo");
+            String itemOwnerUID = null;
+
+            String dueDateString = obj.getString("dueDateString");;
+
+            String moneyReceiverName = null;
+            String moneyPayerName = null;
+
+            String amount = obj.getString("moneyItemAmount");;
+
+            String message = null;
+
+            User user = new User(context);
+
+            switch (notificationType) {
+                case S.NOTIFICATION_INFORMATION:
+                    break;
+                case S.NOTIFICATION_LENT_REQUEST:
+                    moneyReceiverPhoneNo = obj.getString("moneyReceiverphoneNo");
+                    moneyPayerPhoneNo = obj.getString("moneyPayerphoneNo");
+                    itemOwnerPhoneNo = obj.getString("itemOwnerPhoneNo");
+                    moneyItemTitle = obj.getString("moneyItemTitle");
+                    dueDateString = obj.getString("dueDateString");
+                    amount = obj.getString("moneyItemAmount");
+                    title = obj.getString("title");
+                    break;
+                case S.NOTIFICATION_BORROW_REQUEST:
+                    moneyReceiverPhoneNo = obj.getString("moneyReceiverphoneNo");
+                    moneyPayerPhoneNo = obj.getString("moneyPayerphoneNo");
+                    itemOwnerPhoneNo = obj.getString("itemOwnerPhoneNo");
+                    itemOwnerPhoneNo = obj.getString("itemOwnerPhoneNo");
+                    moneyItemTitle = obj.getString("moneyItemTitle");
+                    title = obj.getString("title");
+                    break;
+                case S.NOTIFICATION_PAY_REQUEST:
+                    moneyReceiverPhoneNo = obj.getString("moneyReceiverphoneNo");
+                    moneyPayerPhoneNo = obj.getString("moneyPayerphoneNo");
+                    itemOwnerPhoneNo = obj.getString("itemOwnerPhoneNo");
+                    title = obj.getString("title");
+                    moneyItemTitle = obj.getString("moneyItemTitle");
+                    break;
+                case S.NOTIFICATION_MODIFY_lENT_REQUEST:
+                    moneyReceiverPhoneNo = obj.getString("moneyReceiverphoneNo");
+                    moneyPayerPhoneNo = obj.getString("moneyPayerphoneNo");
+                    itemOwnerPhoneNo = obj.getString("itemOwnerPhoneNo");
+                    title = obj.getString("title");
+                    moneyItemTitle = obj.getString("moneyItemTitle");
+                    break;
+                case S.NOTIFICATION_RECEIVE_REQUEST:
+                    moneyReceiverPhoneNo = obj.getString("moneyReceiverphoneNo");
+                    moneyPayerPhoneNo = obj.getString("moneyPayerphoneNo");
+                    itemOwnerPhoneNo = obj.getString("itemOwnerPhoneNo");
+                    title = obj.getString("title");
+                    moneyItemTitle = obj.getString("moneyItemTitle");
+                    break;
+                case S.NOTIFICATION_SETTLE_REQUEST:
+                    break;
+                case S.NOTIFICATION_REMINDER_REQUEST:
+                    title = obj.getString("title");
+                    itemOwnerPhoneNo = obj.getString("itemOwnerPhoneNo");
+                    moneyItemTitle = obj.getString("moneyItemTitle");
+                    break;
+                case S.NOTIFICATION_AGREE_LENT:
+                    title = obj.getString("title");
+                    itemOwnerPhoneNo = obj.getString("itemOwnerPhoneNo");
+                    moneyItemTitle = obj.getString("moneyItemTitle");
+                    break;
+                case S.NOTIFICATION_DISAGREE_LENT:
+                    title = obj.getString("title");
+                    itemOwnerPhoneNo = obj.getString("itemOwnerPhoneNo");
+                    moneyItemTitle = obj.getString("moneyItemTitle");
+                    break;
+                case S.NOTIFICATION_DELETE_LENT_REQUEST:
+                    title = obj.getString("title");
+                    itemOwnerPhoneNo = obj.getString("itemOwnerPhoneNo");
+                    moneyItemTitle = obj.getString("moneyItemTitle");
+                    break;
+
+                default:
+                    break;
+            }
+            message = createNotificationMessage(notificationType, senderName, amount);
+            if (message == null) {
+                message = "";
+            }
+
+            if (moneyReceiverPhoneNo != null && moneyPayerPhoneNo != null) {
+                if (senderphoneNo.equals(moneyReceiverPhoneNo)) {
+                    moneyReceiverName = senderName;
+                    moneyPayerName = user.getName();
+                } else {
+                    moneyPayerName = senderName;
+                    moneyReceiverName = user.getName();
+                }
+            }
+
+
+            String ownerItemUID = obj.getString("ownerItemUID");
+
+            notification = new Notification();
+            notification.setTitle(title);
+            notification.setAmount(Float.parseFloat(amount));
+            notification.setDateString(dateString);
+            notification.setDueDateString(dueDateString);
+            notification.setJsonString(json);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return notification;
+    }*/
+
+    public static MoneyCirclePackageFromServer getServerPackageFromJson(Context context, String jsonString) {
+        if (TextUtils.isEmpty(jsonString)) {
+            return null;
+        }
+        MoneyCirclePackageFromServer serverPackage = new MoneyCirclePackageFromServer();
+
+        try {
+            JSONObject jsonObject = new JSONObject(jsonString);
+            int reqCode = Integer.parseInt(jsonObject.getString(S.TRANSPORT_REQ_CODE));
+            serverPackage.setReqCode(reqCode);
+            serverPackage.setResponseState(MoneyCirclePackageFromServer.RESPONSE_STATE_NOT_RESPONDED);
+            serverPackage.setIsRespondable(false);//modify it later with reqcode
+
+            String senderphoneNo = jsonObject.getString(S.TRANSPORT_REQ_SENDER_PHONE);
+            serverPackage.setReqSenderPhone(senderphoneNo);
+            String receiverPhoneNo = jsonObject.getString(S.TRANSPORT_REQ_RECEIVER_PHONE);
+            serverPackage.setReqReceiverPhone(receiverPhoneNo);
+
+            Contact senderContact = Tools.getContactFromPhoneNumber(context, senderphoneNo);
+            String senderName = senderContact.getContactName();
+            Log.i("GreatJson","Sender : "+senderName+" ["+senderphoneNo+"]");
+            Uri senderImageUri = senderContact.getImageUri();
+            serverPackage.setReqSenderImageUri(senderImageUri);
+
+            String itemOwnerPhoneNo = jsonObject.getString(S.TRANSPORT_ITEM_OWNER_PHONE);
+            serverPackage.setItemOwnerPhone(itemOwnerPhoneNo);
+            serverPackage.setReqSenderPhone(senderphoneNo);
+            serverPackage.setReqSenderName(senderName);
+            String itemAssociatePhoneNo = jsonObject.getString(S.TRANSPORT_ITEM_ASSOCIATE_PHONE);
+            serverPackage.setItemAssociatePhone(itemAssociatePhoneNo);
+
+            String moneyReceiverPhoneNo = jsonObject.getString(S.TRANSPORT_MONEY_RECEIVER_PHONE);
+            serverPackage.setMoneyReceiverPhone(moneyReceiverPhoneNo);
+            String moneyPayerPhoneNo = jsonObject.getString(S.TRANSPORT_MONEY_PAYER_PHONE);
+            serverPackage.setMoneyPayerPhone(moneyPayerPhoneNo);
+
+            int ownerItemType = Integer.parseInt(jsonObject.getString(S.TRANSPORT_OWNER_ITEM_TYPE));
+            serverPackage.setOwnerItemType(ownerItemType);
+            int associateItemtype = Integer.parseInt(jsonObject.getString(S.TRANSPORT_ASSOCIATE_ITEM_TYPE));
+            serverPackage.setAssociateItemtype(associateItemtype);
+
+            String ownerItemId = jsonObject.getString(S.TRANSPORT_OWNER_ITEM_ID);
+            serverPackage.setOwnerItemId(ownerItemId);
+            String associateItemId = jsonObject.getString(S.TRANSPORT_ASSOCIATE_ITEM_ID);
+            serverPackage.setAssociateItemId(associateItemId);
+
+            int itemBodyJsonType = Integer.parseInt(jsonObject.getString(S.TRANSPORT_ITEM_BODY_JSON_TYPE));
+            serverPackage.setItemBodyJsonType(itemBodyJsonType);
+            String itemBodyJsonString = jsonObject.getString(S.TRANSPORT_ITEM_BODY_JSON_STRING);
+            serverPackage.setItemBodyJsonString(itemBodyJsonString);
+
+            String message = jsonObject.getString(S.TRANSPORT_MESSAGE);
+            serverPackage.setMessage(message);
+
+            //String dateString = jsonObject.getString("dateString");
+            serverPackage.setDateString(DateUtils.getCurrentDate());
+
+            updateServerPackageWithItemInfo(serverPackage);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return serverPackage;
+    }
+
+    private static MoneyCirclePackageFromServer updateServerPackageWithItemInfo(MoneyCirclePackageFromServer serverPackage) {
+
+        String itemJsonString = serverPackage.getItemBodyJsonString();
+        if (TextUtils.isEmpty(itemJsonString)) {
+            return serverPackage;
+        }
+
+        try {
+            JSONObject itemJsonObj = new JSONObject(itemJsonString);
+
+            String itemTitle = itemJsonObj.getString(DB.TITLE);
+            serverPackage.setItemTitle(itemTitle);
+
+            String amount = itemJsonObj.getString(DB.AMOUNT);
+            serverPackage.setAmount(amount);
+
+            String itemDateString = itemJsonObj.getString(DB.DATE_STRING);
+            serverPackage.setItemDateString(itemDateString);
+
+            String itemDueDateString = itemJsonObj.getString(DB.DUE_DATE_STRING);
+            serverPackage.setItemDueDateString(itemDueDateString);
+
+            String itemDescription = itemJsonObj.getString(DB.DESCRIPTION);
+            serverPackage.setItemDescription(itemDescription);
+
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return serverPackage;
+    }
+
+    public static void updateModelFieldsFromInPackage(Context context, MoneyCirclePackageFromServer inPackage, int modelType, Model model) {
+
+        if (inPackage == null || (TextUtils.isEmpty(inPackage.getItemBodyJsonString()))) {
+            return;
+        }
+
+        String itemJsonString = inPackage.getItemBodyJsonString();
+        JSONObject object = null;
+
+        try {
+            object = new JSONObject(itemJsonString);
+
+            model.setTitle(object.getString(DB.TITLE));                         // Title
+            model.setModelType(modelType);
+            model.setCategory(object.getString(DB.CATEGORY));
+
+            if (modelType == Model.MODEL_TYPE_BORROW) {
+                ((Borrow)model).setLinkedContactItemId(object.getString(DB.UID));       // Item Owner Id
+                ((Borrow) model).setDescription(object.getString(DB.DESCRIPTION));
+                ((Borrow) model).setState(States.BORROW_PAYMENT_PENDING);
+            } else if (modelType == Model.MODEL_TYPE_LENT){
+                ((Lent)model).setLinkedContactItemId(object.getString(DB.UID));       // Item Owner Id
+                ((Lent) model).setDescription(object.getString(DB.DESCRIPTION));
+                ((Lent) model).setState(States.LENT_WAITING_FOR_PAYMENT);
+            }
+
+            model.setAmount(Float.parseFloat(object.getString(DB.AMOUNT)));
+            model.setDateString(DateUtils.getCurrentDate());
+            model.setDueDateString(object.getString(DB.DUE_DATE_STRING));
+
+
+            Contact senderContact = Tools.getContactFromPhoneNumber(context, inPackage.getReqSenderPhone());
+            model.setLinkedContact(senderContact);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
 }

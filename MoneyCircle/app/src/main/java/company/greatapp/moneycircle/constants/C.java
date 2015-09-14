@@ -12,6 +12,7 @@ public class C {
 
     public static final String PREF_CONTACTS_RETRIVED = "prefContactsRetrived";
     public static final String PREF_DEFAULT_CATEGORIES_LOADED = "prefCategoriesLoaded";
+    public static final String PREF_REGISTRATION_PROCESS_COMPLETED = "prefRegistrationProcess";
 
     public static final int REGISTERED_ON_MONEY_CIRCLE = 11;
 
@@ -46,4 +47,9 @@ public class C {
     public static final boolean NEW_ENTRY_DIALOG_TRANSPARENT = false;
     public static final String ACTION_ACCOUNTANT_DB_UPDATED = "accountant_db_updated";
     public static final boolean CONTACT_INFO_DIALOG_TRANSPARENT = true;
+    public static final String USER_PREFERENCES = "MoneyCircleUserPrefs";
+
+    public static final String ACTION_DISPLAY_MESSAGE = "displayMessageAction" ;
+    public static final String DISPLAY_MESSAGE_TEXT = "messageText" ;
+
 }

@@ -133,7 +133,16 @@
                 android:layout_height="match_parent"
                 android:id="@+id/ll_split_member"></LinearLayout>
         </HorizontalScrollView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="ITEM STATE"
+            android:id="@+id/tv_money_item_state"
+            android:layout_gravity="center_horizontal" />
     </LinearLayout>
 
 </LinearLayout>
+
 </RelativeLayout>
