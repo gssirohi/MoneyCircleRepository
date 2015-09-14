@@ -47,7 +47,8 @@ public class Tools {
     public static String generateUniqueId() {
         String uid = UUID.randomUUID().toString();
         uid = uid.replaceAll("-","");
-        return "NEW"+uid;
+        //return "NEW"+uid;
+        return uid;
     }
 
 
@@ -366,6 +367,20 @@ public static String getModelName(int modelType){
         return themeResId;
     }
 
+    public static void sendTransactionBroadCast(Context context, Model newItem, int type) {
+//        if(newItem != null) {
+//            String uid = newItem.getUID().replaceAll("NEW","DB");
+//            newItem.setUID(uid);
+//            Intent intent = new Intent(MoneyTransactionReceiver.ACTION_MONEY_TRANSACTION);
+//            // You can also include some extra data.
+//            intent.putExtra("message", "This is my message!");
+//            JSONObject obj = GreatJSON.getJsonObjectForModel(newItem);
+//            intent.putExtra(UpdateAccountRegistersTask.LAST_TRANSACTION_JSON,((obj != null)?obj.toString():""));
+//            intent.putExtra(UpdateAccountRegistersTask.TRANSACTION_TYPE,type);
+//            Log.i("SPLIT", "broadCast is sent for MONEY_TRANSACTION");
+//            context.sendBroadcast(intent);
+//        }
+    }
     public static void sendMoneyTransactionBroadCast(Context context, Model newItem, int type) {
         if(newItem != null) {
             String uid = newItem.getUID().replaceAll("NEW","DB");

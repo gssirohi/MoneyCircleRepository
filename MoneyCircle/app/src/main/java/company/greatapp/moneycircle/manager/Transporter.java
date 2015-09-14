@@ -296,7 +296,12 @@ public class Transporter {
 
                 Lent lent = (Lent)model;
                 lent.setState(States.LENT_SENDING);
+
                 lent.updateItemInDb(mContext);
+                Log.d("SPLIT", "Transporting Lent[" + lent.getTitle() + "] ,state moved to ["
+                        + States.getStateString(States.LENT_SENDING) + "]");
+                Log.d("SPLIT", "CHECKING LENT STATE----");
+                lent.printModelData();
 
                 outPackage.setUrl(S.URL_APP_SERVER_TRANSPORT_PACKAGE);
                 outPackage.setMaxRetryAttempt(0);
@@ -336,7 +341,10 @@ public class Transporter {
 
                 item.setState(States.BORROW_SENDING);
                 item.updateItemInDb(mContext);
-
+                Log.d("SPLIT", "Transporting Borrow[" + item.getTitle() + "] ,state moved to ["
+                        + States.getStateString(States.BORROW_SENDING) + "]");
+                Log.d("SPLIT", "CHECKING BORROW STATE----");
+                item.printModelData();
                 outPackage.setUrl(S.URL_APP_SERVER_TRANSPORT_PACKAGE);
                 outPackage.setMaxRetryAttempt(0);
                 outPackage.setAttemptCounter(0);
@@ -373,6 +381,18 @@ public class Transporter {
         return outPackage.getTransportId();
     }
 
+    public void transportPendingPackage(MoneyCirclePackageForServer outPackage) {
+
+        if(outPackage == null){
+            return;
+        }
+        Request req = getStringRequestForPackage(outPackage);
+        String tag = "TRANSPORT";
+        outPackage.setAttemptCounter(1);//reset attempt
+        outPackage.updateItemInDb(mContext);
+        addToQueue(req, tag);
+    }
+
     private  void transportPackage(MoneyCirclePackageForServer outPackage) {
         if(outPackage == null){
             return;
@@ -380,7 +400,7 @@ public class Transporter {
         Request req = getStringRequestForPackage(outPackage);
         String tag = "TRANSPORT";
         outPackage.setAttemptCounter(outPackage.getAttemptCounter() + 1);
-        outPackage.insertInDb(mContext);
+        outPackage.insertItemInDB(mContext);
         addToQueue(req, tag);
     }
 
@@ -651,7 +671,7 @@ public class Transporter {
 
 
     private void handlePackageResponse(String response, MoneyCirclePackageForServer outPackage) {
-        outPackage.deleteFromDb(mContext);
+        outPackage.deleteItemInDb(mContext);
         handleSentPackageItemState(outPackage);
     }
 
@@ -665,10 +685,15 @@ public class Transporter {
 
             case S.TRANSPORT_REQUEST_CODE_LENT:
 
+
                 lentUid = outPackage.getOwnerItemId();
                 lent = (Lent)Tools.getDbInstance(mContext,lentUid,Model.MODEL_TYPE_LENT);
                 lent.setState(States.LENT_NOT_SENT);
                 lent.updateItemInDb(mContext);
+                Log.d("SPLIT", "Lent[" + lent.getTitle() + "] is NOT SENT, moved to ["
+                        + States.getStateString(States.LENT_NOT_SENT) + "]");
+                Tools.sendTransactionBroadCast(mContext, lent, Model.MODEL_TYPE_LENT);
+
                 break;
             case S.TRANSPORT_REQUEST_CODE_BORROW:
 
@@ -676,6 +701,9 @@ public class Transporter {
                 borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid,Model.MODEL_TYPE_BORROW);
                 borrow.setState(States.BORROW_NOT_SENT);
                 borrow.updateItemInDb(mContext);
+                Log.d("SPLIT", "Borrow[" + borrow.getTitle() + "] is NOT SENT, moved to ["
+                        + States.getStateString(States.BORROW_NOT_SENT) + "]");
+                Tools.sendTransactionBroadCast(mContext, borrow, Model.MODEL_TYPE_BORROW);
                 break;
 
 
@@ -688,6 +716,8 @@ public class Transporter {
         String borrowUid = "";
         Lent lent;
         Borrow borrow;
+
+
         switch(outPackage.getReqCode()) {
 
             case S.TRANSPORT_REQUEST_CODE_LENT:
@@ -696,6 +726,9 @@ public class Transporter {
                 lent = (Lent)Tools.getDbInstance(mContext,lentUid,Model.MODEL_TYPE_LENT);
                 lent.setState(States.LENT_APPROVAL_PENDING);
                 lent.updateItemInDb(mContext);
+                Log.d("SPLIT", "Lent[" + lent.getTitle() + "] is SENT, moved to ["
+                        + States.getStateString(States.LENT_APPROVAL_PENDING) + "]");
+                Tools.sendTransactionBroadCast(mContext,lent, Model.MODEL_TYPE_LENT);
                 break;
             case S.TRANSPORT_REQUEST_CODE_BORROW:
 
@@ -703,11 +736,16 @@ public class Transporter {
                 borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid,Model.MODEL_TYPE_BORROW);
                 borrow.setState(States.BORROW_APPROVAL_PENDING);
                 borrow.updateItemInDb(mContext);
+                Log.d("SPLIT", "Borrow[" + borrow.getTitle() + "] is SENT, moved to ["
+                        + States.getStateString(States.BORROW_APPROVAL_PENDING) + "]");
+                Tools.sendTransactionBroadCast(mContext, borrow, Model.MODEL_TYPE_BORROW);
                 break;
 
 
         }
+
     }
+
 
 
 }

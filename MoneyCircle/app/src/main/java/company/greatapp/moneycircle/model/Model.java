@@ -2,10 +2,16 @@ package company.greatapp.moneycircle.model;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
+import org.json.JSONObject;
+
+import company.greatapp.moneycircle.asynctask.UpdateAccountRegistersTask;
 import company.greatapp.moneycircle.constants.DB;
+import company.greatapp.moneycircle.receiver.MoneyTransactionReceiver;
+import company.greatapp.moneycircle.tools.GreatJSON;
 import company.greatapp.moneycircle.tools.Tools;
 
 /**
@@ -82,7 +88,9 @@ public abstract class Model implements Comparable<Model>{
         Log.d("Split","MODEL: INSERTING :----->");
         printModelData();
         ContentValues values = getContentValues();
-        return context.getContentResolver().insert(getTableUri(), values);
+        Uri uri = context.getContentResolver().insert(getTableUri(), values);
+        Tools.sendTransactionBroadCast(context, this, getModelType());
+        return uri;
     }
 
     public int updateItemInDb(Context context) {
@@ -91,7 +99,21 @@ public abstract class Model implements Comparable<Model>{
         Log.d("Split","MODEL: UPDATING :----->");
         printModelData();
         ContentValues values = getContentValues();
-        return context.getContentResolver().update(getTableUri(), values, where, selectionArgs);
+        int result =  context.getContentResolver().update(getTableUri(), values, where, selectionArgs);
+        Tools.sendTransactionBroadCast(context, this, getModelType());
+        return result;
+    }
+
+    public int deleteItemInDb(Context context) {
+
+            String where = DB.DB_ID + "=" + getDbId();
+            String[] selectionArgs = null;
+            Log.d("Split","MODEL: DELETING :----->");
+            printModelData();
+            ContentValues values = getContentValues();
+            int result =  context.getContentResolver().delete(getTableUri(), where, selectionArgs);
+            Tools.sendTransactionBroadCast(context, this, getModelType());
+        return result;
     }
 
     @Override

@@ -229,8 +229,8 @@ public class Lent extends Model {
         return mState;
     }
 
-    public void setState(int State) {
-        this.mState = mState;
+    public void setState(int state) {
+        this.mState = state;
     }
 
     @Override

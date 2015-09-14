@@ -41,6 +41,7 @@ import company.greatapp.moneycircle.manager.PreferenceManager;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.NavDrawerItem;
+import company.greatapp.moneycircle.services.PendingPackageTransportService;
 import company.greatapp.moneycircle.split.SplitToolActivity;
 import company.greatapp.moneycircle.view.CircleButton;
 import company.greatapp.moneycircle.dialogs.ContactInfoDialog;
@@ -175,6 +176,10 @@ public class MainActivity extends ActionBarActivity implements TagItemView.TagIt
             // on first time display view for first nav item
             //displayView(0);
         }
+
+        //Trying to send pending packages
+
+        startService(new Intent(this, PendingPackageTransportService.class));
     }
 
     private void initCardViews() {

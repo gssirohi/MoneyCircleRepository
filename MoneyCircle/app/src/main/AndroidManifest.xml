@@ -41,6 +41,7 @@
   By default, it must be named .GCMIntentService, unless the
   application uses a custom BroadcastReceiver that redefines its name.
         -->
+        <service android:name=".services.PendingPackageTransportService" />
         <service android:name=".GCMIntentService" />
 
         <receiver android:name=".receiver.MoneyTransactionReceiver" >

@@ -147,7 +147,8 @@ public class LentManager extends BaseModelManager  {
                 c.moveToNext();
             }
             c.close();
-        }}
+        }
+    }
 
     @Override
     protected Context getContext() {

@@ -281,21 +281,30 @@ public class MoneyCirclePackageForServer {
         return contentValues;
     }
 
-    public Uri insertInDb(Context context) {
-        Log.d(LOG_TAG, "MODEL: INSERTING :----->");
-        return context.getContentResolver().insert(getTableUri(), getContentValues());
 
-    }
-
-    public int deleteFromDb(Context context) {
-        String where = DB.DB_ID + "=" + getdBId();
-        Log.d(LOG_TAG, "MODEL: : DELETING :----->");
-        return context.getContentResolver().delete(getTableUri(), where, null);
+    public Uri insertItemInDB(Context context) {
+        String uid = getTransportId();
+        uid = uid.replaceAll("NEW","DB");
+        setTransportId(uid);
+        Log.d("Split", "OUT PACKAGE : INSERTING :----->");
+        ContentValues values = getContentValues();
+        return context.getContentResolver().insert(getTableUri(), values);
     }
 
     public int updateItemInDb(Context context) {
-        String where = DB.DB_ID + "=" + getdBId();
-        Log.d(LOG_TAG, "MODEL: : UPDATING :----->");
-        return context.getContentResolver().update(getTableUri(), getContentValues(), where, null);
+        String uid = getTransportId().replaceAll("NEW", "DB");
+        String where = DB.UID + "=" + "?";
+        String[] selectionArgs = new String[]{""+uid};
+        Log.d("Split", "OUT PACKAGE : UPDATING :----->");
+        ContentValues values = getContentValues();
+        return context.getContentResolver().update(getTableUri(), values, where, selectionArgs);
+    }
+
+    public int deleteItemInDb(Context context) {
+        String uid = getTransportId().replaceAll("NEW","DB");
+        String where = DB.UID + "=" + "?";
+        String[] selectionArgs = new String[]{""+uid};
+        Log.d("Split", "OUT PACKAGE : DELETING :----->");
+        return context.getContentResolver().delete(getTableUri(), where, selectionArgs);
     }
 }

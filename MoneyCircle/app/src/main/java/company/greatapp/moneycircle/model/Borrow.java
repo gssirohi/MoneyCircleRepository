@@ -201,7 +201,7 @@ public class Borrow extends Model {
     }
 
     public void setState(int state) {
-        this.mState = mState;
+        this.mState = state;
     }
 
     @Override

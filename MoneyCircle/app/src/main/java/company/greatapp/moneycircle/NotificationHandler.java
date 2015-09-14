@@ -88,6 +88,7 @@ public class NotificationHandler {
                 lent = (Lent)Tools.getDbInstance(mContext,lentUid, Model.MODEL_TYPE_LENT);
                 lent.setState(States.LENT_WAITING_FOR_PAYMENT);
                 lent.updateItemInDb(mContext);
+                Tools.sendTransactionBroadCast(mContext, lent, Model.MODEL_TYPE_LENT);
                 break;
 
             case S.TRANSPORT_REQUEST_CODE_DISAGREE_LENT:
@@ -97,6 +98,7 @@ public class NotificationHandler {
                 lent = (Lent)Tools.getDbInstance(mContext,lentUid, Model.MODEL_TYPE_LENT);
                 lent.setState(States.LENT_DISAPPROVED_ACTION_PENDING);
                 lent.updateItemInDb(mContext);
+                Tools.sendTransactionBroadCast(mContext, lent, Model.MODEL_TYPE_LENT);
                 break;
 
 
@@ -113,6 +115,7 @@ public class NotificationHandler {
                 borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid, Model.MODEL_TYPE_BORROW);
                 borrow.setState(States.BORROW_PAYMENT_PENDING);
                 borrow.updateItemInDb(mContext);
+                Tools.sendTransactionBroadCast(mContext, borrow, Model.MODEL_TYPE_BORROW);
                 break;
             case S.TRANSPORT_REQUEST_CODE_DISAGREE_BORROW:
                 //Borrow item created by you has been declined by Associate
@@ -121,6 +124,7 @@ public class NotificationHandler {
                 borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid, Model.MODEL_TYPE_BORROW);
                 borrow.setState(States.BORROW_DISAPPROVED_ACTION_PENDING);
                 borrow.updateItemInDb(mContext);
+                Tools.sendTransactionBroadCast(mContext, borrow, Model.MODEL_TYPE_BORROW);
                 break;
             case S.TRANSPORT_REQUEST_CODE_PAY:
                 //borrower has made a payment, user need to approve
@@ -130,6 +134,7 @@ public class NotificationHandler {
                 lent = (Lent)Tools.getDbInstance(mContext,lentUid, Model.MODEL_TYPE_LENT);
                 lent.setState(States.LENT_PAYMENT_RECEIVED_DISAPPROVED_ACTION_PENDING);
                 lent.updateItemInDb(mContext);
+                Tools.sendTransactionBroadCast(mContext, lent, Model.MODEL_TYPE_LENT);
                 break;
 
             case S.TRANSPORT_REQUEST_CODE_AGREE_PAY:
@@ -146,7 +151,7 @@ public class NotificationHandler {
                 borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid, Model.MODEL_TYPE_BORROW);
                 borrow.setState(States.BORROW_PAYMENT_CLEARED);
                 borrow.updateItemInDb(mContext);
-
+                Tools.sendTransactionBroadCast(mContext, borrow, Model.MODEL_TYPE_BORROW);
                 break;
             case S.TRANSPORT_REQUEST_CODE_DISAGREE_PAY:
                 // You made a payment and that is declined by Lent owner
@@ -162,6 +167,7 @@ public class NotificationHandler {
                 borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid, Model.MODEL_TYPE_BORROW);
                 borrow.setState(States.BORROW_PAYMENT_PAID_DISAPPROVED_ACTION_PENDING);
                 borrow.updateItemInDb(mContext);
+                Tools.sendTransactionBroadCast(mContext, borrow, Model.MODEL_TYPE_BORROW);
 
                 break;
             case S.TRANSPORT_REQUEST_CODE_RECEIVE:
@@ -177,7 +183,7 @@ public class NotificationHandler {
                 borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid, Model.MODEL_TYPE_BORROW);
                 borrow.setState(States.BORROW_PAYMENT_CLEARED);
                 borrow.updateItemInDb(mContext);
-
+                Tools.sendTransactionBroadCast(mContext, borrow, Model.MODEL_TYPE_BORROW);
                 break;
 
         }
@@ -201,6 +207,7 @@ public class NotificationHandler {
         }
 
         notificationBuilder.setContentText(message);
+        notificationBuilder.setSmallIcon(R.drawable.home_icon);
         notificationBuilder.setContentIntent(pIntent);
         notificationBuilder.setAutoCancel(true);
         notificationBuilder.setSmallIcon(R.drawable.home_icon);
