@@ -618,15 +618,9 @@ public class GreatJSON {
             serverPackage.setReqSenderImageUri(senderImageUri);
 
             String itemOwnerPhoneNo = jsonObject.getString(S.TRANSPORT_ITEM_OWNER_PHONE);
-            String itemOwnerName = null;
-            if (itemOwnerPhoneNo.equals(receiverPhoneNo)) {
-                itemOwnerName = "YOU";
-            } else {
-                itemOwnerName = senderName;
-            }
+            serverPackage.setItemOwnerPhone(itemOwnerPhoneNo);
             serverPackage.setReqSenderPhone(senderphoneNo);
             serverPackage.setReqSenderName(senderName);
-            serverPackage.setItemOwnerName(itemOwnerName);
             String itemAssociatePhoneNo = jsonObject.getString(S.TRANSPORT_ITEM_ASSOCIATE_PHONE);
             serverPackage.setItemAssociatePhone(itemAssociatePhoneNo);
 
@@ -728,6 +722,7 @@ public class GreatJSON {
             model.setAmount(Float.parseFloat(object.getString(DB.AMOUNT)));
             model.setDateString(DateUtils.getCurrentDate());
             model.setDueDateString(object.getString(DB.DUE_DATE_STRING));
+
 
             Contact senderContact = Tools.getContactFromPhoneNumber(context, inPackage.getReqSenderPhone());
             model.setLinkedContact(senderContact);

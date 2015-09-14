@@ -37,7 +37,6 @@ public class DB {
 
     public static final String LINKED_CONTACT_JSON = "linkedContactJson";
 
-    public static final String OWNER_ITEM_ID = "ownerItemUid";
     public static final String STATE = "state";
 
 
@@ -198,7 +197,7 @@ public class DB {
     public static final String ITEM_OWNER_PHONE                 = "itemOwnerPhone";
     public static final String ITEM_ASSOCIATE_PHONE             = "itemAssociatePhone";
     public static final String MONEY_RECIEVER_PHONE             = "moneyRecieverPhone";
-    public static final String MONEY_PAYER_PHONE                ="moneyPayerPhone";
+    public static final String MONEY_PAYER_PHONE                = "moneyPayerPhone";
     public static final String OWNER_ITEM_TYPE                  = "ownerItemType";
     public static final String ASSOCIATE_ITEM_TYPE              = "associateItemType";
     public static final String ITEM_BODY_JSON_TYPE              = "jsonType";
@@ -208,15 +207,17 @@ public class DB {
     public static final String ITEM_DATE_STRING                 = "itemDate";
     public static final String ITEM_DUE_DATE_STRING             = "itemDueDate";
     public static final String ITEM_DESCRIPTION                 = "itemDescription";
-    public static final String IS_RESPONDED                     = "isRespondable";
+    public static final String IS_RESPONDABLE                   = "isRespondable";
     public static final String RESPONSE_STATE                   = "responseState";
+    public static final String OWNER_ITEM_ID                    = "ownerItemId";
+    public static final String ASSOCIATE_ITEM_ID                =  "associateItemId";
 
     public static final Uri PACKAGE_FROM_SERVER_TABLE_URI = Uri.parse("content://"+DB_AUTHORITY+"/" + PACKAGE_FROM_SERVER_TABLE_NAME);
     public static final String[] PACKAGE_FROM_SERVER_TABLE_PROJECTION = new String[]{
             DB_ID,UID, REQUEST_CODE,REQUEST_SENDER_PHONE,REQUEST_SENDER_NAME,REQUEST_RECIEVER_PHONE,ITEM_OWNER_PHONE
-    ,ITEM_ASSOCIATE_PHONE,MONEY_RECIEVER_PHONE,MONEY_PAYER_PHONE,OWNER_ITEM_TYPE,ASSOCIATE_ITEM_TYPE,
+    ,ITEM_ASSOCIATE_PHONE,MONEY_RECIEVER_PHONE,MONEY_PAYER_PHONE,OWNER_ITEM_TYPE,ASSOCIATE_ITEM_TYPE, OWNER_ITEM_ID, ASSOCIATE_ITEM_ID,
             ITEM_BODY_JSON_TYPE,ITEM_BODY_JSON_STRING,MESSAGE,ITEM_TITLE,AMOUNT,ITEM_DATE_STRING,
-            ITEM_DUE_DATE_STRING,ITEM_DESCRIPTION,IS_RESPONDED,RESPONSE_STATE};
+            ITEM_DUE_DATE_STRING,ITEM_DESCRIPTION, IS_RESPONDABLE,RESPONSE_STATE};
 
     //--------------MONEY CIRCLE PACKAGE FOR SERVER TABLE--------------------------------------//
 

@@ -9,6 +9,7 @@ import android.util.Log;
 
 import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.constants.S;
+import company.greatapp.moneycircle.tools.Tools;
 
 /**
  * Created by Prateek on 09-09-2015.
@@ -51,7 +52,7 @@ public class MoneyCirclePackageFromServer {
 
     private String dateString;
 
-    private String itemOwnerName;
+    //private String itemOwnerName;
 
     private String itemTitle;
     private String amount;
@@ -70,9 +71,10 @@ public class MoneyCirclePackageFromServer {
     private int responseState;
 
     public MoneyCirclePackageFromServer(){
-
+        uid = Tools.generateUniqueId();
     }
     public MoneyCirclePackageFromServer(Cursor c){
+        setDbId(c.getInt(c.getColumnIndex(DB.DB_ID)));
         setUid(c.getString(c.getColumnIndex(DB.UID)));
         setReqCode(c.getInt(c.getColumnIndex(DB.REQUEST_CODE)));
         setReqSenderPhone(c.getString(c.getColumnIndex(DB.REQUEST_SENDER_PHONE)));
@@ -84,6 +86,8 @@ public class MoneyCirclePackageFromServer {
         setMoneyPayerPhone(c.getString(c.getColumnIndex(DB.MONEY_PAYER_PHONE)));
         setOwnerItemType(c.getInt(c.getColumnIndex(DB.OWNER_ITEM_TYPE)));
         setAssociateItemtype(c.getInt(c.getColumnIndex(DB.ASSOCIATE_ITEM_TYPE)));
+        setOwnerItemId(c.getString(c.getColumnIndex(DB.OWNER_ITEM_ID)));
+        setAssociateItemId(c.getString(c.getColumnIndex(DB.ASSOCIATE_ITEM_ID)));
         setItemBodyJsonType(c.getInt(c.getColumnIndex(DB.ITEM_BODY_JSON_TYPE)));
         setItemBodyJsonString(c.getString(c.getColumnIndex(DB.ITEM_BODY_JSON_STRING)));
         setMessage(c.getString(c.getColumnIndex(DB.MESSAGE)));
@@ -92,7 +96,7 @@ public class MoneyCirclePackageFromServer {
         setItemDateString(c.getString(c.getColumnIndex(DB.ITEM_DATE_STRING)));
         setItemDueDateString(c.getString(c.getColumnIndex(DB.ITEM_DUE_DATE_STRING)));
         setItemDescription(c.getString(c.getColumnIndex(DB.ITEM_DESCRIPTION)));
-        int responded = c.getInt(c.getColumnIndex(DB.IS_RESPONDED));
+        int responded = c.getInt(c.getColumnIndex(DB.IS_RESPONDABLE));
         setIsRespondable((responded == 1) ? true : false);
         setResponseState(c.getInt(c.getColumnIndex(DB.RESPONSE_STATE)));
     }
@@ -177,14 +181,14 @@ public class MoneyCirclePackageFromServer {
         this.itemOwnerPhone = itemOwnerPhone;
     }
 
-    public String getItemOwnerName() {
+    /*public String getItemOwnerName() {
         return itemOwnerName;
     }
 
     public void setItemOwnerName(String itemOwnerName) {
         this.itemOwnerName = itemOwnerName;
     }
-
+*/
     public String getItemAssociatePhone() {
         return itemAssociatePhone;
     }
@@ -323,15 +327,17 @@ public class MoneyCirclePackageFromServer {
         row.put(DB.MONEY_PAYER_PHONE,getMoneyPayerPhone());
         row.put(DB.OWNER_ITEM_TYPE,getOwnerItemType());
         row.put(DB.ASSOCIATE_ITEM_TYPE,getAssociateItemtype());
+        row.put(DB.OWNER_ITEM_ID, getOwnerItemId());
+        row.put(DB.ASSOCIATE_ITEM_ID, getAssociateItemId());
         row.put(DB.ITEM_BODY_JSON_TYPE,getItemBodyJsonType());
         row.put(DB.ITEM_BODY_JSON_STRING,getItemBodyJsonString());
         row.put(DB.MESSAGE,getMessage());
         row.put(DB.ITEM_TITLE,getItemTitle());
         row.put(DB.AMOUNT,""+getAmount());
-        row.put(DB.ITEM_DATE_STRING,getDateString());
+        row.put(DB.ITEM_DATE_STRING,getItemDateString());
         row.put(DB.ITEM_DUE_DATE_STRING,getItemDueDateString());
         row.put(DB.ITEM_DESCRIPTION,getItemDescription());
-        row.put(DB.IS_RESPONDED, isRespondable()?1:0);
+        row.put(DB.IS_RESPONDABLE, isRespondable()?1:0);
         row.put(DB.RESPONSE_STATE,getResponseState());
         return row;
     }
@@ -354,8 +360,24 @@ public class MoneyCirclePackageFromServer {
                 message = "YOU OWE "+ getAmount() +" to "+ getReqSenderName() + " for this transaction";
                 break;
 
+            case S.TRANSPORT_REQUEST_CODE_AGREE_LENT:
+                message = getReqSenderName() + " AGREED YOUR Lent Request";
+                break;
+
+            case S.TRANSPORT_REQUEST_CODE_DISAGREE_LENT:
+                message = getReqSenderName() + " DISAGREED YOUR Lent Request";
+                break;
+
             case S.TRANSPORT_REQUEST_CODE_BORROW:
-                message = getReqSenderName() + " OWES YOU" + getAmount() + " for this transaction";
+                message = getReqSenderName() + " OWES YOU " + getAmount() + " for this transaction";
+                break;
+
+            case S.TRANSPORT_REQUEST_CODE_AGREE_BORROW:
+                message = getReqSenderName() + " AGREED YOUR borrow Request";
+                break;
+
+            case S.TRANSPORT_REQUEST_CODE_DISAGREE_BORROW:
+                message = getReqSenderName() + " DISAGREED YOUR borrow Request";
                 break;
 //            case S.NOTIFICATION_LENT_REQUEST:
 //                message = "YOU OWE "+ amount +" to "+ name + " for this transaction";

@@ -203,6 +203,7 @@ public class NotificationHandler {
         notificationBuilder.setContentText(message);
         notificationBuilder.setContentIntent(pIntent);
         notificationBuilder.setAutoCancel(true);
+        notificationBuilder.setSmallIcon(R.drawable.home_icon);
         notificationBuilder.setDefaults(Notification.DEFAULT_SOUND);
 
 
