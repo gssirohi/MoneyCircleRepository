@@ -2,6 +2,7 @@ package company.greatapp.moneycircle.manager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -263,21 +264,33 @@ public class Transporter {
         }
     }
 
-    public void addToQueue(Request req,String tag) {
+    public void addToQueue(final Request req, final String tag) {
         // Adding request to request queue
         if(req == null) {
             Log.d(TAG,"Can not add , request is NUll");
         } else {
-            AppController controller = AppController.getInstance();
+            final AppController controller = AppController.getInstance();
             if(controller == null) {
                 Log.d(TAG,"Volley Controller is NULL");
             } else {
-                controller.addToRequestQueue(req, tag);
-                Log.d(TAG, "volley request is added");
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        goAhead(controller, req, tag);
+                    }
+                }, 2000);
+
             }
 
         }
     }
+
+    private void goAhead(AppController controller, Request req, String tag) {
+        controller.addToRequestQueue(req, tag);
+        Log.d(TAG, "volley request is added");
+    }
+
+
     private void fireVolleyResponseSignal(String action) {
         Intent i = new Intent(action);
         mContext.sendBroadcast(i);

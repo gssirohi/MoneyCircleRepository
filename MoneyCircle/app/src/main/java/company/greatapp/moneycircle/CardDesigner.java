@@ -368,8 +368,10 @@ public class CardDesigner {
 
                 ll_last = (LinearLayout)mCardLent.findViewById(R.id.ll_card_content_row_5);
                 no_item = (View)mCardLent.findViewById(R.id.no_item_view);
+                Log.d("SPLIT","updating LENT CARD");
                 if(lentRegister.getLastTransaction() != null) {
                     ll_last.removeAllViews();
+                    Log.d("SPLIT","updating LENT CARD LAST ITEM-");
                     MoneyItemView v = new MoneyItemView(mContext,null,Model.MODEL_TYPE_LENT);
                     v.initView(lentRegister.getLastTransaction());
                     ll_last.addView(v);

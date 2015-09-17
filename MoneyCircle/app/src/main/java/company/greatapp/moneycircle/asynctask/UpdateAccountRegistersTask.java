@@ -37,7 +37,7 @@ public class UpdateAccountRegistersTask extends AsyncTask<Intent,Void,String> {
         Intent intent = new Intent(C.ACTION_ACCOUNTANT_DB_UPDATED);
         // You can also include some extra data.
         intent.putExtra("message", "This is my message!");
-        mContext.sendBroadcast(intent);
+        //mContext.sendBroadcast(intent);
 
     }
 }

@@ -380,6 +380,8 @@ public static String getModelName(int modelType){
 //            Log.i("SPLIT", "broadCast is sent for MONEY_TRANSACTION");
 //            context.sendBroadcast(intent);
 //        }
+
+        sendMoneyTransactionBroadCast(context,newItem,type);
     }
     public static void sendMoneyTransactionBroadCast(Context context, Model newItem, int type) {
         if(newItem != null) {
@@ -390,9 +392,11 @@ public static String getModelName(int modelType){
             intent.putExtra("message", "This is my message!");
             JSONObject obj = GreatJSON.getJsonObjectForModel(newItem);
             intent.putExtra(UpdateAccountRegistersTask.LAST_TRANSACTION_JSON,((obj != null)?obj.toString():""));
-            intent.putExtra(UpdateAccountRegistersTask.TRANSACTION_TYPE,type);
+            intent.putExtra(UpdateAccountRegistersTask.TRANSACTION_TYPE, type);
             Log.i("SPLIT", "broadCast is sent for MONEY_TRANSACTION");
             context.sendBroadcast(intent);
+//            UpdateAccountRegistersTask task = new UpdateAccountRegistersTask(context);
+//            task.execute(intent);
         }
     }
 

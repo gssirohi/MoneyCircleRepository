@@ -1,13 +1,17 @@
 package company.greatapp.moneycircle;
 
 import android.app.Dialog;
+import android.app.LoaderManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.Loader;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -23,16 +27,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.CursorAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import company.greatapp.moneycircle.adapters.NavDrawerListAdapter;
+import company.greatapp.moneycircle.asynctask.UpdateAccountRegistersTask;
 import company.greatapp.moneycircle.constants.C;
+import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.dialogs.AddNewEntryDialog;
 import company.greatapp.moneycircle.manager.Accountant;
 import company.greatapp.moneycircle.manager.CategoryManager;
@@ -41,13 +50,17 @@ import company.greatapp.moneycircle.manager.PreferenceManager;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.NavDrawerItem;
+import company.greatapp.moneycircle.model.Period;
+import company.greatapp.moneycircle.receiver.MoneyTransactionReceiver;
 import company.greatapp.moneycircle.services.PendingPackageTransportService;
 import company.greatapp.moneycircle.split.SplitToolActivity;
+import company.greatapp.moneycircle.tools.GreatJSON;
 import company.greatapp.moneycircle.view.CircleButton;
 import company.greatapp.moneycircle.dialogs.ContactInfoDialog;
 import company.greatapp.moneycircle.view.TagItemView;
 
-public class MainActivity extends ActionBarActivity implements TagItemView.TagItemViewCallBacks{
+public class MainActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor>,TagItemView.TagItemViewCallBacks{
+    private static final int LOADER_ID_ACCOUNTANT = 49;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -180,6 +193,7 @@ public class MainActivity extends ActionBarActivity implements TagItemView.TagIt
         //Trying to send pending packages
 
         startService(new Intent(this, PendingPackageTransportService.class));
+
     }
 
     private void initCardViews() {
@@ -205,10 +219,7 @@ public class MainActivity extends ActionBarActivity implements TagItemView.TagIt
         tabTrends.invalidate();
     }
 
-    private void initApp(){
-        registerReceiver(mAccountantUpdatedReceiver, new IntentFilter(C.ACTION_ACCOUNTANT_DB_UPDATED));
 
-    }
     private void handleDrawerItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch(position){
             case 0://home
@@ -328,28 +339,84 @@ public class MainActivity extends ActionBarActivity implements TagItemView.TagIt
     protected void onResume() {
 
         super.onResume();
+        initLoader(LOADER_ID_ACCOUNTANT, null, this, getLoaderManager());
     }
 
+    private void initApp(){
+//        registerReceiver(mAccountantUpdatedReceiver, new IntentFilter(C.ACTION_ACCOUNTANT_DB_UPDATED));
+        initLoader(LOADER_ID_ACCOUNTANT, null, this, getLoaderManager());
+
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(mAccountantUpdatedReceiver != null)
-        unregisterReceiver(mAccountantUpdatedReceiver);
+//        if(mAccountantUpdatedReceiver != null)
+//        unregisterReceiver(mAccountantUpdatedReceiver);
     }
     private  Accountant mAccountant;
-    BroadcastReceiver mAccountantUpdatedReceiver  = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d("SPLIT", "intent action : " + intent.getAction());
-          if(intent.getAction().equals(C.ACTION_ACCOUNTANT_DB_UPDATED)) {
-              Log.d("SPLIT", "intent action : " + intent.getAction());
-              mAccountant = new Accountant(MainActivity.this,true);
-              mCardDesigner.initAllCardViews(mAccountant);
-              Toast.makeText(MainActivity.this,"Accountant Updated",Toast.LENGTH_SHORT).show();
-              //initCardViews();
-          }
+//    BroadcastReceiver mAccountantUpdatedReceiver  = new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            Log.d("SPLIT", "intent action : " + intent.getAction());
+//          if(intent.getAction().equals(C.ACTION_ACCOUNTANT_DB_UPDATED)) {
+//              Log.d("SPLIT", "intent action : " + intent.getAction());
+//              mAccountant = new Accountant(MainActivity.this,true);
+//              mCardDesigner.initAllCardViews(mAccountant);
+//              Toast.makeText(MainActivity.this,"Accountant Updated",Toast.LENGTH_SHORT).show();
+//              //initCardViews();
+//          }
+//        }
+//    };
+public static <T> void initLoader(final int loaderId, final Bundle args, final LoaderManager.LoaderCallbacks<T> callbacks,
+                                  final LoaderManager loaderManager) {
+    final Loader<T> loader = loaderManager.getLoader(loaderId);
+    if (loader != null && loader.isReset()) {
+        loaderManager.restartLoader(loaderId, args, callbacks);
+    } else {
+        loaderManager.initLoader(loaderId, args, callbacks);
+    }
+}
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        if(id == LOADER_ID_ACCOUNTANT) {
+           return new CursorLoader(this, DB.ACCOUNT_TABLE_URI,
+                        DB.ACCOUNT_TABLE_PROJECTION, null,null,"data DESC");
         }
-    };
+
+        return null;
+    }
+
+ private CursorAdapter adapterDummy = new CursorAdapter(this,null) {
+     @Override
+     public View newView(Context context, Cursor cursor, ViewGroup parent) {
+         return null;
+     }
+
+     @Override
+     public void bindView(View view, Context context, Cursor cursor) {
+
+     }
+ };
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        Log.d("SPLIT","ACCOUNTANT LOAD FINISHED "+loader.getId() );
+        if(loader.getId() == LOADER_ID_ACCOUNTANT ) {
+            Log.d("SPLIT","ACCOUNTANT CURSOR " );
+           //mAccountant = new Accountant(this,data);
+            mAccountant = new Accountant(this,true);
+            adapterDummy.swapCursor(data);
+            mCardDesigner.initAllCardViews(mAccountant);
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        if(loader.getId() == LOADER_ID_ACCOUNTANT) {
+            Log.d("Split","reseting Accountant loader");
+
+            adapterDummy.swapCursor(null);
+        }
+    }
 
     @Override
     public void onContactTagClicked(Model model) {
