@@ -141,6 +141,14 @@
             android:text="ITEM STATE"
             android:id="@+id/tv_money_item_state"
             android:layout_gravity="center_horizontal" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PAY"
+            android:id="@+id/b_money_pay_receive"
+            android:layout_gravity="center_horizontal" />
     </LinearLayout>
 
 </LinearLayout>

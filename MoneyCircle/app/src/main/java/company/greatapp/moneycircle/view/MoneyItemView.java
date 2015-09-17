@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -41,7 +42,10 @@ public class MoneyItemView extends LinearLayout {
     private final LinearLayout ll_due_date_info;
     private final TextView tv_due_date;
     private final TextView tv_item_state;
+    private final Button b_pay_receive;
     private Income income;
+    private Model mModel;
+
     public MoneyItemView(Context context, AttributeSet attrs, int type) {
 
         super(context, attrs);
@@ -60,15 +64,49 @@ public class MoneyItemView extends LinearLayout {
 
         tv_item_state = (TextView)viewGroup.findViewById(R.id.tv_money_item_state);
 
+        b_pay_receive = (Button)viewGroup.findViewById(R.id.b_money_pay_receive);
         f_member = (FrameLayout)viewGroup.findViewById(R.id.f_member);
         f_split = (FrameLayout)viewGroup.findViewById(R.id.f_split);
         ll_split_member = (LinearLayout)viewGroup.findViewById(R.id.ll_split_member);
         ll_due_date_info = (LinearLayout)viewGroup.findViewById(R.id.ll_due_date_info);
 
+        b_pay_receive.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handlePayReceiveButton();
+            }
+        });
+
+    }
+
+    private void handlePayReceiveButton() {
+        Contact contact;
+        float amount;
+        switch(mType) {
+            case Model.MODEL_TYPE_LENT:
+
+                break;
+            case Model.MODEL_TYPE_BORROW:
+                Borrow borrow = (Borrow)mModel;
+                amount = borrow.getAmount();
+                contact = GreatJSON.getContactFromJsonString(borrow.getLinkedContactJson(),getContext());
+
+                if(contact != null) {
+                    contact.setBorrowedAmountfromThis(contact.getBorrowedAmountfromThis() - amount);
+                    contact.updateItemInDb(getContext());
+                }
+                break;
+            default:
+        }
     }
 
     public void initView(Model model) {
         if(model == null) return;
+        mModel = model;
+        int state = 10000;//invalid
+
+        b_pay_receive.setVisibility(View.GONE);
+
         f_member.removeAllViews();
         f_split.removeAllViews();
         ll_split_member.removeAllViews();
@@ -97,7 +135,14 @@ public class MoneyItemView extends LinearLayout {
                 tv_date.setText(((Borrow) model).getDateString());
                 Contact memberB = ((Borrow)model).getLinkedContact();
                 tv_item_state.setVisibility(View.VISIBLE);
-                tv_item_state.setText(States.getStateString(((Borrow) model).getState()));
+                state = ((Borrow) model).getState();
+                tv_item_state.setText(States.getStateString(state));
+                if(state == States.BORROW_PAYMENT_PENDING) {
+                    b_pay_receive.setVisibility(View.VISIBLE);
+                    b_pay_receive.setText("MAKE PAYMENT");
+                } else {
+
+                }
                 if(memberB != null) {
                     f_member.addView(new TagItemView(getContext(), f_member, memberB, false));
                 } else {
@@ -118,7 +163,14 @@ public class MoneyItemView extends LinearLayout {
                 Contact memberL = ((Lent)model).getLinkedContact();
 
                 tv_item_state.setVisibility(View.VISIBLE);
-                tv_item_state.setText(States.getStateString(((Lent) model).getState()));
+                state = ((Borrow) model).getState();
+                tv_item_state.setText(States.getStateString(state));
+                if(state == States.LENT_WAITING_FOR_PAYMENT) {
+                    b_pay_receive.setVisibility(View.VISIBLE);
+                    b_pay_receive.setText("MARK AS RECEIVED");
+                } else {
+
+                }
 
                 if(memberL != null) {
                     f_member.addView(new TagItemView(getContext(), f_member, memberL, false));

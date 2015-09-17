@@ -89,7 +89,7 @@ public abstract class Model implements Comparable<Model>{
         printModelData();
         ContentValues values = getContentValues();
         Uri uri = context.getContentResolver().insert(getTableUri(), values);
-        Tools.sendTransactionBroadCast(context, this, getModelType());
+       // Tools.sendTransactionBroadCast(context, this, getModelType());
         return uri;
     }
 
@@ -100,7 +100,7 @@ public abstract class Model implements Comparable<Model>{
         printModelData();
         ContentValues values = getContentValues();
         int result =  context.getContentResolver().update(getTableUri(), values, where, selectionArgs);
-        Tools.sendTransactionBroadCast(context, this, getModelType());
+       // Tools.sendTransactionBroadCast(context, this, getModelType());
         return result;
     }
 
@@ -112,7 +112,7 @@ public abstract class Model implements Comparable<Model>{
             printModelData();
             ContentValues values = getContentValues();
             int result =  context.getContentResolver().delete(getTableUri(), where, selectionArgs);
-            Tools.sendTransactionBroadCast(context, this, getModelType());
+          //  Tools.sendTransactionBroadCast(context, this, getModelType());
         return result;
     }
 

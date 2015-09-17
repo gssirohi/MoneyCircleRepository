@@ -37,11 +37,16 @@ public class Accountant {
     }
 
 
-    public Accountant(Context context, boolean withLodedRegisters) {
+    public Accountant(Context context, boolean withLoadedRegisters) {
         mContext = context;
-        if (withLodedRegisters) {
+        if (withLoadedRegisters) {
             loadAllRegistersFromDB();
         }
+    }
+
+    public Accountant(Context context, Cursor cursor) {
+        mContext = context;
+        loadAllRegistersFromCursor(cursor);
     }
 
     public float getBudget() {
@@ -57,6 +62,25 @@ public class Accountant {
         try {
             c = mContext.getContentResolver().query(DB.ACCOUNT_TABLE_URI,
                     DB.ACCOUNT_TABLE_PROJECTION, null, null, null);
+            if (c != null && c.getCount() > 0) {
+                c.moveToFirst();
+                while (!c.isAfterLast()) {
+                    AccountRegister register = loadRegisterFromCursor(c);
+                    setRegister(register);
+                    c.moveToNext();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+    }
+
+    private void loadAllRegistersFromCursor(Cursor c) {
+        try {
             if (c != null && c.getCount() > 0) {
                 c.moveToFirst();
                 while (!c.isAfterLast()) {

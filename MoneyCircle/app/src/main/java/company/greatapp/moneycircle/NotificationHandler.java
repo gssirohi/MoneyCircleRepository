@@ -94,11 +94,14 @@ public class NotificationHandler {
             case S.TRANSPORT_REQUEST_CODE_DISAGREE_LENT:
                 //Lent created by you has been declined by Associate
                 //Now We give you some choices,You need to choose one
+                inPackage.setIsRespondable(true);
                 lentUid = inPackage.getOwnerItemId();
                 lent = (Lent)Tools.getDbInstance(mContext,lentUid, Model.MODEL_TYPE_LENT);
-                lent.setState(States.LENT_DISAPPROVED_ACTION_PENDING);
-                lent.updateItemInDb(mContext);
-                Tools.sendTransactionBroadCast(mContext, lent, Model.MODEL_TYPE_LENT);
+                if(lent != null) {
+                    lent.setState(States.LENT_DISAPPROVED_ACTION_PENDING);
+                    lent.updateItemInDb(mContext);
+                    Tools.sendTransactionBroadCast(mContext, lent, Model.MODEL_TYPE_LENT);
+                }
                 break;
 
 
@@ -120,6 +123,7 @@ public class NotificationHandler {
             case S.TRANSPORT_REQUEST_CODE_DISAGREE_BORROW:
                 //Borrow item created by you has been declined by Associate
                 //Now we give you some choices, You need to choose one action
+                inPackage.setIsRespondable(true);
                 borrowUid = inPackage.getOwnerItemId();
                 borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid, Model.MODEL_TYPE_BORROW);
                 borrow.setState(States.BORROW_DISAPPROVED_ACTION_PENDING);
@@ -156,7 +160,7 @@ public class NotificationHandler {
             case S.TRANSPORT_REQUEST_CODE_DISAGREE_PAY:
                 // You made a payment and that is declined by Lent owner
                 // We give you some choices now , perform any action
-
+                inPackage.setIsRespondable(true);
                 if(user.getPhoneNumber().equals(inPackage.getItemAssociatePhone())) {
                     borrowUid = inPackage.getAssociateItemId();
                 } else {
@@ -183,6 +187,13 @@ public class NotificationHandler {
                 borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid, Model.MODEL_TYPE_BORROW);
                 borrow.setState(States.BORROW_PAYMENT_CLEARED);
                 borrow.updateItemInDb(mContext);
+                //This is a light weight borrow
+                String contactJson = borrow.getLinkedContactJson();
+                contact = GreatJSON.getContactFromJsonString(contactJson,mContext);
+                if(contact != null) {
+                    contact.setBorrowedAmountfromThis(contact.getBorrowedAmountfromThis() - borrow.getAmount());
+                    contact.updateItemInDb(mContext);
+                }
                 Tools.sendTransactionBroadCast(mContext, borrow, Model.MODEL_TYPE_BORROW);
                 break;
 
