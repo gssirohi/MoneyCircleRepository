@@ -42,6 +42,8 @@ public class Borrow extends Model {
     private String linkedContactItemId;
     private int mState = States.BORROW_IDEAL;
 
+    private String ownerPhone = "";
+
     public Borrow() {      // Empty Constructor
         setUID(Tools.generateUniqueId());
     }
@@ -57,8 +59,16 @@ public class Borrow extends Model {
     }
 
     public Borrow (Context context, MoneyCirclePackageFromServer inPackage) {
-        setUID(Tools.generateUniqueId());
+        //setUID(Tools.generateUniqueId());
         GreatJSON.updateModelFieldsFromInPackage(context, inPackage, Model.MODEL_TYPE_BORROW, this);
+    }
+
+    public String getOwnerPhone() {
+        return ownerPhone;
+    }
+
+    public void setOwnerPhone(String ownerPhone) {
+        this.ownerPhone = ownerPhone;
     }
 
     @Override
@@ -220,6 +230,7 @@ public class Borrow extends Model {
 
         row.put(DB.DATE_STRING ,getDateString());
         row.put(DB.STATE, getState());
+        row.put(DB.ITEM_OWNER_PHONE, getOwnerPhone());
 //        Calendar cal = Calendar.getInstance();
 //        cal.setTime(getDate());
 //

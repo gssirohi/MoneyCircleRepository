@@ -68,135 +68,91 @@ public class NotificationHandler {
         User user = new User(mContext);
         String borrowUid = "";
         String lentUid = "";
+        String contactJson = "";
         String contactUid = "";
         Contact contact;
         Borrow borrow;
         Lent lent;
         switch(inPackage.getReqCode()){
+
             case S.TRANSPORT_REQUEST_CODE_LENT:
-                inPackage.setIsRespondable(true);
-                //You have borrowed some amount and, lent owner has sent request for same
-                // Before creating this Borrow you need to approve this
-
-                break;
-
-
-            case S.TRANSPORT_REQUEST_CODE_AGREE_LENT:
-                //Lent created by you has been approved by Associate
-                //You need to wait for payment
-                lentUid = inPackage.getOwnerItemId();
-                lent = (Lent)Tools.getDbInstance(mContext,lentUid, Model.MODEL_TYPE_LENT);
-                lent.setState(States.LENT_WAITING_FOR_PAYMENT);
-                lent.updateItemInDb(mContext);
-                Tools.sendTransactionBroadCast(mContext, lent, Model.MODEL_TYPE_LENT);
-                break;
-
-            case S.TRANSPORT_REQUEST_CODE_DISAGREE_LENT:
-                //Lent created by you has been declined by Associate
-                //Now We give you some choices,You need to choose one
-                inPackage.setIsRespondable(true);
-                lentUid = inPackage.getOwnerItemId();
-                lent = (Lent)Tools.getDbInstance(mContext,lentUid, Model.MODEL_TYPE_LENT);
-                if(lent != null) {
-                    lent.setState(States.LENT_DISAPPROVED_ACTION_PENDING);
-                    lent.updateItemInDb(mContext);
-                    Tools.sendTransactionBroadCast(mContext, lent, Model.MODEL_TYPE_LENT);
+                borrow = new Borrow(mContext,inPackage);
+                if(borrow != null) {
+                    borrow.insertItemInDB(mContext);
+                    contact = borrow.getLinkedContact();
+                    if(contact != null) {
+                        contact.setBorrowedAmountfromThis(contact.getBorrowedAmountfromThis() + borrow.getAmount());
+                        contact.updateItemInDb(mContext);
+                    }
+                    Tools.sendMoneyTransactionBroadCast(mContext,borrow,Model.MODEL_TYPE_BORROW);
                 }
                 break;
-
-
             case S.TRANSPORT_REQUEST_CODE_BORROW:
-            //You have borrowed some amount and, lent owner has sent request for same
-            // Before creating this Borrow you need to approve this
-                inPackage.setIsRespondable(true);
-                break;
-
-            case S.TRANSPORT_REQUEST_CODE_AGREE_BORROW:
-                // Borrow item created by you has been approved by Associate(Lent owner)
-                // Now he is waiting for payment, you need to make payment.
-                borrowUid = inPackage.getOwnerItemId();
-                borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid, Model.MODEL_TYPE_BORROW);
-                borrow.setState(States.BORROW_PAYMENT_PENDING);
-                borrow.updateItemInDb(mContext);
-                Tools.sendTransactionBroadCast(mContext, borrow, Model.MODEL_TYPE_BORROW);
-                break;
-            case S.TRANSPORT_REQUEST_CODE_DISAGREE_BORROW:
-                //Borrow item created by you has been declined by Associate
-                //Now we give you some choices, You need to choose one action
-                inPackage.setIsRespondable(true);
-                borrowUid = inPackage.getOwnerItemId();
-                borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid, Model.MODEL_TYPE_BORROW);
-                borrow.setState(States.BORROW_DISAPPROVED_ACTION_PENDING);
-                borrow.updateItemInDb(mContext);
-                Tools.sendTransactionBroadCast(mContext, borrow, Model.MODEL_TYPE_BORROW);
+                lent = new Lent(mContext,inPackage);
+                if(lent != null) {
+                    lent.insertItemInDB(mContext);
+                    contact = lent.getLinkedContact();
+                    if(contact != null) {
+                        contact.setLentAmountToThis(contact.getLentAmountToThis() + lent.getAmount());
+                        contact.updateItemInDb(mContext);
+                    }
+                    Tools.sendMoneyTransactionBroadCast(mContext,lent,Model.MODEL_TYPE_LENT);
+                }
                 break;
             case S.TRANSPORT_REQUEST_CODE_PAY:
-                //borrower has made a payment, user need to approve
-                inPackage.setIsRespondable(true);
-
-                lentUid = inPackage.getOwnerItemId();
-                lent = (Lent)Tools.getDbInstance(mContext,lentUid, Model.MODEL_TYPE_LENT);
-                lent.setState(States.LENT_PAYMENT_RECEIVED_DISAPPROVED_ACTION_PENDING);
-                lent.updateItemInDb(mContext);
-                Tools.sendTransactionBroadCast(mContext, lent, Model.MODEL_TYPE_LENT);
-                break;
-
-            case S.TRANSPORT_REQUEST_CODE_AGREE_PAY:
-                // You made a payment and that is approved now by Lent owner
-                //
-
-                if(user.getPhoneNumber().equals(inPackage.getItemAssociatePhone())) {
-                    borrowUid = inPackage.getAssociateItemId();
+                if(user.getPhoneNumber().equals(inPackage.getItemOwnerPhone())){
+                    lentUid = inPackage.getOwnerItemId();
                 } else {
-                    //you are owner of this borrow item
-                    borrowUid = inPackage.getOwnerItemId();
+                    lentUid = inPackage.getAssociateItemId();
                 }
-
-                borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid, Model.MODEL_TYPE_BORROW);
-                borrow.setState(States.BORROW_PAYMENT_CLEARED);
-                borrow.updateItemInDb(mContext);
-                Tools.sendTransactionBroadCast(mContext, borrow, Model.MODEL_TYPE_BORROW);
-                break;
-            case S.TRANSPORT_REQUEST_CODE_DISAGREE_PAY:
-                // You made a payment and that is declined by Lent owner
-                // We give you some choices now , perform any action
-                inPackage.setIsRespondable(true);
-                if(user.getPhoneNumber().equals(inPackage.getItemAssociatePhone())) {
-                    borrowUid = inPackage.getAssociateItemId();
-                } else {
-                    //you are owner of this borrow item
-                    borrowUid = inPackage.getOwnerItemId();
+                 lent = (Lent)Tools.getDbInstance(mContext,lentUid,Model.MODEL_TYPE_LENT);
+                if(lent != null) {
+                    lent.setState(States.LENT_AMOUNT_RECEIVED);
+                    lent.updateItemInDb(mContext);
+                    contactJson = lent.getLinkedContactJson();
+                    contact = GreatJSON.getContactFromJsonString(contactJson,mContext);
+                    if(contact != null) {
+                        contact.setLentAmountToThis(contact.getLentAmountToThis() - lent.getAmount());
+                        contact.updateItemInDb(mContext);
+                    }
+                    Tools.sendMoneyTransactionBroadCast(mContext,lent,Model.MODEL_TYPE_LENT);
                 }
-
-                borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid, Model.MODEL_TYPE_BORROW);
-                borrow.setState(States.BORROW_PAYMENT_PAID_DISAPPROVED_ACTION_PENDING);
-                borrow.updateItemInDb(mContext);
-                Tools.sendTransactionBroadCast(mContext, borrow, Model.MODEL_TYPE_BORROW);
-
                 break;
+
             case S.TRANSPORT_REQUEST_CODE_RECEIVE:
-                // Giver has received return payment for his lent, He wants to notify you
-                // You should update your borrow item as paid
-                if(user.getPhoneNumber().equals(inPackage.getItemAssociatePhone())) {
-                    borrowUid = inPackage.getAssociateItemId();
-                } else {
-                    //you are owner of this borrow item
+                if(user.getPhoneNumber().equals(inPackage.getItemOwnerPhone())){
                     borrowUid = inPackage.getOwnerItemId();
+                } else {
+                    borrowUid = inPackage.getAssociateItemId();
                 }
-
-                borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid, Model.MODEL_TYPE_BORROW);
-                borrow.setState(States.BORROW_PAYMENT_CLEARED);
-                borrow.updateItemInDb(mContext);
-                //This is a light weight borrow
-                String contactJson = borrow.getLinkedContactJson();
-                contact = GreatJSON.getContactFromJsonString(contactJson,mContext);
-                if(contact != null) {
-                    contact.setBorrowedAmountfromThis(contact.getBorrowedAmountfromThis() - borrow.getAmount());
-                    contact.updateItemInDb(mContext);
+                borrow = (Borrow)Tools.getDbInstance(mContext,borrowUid,Model.MODEL_TYPE_BORROW);
+                if(borrow != null) {
+                    borrow.setState(States.BORROW_PAYMENT_CLEARED);
+                    borrow.updateItemInDb(mContext);
+                    contactJson = borrow.getLinkedContactJson();
+                    contact = GreatJSON.getContactFromJsonString(contactJson, mContext);
+                    if(contact != null) {
+                        contact.setBorrowedAmountfromThis(contact.getBorrowedAmountfromThis() - borrow.getAmount());
+                        contact.updateItemInDb(mContext);
+                    }
+                    Tools.sendMoneyTransactionBroadCast(mContext,borrow,Model.MODEL_TYPE_BORROW);
                 }
-                Tools.sendTransactionBroadCast(mContext, borrow, Model.MODEL_TYPE_BORROW);
                 break;
-
+            case S.TRANSPORT_REQUEST_CODE_SETTLE:
+                break;
+            case S.TRANSPORT_REQUEST_CODE_REMINDER:
+                break;
+            case S.TRANSPORT_REQUEST_CODE_NOTIFICATION:
+                break;
+            case S.TRANSPORT_REQUEST_CODE_DELETE_BORROW:
+                break;
+            case S.TRANSPORT_REQUEST_CODE_DELETE_LENT:
+                break;
+            case S.TRANSPORT_REQUEST_CODE_SETTLE_AGREE:
+                break;
+            case S.TRANSPORT_REQUEST_CODE_SETTLE_DISAGREE:
+                break;
+            default:
         }
     }
 

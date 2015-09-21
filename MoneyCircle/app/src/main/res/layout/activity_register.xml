@@ -87,4 +87,34 @@
         android:background="#ffff1421"
         android:textColor="#ffffffff" />
 
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_register_email"
+        android:orientation="horizontal"
+        android:id="@+id/rg_register_gender"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_gravity="center">
+
+        <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Male"
+            android:id="@+id/rb_male"
+            android:checked="true"
+            android:layout_weight="1" />
+
+        <RadioButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Female"
+            android:id="@+id/rb_female"
+            android:checked="false"
+            android:layout_below="@+id/et_register_email"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="1" />
+
+    </RadioGroup>
+
 </RelativeLayout>

@@ -3,15 +3,19 @@ package company.greatapp.moneycircle.manager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.ArrayList;
 
 import company.greatapp.moneycircle.asynctask.UpdateAccountRegistersTask;
 import company.greatapp.moneycircle.constants.DB;
+import company.greatapp.moneycircle.constants.States;
 import company.greatapp.moneycircle.model.AccountRegister;
+import company.greatapp.moneycircle.model.Borrow;
 import company.greatapp.moneycircle.model.Category;
 import company.greatapp.moneycircle.model.Contact;
+import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.Split;
 import company.greatapp.moneycircle.tools.DateUtils;
@@ -190,9 +194,22 @@ public class Accountant {
 
         String jsonTopItems = cursor.getString(cursor.getColumnIndex(DB.ACCOUNT_TOPITEMS));
 
-        ArrayList<Model> upcomingDays = GreatJSON.getModelListFromJsonString(jsonUpcomingsDay, mContext, registerType);
-        ArrayList<Model> upcomingWeek = GreatJSON.getModelListFromJsonString(jsonUpcomingsWeek, mContext, registerType);
-        ArrayList<Model> upcomingMonth = GreatJSON.getModelListFromJsonString(jsonUpcomingsMonth, mContext, registerType);
+        ArrayList<Model> upcomingDays = new ArrayList<Model>();
+        ArrayList<Model> upcomingWeek = new ArrayList<Model>();
+        ArrayList<Model> upcomingMonth = new ArrayList<Model>();
+
+        if(!TextUtils.isEmpty(jsonUpcomingsDay)) {
+            upcomingDays = GreatJSON.getModelListFromJsonString(jsonUpcomingsDay, mContext, registerType);
+        }
+
+        if(!TextUtils.isEmpty(jsonUpcomingsWeek)) {
+            upcomingWeek = GreatJSON.getModelListFromJsonString(jsonUpcomingsWeek, mContext, registerType);
+        }
+
+        if(!TextUtils.isEmpty(jsonUpcomingsMonth)) {
+            upcomingMonth = GreatJSON.getModelListFromJsonString(jsonUpcomingsMonth, mContext, registerType);
+        }
+
 
         int modelType = Model.MODEL_TYPE_CATEGORY;
         switch (registerType) {
@@ -390,6 +407,17 @@ public class Accountant {
                 Log.d("SPLIT","While writing for register, Model is NULL");
                 continue;
             } else {
+                if(registerType == Model.MODEL_TYPE_BORROW ) {
+                    Borrow borrow = (Borrow)model;
+                    if(borrow.getState() == States.BORROW_PAYMENT_CLEARED) {
+                        continue;
+                    }
+                } else if(registerType == Model.MODEL_TYPE_LENT ) {
+                    Lent lent  = (Lent)model;
+                    if(lent.getState() == States.LENT_AMOUNT_RECEIVED) {
+                        continue;
+                    }
+                }
                 Log.d("SPLIT","Writing from MODEL[type = "+registerType+"]["+model.getTitle()+"]: "+model.getUID());
             }
             amount = model.getAmount();

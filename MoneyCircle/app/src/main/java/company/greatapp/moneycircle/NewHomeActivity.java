@@ -365,19 +365,28 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
             switch(periodType){
 
                 case Period.PERIOD_DATE:
+                    mDailyAdapter.setManagerInitializationRequired();
                     mDailyAdapter.swapCursor(data);
+
                     break;
                 case Period.PERIOD_WEEK:
+                    mWeeklyAdapter.setManagerInitializationRequired();
                     mWeeklyAdapter.swapCursor(data);
+
                     break;
                 case Period.PERIOD_MONTH:
+                    mMonthlyAdapter.setManagerInitializationRequired();
                     mMonthlyAdapter.swapCursor(data);
+
                     break;
                 case Period.PERIOD_YEAR:
+                    mYearlyAdapter.setManagerInitializationRequired();
                     mYearlyAdapter.swapCursor(data);
+
                     break;
                 case Period.PERIOD_ALL:
                     mAllAdapter.swapCursor(data);
+                    mDailyAdapter.setManagerInitializationRequired();
                     break;
             }
         }

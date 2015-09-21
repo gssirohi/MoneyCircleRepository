@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +47,8 @@ public class RegisterActivity extends ActionBarActivity {
     private TextView tv_progress;
     private TextView tv_fail;
     private ProgressBar pb_progress;
+    private RadioGroup rGroup;
+    private int mGender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +72,15 @@ public class RegisterActivity extends ActionBarActivity {
         tv_phone = (TextView)findViewById(R.id.tv_register_phone_text);
         tv_fail = (TextView)findViewById(R.id.tv_register_fail);
         tv_fail.setVisibility(View.GONE);
+
+        rGroup = (RadioGroup)findViewById(R.id.rg_register_gender);
+        mGender = User.MALE;
+        rGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                handleGenderButton(checkedId);
+            }
+        });
         b_register = (Button)findViewById(R.id.b_register_register_action);
 
         b_register.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +89,14 @@ public class RegisterActivity extends ActionBarActivity {
                 handleRegisterButtonClick();
             }
         });
+    }
+
+    private void handleGenderButton(int checkedId) {
+        if(checkedId == R.id.rb_male) {
+            mGender = User.MALE;
+        } else {
+            mGender = User.FEMALE;
+        }
     }
 
     private void handleRegisterButtonClick() {
@@ -88,7 +108,7 @@ public class RegisterActivity extends ActionBarActivity {
             String name = et_name.getText().toString();
             String phone = et_phone.getText().toString();
             String email = et_email.getText().toString();
-            int gender = 0;
+            int gender = mGender;
             int avator =  0;
 
             User user = new User(this, name, phone, email, gender, avator);
@@ -168,9 +188,11 @@ public class RegisterActivity extends ActionBarActivity {
                     JSONObject obj = (JSONObject)jsonArray.get(i);
                     if(obj != null) {
                         String registeredPhoneNumber = obj.getString(S.PHONE_NUMBER);
+                        int gender = obj.getInt(S.GENDER);
                         Contact contact = cm.getContactByPhoneNumber(registeredPhoneNumber);
                         if(contact != null) {
                             contact.setRegistered(true);
+                            contact.setGender(gender);
                             contact.updateItemInDb(this);
                         }
                     }

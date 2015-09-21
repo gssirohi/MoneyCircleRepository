@@ -354,66 +354,45 @@ public class MoneyCirclePackageFromServer {
     public String createNotificationMessage() {
 
         String message = null;
-        switch (getReqCode()) {
+
+        String thisContact;
+        String thatContact = "";
+        switch(reqCode){
 
             case S.TRANSPORT_REQUEST_CODE_LENT:
-                message = "YOU OWE "+ getAmount() +" to "+ getReqSenderName() + " for this transaction";
+                message = "You owe "+thatContact+" "+getAmount()+" for this transaction";
                 break;
-
-            case S.TRANSPORT_REQUEST_CODE_AGREE_LENT:
-                message = getReqSenderName() + " AGREED YOUR Lent Request";
-                break;
-
-            case S.TRANSPORT_REQUEST_CODE_DISAGREE_LENT:
-                message = getReqSenderName() + " DISAGREED YOUR Lent Request";
-                break;
-
             case S.TRANSPORT_REQUEST_CODE_BORROW:
-                message = getReqSenderName() + " OWES YOU " + getAmount() + " for this transaction";
+                message = thatContact+" owes You " + getAmount()+" for this transaction";
                 break;
-
-            case S.TRANSPORT_REQUEST_CODE_AGREE_BORROW:
-                message = getReqSenderName() + " AGREED YOUR borrow Request";
+            case S.TRANSPORT_REQUEST_CODE_PAY:
+                message = "You have received "+getAmount()+" from "+thatContact+" for below transaction";
                 break;
-
-            case S.TRANSPORT_REQUEST_CODE_DISAGREE_BORROW:
-                message = getReqSenderName() + " DISAGREED YOUR borrow Request";
+            case S.TRANSPORT_REQUEST_CODE_RECEIVE:
+                message = thatContact+" has received "+getAmount()+" from You for below transaction";
                 break;
-//            case S.NOTIFICATION_LENT_REQUEST:
-//                message = "YOU OWE "+ amount +" to "+ name + " for this transaction";
-//                break;
-//            case S.NOTIFICATION_BORROW_REQUEST:
-//                message = name + " OWES YOU" + amount + " for this transaction";
-//                break;
-//            case S.NOTIFICATION_PAY_REQUEST:
-//                message = name + " PAYED " + amount + " to YOU for this transaction";
-//                break;
-//            case S.NOTIFICATION_SETTLE_REQUEST:
-//                message = name + " SETTLED UP with YOU";
-//                break;
-//            case S.NOTIFICATION_REMINDER_REQUEST:
-//                message = "REMINDER to pay " + amount + " to " + name;
-//                break;
-//            case S.NOTIFICATION_AGREE_LENT:
-//                message = name + " agree to pay "+ amount + " for this transaction";
-//                break;
-//            case S.NOTIFICATION_DISAGREE_LENT:
-//                message = name + " disagreed to pay "+ amount + " for this transaction";
-//                break;
-//            case S.NOTIFICATION_RECEIVE_REQUEST:
-//                message = name + " RECEIVED "+ amount + " for this transaction";
-//                break;
-//            case S.NOTIFICATION_DELETE_LENT_REQUEST:
-//                message = name + " deleted  this transaction";
-//                break;
-//            case S.NOTIFICATION_MODIFY_lENT_REQUEST:
-//                message = name + " modified this transaction";
-//                break;
-//            case S.NOTIFICATION_INFORMATION:
-//                message = "Information Message of Money Circle";
-//                break;
+            case S.TRANSPORT_REQUEST_CODE_SETTLE:
+                message = thatContact+" has requested for settle up";
+                break;
+            case S.TRANSPORT_REQUEST_CODE_REMINDER:
+                message = thatContact+" wants to remind you for below transaction";
+                break;
+            case S.TRANSPORT_REQUEST_CODE_NOTIFICATION:
+                message = "this is a notification message";
+                break;
+            case S.TRANSPORT_REQUEST_CODE_DELETE_BORROW:
+                message = thatContact+" has deleted this lent item";
+                break;
+            case S.TRANSPORT_REQUEST_CODE_DELETE_LENT:
+                message = thatContact+" has deleted this borrow item";
+                break;
+            case S.TRANSPORT_REQUEST_CODE_SETTLE_AGREE:
+                message = thatContact+" has approved settle up request";
+                break;
+            case S.TRANSPORT_REQUEST_CODE_SETTLE_DISAGREE:
+                message = thatContact+" has disapproved settle up request";
+                break;
             default:
-                break;
         }
         return message;
     }
