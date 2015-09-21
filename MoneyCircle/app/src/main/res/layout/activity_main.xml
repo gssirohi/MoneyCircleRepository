@@ -86,7 +86,7 @@
                     class="android.support.design.widget.FloatingActionButton"
                     android:id="@+id/fb_add_new_entry"
                     android:layout_gravity="right|bottom"
-                    android:src="@android:drawable/ic_input_add"
+                    android:src="@drawable/ic_floating_add"
                     android:layout_marginBottom="@dimen/fab_margin_bottom"
                     android:layout_marginEnd="@dimen/fab_margin_right"
                     android:layout_marginRight="@dimen/fab_margin_right"

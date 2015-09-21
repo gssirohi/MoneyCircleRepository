@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import company.greatapp.moneycircle.ContactItemView;
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.model.Contact;
@@ -53,24 +54,12 @@ public class ContactAdapter extends BaseAdapter {
         ViewHolder holder = null;
         if (convertView == null) {
 
-            convertView = inflater.inflate(R.layout.contact_item_view, parent, false);
+            convertView = new ContactItemView(mContext,null,(Contact)mContactList.get(position));
             holder = new ViewHolder();
-            holder.profilePic = (ImageView)convertView.findViewById(R.id.ivProfilePicContactItemId);
-            holder.contactName = (TextView)convertView.findViewById(R.id.tvContactNameId);
-            holder.inviteIcon = (ImageView)convertView.findViewById(R.id.ivInviteIconId);
-            holder.chatIcon = (ImageView)convertView.findViewById(R.id.ivInviteIconId);
+            holder.profilePic = (ImageView)convertView.findViewById(R.id.iv_contact);
+            holder.contactName = (TextView)convertView.findViewById(R.id.tv_contact_name);
+
             convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder)convertView.getTag();
-        }
-        Contact contact = (Contact)mContactList.get(position);
-        holder.contactName.setText(contact.getTitle());
-        if (contact.isRegistered()) {
-            holder.inviteIcon.setVisibility(View.GONE);
-            holder.chatIcon.setVisibility(View.VISIBLE);
-        } else {
-            holder.chatIcon.setVisibility(View.GONE);
-            holder.inviteIcon.setVisibility(View.VISIBLE);
         }
         return convertView;
     }
@@ -78,7 +67,5 @@ public class ContactAdapter extends BaseAdapter {
     private static class ViewHolder {
         ImageView profilePic;
         TextView contactName;
-        ImageView inviteIcon;
-        ImageView chatIcon;
     }
 }

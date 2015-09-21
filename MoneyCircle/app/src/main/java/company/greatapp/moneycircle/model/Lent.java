@@ -44,6 +44,8 @@ public class Lent extends Model {
     private boolean isLinkedWithSplit;
     private Split linkedSplit;
     private String linkedSplitJson;
+
+    private String ownerPhone;
     //---------------------------------//
 
     public Lent() {      // Empty Constructor
@@ -61,11 +63,19 @@ public class Lent extends Model {
     }
 
     public Lent (Context context, MoneyCirclePackageFromServer inPackage) {
-        mUid = Tools.generateUniqueId();
+        //mUid = Tools.generateUniqueId();
         isLinkedWithSplit = false;
         linkedSplit = null;
         linkedSplitJson = "NA";
         GreatJSON.updateModelFieldsFromInPackage(context, inPackage, Model.MODEL_TYPE_LENT, this);
+    }
+
+    public String getOwnerPhone() {
+        return ownerPhone;
+    }
+
+    public void setOwnerPhone(String ownerPhone) {
+        this.ownerPhone = ownerPhone;
     }
 
     @Override
@@ -251,6 +261,7 @@ public class Lent extends Model {
         row.put(DB.DUE_DATE_STRING, getDueDateString());
 
         row.put(DB.DATE_STRING ,getDateString());
+        row.put(DB.ITEM_OWNER_PHONE ,getOwnerPhone());
         row.put(DB.STATE, getState());
 //        Calendar cal = Calendar.getInstance();
 //        cal.setTime(getDate());

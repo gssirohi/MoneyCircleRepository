@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.constants.States;
+import company.greatapp.moneycircle.manager.Transporter;
 import company.greatapp.moneycircle.model.Borrow;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Expense;
@@ -43,6 +44,7 @@ public class MoneyItemView extends LinearLayout {
     private final TextView tv_due_date;
     private final TextView tv_item_state;
     private final Button b_pay_receive;
+    private final FrameLayout f_clear_item;
     private Income income;
     private Model mModel;
 
@@ -67,6 +69,9 @@ public class MoneyItemView extends LinearLayout {
         b_pay_receive = (Button)viewGroup.findViewById(R.id.b_money_pay_receive);
         f_member = (FrameLayout)viewGroup.findViewById(R.id.f_member);
         f_split = (FrameLayout)viewGroup.findViewById(R.id.f_split);
+
+        f_clear_item = (FrameLayout)viewGroup.findViewById(R.id.f_clear_item);
+
         ll_split_member = (LinearLayout)viewGroup.findViewById(R.id.ll_split_member);
         ll_due_date_info = (LinearLayout)viewGroup.findViewById(R.id.ll_due_date_info);
 
@@ -82,9 +87,23 @@ public class MoneyItemView extends LinearLayout {
     private void handlePayReceiveButton() {
         Contact contact;
         float amount;
+        Transporter transporter = new Transporter(getContext());
         switch(mType) {
             case Model.MODEL_TYPE_LENT:
 
+                Lent lent = (Lent)mModel;
+                amount = lent.getAmount();
+                contact = GreatJSON.getContactFromJsonString(lent.getLinkedContactJson(),getContext());
+
+                if(contact != null) {
+                    contact.setLentAmountToThis(contact.getLentAmountToThis() - amount);
+                    contact.updateItemInDb(getContext());
+                }
+                lent.setState(States.LENT_AMOUNT_RECEIVED);
+                String transId = transporter.transportReceivedPaymentInfo(lent);
+                lent.updateItemInDb(getContext());
+
+                Tools.sendMoneyTransactionBroadCast(getContext(),lent,Model.MODEL_TYPE_LENT);
                 break;
             case Model.MODEL_TYPE_BORROW:
                 Borrow borrow = (Borrow)mModel;
@@ -95,9 +114,14 @@ public class MoneyItemView extends LinearLayout {
                     contact.setBorrowedAmountfromThis(contact.getBorrowedAmountfromThis() - amount);
                     contact.updateItemInDb(getContext());
                 }
+                borrow.setState(States.BORROW_PAYMENT_CLEARED);
+                String transportId = transporter.transportMadePaymentInfo(borrow);
+                borrow.updateItemInDb(getContext());
+                Tools.sendMoneyTransactionBroadCast(getContext(), borrow, Model.MODEL_TYPE_BORROW);
                 break;
             default:
         }
+
     }
 
     public void initView(Model model) {
@@ -106,6 +130,7 @@ public class MoneyItemView extends LinearLayout {
         int state = 10000;//invalid
 
         b_pay_receive.setVisibility(View.GONE);
+        f_clear_item.setVisibility(View.GONE);
 
         f_member.removeAllViews();
         f_split.removeAllViews();
@@ -140,8 +165,8 @@ public class MoneyItemView extends LinearLayout {
                 if(state == States.BORROW_PAYMENT_PENDING) {
                     b_pay_receive.setVisibility(View.VISIBLE);
                     b_pay_receive.setText("MAKE PAYMENT");
-                } else {
-
+                } else if(state == States.BORROW_PAYMENT_CLEARED){
+                    f_clear_item.setVisibility(View.VISIBLE);
                 }
                 if(memberB != null) {
                     f_member.addView(new TagItemView(getContext(), f_member, memberB, false));
@@ -163,13 +188,13 @@ public class MoneyItemView extends LinearLayout {
                 Contact memberL = ((Lent)model).getLinkedContact();
 
                 tv_item_state.setVisibility(View.VISIBLE);
-                state = ((Borrow) model).getState();
+                state = ((Lent) model).getState();
                 tv_item_state.setText(States.getStateString(state));
                 if(state == States.LENT_WAITING_FOR_PAYMENT) {
                     b_pay_receive.setVisibility(View.VISIBLE);
                     b_pay_receive.setText("MARK AS RECEIVED");
-                } else {
-
+                } else if(state == States.LENT_AMOUNT_RECEIVED){
+                    f_clear_item.setVisibility(View.VISIBLE);
                 }
 
                 if(memberL != null) {

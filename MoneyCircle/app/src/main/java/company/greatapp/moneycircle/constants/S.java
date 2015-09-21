@@ -103,6 +103,8 @@ public class S {
 
     public static final int TRANSPORT_BODY_TYPE_JSON_OBJECT = 1;
 
+
+
     public static final int TRANSPORT_REQUEST_CODE_LENT = 11;
     public static final short TRANSPORT_REQUEST_CODE_BORROW = 22;
     public static final short TRANSPORT_REQUEST_CODE_PAY = 33;
@@ -110,27 +112,13 @@ public class S {
     public static final short TRANSPORT_REQUEST_CODE_SETTLE = 55;
     public static final short TRANSPORT_REQUEST_CODE_REMINDER = 66;
 
-    public static final short TRANSPORT_REQUEST_CODE_MODIFY_LENT = 77;
-    public static final short TRANSPORT_REQUEST_CODE_MODIFY_BORROW = 78;
 
+    public static final short TRANSPORT_REQUEST_CODE_SETTLE_AGREE = 57;
+    public static final short TRANSPORT_REQUEST_CODE_SETTLE_DISAGREE = 58;
 
     public static final short TRANSPORT_REQUEST_CODE_DELETE_LENT = 88;
     public static final short TRANSPORT_REQUEST_CODE_DELETE_BORROW = 89;
 
-
-    public static final short TRANSPORT_REQUEST_CODE_AGREE_LENT = 99;
-    public static final short TRANSPORT_REQUEST_CODE_AGREE_BORROW = 100;
-    public static final short TRANSPORT_REQUEST_CODE_AGREE_PAY = 101;
-
-    public static final short TRANSPORT_REQUEST_CODE_AGREE_SETTLE = 103;
-    public static final short TRANSPORT_REQUEST_CODE_AGREE_MODIFY = 104;
-
-    public static final short TRANSPORT_REQUEST_CODE_DISAGREE_LENT = 109;
-    public static final short TRANSPORT_REQUEST_CODE_DISAGREE_BORROW = 110;
-    public static final short TRANSPORT_REQUEST_CODE_DISAGREE_PAY = 111;
-    public static final short TRANSPORT_REQUEST_CODE_DISAGREE_RECEIVE = 112;
-    public static final short TRANSPORT_REQUEST_CODE_DISAGREE_SETTLE = 113;
-    public static final short TRANSPORT_REQUEST_CODE_DISAGREE_MODIFY = 114;
 
     public static final short TRANSPORT_REQUEST_CODE_NOTIFICATION = 119;
 

@@ -3,7 +3,7 @@
 
     <color name="app_primary">#ff9100</color>
     <color name="app_primary_dark">#ff6d00</color>
-    <color name="app_text_primary">#ffffffff</color>
+    <color name="app_text_primary">#004d40</color>
     <color name="app_background">#b3e5fc</color>
     <color name="app_accent">#00b8d4</color>
     <color name="app_text_secondary">#ff4081</color>

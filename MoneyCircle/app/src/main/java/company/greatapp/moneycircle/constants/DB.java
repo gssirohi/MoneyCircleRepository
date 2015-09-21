@@ -39,7 +39,7 @@ public class DB {
 
     public static final String STATE = "state";
 
-
+    public static final String ITEM_OWNER_PHONE                 = "itemOwnerPhone";
 //-----------------------------------------------------------------//
 
 
@@ -54,6 +54,7 @@ public class DB {
     public static final String REGISTERED = "registered";
     public static final String SERVER_NAME = "serverName";
     public static final String SERVER_ID = "serverId";
+    public static final String GENDER = "gender";
     public static final String CONTACT_BORROWED_AMOUNT_FROM_THIS = "borrowed";
     public static final String CONTACT_LENT_AMOUNT_TO_THIS = "lent";
 
@@ -61,7 +62,7 @@ public class DB {
     public static final String[] CONTACT_TABLE_PROJECTION = new String[]{
             DB_ID,UID,
             NAME,PHONE_NUMBER,CONTACT_IMAGE_URI,EMAIL,
-            REGISTERED,SERVER_NAME,SERVER_ID, STATE,
+            REGISTERED,SERVER_NAME,SERVER_ID, STATE,GENDER,
             CONTACT_BORROWED_AMOUNT_FROM_THIS,CONTACT_LENT_AMOUNT_TO_THIS,
             JSON_STRING};
 //----------------------------------------------------------------//
@@ -119,7 +120,7 @@ public class DB {
             DB_ID,UID,
             TITLE,CATEGORY,DESCRIPTION,AMOUNT, STATE,
             LINKED_CONTACT_JSON,
-            DUE_DATE_STRING,
+            DUE_DATE_STRING, ITEM_OWNER_PHONE,
             DATE_STRING,DATE, DAY_OF_MONTH, WEEK_OF_MONTH,MONTH,YEAR,
             JSON_STRING};
 //----------------------------------------------------------------//
@@ -134,7 +135,7 @@ public class DB {
             DB_ID,UID,
             TITLE,CATEGORY,DESCRIPTION,AMOUNT, STATE,
             LINKED_CONTACT_JSON,
-            DUE_DATE_STRING,
+            DUE_DATE_STRING,ITEM_OWNER_PHONE,
             IS_LINKED_WITH_SPLIT,LINKED_SPLIT_JSON,
             DATE_STRING,DATE, DAY_OF_MONTH, WEEK_OF_MONTH,MONTH,YEAR,
             JSON_STRING};
@@ -194,7 +195,7 @@ public class DB {
     public static final String REQUEST_SENDER_PHONE             =  "requestSenderPhone";
     public static final String REQUEST_SENDER_NAME             =  "requestSenderName";
     public static final String REQUEST_RECIEVER_PHONE           = "requestRecieverPhone";
-    public static final String ITEM_OWNER_PHONE                 = "itemOwnerPhone";
+
     public static final String ITEM_ASSOCIATE_PHONE             = "itemAssociatePhone";
     public static final String MONEY_RECIEVER_PHONE             = "moneyRecieverPhone";
     public static final String MONEY_PAYER_PHONE                = "moneyPayerPhone";

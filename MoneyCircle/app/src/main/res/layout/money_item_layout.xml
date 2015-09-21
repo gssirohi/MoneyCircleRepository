@@ -5,152 +5,176 @@
     android:padding="1dp"
     android:layout_margin="5dp"
     >
-<LinearLayout
-    android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="2dp"
-    android:background="#FFFFFF">
 
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/imageView2"
-        android:src="@android:drawable/ic_dialog_info"
-        android:layout_weight="1"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp" />
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="90">
-
-    <LinearLayout
-        android:orientation="horizontal"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Big Basket"
-            android:id="@+id/tv_item_title"
-            android:layout_weight="7"
-            android:textColor="@color/app_darkest"
-            android:layout_gravity="center_vertical" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="13 July 2015"
-            android:id="@+id/tv_item_date"
-            android:textColor="@color/app_dark"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1" />
-    </LinearLayout>
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_margin="5dp"
-            android:layout_height="1dip"
-            android:background="@color/app_lighter"
-            android:id="@+id/textView" />
-
         <LinearLayout
+        android:layout_width="match_parent" android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:padding="2dp"
+        android:background="#FFFFFF">
 
-        <TextView
+
+        <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="5000.70"
-            android:id="@+id/tv_item_amount"
-            android:textColor="@color/app_dark"
-            android:layout_weight="1" />
+            android:layout_height="match_parent"
+            android:id="@+id/imageView2"
+            android:src="@android:drawable/ic_dialog_info"
+            android:layout_weight="1"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp" />
 
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical">
-
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:id="@+id/f_member"
-                android:layout_gravity="left|center_vertical"
-                android:layout_marginRight="10dp"></FrameLayout>
-
-            <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/f_split"
-                android:layout_gravity="right|center_vertical"></FrameLayout>
-        </LinearLayout>
-
-    </LinearLayout>
+            android:layout_weight="90">
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/ll_due_date_info">
+            android:layout_height="wrap_content">
+
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Due On : "
-                android:id="@+id/textView10"
-                android:textColor="@color/app_secondary" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Big Basket"
+                android:id="@+id/tv_item_title"
+                android:layout_weight="7"
+                android:textColor="@color/app_darkest"
+                android:layout_gravity="center_vertical" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="25 July 2015"
-                android:id="@+id/tv_due_date"
-                android:textColor="@color/app_secondary" />
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="13 July 2015"
+                android:id="@+id/tv_item_date"
+                android:textColor="@color/app_dark"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1" />
         </LinearLayout>
 
-        <HorizontalScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/horizontalScrollView2"
-            android:scrollbars="none"
-            android:layout_gravity="center_horizontal">
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_margin="5dp"
+                android:layout_height="1dip"
+                android:background="@color/app_lighter"
+                android:id="@+id/textView" />
+
+            <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="5000.70"
+                android:id="@+id/tv_item_amount"
+                android:textColor="@color/app_dark"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical">
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/f_member"
+                    android:layout_gravity="left|center_vertical"
+                    android:layout_marginRight="10dp"></FrameLayout>
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/f_split"
+                    android:layout_gravity="right|center_vertical"></FrameLayout>
+            </LinearLayout>
+
+        </LinearLayout>
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/ll_split_member"></LinearLayout>
-        </HorizontalScrollView>
+                android:id="@+id/ll_due_date_info">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="ITEM STATE"
-            android:id="@+id/tv_money_item_state"
-            android:layout_gravity="center_horizontal" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Due On : "
+                    android:id="@+id/textView10"
+                    android:textColor="@color/app_secondary" />
 
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="PAY"
-            android:id="@+id/b_money_pay_receive"
-            android:layout_gravity="center_horizontal" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="25 July 2015"
+                    android:id="@+id/tv_due_date"
+                    android:textColor="@color/app_secondary" />
+            </LinearLayout>
+
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/horizontalScrollView2"
+                android:scrollbars="none"
+                android:layout_gravity="center_horizontal">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/ll_split_member"></LinearLayout>
+            </HorizontalScrollView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="ITEM STATE"
+                android:id="@+id/tv_money_item_state"
+                android:layout_gravity="center_horizontal" />
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PAY"
+                android:id="@+id/b_money_pay_receive"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
+
     </LinearLayout>
 
-</LinearLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:visibility="gone"
+            android:id="@+id/f_clear_item">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="C L E A R E D"
+                android:id="@+id/textView7"
+                android:layout_gravity="center"
+                android:textColor="@color/abc_primary_text_material_light" />
+        </FrameLayout>
+
+    </FrameLayout>
 
 </RelativeLayout>

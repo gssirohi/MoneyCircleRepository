@@ -30,12 +30,18 @@ public class MoneyItemAdapter extends CursorAdapter {
     private BaseModelManager manager;
     private Context mContext;
     private int previousCount = -10;
+    private boolean isInitializationRequired;
 
     public MoneyItemAdapter(Context context, Cursor c, boolean autoRequery, int type) {
         super(context, c, autoRequery);
         mType = type;
         Log.d(TAG, "constructor");
         initManager(context, type);
+    }
+
+    public void setManagerInitializationRequired() {
+
+        isInitializationRequired = true;
     }
 
     private void initManager(Context context, int type){
@@ -63,9 +69,9 @@ public class MoneyItemAdapter extends CursorAdapter {
         Log.d("Split","bindView");
         int c = cursor.getCount();
 
-        if(c != previousCount) {
+        if(isInitializationRequired) {
             initManager(context,mType);
-            previousCount = c;
+            isInitializationRequired = false;
         }
         int pos = cursor.getPosition();
         pos = pos+1;

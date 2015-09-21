@@ -36,6 +36,7 @@ import company.greatapp.moneycircle.model.Income;
 import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.dialogs.DatePickerFragment;
+import company.greatapp.moneycircle.model.User;
 import company.greatapp.moneycircle.tools.DateUtils;
 import company.greatapp.moneycircle.tools.Tools;
 import company.greatapp.moneycircle.dialogs.ContactInfoDialog;
@@ -382,6 +383,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         String transportId="";
         BaseModelManager manager = null;
         String description = null;
+        User user = new User (this);
         float amount;
         switch (mModelType) {
             case Model.MODEL_TYPE_INCOME:
@@ -431,6 +433,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
                 amount = Float.parseFloat(et_new_amount.getText().toString());
                 borrow.setAmount(amount);
                 borrow.setLinkedContact(mMember);
+                borrow.setOwnerPhone(user.getPhoneNumber());
                 description = et_new_note.getText().toString();
                 if (!TextUtils.isEmpty(description)) {
                     borrow.setDescription(description);
@@ -456,6 +459,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
                 lent.setTitle(et_new_item.getText().toString());
                 lent.setCategory(mCategory);
                 lent.setLinkedContact(mMember);
+                lent.setOwnerPhone(user.getPhoneNumber());
                 amount = Float.parseFloat(et_new_amount.getText().toString());
                 lent.setAmount(amount);
                 description = et_new_note.getText().toString();

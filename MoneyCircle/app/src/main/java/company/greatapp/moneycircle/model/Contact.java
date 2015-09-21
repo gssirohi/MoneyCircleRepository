@@ -35,6 +35,7 @@ public class Contact extends Model {
     float borrowedAmountfromThis;
     float lentAmountToThis;
 
+    int gender;
 
 
     public Contact(String name, String number) {
@@ -57,6 +58,14 @@ public class Contact extends Model {
         setContactName("unnamed");
         setPhone("na");
         setUID(Tools.generateUniqueId());
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
     }
 
     public float getBorrowedAmountfromThis() {
@@ -258,6 +267,7 @@ public class Contact extends Model {
         row.put(DB.CONTACT_LENT_AMOUNT_TO_THIS,""+getLentAmountToThis());
         row.put(DB.SERVER_NAME , getServerName());
         row.put(DB.SERVER_ID, getServerId());
+        row.put(DB.GENDER, getGender());
         row.put(DB.JSON_STRING ,getJsonString() );
         return row;
     }

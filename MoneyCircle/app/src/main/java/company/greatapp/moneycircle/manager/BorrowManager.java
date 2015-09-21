@@ -50,6 +50,7 @@ public class BorrowManager extends BaseModelManager  {
         String linkedContactJson     = cursor.getString(cursor.getColumnIndex(DB.LINKED_CONTACT_JSON));
         String json_string     = cursor.getString(cursor.getColumnIndex(DB.JSON_STRING));
         String date_string     = cursor.getString(cursor.getColumnIndex(DB.DATE_STRING));
+        String owner_phone     = cursor.getString(cursor.getColumnIndex(DB.ITEM_OWNER_PHONE));
         int state              = cursor.getInt(cursor.getColumnIndex(DB.STATE));
         int date               = cursor.getInt(cursor.getColumnIndex(DB.DATE));
         int dateOfMonth             = cursor.getInt(cursor.getColumnIndex(DB.DAY_OF_MONTH));
@@ -66,6 +67,7 @@ public class BorrowManager extends BaseModelManager  {
         borrow.setDueDateString(dueDateString);
         borrow.setLinkedContactJson(linkedContactJson);
         borrow.setState(state);
+        borrow.setOwnerPhone(owner_phone);
         if(!TextUtils.isEmpty(linkedContactJson)) {
             Contact member = GreatJSON.getContactFromJsonString(linkedContactJson, context);
             borrow.setLinkedContact(member);
@@ -88,6 +90,7 @@ public class BorrowManager extends BaseModelManager  {
         String linkedContactJson     = cursor.getString(cursor.getColumnIndex(DB.LINKED_CONTACT_JSON));
         String json_string     = cursor.getString(cursor.getColumnIndex(DB.JSON_STRING));
         String date_string     = cursor.getString(cursor.getColumnIndex(DB.DATE_STRING));
+        String owner_phone     = cursor.getString(cursor.getColumnIndex(DB.ITEM_OWNER_PHONE));
         int state              = cursor.getInt(cursor.getColumnIndex(DB.STATE));
         int date               = cursor.getInt(cursor.getColumnIndex(DB.DATE));
         int dateOfMonth             = cursor.getInt(cursor.getColumnIndex(DB.DAY_OF_MONTH));
@@ -104,6 +107,7 @@ public class BorrowManager extends BaseModelManager  {
         borrow.setDueDateString(dueDateString);
         borrow.setLinkedContactJson(linkedContactJson);
         borrow.setState(state);
+        borrow.setOwnerPhone(owner_phone);
 //        if(!TextUtils.isEmpty(linkedContactJson)) {
 //            Contact member = GreatJSON.getContactFromJsonString(linkedContactJson, mContactManager);
 //            borrow.setLinkedContact(member);

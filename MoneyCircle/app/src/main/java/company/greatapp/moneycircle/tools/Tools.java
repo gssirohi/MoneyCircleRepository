@@ -20,6 +20,7 @@ import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.asynctask.UpdateAccountRegistersTask;
 import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.constants.DB;
+import company.greatapp.moneycircle.constants.S;
 import company.greatapp.moneycircle.db.MoneyCircleProvider;
 import company.greatapp.moneycircle.manager.BorrowManager;
 import company.greatapp.moneycircle.manager.CategoryManager;
@@ -36,6 +37,7 @@ import company.greatapp.moneycircle.model.Income;
 import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.Split;
+import company.greatapp.moneycircle.model.User;
 import company.greatapp.moneycircle.receiver.MoneyTransactionReceiver;
 import company.greatapp.moneycircle.view.TagItemView;
 
@@ -402,5 +404,49 @@ public static String getModelName(int modelType){
 
     public static String floatString(float value) {
         return new DecimalFormat("##.##").format(value);
+    }
+
+
+    private static void dummyRequestCodemethod(){
+        int reqCode = 0;
+
+        switch(reqCode){
+
+            case S.TRANSPORT_REQUEST_CODE_LENT:
+                break;
+            case S.TRANSPORT_REQUEST_CODE_BORROW:
+                break;
+            case S.TRANSPORT_REQUEST_CODE_PAY:
+                break;
+            case S.TRANSPORT_REQUEST_CODE_RECEIVE:
+                break;
+            case S.TRANSPORT_REQUEST_CODE_SETTLE:
+                break;
+            case S.TRANSPORT_REQUEST_CODE_REMINDER:
+                break;
+            case S.TRANSPORT_REQUEST_CODE_NOTIFICATION:
+                break;
+            case S.TRANSPORT_REQUEST_CODE_DELETE_BORROW:
+                break;
+            case S.TRANSPORT_REQUEST_CODE_DELETE_LENT:
+                break;
+            case S.TRANSPORT_REQUEST_CODE_SETTLE_AGREE:
+                break;
+            case S.TRANSPORT_REQUEST_CODE_SETTLE_DISAGREE:
+                break;
+            default:
+        }
+    }
+
+    public static int getContactAvatorResId( int gender) {
+        int resId;
+        if(gender == User.MALE) {
+            resId = R.drawable.avator_male;
+        } else if(gender == User.FEMALE){
+            resId = R.drawable.avator_female;
+        } else {
+            resId = R.drawable.ic_profilepic;
+        }
+        return resId;
     }
 }

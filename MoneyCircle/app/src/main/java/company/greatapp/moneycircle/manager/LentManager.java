@@ -54,6 +54,7 @@ public class LentManager extends BaseModelManager  {
         String splitJson     = cursor.getString(cursor.getColumnIndex(DB.LINKED_SPLIT_JSON));
         String json_string     = cursor.getString(cursor.getColumnIndex(DB.JSON_STRING));
         String date_string     = cursor.getString(cursor.getColumnIndex(DB.DATE_STRING));
+        String owner_phone     = cursor.getString(cursor.getColumnIndex(DB.ITEM_OWNER_PHONE));
         int state              = cursor.getInt(cursor.getColumnIndex(DB.STATE));
         int date               = cursor.getInt(cursor.getColumnIndex(DB.DATE));
         int dateOfMonth             = cursor.getInt(cursor.getColumnIndex(DB.DAY_OF_MONTH));
@@ -79,6 +80,7 @@ public class LentManager extends BaseModelManager  {
         lent.setLinkedSplitJson(splitJson);
         lent.setDateString(date_string);
         lent.setJsonString(json_string);
+        lent.setOwnerPhone(owner_phone);
         return lent;
     }
 
@@ -97,6 +99,7 @@ public class LentManager extends BaseModelManager  {
         String splitJson     = cursor.getString(cursor.getColumnIndex(DB.LINKED_SPLIT_JSON));
         String json_string     = cursor.getString(cursor.getColumnIndex(DB.JSON_STRING));
         String date_string     = cursor.getString(cursor.getColumnIndex(DB.DATE_STRING));
+        String owner_phone     = cursor.getString(cursor.getColumnIndex(DB.ITEM_OWNER_PHONE));
         int state              = cursor.getInt(cursor.getColumnIndex(DB.STATE));
         int date               = cursor.getInt(cursor.getColumnIndex(DB.DATE));
         int dateOfMonth             = cursor.getInt(cursor.getColumnIndex(DB.DAY_OF_MONTH));
@@ -120,6 +123,7 @@ public class LentManager extends BaseModelManager  {
         lent.setIsLinkedWithSplit((isLinked == 1)?true:false);
         lent.setLinkedSplitJson(splitJson);
         lent.setDateString(date_string);
+        lent.setOwnerPhone(owner_phone);
         lent.setJsonString(json_string);
         return lent;
     }
