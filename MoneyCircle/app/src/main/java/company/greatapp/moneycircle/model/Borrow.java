@@ -58,7 +58,7 @@ public class Borrow extends Model {
         mUid = uid;
     }
 
-    public Borrow (Context context, MoneyCirclePackageFromServer inPackage) {
+    public Borrow (Context context, InPackage inPackage) {
         //setUID(Tools.generateUniqueId());
         GreatJSON.updateModelFieldsFromInPackage(context, inPackage, Model.MODEL_TYPE_BORROW, this);
     }

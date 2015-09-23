@@ -14,9 +14,9 @@ import company.greatapp.moneycircle.tools.Tools;
 /**
  * Created by Prateek on 09-09-2015.
  */
-public class MoneyCirclePackageFromServer {
+public class InPackage {
 
-    private static final String LOG_TAG = MoneyCirclePackageFromServer.class.getSimpleName();
+    private static final String LOG_TAG = InPackage.class.getSimpleName();
 	
     public static final int RESPONSE_STATE_NOT_RESPONDED            = 13;
     public static final int RESPONSE_STATE_AGREED                   = 14;
@@ -24,6 +24,10 @@ public class MoneyCirclePackageFromServer {
     public static final int RESPONSE_STATE_REMOVE_ITEM              = 16;
     public static final int RESPONSE_STATE_KEEP_ITEM                = 17;
     public static final int RESPONSE_STATE_RESEND                   = 18;
+
+
+    public static final int PENDING_ACTION_TYPE_APPROVAL                   = 23;
+    public static final int PENDING_ACTION_TYPE_REMOVE_ENTRY                   = 24;
 
     private int reqCode;
 
@@ -70,10 +74,10 @@ public class MoneyCirclePackageFromServer {
     private boolean isRespondable;
     private int responseState;
 
-    public MoneyCirclePackageFromServer(){
+    public InPackage(){
         uid = Tools.generateUniqueId();
     }
-    public MoneyCirclePackageFromServer(Cursor c){
+    public InPackage(Cursor c){
         setDbId(c.getInt(c.getColumnIndex(DB.DB_ID)));
         setUid(c.getString(c.getColumnIndex(DB.UID)));
         setReqCode(c.getInt(c.getColumnIndex(DB.REQUEST_CODE)));

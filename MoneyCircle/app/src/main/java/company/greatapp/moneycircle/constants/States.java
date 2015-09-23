@@ -20,6 +20,14 @@ public class States {
     public static final int BORROW_INACTIVE_PAYMENT_PENDING = 2010;
 
 
+    public static final int CONTACT_IDEAL = 3000;
+    public static final int CONTACT_SETTLE_REQ_SENDING = 3001;
+    public static final int CONTACT_SETTLE_REQ_APPROVAL_PENDING = 3002;
+    public static final int CONTACT_SETTLE_REQ_NOT_SENT = 3003;
+    public static final int CONTACT_WAITING_FOR_SETTLE_APPROVAL = 3004;
+    public static final int CONTACT_SETTLE_REQUEST_DISAPPROVED_ACTION_PENDING = 3005;
+
+
     public static String getStateString(int state) {
         String text = "";
         switch(state) {

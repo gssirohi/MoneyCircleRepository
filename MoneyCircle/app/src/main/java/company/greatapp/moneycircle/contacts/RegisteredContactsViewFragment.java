@@ -67,4 +67,5 @@ public class RegisteredContactsViewFragment extends Fragment {
 
         return view;
     }
+
 }

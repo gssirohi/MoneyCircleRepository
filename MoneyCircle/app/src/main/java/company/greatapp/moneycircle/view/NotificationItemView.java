@@ -10,19 +10,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.constants.S;
 import company.greatapp.moneycircle.constants.States;
+import company.greatapp.moneycircle.manager.Accountant;
 import company.greatapp.moneycircle.manager.Transporter;
-import company.greatapp.moneycircle.model.Borrow;
 import company.greatapp.moneycircle.model.Contact;
-import company.greatapp.moneycircle.model.Lent;
-import company.greatapp.moneycircle.model.Model;
-import company.greatapp.moneycircle.model.MoneyCirclePackageFromServer;
-import company.greatapp.moneycircle.model.User;
-import company.greatapp.moneycircle.tools.GreatJSON;
+import company.greatapp.moneycircle.model.InPackage;
 import company.greatapp.moneycircle.tools.Tools;
 
 import static android.widget.Toast.makeText;
@@ -52,7 +47,7 @@ public class NotificationItemView extends LinearLayout {
     private final Button b_clear;
     private final TextView tv_response_state_msg;
     private boolean isResponded =true;
-    private MoneyCirclePackageFromServer mMoneyCirclePackageFromServer;
+    private InPackage mInPackage;
 
     public NotificationItemView(Context context, AttributeSet attrs) {
 
@@ -150,32 +145,55 @@ public class NotificationItemView extends LinearLayout {
 
     private void handleDisagreeClicked() {
 
+        Contact contact;
+        if(mInPackage.getReqCode() == S.TRANSPORT_REQUEST_CODE_SETTLE) {
+            contact = Tools.getContactFromPhoneNumber(getContext(),mInPackage.getReqSenderPhone());
+            if(contact != null) {
+                contact.setState(States.CONTACT_IDEAL);
+                contact.updateItemInDb(getContext());
+                Transporter transporter = new Transporter(getContext());
+                String transportId = transporter.transportSettleUpApproval(mInPackage,false);
+            }
+        }
+        mInPackage.setResponseState(InPackage.RESPONSE_STATE_DISAGREED);
+        mInPackage.updateItemInDb(getContext());
     }
 
     private void handleAgreeClicked() {
 
+        Contact contact;
+        if(mInPackage.getReqCode() == S.TRANSPORT_REQUEST_CODE_SETTLE) {
+            contact = Tools.getContactFromPhoneNumber(getContext(),mInPackage.getReqSenderPhone());
+            if(contact != null) {
+                Accountant.performSettleUpWithContact(getContext(),contact);
+                Transporter transporter = new Transporter(getContext());
+                String transportId = transporter.transportSettleUpApproval(mInPackage,true);
+            }
+        }
+        mInPackage.setResponseState(InPackage.RESPONSE_STATE_AGREED);
+        mInPackage.updateItemInDb(getContext());
     }
 
 
-    public void initView(MoneyCirclePackageFromServer moneyCirclePackageFromServer) {
-        this.mMoneyCirclePackageFromServer = moneyCirclePackageFromServer;
-       int reqCode = moneyCirclePackageFromServer.getReqCode();
+    public void initView(InPackage inPackage) {
+        this.mInPackage = inPackage;
+       int reqCode = inPackage.getReqCode();
 
         tv_response_state_msg.setText(getResponseContextMsg());
-        String sender = moneyCirclePackageFromServer.getReqSenderName();
+        String sender = inPackage.getReqSenderName();
 
         String msg;
         if(reqCode != S.TRANSPORT_REQUEST_CODE_NOTIFICATION) {
-            msg = moneyCirclePackageFromServer.createNotificationMessage();
+            msg = inPackage.createNotificationMessage();
         } else {
-            msg = moneyCirclePackageFromServer.getMessage();
+            msg = inPackage.getMessage();
 
         }
 
-        String moneyItemTitle = moneyCirclePackageFromServer.getItemTitle();
-        String amount = ""+ moneyCirclePackageFromServer.getAmount();
-        String dateString = ""+ moneyCirclePackageFromServer.getItemDateString();
-        String dueDateString = ""+ moneyCirclePackageFromServer.getItemDueDateString();
+        String moneyItemTitle = inPackage.getItemTitle();
+        String amount = ""+ inPackage.getAmount();
+        String dateString = ""+ inPackage.getItemDateString();
+        String dueDateString = ""+ inPackage.getItemDueDateString();
 
         ll_money_item_frame.setVisibility(View.GONE);
         ll_agree_frame.setVisibility(View.GONE);
@@ -188,6 +206,8 @@ public class NotificationItemView extends LinearLayout {
         tv_date.setText(dateString);
         tv_due_date.setText("due on " + dueDateString);
 
+        doNotAllowPendingAction();
+
         switch(reqCode){
 
             case S.TRANSPORT_REQUEST_CODE_LENT:
@@ -199,6 +219,11 @@ public class NotificationItemView extends LinearLayout {
             case S.TRANSPORT_REQUEST_CODE_RECEIVE:
                 break;
             case S.TRANSPORT_REQUEST_CODE_SETTLE:
+                if(inPackage.getResponseState() == InPackage.RESPONSE_STATE_NOT_RESPONDED) {
+                    allowPendingAction(true, InPackage.PENDING_ACTION_TYPE_APPROVAL);
+                } else {
+
+                }
                 break;
             case S.TRANSPORT_REQUEST_CODE_REMINDER:
                 break;
@@ -217,6 +242,27 @@ public class NotificationItemView extends LinearLayout {
 
     }
 
+    public void doNotAllowPendingAction() {
+        allowPendingAction(false,0);
+    }
+    public void allowPendingAction(boolean allow,int pendingActionType) {
+        if(allow) {
+            if(pendingActionType == InPackage.PENDING_ACTION_TYPE_APPROVAL) {
+                ll_remove_entry_frame.setVisibility(View.GONE);
+                ll_agree_frame.setVisibility(View.VISIBLE);
+                b_clear.setVisibility(View.GONE);
+            } else if(pendingActionType == InPackage.PENDING_ACTION_TYPE_REMOVE_ENTRY) {
+                ll_remove_entry_frame.setVisibility(View.VISIBLE);
+                ll_agree_frame.setVisibility(View.GONE);
+                b_clear.setVisibility(View.GONE);
+            }
+
+        } else {
+            ll_remove_entry_frame.setVisibility(View.GONE);
+            ll_agree_frame.setVisibility(View.GONE);
+            b_clear.setVisibility(View.VISIBLE);
+        }
+    }
 
 
     public String getResponseContextMsg() {

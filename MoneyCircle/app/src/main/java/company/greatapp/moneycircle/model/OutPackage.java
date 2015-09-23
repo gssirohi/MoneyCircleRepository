@@ -15,9 +15,9 @@ import company.greatapp.moneycircle.tools.Tools;
 /**
  * Created by Gyanendrasingh on 9/8/2015.
  */
-public class MoneyCirclePackageForServer {
+public class OutPackage {
 
-    private static final String LOG_TAG = MoneyCirclePackageForServer.class.getSimpleName();
+    private static final String LOG_TAG = OutPackage.class.getSimpleName();
 
     private int maxRetryAttempt;
     private int attemptCounter;
@@ -55,7 +55,7 @@ public class MoneyCirclePackageForServer {
     private String message;
 //----------------------------------------------------------------------------------------//
 
-    public MoneyCirclePackageForServer() {
+    public OutPackage() {
         transportId = Tools.generateUniqueId();
     }
 
