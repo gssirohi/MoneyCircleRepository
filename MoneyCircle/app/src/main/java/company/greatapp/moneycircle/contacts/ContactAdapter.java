@@ -11,9 +11,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import company.greatapp.moneycircle.ContactItemView;
+import company.greatapp.moneycircle.view.ContactItemView;
 import company.greatapp.moneycircle.R;
-import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Model;
 
