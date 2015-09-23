@@ -6,6 +6,7 @@ import android.net.Uri;
 
 import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.constants.DB;
+import company.greatapp.moneycircle.constants.States;
 import company.greatapp.moneycircle.tools.Tools;
 
 /**
@@ -36,6 +37,7 @@ public class Contact extends Model {
     float lentAmountToThis;
 
     int gender;
+    int state = States.CONTACT_IDEAL;
 
 
     public Contact(String name, String number) {
@@ -58,6 +60,14 @@ public class Contact extends Model {
         setContactName("unnamed");
         setPhone("na");
         setUID(Tools.generateUniqueId());
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 
     public int getGender() {
@@ -268,6 +278,7 @@ public class Contact extends Model {
         row.put(DB.SERVER_NAME , getServerName());
         row.put(DB.SERVER_ID, getServerId());
         row.put(DB.GENDER, getGender());
+        row.put(DB.STATE, getState());
         row.put(DB.JSON_STRING ,getJsonString() );
         return row;
     }

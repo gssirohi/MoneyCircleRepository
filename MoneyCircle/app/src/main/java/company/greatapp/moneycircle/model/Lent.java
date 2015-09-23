@@ -62,7 +62,7 @@ public class Lent extends Model {
         mUid = uid;
     }
 
-    public Lent (Context context, MoneyCirclePackageFromServer inPackage) {
+    public Lent (Context context, InPackage inPackage) {
         //mUid = Tools.generateUniqueId();
         isLinkedWithSplit = false;
         linkedSplit = null;

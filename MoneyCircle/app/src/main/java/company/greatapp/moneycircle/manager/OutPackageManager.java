@@ -1,17 +1,14 @@
 package company.greatapp.moneycircle.manager;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.util.Log;
 
 import java.util.ArrayList;
 
 import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.constants.S;
-import company.greatapp.moneycircle.model.Model;
-import company.greatapp.moneycircle.model.MoneyCirclePackageForServer;
+import company.greatapp.moneycircle.model.OutPackage;
 
 /**
  * Created by Prateek on 11-09-2015.
@@ -19,19 +16,19 @@ import company.greatapp.moneycircle.model.MoneyCirclePackageForServer;
 public class OutPackageManager {
 
     private final Context mContext;
-    private ArrayList<MoneyCirclePackageForServer> mPendingList = new ArrayList<MoneyCirclePackageForServer>();
+    private ArrayList<OutPackage> mPendingList = new ArrayList<OutPackage>();
 
     public OutPackageManager(Context context) {
         mContext = context;
         loadItemsFromDB();
     }
 
-    public ArrayList<MoneyCirclePackageForServer> getPendingItems() {
+    public ArrayList<OutPackage> getPendingItems() {
         return mPendingList;
     }
 
-    public static MoneyCirclePackageForServer createOutPackageFromCursor(Cursor c) {
-        MoneyCirclePackageForServer out = new MoneyCirclePackageForServer();
+    public static OutPackage createOutPackageFromCursor(Cursor c) {
+        OutPackage out = new OutPackage();
 
         out.setTransportId(c.getString(c.getColumnIndex(DB.UID)));
         out.setItemOwnerPhone(c.getString(c.getColumnIndex(S.TRANSPORT_ITEM_OWNER_PHONE)));
@@ -65,7 +62,7 @@ public class OutPackageManager {
         if(c != null && c.getCount() > 0) {
             c.moveToFirst();
             while(!c.isAfterLast()) {
-                MoneyCirclePackageForServer outPackage =  createOutPackageFromCursor(c);
+                OutPackage outPackage =  createOutPackageFromCursor(c);
                 if(outPackage != null) {
                     Log.d("SPLIT", "LOADING outPackage[" + outPackage.getReqCode() + "] : " + outPackage.getTransportId());
                 }

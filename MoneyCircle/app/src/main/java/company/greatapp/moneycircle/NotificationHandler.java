@@ -9,11 +9,12 @@ import android.text.TextUtils;
 
 import company.greatapp.moneycircle.constants.S;
 import company.greatapp.moneycircle.constants.States;
+import company.greatapp.moneycircle.manager.Accountant;
 import company.greatapp.moneycircle.model.Borrow;
 import company.greatapp.moneycircle.model.Contact;
+import company.greatapp.moneycircle.model.InPackage;
 import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
-import company.greatapp.moneycircle.model.MoneyCirclePackageFromServer;
 import company.greatapp.moneycircle.model.User;
 import company.greatapp.moneycircle.tools.GreatJSON;
 import company.greatapp.moneycircle.tools.Tools;
@@ -45,7 +46,7 @@ public class NotificationHandler {
             return;
         }
 
-        MoneyCirclePackageFromServer packageFromServer = GreatJSON.getServerPackageFromJson(mContext, messageJsonString);
+        InPackage packageFromServer = GreatJSON.getServerPackageFromJson(mContext, messageJsonString);
 
 
 
@@ -59,17 +60,18 @@ public class NotificationHandler {
         packageFromServer.insertItemInDB(mContext);
     }
 
-    private boolean isCustomNotificationRequired(MoneyCirclePackageFromServer packageFromServer) {
+    private boolean isCustomNotificationRequired(InPackage packageFromServer) {
         return true;
     }
 
-    private void computeReceivedPackage(MoneyCirclePackageFromServer inPackage) {
+    private void computeReceivedPackage(InPackage inPackage) {
 
         User user = new User(mContext);
         String borrowUid = "";
         String lentUid = "";
         String contactJson = "";
         String contactUid = "";
+        String contactPhone = "";
         Contact contact;
         Borrow borrow;
         Lent lent;
@@ -139,6 +141,15 @@ public class NotificationHandler {
                 }
                 break;
             case S.TRANSPORT_REQUEST_CODE_SETTLE:
+                inPackage.setIsRespondable(true);
+                inPackage.setResponseState(InPackage.RESPONSE_STATE_NOT_RESPONDED);
+                contactPhone = inPackage.getReqSenderPhone();
+                contact = Tools.getContactFromPhoneNumber(mContext,contactPhone);
+                if(contact != null) {
+                    contact.setState(States.CONTACT_SETTLE_REQ_APPROVAL_PENDING);
+                    contact.updateItemInDb(mContext);
+                }
+                inPackage.updateItemInDb(mContext);
                 break;
             case S.TRANSPORT_REQUEST_CODE_REMINDER:
                 break;
@@ -149,8 +160,19 @@ public class NotificationHandler {
             case S.TRANSPORT_REQUEST_CODE_DELETE_LENT:
                 break;
             case S.TRANSPORT_REQUEST_CODE_SETTLE_AGREE:
+                contactPhone = inPackage.getReqSenderPhone();
+                contact = Tools.getContactFromPhoneNumber(mContext,contactPhone);
+                if(contact != null) {
+                    Accountant.performSettleUpWithContact(mContext,contact);
+                }
                 break;
             case S.TRANSPORT_REQUEST_CODE_SETTLE_DISAGREE:
+                contactPhone = inPackage.getReqSenderPhone();
+                contact = Tools.getContactFromPhoneNumber(mContext,contactPhone);
+                if(contact != null) {
+                    contact.setState(States.CONTACT_SETTLE_REQUEST_DISAPPROVED_ACTION_PENDING);
+                    contact.updateItemInDb(mContext);
+                }
                 break;
             default:
         }

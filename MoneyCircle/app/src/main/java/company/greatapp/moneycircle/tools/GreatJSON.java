@@ -18,9 +18,9 @@ import company.greatapp.moneycircle.model.Borrow;
 import company.greatapp.moneycircle.model.Circle;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Expense;
+import company.greatapp.moneycircle.model.InPackage;
 import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
-import company.greatapp.moneycircle.model.MoneyCirclePackageFromServer;
 import company.greatapp.moneycircle.model.Split;
 
 /**
@@ -597,17 +597,17 @@ public class GreatJSON {
         return notification;
     }*/
 
-    public static MoneyCirclePackageFromServer getServerPackageFromJson(Context context, String jsonString) {
+    public static InPackage getServerPackageFromJson(Context context, String jsonString) {
         if (TextUtils.isEmpty(jsonString)) {
             return null;
         }
-        MoneyCirclePackageFromServer serverPackage = new MoneyCirclePackageFromServer();
+        InPackage serverPackage = new InPackage();
 
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
             int reqCode = Integer.parseInt(jsonObject.getString(S.TRANSPORT_REQ_CODE));
             serverPackage.setReqCode(reqCode);
-            serverPackage.setResponseState(MoneyCirclePackageFromServer.RESPONSE_STATE_NOT_RESPONDED);
+            serverPackage.setResponseState(InPackage.RESPONSE_STATE_NOT_RESPONDED);
             serverPackage.setIsRespondable(false);//modify it later with reqcode
 
             String senderphoneNo = jsonObject.getString(S.TRANSPORT_REQ_SENDER_PHONE);
@@ -654,7 +654,9 @@ public class GreatJSON {
             //String dateString = jsonObject.getString("dateString");
             serverPackage.setDateString(DateUtils.getCurrentDate());
 
-            updateServerPackageWithItemInfo(serverPackage);
+            if(!ownerItemId.equals("NA") && !itemOwnerPhoneNo.equals("NA")) {
+                updateServerPackageWithItemInfo(serverPackage);
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -663,7 +665,7 @@ public class GreatJSON {
         return serverPackage;
     }
 
-    private static MoneyCirclePackageFromServer updateServerPackageWithItemInfo(MoneyCirclePackageFromServer serverPackage) {
+    private static InPackage updateServerPackageWithItemInfo(InPackage serverPackage) {
 
         String itemJsonString = serverPackage.getItemBodyJsonString();
         if (TextUtils.isEmpty(itemJsonString)) {
@@ -697,7 +699,7 @@ public class GreatJSON {
         return serverPackage;
     }
 
-    public static void updateModelFieldsFromInPackage(Context context, MoneyCirclePackageFromServer inPackage, int modelType, Model model) {
+    public static void updateModelFieldsFromInPackage(Context context, InPackage inPackage, int modelType, Model model) {
 
         if (inPackage == null || (TextUtils.isEmpty(inPackage.getItemBodyJsonString()))) {
             return;

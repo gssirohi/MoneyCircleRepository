@@ -1,7 +1,6 @@
 package company.greatapp.moneycircle.manager;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
 
@@ -9,8 +8,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONArray;
@@ -25,8 +22,8 @@ import company.greatapp.moneycircle.model.Borrow;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
-import company.greatapp.moneycircle.model.MoneyCirclePackageForServer;
-import company.greatapp.moneycircle.model.MoneyCirclePackageFromServer;
+import company.greatapp.moneycircle.model.OutPackage;
+import company.greatapp.moneycircle.model.InPackage;
 import company.greatapp.moneycircle.model.User;
 import company.greatapp.moneycircle.tools.GreatJSON;
 import company.greatapp.moneycircle.tools.RegistrationUtils;
@@ -170,7 +167,7 @@ public class Transporter {
         String ownerItemId;
         String itemBodyJsonString;
         User user = new User(mContext);
-        MoneyCirclePackageForServer outPackage = new MoneyCirclePackageForServer();
+        OutPackage outPackage = new OutPackage();
 
         //borrow.setState(States.LENT_SENDING);
 
@@ -232,7 +229,7 @@ public class Transporter {
         String ownerItemId;
         String itemBodyJsonString;
         User user = new User(mContext);
-        MoneyCirclePackageForServer outPackage = new MoneyCirclePackageForServer();
+        OutPackage outPackage = new OutPackage();
 
                 //borrow.setState(States.LENT_SENDING);
 
@@ -294,11 +291,48 @@ public class Transporter {
     }
 
 
+    public String transportSettleUpRequest(Contact contact) {
+
+        User user = new User(mContext);
+        OutPackage outPackage = new OutPackage();
+
+
+
+        contact.setState(States.CONTACT_SETTLE_REQ_SENDING);
+
+        contact.updateItemInDb(mContext);
+
+        outPackage.setUrl(S.URL_APP_SERVER_TRANSPORT_PACKAGE);
+        outPackage.setMaxRetryAttempt(0);
+        outPackage.setAttemptCounter(0);
+        outPackage.setReqResponseType(S.RESPONSE_TYPE_STRING);
+        outPackage.setReqType(Request.Method.POST);
+        outPackage.setReqCode(S.TRANSPORT_REQUEST_CODE_SETTLE);
+        outPackage.setReqSenderPhone(user.getPhoneNumber());
+        outPackage.setReqReceiverPhone(contact.getPhone());
+        outPackage.setItemOwnerPhone("NA");
+        outPackage.setItemAssociatePhone("NA");
+        outPackage.setMoneyPayerPhone("NA");
+        outPackage.setMoneyReceiverPhone("NA");
+        outPackage.setOwnerItemType(0);
+        outPackage.setAssociateItemtype(0);
+
+        outPackage.setOwnerItemId("NA");
+        outPackage.setAssociateItemId("NA");
+
+        outPackage.setItemBodyJsonType(S.TRANSPORT_BODY_TYPE_JSON_OBJECT);
+        outPackage.setItemBodyJsonString("NA");
+        outPackage.setMessage("SETTLE UP REQUEST");
+
+        transportPackage(outPackage);
+        return outPackage.getTransportId();
+    }
+
     public  String transportItem(Model model, int modelType) {
          String ownerItemId;
          String itemBodyJsonString;
          User user = new User(mContext);
-         MoneyCirclePackageForServer outPackage = new MoneyCirclePackageForServer();
+         OutPackage outPackage = new OutPackage();
 
         switch(modelType){
 
@@ -391,7 +425,7 @@ public class Transporter {
         return outPackage.getTransportId();
     }
 
-    public void transportPendingPackage(MoneyCirclePackageForServer outPackage) {
+    public void transportPendingPackage(OutPackage outPackage) {
 
         if(outPackage == null){
             return;
@@ -403,7 +437,7 @@ public class Transporter {
         addToQueue(req, tag);
     }
 
-    private  void transportPackage(MoneyCirclePackageForServer outPackage) {
+    private  void transportPackage(OutPackage outPackage) {
         if(outPackage == null){
             return;
         }
@@ -414,9 +448,9 @@ public class Transporter {
         addToQueue(req, tag);
     }
 
-    public String transportPackageApproval(MoneyCirclePackageFromServer fromPackage,boolean approved) {
+    public String transportSettleUpApproval(InPackage fromPackage,boolean approved) {
 
-    MoneyCirclePackageForServer outPackage = new MoneyCirclePackageForServer();
+    OutPackage outPackage = new OutPackage();
         User user = new User(mContext);
         switch(fromPackage.getReqCode()) {
 
@@ -461,7 +495,7 @@ public class Transporter {
         return outPackage.getTransportId();
     }
 
-    private StringRequest getStringRequestForPackage(final MoneyCirclePackageForServer outPackage) {
+    private StringRequest getStringRequestForPackage(final OutPackage outPackage) {
         StringRequest strReq = new StringRequest(outPackage.getReqType(),
                 outPackage.getUrl(), new Response.Listener<String>() {
 
@@ -495,7 +529,7 @@ public class Transporter {
         return strReq;
     }
 
-    private void handlePackageError(VolleyError error, MoneyCirclePackageForServer outPackage) {
+    private void handlePackageError(VolleyError error, OutPackage outPackage) {
         // deal with error details
 
         if(outPackage.getMaxRetryAttempt() - outPackage.getAttemptCounter() >= 0){
@@ -507,16 +541,18 @@ public class Transporter {
     }
 
 
-    private void handlePackageResponse(String response, MoneyCirclePackageForServer outPackage) {
+    private void handlePackageResponse(String response, OutPackage outPackage) {
         outPackage.deleteItemInDb(mContext);
 
         handleSentPackageItemState(outPackage);
     }
 
-    private void handleNotSentPackageItemState(MoneyCirclePackageForServer outPackage) {
+    private void handleNotSentPackageItemState(OutPackage outPackage) {
 
         String lentUid = "";
         String borrowUid = "";
+        String contactPhone = "";
+        Contact contact;
         Lent lent;
         Borrow borrow;
         switch(outPackage.getReqCode()) {
@@ -544,17 +580,24 @@ public class Transporter {
                 Tools.sendTransactionBroadCast(mContext, borrow, Model.MODEL_TYPE_BORROW);
                 break;
 
+            case S.TRANSPORT_REQUEST_CODE_SETTLE:
 
+                contactPhone = outPackage.getReqReceiverPhone();
+                contact = Tools.getContactFromPhoneNumber(mContext,contactPhone);
+                contact.setState(States.CONTACT_SETTLE_REQ_NOT_SENT);
+                contact.updateItemInDb(mContext);
+                break;
         }
     }
 
-    private void handleSentPackageItemState(MoneyCirclePackageForServer outPackage) {
+    private void handleSentPackageItemState(OutPackage outPackage) {
 
         String lentUid = "";
         String borrowUid = "";
         Lent lent;
         Borrow borrow;
-
+        String contactPhone = "";
+        Contact contact;
 
         switch(outPackage.getReqCode()) {
 
@@ -579,11 +622,17 @@ public class Transporter {
                 Tools.sendTransactionBroadCast(mContext, borrow, Model.MODEL_TYPE_BORROW);
                 break;
 
+            case S.TRANSPORT_REQUEST_CODE_SETTLE:
+
+                contactPhone = outPackage.getReqReceiverPhone();
+                contact = Tools.getContactFromPhoneNumber(mContext,contactPhone);
+                contact.setState(States.CONTACT_WAITING_FOR_SETTLE_APPROVAL);
+                contact.updateItemInDb(mContext);
+                break;
 
         }
 
     }
-
 
 
 }

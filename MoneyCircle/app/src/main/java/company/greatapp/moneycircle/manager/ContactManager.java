@@ -45,6 +45,7 @@ public class ContactManager extends BaseModelManager {
         String imageUri = cursor.getString(cursor.getColumnIndex(DB.CONTACT_IMAGE_URI));
         int registered = cursor.getInt(cursor.getColumnIndex(DB.REGISTERED));
         int gender = cursor.getInt(cursor.getColumnIndex(DB.GENDER));
+        int state = cursor.getInt(cursor.getColumnIndex(DB.STATE));
         float borrowedAmount = Float.parseFloat(cursor.getString(cursor.getColumnIndex(DB.CONTACT_BORROWED_AMOUNT_FROM_THIS)));
         float lentAmount = Float.parseFloat(cursor.getString(cursor.getColumnIndex(DB.CONTACT_LENT_AMOUNT_TO_THIS)));
         String jsonString = cursor.getString(cursor.getColumnIndex(DB.JSON_STRING));
@@ -65,6 +66,7 @@ public class ContactManager extends BaseModelManager {
         contact.setLentAmountToThis(lentAmount);
         contact.setJsonString(jsonString);
         contact.setGender(gender);
+        contact.setState(state);
         return contact;
     }
 
@@ -81,6 +83,7 @@ public class ContactManager extends BaseModelManager {
         String imageUri = cursor.getString(cursor.getColumnIndex(DB.CONTACT_IMAGE_URI));
         int registered = cursor.getInt(cursor.getColumnIndex(DB.REGISTERED));
         int gender = cursor.getInt(cursor.getColumnIndex(DB.GENDER));
+        int state = cursor.getInt(cursor.getColumnIndex(DB.STATE));
         float borrowedAmount = Float.parseFloat(cursor.getString(cursor.getColumnIndex(DB.CONTACT_BORROWED_AMOUNT_FROM_THIS)));
         float lentAmount = Float.parseFloat(cursor.getString(cursor.getColumnIndex(DB.CONTACT_LENT_AMOUNT_TO_THIS)));
         String jsonString = cursor.getString(cursor.getColumnIndex(DB.JSON_STRING));
@@ -100,6 +103,7 @@ public class ContactManager extends BaseModelManager {
         contact.setLentAmountToThis(lentAmount);
         contact.setJsonString(jsonString);
         contact.setGender(gender);
+        contact.setState(state);
         return contact;
     }
 

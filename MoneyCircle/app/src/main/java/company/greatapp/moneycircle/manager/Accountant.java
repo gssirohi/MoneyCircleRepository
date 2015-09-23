@@ -617,4 +617,36 @@ public class Accountant {
         sRegister.insertItemInDB(mContext);
     }
 
+    public static void performSettleUpWithContact(Context context, Contact contact) {
+        //this should be done in accountant service
+        LentManager lentManager = new LentManager(context);
+        ArrayList<Model> items = lentManager.getItemList();
+        Lent lent;
+        Contact linkedContact;
+        for(Model model : items) {
+            lent = (Lent)model;
+            linkedContact = lent.getLinkedContact();
+            if(linkedContact.getPhone() == contact.getPhone()) {
+                lent.setState(States.LENT_AMOUNT_RECEIVED);
+                lent.updateItemInDb(context);
+            }
+        }
+
+        Borrow borrow;
+        BorrowManager borrowManager = new BorrowManager(context);
+        items = borrowManager.getItemList();
+        for(Model model : items) {
+            borrow = (Borrow)model;
+            linkedContact = borrow.getLinkedContact();
+            if(linkedContact.getPhone() == contact.getPhone()) {
+                borrow.setState(States.BORROW_PAYMENT_CLEARED);
+                borrow.updateItemInDb(context);
+            }
+        }
+
+        contact.setBorrowedAmountfromThis(0);
+        contact.setLentAmountToThis(0);
+        contact.setState(States.CONTACT_IDEAL);
+        contact.updateItemInDb(context);
+    }
 }

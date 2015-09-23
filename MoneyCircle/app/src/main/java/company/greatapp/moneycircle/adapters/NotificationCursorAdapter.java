@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 
-import company.greatapp.moneycircle.model.MoneyCirclePackageFromServer;
+import company.greatapp.moneycircle.model.InPackage;
 import company.greatapp.moneycircle.view.NotificationItemView;
 
 /**
@@ -36,7 +36,7 @@ public class NotificationCursorAdapter extends CursorAdapter {
         cursor.moveToPosition(p - 1);
 
 
-        MoneyCirclePackageFromServer moneyCirclePackageFromServer = new MoneyCirclePackageFromServer(cursor);
-        ((NotificationItemView) view).initView(moneyCirclePackageFromServer);
+        InPackage inPackage = new InPackage(cursor);
+        ((NotificationItemView) view).initView(inPackage);
     }
 }

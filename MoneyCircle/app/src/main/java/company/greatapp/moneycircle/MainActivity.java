@@ -231,7 +231,7 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
                 startActivity(new Intent(this,SettingActivity.class));
                 break;
 
-            case 3://MoneyCirclePackageFromServer
+            case 3://InPackage
                 startActivity(new Intent(this,NotificationActivity.class));
                 break;
             case 4://profile

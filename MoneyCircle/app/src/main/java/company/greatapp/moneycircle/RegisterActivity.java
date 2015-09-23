@@ -32,6 +32,7 @@ import company.greatapp.moneycircle.manager.CategoryManager;
 import company.greatapp.moneycircle.manager.ContactManager;
 import company.greatapp.moneycircle.manager.PreferenceManager;
 import company.greatapp.moneycircle.model.Contact;
+import company.greatapp.moneycircle.model.Slot;
 import company.greatapp.moneycircle.model.User;
 import company.greatapp.moneycircle.tools.GreatJSON;
 import company.greatapp.moneycircle.tools.RegistrationUtils;
@@ -205,7 +206,7 @@ public class RegisterActivity extends ActionBarActivity {
             e.printStackTrace();
         }
         finally {
-            displayMessage("Slot [" + slot.slotCounter + "] result received, sending next..");
+            displayMessage("Slot [" + slot.getSlotCounter() + "] result received, sending next..");
             sendContactSlot();
         }
     }
@@ -257,7 +258,7 @@ public class RegisterActivity extends ActionBarActivity {
 
     private void initializeApp() {
         retriveContacts();
-        checkingContactsInAppServer();
+        checkContactsInAppServer();
 
         initApp();
     }
@@ -282,7 +283,7 @@ public class RegisterActivity extends ActionBarActivity {
     private  ContactManager cm;
     private Slot slot;
 
-    private void checkingContactsInAppServer() {
+    private void checkContactsInAppServer() {
         cm = new ContactManager(this);
         tv_progress.setText("Checking Friends in MoneyCircle...");
         displayMessage("checking Contacts In App Server...");
@@ -304,68 +305,17 @@ public class RegisterActivity extends ActionBarActivity {
             }
         }
         ArrayList<Contact> contactSlot = new ArrayList<Contact>();
-        for(int i = slot.start; i <= slot.end; i++) {
+        for(int i = slot.getStart(); i <= slot.getEnd(); i++) {
             Contact contact = (Contact)cm.getItemList().get(i);
             contactSlot.add(contact);
         }
         JSONArray phoneNumberJsonArray = GreatJSON.getPhoneNumberArrayForContactList(contactSlot);
         RegistrationUtils.checkRegisteredContactsInAppServer(this, phoneNumberJsonArray);
-        displayMessage("Slot ["+slot.slotCounter+"] sent to server");
+        displayMessage("Slot ["+slot.getSlotCounter()+"] sent to server");
 
     }
 
-    class Slot {
-        int start;
-        int end;
-        int maxIndex;
-        int slotCounter;
-        boolean isNextSlotAvailable;
-        public Slot(int size){
-            slotCounter = 1;
-            if(size <= 50){
-                start = 0;
-                end = size - 1;
-                maxIndex = size - 1;
-                isNextSlotAvailable = false;
-            } else {
-                if((size-50) > 10) {
-                    start = 0;
-                    end = 50;
-                    maxIndex = size - 1;
-                    isNextSlotAvailable = true;
-                } else {
-                    start = 0;
-                    end = size - 1;
-                    maxIndex = size -1;
-                    isNextSlotAvailable = false;
-                }
-            }
-        }
 
-        public boolean isNextAvailable(){
-            return isNextSlotAvailable;
-        }
-        public void nextSlot() {
-            if (isNextSlotAvailable) {
-                slotCounter++;
-                if ((maxIndex - end) <= 50) {
-                    start = end + 1;
-                    end = maxIndex;
-                    isNextSlotAvailable = false;
-                } else {
-                    if (((maxIndex - end) - 50) > 10) {
-                        start = end + 1;
-                        end = end + 50;
-                        isNextSlotAvailable = true;
-                    } else {
-                        start = end;
-                        end = maxIndex;
-                        isNextSlotAvailable = false;
-                    }
-                }
-            }
-        }
-    }
     private void retriveContacts() {
         tv_progress.setText("Retriving phone contacts...");
         displayMessage("Retriving phone contacts....");
