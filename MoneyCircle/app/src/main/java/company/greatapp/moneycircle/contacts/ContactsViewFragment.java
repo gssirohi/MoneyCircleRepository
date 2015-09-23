@@ -22,16 +22,16 @@ public class ContactsViewFragment extends Fragment {
 
     private ContactsViewFragment() {} // Empty constructor
 
-    private ContactsViewFragment(ContactManager contactManager) {
+    public ContactsViewFragment(ContactManager contactManager) {
             mContactManager = contactManager;
     }
 
-    public static final ContactsViewFragment getInstance(ContactManager contactManager) {
+    /*public static final ContactsViewFragment getInstance(ContactManager contactManager) {
         if (mContactsViewFragment == null) {
             mContactsViewFragment = new ContactsViewFragment(contactManager);
         }
         return mContactsViewFragment;
-    }
+    }*/
 
     @Nullable
     @Override

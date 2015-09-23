@@ -11,13 +11,13 @@ import company.greatapp.moneycircle.manager.ContactManager;
 /**
  * Created by prateek02.arora on 30-06-2015.
  */
-public class ContactAndCircleTabAdapter extends FragmentStatePagerAdapter {
+public class ContactAndCirclePagerAdapter extends FragmentStatePagerAdapter {
 
     private static final int TOTAL_TABS = 3;
     private ContactManager mContactManager = null;
     private List<Fragment> mFragmentList = null;
 
-    public ContactAndCircleTabAdapter(FragmentManager fm, List<Fragment> fragmentList) {
+    public ContactAndCirclePagerAdapter(FragmentManager fm, List<Fragment> fragmentList) {
         super(fm);
         mFragmentList = fragmentList;
     }
@@ -37,9 +37,9 @@ public class ContactAndCircleTabAdapter extends FragmentStatePagerAdapter {
     }
 
     /**
-     * This Function is needed if we use PagerTabStrip or PagerTitleStrip
+     * This Function is needed if we use PagerTabStrip or PagerTitleStrip and if we are setting the tablayout with pageradapter
      * @param position
-     * @return*//*
+     * @return*/
 
     @Override
     public CharSequence getPageTitle(int position) {
@@ -60,5 +60,5 @@ public class ContactAndCircleTabAdapter extends FragmentStatePagerAdapter {
         }
 
         return title;
-    }*/
+    }
 }

@@ -30,16 +30,16 @@ public class RegisteredContactsViewFragment extends Fragment {
 
     private RegisteredContactsViewFragment() {} // Empty Constructor
 
-    private RegisteredContactsViewFragment(ContactManager contactManager) {
+    public RegisteredContactsViewFragment(ContactManager contactManager) {
         mContactManager = contactManager;
     }
 
-    public static final RegisteredContactsViewFragment getInstance(ContactManager contactManager) {
+    /*public static final RegisteredContactsViewFragment getInstance(ContactManager contactManager) {
         if (mRegisteredContactsViewFragment == null) {
             mRegisteredContactsViewFragment = new RegisteredContactsViewFragment(contactManager);
         }
         return mRegisteredContactsViewFragment;
-    }
+    }*/
 
     @Nullable
     @Override
