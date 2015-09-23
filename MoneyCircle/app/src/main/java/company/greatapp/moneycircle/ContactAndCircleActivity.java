@@ -54,7 +54,7 @@ public class ContactAndCircleActivity extends AppCompatActivity implements TabLa
     private ProgressBar pb_progress;
     private RegisteredContactsViewFragment registeredFragment;
 
-
+    private BroadcastReceiver mContactSyncResponseReceiver = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,13 +95,32 @@ public class ContactAndCircleActivity extends AppCompatActivity implements TabLa
     @Override
     public void onDestroy(){
         super.onDestroy();
-        if(mContactSyncResponseReceiver != null)
-        unregisterReceiver(mContactSyncResponseReceiver);
+        if(mContactSyncResponseReceiver != null ) {
+            unregisterReceiver(mContactSyncResponseReceiver);
+        }
     }
 
     private Slot slot;
 
+    private void setReceiver() {
+        mContactSyncResponseReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                Log.d("CONTACT SYNC", "CONTACT SYNC RECEIVER : intent received [" + action + "]");
+                if(action.equals(S.ACTION_CHECK_REGISTERED_CONTACTS_RESULT )){
+                    handleRegisteredContactsCheckResult(intent);
+                }  else if(action.equals(C.ACTION_DISPLAY_MESSAGE )){
+                    displayMessage(intent);
+                }
+
+            }
+        };
+
+    }
     private void refreshContacts() {
+
+        setReceiver();
 
         setContentView(R.layout.loading_splash_layout);
         IntentFilter IF = new IntentFilter();
@@ -145,6 +164,7 @@ public class ContactAndCircleActivity extends AppCompatActivity implements TabLa
     private void resetOriginalScreen() {
         if(mContactSyncResponseReceiver != null){
             unregisterReceiver(mContactSyncResponseReceiver);
+            mContactSyncResponseReceiver = null;
         }
 
         mContactManager = new ContactManager(this);
@@ -210,20 +230,6 @@ public class ContactAndCircleActivity extends AppCompatActivity implements TabLa
         pb_progress.setProgress(mProgress);
     }
 
-    private BroadcastReceiver mContactSyncResponseReceiver =
-            new BroadcastReceiver() {
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    String action = intent.getAction();
-                    Log.d("CONTACT SYNC", "CONTACT SYNC RECEIVER : intent received [" + action + "]");
-                    if(action.equals(S.ACTION_CHECK_REGISTERED_CONTACTS_RESULT )){
-                        handleRegisteredContactsCheckResult(intent);
-                    }  else if(action.equals(C.ACTION_DISPLAY_MESSAGE )){
-                        displayMessage(intent);
-                    }
-
-                }
-            };
 
 
     private void handleRegisteredContactsCheckResult(Intent intent) {

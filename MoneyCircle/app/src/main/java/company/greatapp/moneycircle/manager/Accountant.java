@@ -264,7 +264,9 @@ public class Accountant {
     public void updateAllRegistersInDb(Intent updateIntent) {
         String last_json = updateIntent.getStringExtra(UpdateAccountRegistersTask.LAST_TRANSACTION_JSON);
         int transaction_model = updateIntent.getIntExtra(UpdateAccountRegistersTask.TRANSACTION_TYPE,0);
-        setLastTransaction(last_json,transaction_model);
+        if(!TextUtils.isEmpty(last_json)) {
+            setLastTransaction(last_json, transaction_model);
+        }
         updateRegisterInDb(Model.MODEL_TYPE_INCOME);
         updateRegisterInDb(Model.MODEL_TYPE_EXPENSE);
         updateRegisterInDb(Model.MODEL_TYPE_BORROW);
@@ -618,6 +620,7 @@ public class Accountant {
     }
 
     public static void performSettleUpWithContact(Context context, Contact contact) {
+        //TODO: ACCOUNTANT SERVICE REQUIRED
         //this should be done in accountant service
         LentManager lentManager = new LentManager(context);
         ArrayList<Model> items = lentManager.getItemList();
@@ -626,7 +629,9 @@ public class Accountant {
         for(Model model : items) {
             lent = (Lent)model;
             linkedContact = lent.getLinkedContact();
-            if(linkedContact.getPhone() == contact.getPhone()) {
+            Log.d("TAG","CONTACT 1 : "+ linkedContact.getPhone()+"  CONTACT 2 :"+contact.getPhone());
+            if(linkedContact.getPhone().equals(contact.getPhone())) {
+                Log.i("TAG","CONTACT MATCHED FOR LENT");
                 lent.setState(States.LENT_AMOUNT_RECEIVED);
                 lent.updateItemInDb(context);
             }
@@ -638,7 +643,9 @@ public class Accountant {
         for(Model model : items) {
             borrow = (Borrow)model;
             linkedContact = borrow.getLinkedContact();
-            if(linkedContact.getPhone() == contact.getPhone()) {
+            Log.d("TAG","CONTACT 1 : "+ linkedContact.getPhone()+"  CONTACT 2 :"+contact.getPhone());
+            if(linkedContact.getPhone().equals(contact.getPhone())) {
+                Log.i("TAG","CONTACT MATCHED FOR BORROW");
                 borrow.setState(States.BORROW_PAYMENT_CLEARED);
                 borrow.updateItemInDb(context);
             }
@@ -648,5 +655,7 @@ public class Accountant {
         contact.setLentAmountToThis(0);
         contact.setState(States.CONTACT_IDEAL);
         contact.updateItemInDb(context);
+
+        Tools.sendMoneyTransactionBroadCast(context,null,0);
     }
 }

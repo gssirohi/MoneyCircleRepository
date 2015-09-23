@@ -386,21 +386,26 @@ public static String getModelName(int modelType){
         sendMoneyTransactionBroadCast(context,newItem,type);
     }
     public static void sendMoneyTransactionBroadCast(Context context, Model newItem, int type) {
+
+        Intent intent = new Intent(MoneyTransactionReceiver.ACTION_MONEY_TRANSACTION);
+        JSONObject obj = null;
         if(newItem != null) {
-            String uid = newItem.getUID().replaceAll("NEW","DB");
+            String uid = newItem.getUID().replaceAll("NEW", "DB");
             newItem.setUID(uid);
-            Intent intent = new Intent(MoneyTransactionReceiver.ACTION_MONEY_TRANSACTION);
+
             // You can also include some extra data.
             intent.putExtra("message", "This is my message!");
-            JSONObject obj = GreatJSON.getJsonObjectForModel(newItem);
+            obj = GreatJSON.getJsonObjectForModel(newItem);
+        }
             intent.putExtra(UpdateAccountRegistersTask.LAST_TRANSACTION_JSON,((obj != null)?obj.toString():""));
             intent.putExtra(UpdateAccountRegistersTask.TRANSACTION_TYPE, type);
             Log.i("SPLIT", "broadCast is sent for MONEY_TRANSACTION");
             context.sendBroadcast(intent);
 //            UpdateAccountRegistersTask task = new UpdateAccountRegistersTask(context);
 //            task.execute(intent);
-        }
+
     }
+
 
     public static String floatString(float value) {
         return new DecimalFormat("##.##").format(value);
