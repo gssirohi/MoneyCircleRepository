@@ -215,6 +215,10 @@ public class SplitToolActivity extends ActionBarActivity implements TagItemView.
         setDefaultCategory();
         setDefaultDate();
         setDefaultDueDate();
+        String contactUid = getIntent().getStringExtra(C.CONTACT_UID);
+        if(!TextUtils.isEmpty(contactUid)) {
+            addInitialContact(contactUid);
+        }
     }
 
     private void handleSplitAction() {
@@ -483,6 +487,12 @@ public class SplitToolActivity extends ActionBarActivity implements TagItemView.
         startActivityForResult(i, requestCode);
     }
 
+    public void addInitialContact(String contactUid) {
+        ArrayList<String> members = new ArrayList<String>();
+        members.add(contactUid);
+        addParticipants(C.TAG_CONTACTS, members);
+        addContactTagViews(C.TAG_CONTACTS);
+    }
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         Log.d("split", "onActivityResult : requestCode:" + requestCode + "  resultCode:" + resultCode);

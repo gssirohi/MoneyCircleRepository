@@ -4,8 +4,10 @@ import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,12 +19,14 @@ import android.widget.TextView;
 import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.constants.S;
 import company.greatapp.moneycircle.constants.States;
+import company.greatapp.moneycircle.dialogs.AddNewEntryDialog;
 import company.greatapp.moneycircle.manager.ContactManager;
 import company.greatapp.moneycircle.manager.Transporter;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.InPackage;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.tools.Tools;
+import company.greatapp.moneycircle.view.CashFlowView;
 import company.greatapp.moneycircle.view.CircleItemView;
 import company.greatapp.moneycircle.view.NotificationItemView;
 
@@ -34,15 +38,16 @@ public class ContactDetailActivity extends AppCompatActivity implements LoaderMa
     private TextView tv_contact_name;
     private TextView tv_contact_number;
     private TextView tv_contact_message;
-    private CircleItemView civ_lent;
-    private CircleItemView civ_borrow;
-    private CircleItemView civ_balance;
+
     private Button b_settle_up;
     private String contactUid;
     private Contact mContact;
 
     private LinearLayout ll_notification_frame;
     private InPackage mInPackage;
+    private FloatingActionButton fb_add_entry;
+    private Toolbar toolbar;
+    private CashFlowView cfv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,17 +58,25 @@ public class ContactDetailActivity extends AppCompatActivity implements LoaderMa
 
         setContentView(R.layout.activity_contact_detail);
 
+        toolbar = (Toolbar)findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+
         iv_contact_image = (ImageView)findViewById(R.id.iv_contact_detail);
         tv_contact_name = (TextView)findViewById(R.id.tv_contact_detail_name);
         tv_contact_number = (TextView)findViewById(R.id.tv_contact_detail_number);
         tv_contact_message = (TextView)findViewById(R.id.tv_contact_detail_message);
 
-        civ_lent = (CircleItemView)findViewById(R.id.civ_contact_detail_lent);
-        civ_borrow = (CircleItemView)findViewById(R.id.civ_contact_detail_borrow);
-        civ_balance = (CircleItemView)findViewById(R.id.civ_contact_detail_balance);
+        cfv = (CashFlowView)findViewById(R.id.cfv_contact_detail);
 
         b_settle_up = (Button)findViewById(R.id.b_contact_detail_settle_up);
+        fb_add_entry = (FloatingActionButton)findViewById(R.id.fb_contact_detail_add_new_entry);
 
+        fb_add_entry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleNewEntryButton();
+            }
+        });
         ll_notification_frame = (LinearLayout)findViewById(R.id.ll_contact_detail_notification_frame);
 
         b_settle_up.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +86,11 @@ public class ContactDetailActivity extends AppCompatActivity implements LoaderMa
             }
         });
         //initView(mContact);
+    }
+
+    private void handleNewEntryButton() {
+        AddNewEntryDialog dialog = new AddNewEntryDialog(this,mContact);
+        dialog.showDialogWithAnimation();
     }
 
 
@@ -122,13 +140,15 @@ public class ContactDetailActivity extends AppCompatActivity implements LoaderMa
 
         tv_contact_name.setText(mContact.getContactName());
         tv_contact_number.setText(mContact.getPhone());
-        civ_lent.setItemName("You lent to him");
-        civ_lent.setItemValue("" + Tools.floatString(lent));
-        civ_borrow.setItemName("You borrowed from him");
-        civ_borrow.setItemValue("" + Tools.floatString(borrow));
 
-        civ_balance.setItemName(title);
-        civ_balance.setItemValue(balanceAmount);
+        cfv.setFirstItemTitle("You lent to him");
+        cfv.setFirstItemValue(Tools.floatString(lent));
+
+        cfv.setSecondItemTitle("You borrowed from him");
+        cfv.setSecondItemValue(Tools.floatString(borrow));
+
+        cfv.setResultTitle(title);
+        cfv.setResultValue(balanceAmount);
 
         switch(mContact.getState()) {
             case States.CONTACT_IDEAL:

@@ -86,8 +86,9 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        int entryType = intent.getIntExtra(C.ENTRY_TYPE,C.ENTRY_TYPE_INPUT);
+        int entryType = intent.getIntExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
         this.mEntryType = entryType;
+
         mModelType = intent.getIntExtra(C.MODEL_TYPE, Model.MODEL_TYPE_INCOME);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -205,6 +206,9 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         setDefaultDueDate();
         //setTextColor();
         setButtonColor();
+
+        String contactUid = intent.getStringExtra(C.CONTACT_UID);
+        addMember(contactUid);
     }
 
     private void setButtonColor() {

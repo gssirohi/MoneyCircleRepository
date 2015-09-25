@@ -52,4 +52,5 @@ public class C {
     public static final String ACTION_DISPLAY_MESSAGE = "displayMessageAction" ;
     public static final String DISPLAY_MESSAGE_TEXT = "messageText" ;
 
+    public static final String CONTACT_UID = "contactUid";
 }

@@ -17,6 +17,8 @@ import company.greatapp.moneycircle.AddNewEntryActivity;
 import company.greatapp.moneycircle.ManageCircleActivity;
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.constants.C;
+import company.greatapp.moneycircle.constants.DB;
+import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.split.SplitToolActivity;
 import company.greatapp.moneycircle.view.CircleButton;
@@ -26,6 +28,7 @@ import company.greatapp.moneycircle.view.CircleButton;
  */
 public class AddNewEntryDialog extends Dialog {
     private final Context mContext;
+    private Contact mContact;
     private CircleButton b_split;
     private CircleButton b_income;
     private CircleButton b_expense;
@@ -42,10 +45,19 @@ public class AddNewEntryDialog extends Dialog {
     public AddNewEntryDialog(Context context) {
         super(context);
         mContext = context;
-        init();
+        mContact = null;
+        init(mContact);
     }
 
-    private void init() {
+    public AddNewEntryDialog(Context context,Contact contact) {
+        super(context);
+        mContext = context;
+        mContact = contact;
+        init(contact);
+    }
+
+
+    private void init(Contact contact) {
         //TODO: show add option screen
         //startActivity(new Intent(this,SplitToolActivity.class));
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -55,12 +67,16 @@ public class AddNewEntryDialog extends Dialog {
         ll_2 = (LinearLayout)viewGroup.findViewById(R.id.ll_new_entry_options_2);
         ll_3 = (LinearLayout)viewGroup.findViewById(R.id.ll_new_entry_options_3);
         ll_4 = (LinearLayout)viewGroup.findViewById(R.id.ll_new_entry_options_4);
+        if(contact != null) {
+            ll_2.setVisibility(View.GONE);
+            ll_4.setVisibility(View.GONE);
+        }
         if(C.NEW_ENTRY_DIALOG_TRANSPARENT) {
             requestWindowFeature(Window.FEATURE_NO_TITLE);
         }
         setContentView(viewGroup);
         setTitle("Add New Entry");
-        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         if(C.NEW_ENTRY_DIALOG_TRANSPARENT) {
             getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         }
@@ -117,6 +133,7 @@ public class AddNewEntryDialog extends Dialog {
         SlideToAbove();
     }
 
+
     public void showDialogWithAnimation() {
         show();
         SlideToAbove();
@@ -140,9 +157,11 @@ public class AddNewEntryDialog extends Dialog {
 //        b_category.startAnimation(slide);
 //        b_circle.startAnimation(slide);
         ll_1.startAnimation(slide);
-        ll_2.startAnimation(slide);
+        if(mContact == null)
+            ll_2.startAnimation(slide);
         ll_3.startAnimation(slide);
-        ll_4.startAnimation(slide);
+        if(mContact == null)
+            ll_4.startAnimation(slide);
         slide.setAnimationListener(new Animation.AnimationListener() {
 
             @Override
@@ -176,7 +195,7 @@ public class AddNewEntryDialog extends Dialog {
     private void handleButtonClick(int type) {
         String msg = "";
         Intent i = null;
-        this.dismiss();
+
         switch(type) {
             case 1:
                 msg = "daily expense";
@@ -184,35 +203,30 @@ public class AddNewEntryDialog extends Dialog {
             case 2:
                 msg = "split";
                 i = new Intent(mContext,SplitToolActivity.class);
-                mContext.startActivity(i);
                 break;
             case 3:
                 msg = "income";
                 i = new Intent(mContext,AddNewEntryActivity.class);
                 i.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
                 i.putExtra(C.MODEL_TYPE, Model.MODEL_TYPE_INCOME);
-                mContext.startActivity(i);
                 break;
             case 4:
                 msg = "expense";
                 i = new Intent(mContext,AddNewEntryActivity.class);
                 i.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
                 i.putExtra(C.MODEL_TYPE, Model.MODEL_TYPE_EXPENSE);
-                mContext.startActivity(i);
                 break;
             case 5:
                 msg = "lent";
                 i = new Intent(mContext,AddNewEntryActivity.class);
                 i.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
                 i.putExtra(C.MODEL_TYPE, Model.MODEL_TYPE_LENT);
-                mContext.startActivity(i);
                 break;
             case 6:
                 msg = "borrow";
                 i = new Intent(mContext,AddNewEntryActivity.class);
                 i.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
                 i.putExtra(C.MODEL_TYPE, Model.MODEL_TYPE_BORROW);
-                mContext.startActivity(i);
                 break;
             case 7:
                 msg = "category";
@@ -220,10 +234,19 @@ public class AddNewEntryDialog extends Dialog {
             case 8:
                 msg = "circle";
                 i = new Intent(mContext, ManageCircleActivity.class);
-                mContext.startActivity(i);
                 break;
         }
 
+        if(i != null) {
+
+            if(mContact != null){
+                i.putExtra(C.CONTACT_UID,mContact.getUID());
+
+            }
+            mContext.startActivity(i);
+        }
         Toast.makeText(mContext, "Add new " + msg, Toast.LENGTH_SHORT).show();
+        this.dismiss();
     }
+
 }
