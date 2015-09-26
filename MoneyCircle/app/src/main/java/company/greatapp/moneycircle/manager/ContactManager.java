@@ -13,6 +13,7 @@ import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Model;
+import company.greatapp.moneycircle.model.User;
 import company.greatapp.moneycircle.tools.Tools;
 
 /**
@@ -170,18 +171,39 @@ public class ContactManager extends BaseModelManager {
         return this.mUnRegisteredContactList;
     }
 
+    public ArrayList<String> getPhoneNumberList() {
+        ArrayList<Model> list  = getItemList();
+        ArrayList<String> phones = new ArrayList<String>();
+        Contact contact;
+        for(Model model: list) {
+            contact = (Contact)model;
+            phones.add(contact.getPhone());
+        }
+        return phones;
+    }
 
-    public void retriveContactsFromDevice() {
+    public void updateContactsFromDevice() {
         Cursor phones = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
 
-        ArrayList<String> addedPhones = new ArrayList<String>();
+        User user = new User(context);
+        ArrayList<String> addedPhones = getPhoneNumberList();
         if (phones != null) {
 
             while (phones.moveToNext()) {
                 String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
                 String number = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                 number = Tools.getFormatedNumber(number);
-                if (TextUtils.isEmpty(number) || addedPhones.contains(number)) continue;
+                if (TextUtils.isEmpty(number) || user.getPhoneNumber().equals(number)) {
+                    continue;
+                } else if(addedPhones.contains(number)) {
+                    Contact contact = getContactByPhoneNumber(number);
+                    if(!contact.getContactName().equals(name)) {
+                        contact.setContactName(name);
+                        contact.updateItemInDb(context);
+                    }
+                    continue;
+                }
+
                 Contact contact = new Contact(name, number);
                 insertItemInDB(contact);
                 addedPhones.add(number);
@@ -190,8 +212,34 @@ public class ContactManager extends BaseModelManager {
                 }
             }
         }
-        Contact contact = new Contact(C.USER_TITLE, C.USER_DUMMY_NUMBER);
-        insertItemInDB(contact);
+//        Contact contact = new Contact(C.USER_TITLE, C.USER_DUMMY_NUMBER);
+//        insertItemInDB(contact);
+
+    }
+
+
+    public void retriveContactsFromDevice() {
+        Cursor phones = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
+
+        User user = new User(context);
+        ArrayList<String> addedPhones = new ArrayList<String>();
+        if (phones != null) {
+
+            while (phones.moveToNext()) {
+                String name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+                String number = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                number = Tools.getFormatedNumber(number);
+                if (TextUtils.isEmpty(number) || addedPhones.contains(number) || user.getPhoneNumber().equals(number)) continue;
+                Contact contact = new Contact(name, number);
+                insertItemInDB(contact);
+                addedPhones.add(number);
+                if (phones.isLast()) {
+                    break;
+                }
+            }
+        }
+//        Contact contact = new Contact(C.USER_TITLE, C.USER_DUMMY_NUMBER);
+//        insertItemInDB(contact);
 
     }
 

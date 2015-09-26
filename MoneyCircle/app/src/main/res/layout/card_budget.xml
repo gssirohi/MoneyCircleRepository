@@ -66,39 +66,10 @@
                 android:layout_margin="10dp"
                 android:indeterminate="false" />
 
-            <LinearLayout
-                android:orientation="horizontal"
+            <company.greatapp.moneycircle.view.CashFlowView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <view
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    class="company.greatapp.moneycircle.view.CircleItemView"
-                    android:id="@+id/civ_available"
-                    android:layout_margin="5dp"
-                    android:layout_weight="4"
-                    android:padding="8dp"/>
-
-                <view
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    class="company.greatapp.moneycircle.view.CircleItemView"
-                    android:id="@+id/civ_total_budget"
-                    android:layout_margin="5dp"
-                    android:layout_weight="4"
-                    android:padding="8dp"/>
-
-                <view
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    class="company.greatapp.moneycircle.view.CircleItemView"
-                    android:id="@+id/civ_total_spent"
-                    android:layout_margin="5dp"
-                    android:layout_weight="4"
-                    android:padding="8dp"/>
-
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:id="@+id/cfv_card_budget" />
 
 
         </LinearLayout>

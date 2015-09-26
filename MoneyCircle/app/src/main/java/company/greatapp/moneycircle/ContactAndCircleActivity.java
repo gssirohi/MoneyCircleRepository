@@ -116,9 +116,11 @@ public class ContactAndCircleActivity extends AppCompatActivity implements TabLa
     }
     private void refreshContacts() {
 
+
         setReceiver();
 
         setContentView(R.layout.loading_splash_layout);
+
         IntentFilter IF = new IntentFilter();
         IF.addAction(C.ACTION_DISPLAY_MESSAGE);
         IF.addAction(S.ACTION_CHECK_REGISTERED_CONTACTS_RESULT);
@@ -126,6 +128,9 @@ public class ContactAndCircleActivity extends AppCompatActivity implements TabLa
         registerReceiver(mContactSyncResponseReceiver, IF);
         tv_progress = (TextView)findViewById(R.id.tv_loading_splash_progress);
         pb_progress = (ProgressBar)findViewById(R.id.pb_loading_splash);
+
+        displayMessage("Updating contact list from phone...");
+        mContactManager.updateContactsFromDevice();
 
         tv_progress.setText("Checking Friends in MoneyCircle...");
         displayMessage("checking Contacts In App Server...");

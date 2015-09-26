@@ -91,132 +91,66 @@
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_margin="5dp">
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center">
-
-                    <FrameLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="of type"
-                            android:id="@+id/tv_new_category"
-                            android:layout_gravity="center"
-                            android:gravity="center" />
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=" with in "
-                            android:id="@+id/tv_new_member_add"
-                            android:layout_gravity="center"
-                            android:gravity="center" />
-                    </FrameLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
+                    android:layout_gravity="center"
                     android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center">
+                    android:layout_weight="1">
 
                     <view
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        class="company.greatapp.moneycircle.view.TopSegmentItemView"
                         android:id="@+id/tsiv_new_category"
-                        android:layout_weight="3" />
-
-                    <view
+                        class="company.greatapp.moneycircle.view.TopSegmentItemView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        class="company.greatapp.moneycircle.view.TopSegmentItemView"
+                        android:layout_weight="3"
+                        android:layout_gravity="center"
+                        android:gravity="center" />
+
+                    <view
                         android:id="@+id/tsiv_new_member_add"
-                        android:layout_weight="3" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="20dp"
-                    android:layout_gravity="center">
-
-                    <FrameLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:layout_gravity="center">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="on date"
-                            android:id="@+id/tv_new_date_text"
-                            android:layout_gravity="center"
-                            android:gravity="center" />
-                    </FrameLayout>
-
-                    <FrameLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:layout_gravity="center">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="due date"
-                            android:id="@+id/tv_new_due_date_text"
-                            android:layout_gravity="center"
-                            android:gravity="center" />
-                    </FrameLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center">
-
-                    <view
+                        class="company.greatapp.moneycircle.view.TopSegmentItemView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        class="company.greatapp.moneycircle.view.TopSegmentItemView"
+                        android:layout_weight="3"
+                        android:layout_gravity="center"
+                        android:gravity="center" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+
+                    <view
                         android:id="@+id/tsiv_new_date"
-                        android:layout_weight="3" />
-
-                    <view
+                        class="company.greatapp.moneycircle.view.TopSegmentItemView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        class="company.greatapp.moneycircle.view.TopSegmentItemView"
+                        android:layout_weight="3"
+                        android:layout_gravity="center"
+                        android:gravity="center" />
+
+                    <view
                         android:id="@+id/tsiv_new_due_date"
-                        android:layout_weight="3" />
+                        class="company.greatapp.moneycircle.view.TopSegmentItemView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:layout_gravity="center"
+                        android:gravity="center" />
                 </LinearLayout>
 
             </LinearLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
