@@ -1,10 +1,14 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-   tools:context="company.greatapp.moneycircle.NotificationActivity">
+
+   tools:context="company.greatapp.moneycircle.NotificationActivity"
+    android:orientation="vertical">
+    <include
+        android:id="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/tool_bar_layout" />
     <include
         android:id="@+id/no_item_view"
         android:layout_width="match_parent"
@@ -12,9 +16,10 @@
         layout="@layout/no_entry_available" />
 
     <ListView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/lv_notification" />
+        android:id="@+id/lv_notification"
+        android:scrollbars="none"/>
 
 
-</RelativeLayout>
+</LinearLayout>

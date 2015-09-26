@@ -35,16 +35,16 @@ public class CirclesViewFragment extends Fragment implements android.support.v4.
 
     private CirclesViewFragment() {}     // Empty Constructor
 
-    private CirclesViewFragment(ContactManager manager) {
+    public CirclesViewFragment(ContactManager manager) {
         mContactManager = manager;
     }
 
-    public static final CirclesViewFragment getInstance(ContactManager contactManager) {
+    /*public static final CirclesViewFragment getInstance(ContactManager contactManager) {
         if (mCircleViewFragment == null) {
             mCircleViewFragment = new CirclesViewFragment(contactManager);
         }
         return mCircleViewFragment;
-    }
+    }*/
 
     @Nullable
     @Override

@@ -44,7 +44,7 @@ import company.greatapp.moneycircle.view.TagItemView;
 public class ContactAndCircleActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, TagItemView.TagItemViewCallBacks{
 
     private ViewPager mViewPager;
-    private ContactAndCircleTabAdapter mTabAdapter;
+    private ContactAndCirclePagerAdapter mPagerAdapter;
 
     private Toolbar mToolbar;
     private ContactManager mContactManager;
@@ -61,19 +61,9 @@ public class ContactAndCircleActivity extends AppCompatActivity implements TabLa
 
         initUi();
 
-        mViewPager = (ViewPager)findViewById(R.id.contactTabPagerId);
-
-        mTabLayout = (TabLayout)findViewById(R.id.tab_layout);
-
-        // Create Tabs
-        mTabLayout.addTab(mTabLayout.newTab().setText("Registered Contact"));
-        mTabLayout.addTab(mTabLayout.newTab().setText("Contacts"));
-        mTabLayout.addTab(mTabLayout.newTab().setText("Circles"));
-
-        mTabLayout.setOnTabSelectedListener(this);
-
         mContactManager = new ContactManager(this);
 
+        initializeTabLayout();
         intializeViewPager();
     }
 
@@ -90,6 +80,12 @@ public class ContactAndCircleActivity extends AppCompatActivity implements TabLa
         mToolbar = (Toolbar)findViewById(R.id.tool_bar);
         setSupportActionBar(mToolbar);
 
+    }
+
+    private void initializeTabLayout() {
+
+        mTabLayout = (TabLayout)findViewById(R.id.tab_layout);
+        mTabLayout.setOnTabSelectedListener(this);
     }
 
     @Override
@@ -120,9 +116,11 @@ public class ContactAndCircleActivity extends AppCompatActivity implements TabLa
     }
     private void refreshContacts() {
 
+
         setReceiver();
 
         setContentView(R.layout.loading_splash_layout);
+
         IntentFilter IF = new IntentFilter();
         IF.addAction(C.ACTION_DISPLAY_MESSAGE);
         IF.addAction(S.ACTION_CHECK_REGISTERED_CONTACTS_RESULT);
@@ -130,6 +128,9 @@ public class ContactAndCircleActivity extends AppCompatActivity implements TabLa
         registerReceiver(mContactSyncResponseReceiver, IF);
         tv_progress = (TextView)findViewById(R.id.tv_loading_splash_progress);
         pb_progress = (ProgressBar)findViewById(R.id.pb_loading_splash);
+
+        displayMessage("Updating contact list from phone...");
+        mContactManager.updateContactsFromDevice();
 
         tv_progress.setText("Checking Friends in MoneyCircle...");
         displayMessage("checking Contacts In App Server...");
@@ -168,12 +169,16 @@ public class ContactAndCircleActivity extends AppCompatActivity implements TabLa
         }
 
         mContactManager = new ContactManager(this);
+        slot = null;
 
         //TODO: FOR PRATEEK
         // at this point mContactManager has the latest content
         // and loading screen is still showing with progress finish status
         // Now you have to set Original activity screen here and screen should
         // show latest data
+        initUi();
+        initializeTabLayout();
+        intializeViewPager();
     }
 
 
@@ -181,16 +186,24 @@ public class ContactAndCircleActivity extends AppCompatActivity implements TabLa
      * Initialise ViewPager
      */
     private void intializeViewPager() {
+        mViewPager = (ViewPager)findViewById(R.id.contactTabPagerId);
 
         List<Fragment> fragmentList = new ArrayList<Fragment>();
-        registeredFragment = RegisteredContactsViewFragment.getInstance(mContactManager);
-        fragmentList.add(registeredFragment);
-        fragmentList.add(ContactsViewFragment.getInstance(mContactManager));
-        fragmentList.add(CirclesViewFragment.getInstance(mContactManager));
+        fragmentList.add(new RegisteredContactsViewFragment(mContactManager));
+        fragmentList.add(new ContactsViewFragment(mContactManager));
+        fragmentList.add(new CirclesViewFragment(mContactManager));
 
-        mTabAdapter = new ContactAndCircleTabAdapter(getSupportFragmentManager(), fragmentList);
-        mViewPager.setAdapter(mTabAdapter);
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+        mPagerAdapter = new ContactAndCirclePagerAdapter(getSupportFragmentManager(), fragmentList);
+        mViewPager.setAdapter(mPagerAdapter);
+
+        // android bug related to tablayout i.e. TabLayout is not loading after inflating the layout again.
+        // https://code.google.com/p/android/issues/detail?id=180462
+        mTabLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mTabLayout.setupWithViewPager(mViewPager);
+            }
+        });
 
     }
 

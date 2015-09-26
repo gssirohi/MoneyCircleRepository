@@ -537,20 +537,19 @@ public class CardDesigner {
                 ProgressBar pb_budget = (ProgressBar)mCardBudget.findViewById(R.id.pb_card_budget);
                 no_item = (View)mCardBudget.findViewById(R.id.no_item_view);
                 ll_items = (LinearLayout)mCardBudget.findViewById(R.id.ll_card_content_frame);
-                CircleItemView civ_total_budget = (CircleItemView)mCardBudget.findViewById(R.id.civ_total_budget);
-                CircleItemView civ_available = (CircleItemView)mCardBudget.findViewById(R.id.civ_available);
-                CircleItemView civ_total_spent = (CircleItemView)mCardBudget.findViewById(R.id.civ_total_spent);
+
+                CashFlowView cfv_budget = (CashFlowView)mCardBudget.findViewById(R.id.cfv_card_budget);
 
                 tv_title.setText("MONTHLY BUDGET");
                 if(accountant.getBudget() > 0) {
-                    civ_available.setItemName("AVAILABLE BUDGET TO SPEND");
-                    civ_available.setItemValue(Tools.floatString((accountant.getBudget() - expenseRegister.getTotalOfCurrentMonth())));
+                    cfv_budget.setResultTitle("AVAILABLE BUDGET TO SPEND");
+                    cfv_budget.setResultValue(Tools.floatString((accountant.getBudget() - expenseRegister.getTotalOfCurrentMonth())));
 
-                    civ_total_spent.setItemName("THIS MONTH SPENT");
-                    civ_total_spent.setItemValue(Tools.floatString(expenseRegister.getTotalOfCurrentMonth()));
+                    cfv_budget.setFirstItemTitle("THIS MONTH BUDGET");
+                    cfv_budget.setFirstItemValue(Tools.floatString(accountant.getBudget()));
 
-                    civ_total_budget.setItemName("THIS MONTH BUDGET");
-                    civ_total_budget.setItemValue(Tools.floatString(accountant.getBudget()));
+                    cfv_budget.setSecondItemTitle("THIS MONTH SPENT");
+                    cfv_budget.setSecondItemValue(Tools.floatString(expenseRegister.getTotalOfCurrentMonth()));
 
                     pb_budget.setMax((int) accountant.getBudget());
                     pb_budget.setProgress((int) expenseRegister.getTotalOfCurrentMonth());

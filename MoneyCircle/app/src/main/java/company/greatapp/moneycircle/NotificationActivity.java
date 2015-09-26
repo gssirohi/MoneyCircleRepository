@@ -6,6 +6,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,11 +29,16 @@ public class NotificationActivity extends ActionBarActivity implements LoaderMan
     private ListView lv_notification;
     private View no_item_view;
     private NotificationCursorAdapter adapter;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
+
+        toolbar = (Toolbar)findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
+
         lv_notification = (ListView)findViewById(R.id.lv_notification);
         no_item_view = (View)findViewById(R.id.no_item_view);
         no_item_view.setVisibility(View.GONE);

@@ -1,0 +1,102 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="company.greatapp.moneycircle.ContactDetailActivity"
+    android:orientation="vertical">
+    <include
+        android:id="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/tool_bar_layout" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="10dp">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/scrollView5" >
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:id="@+id/iv_contact_detail"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_contactus" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Gyanendra Singh Sirohi"
+                    android:id="@+id/tv_contact_detail_name"
+                    android:layout_gravity="center_horizontal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="9019718333"
+                    android:id="@+id/tv_contact_detail_number"
+                    android:layout_gravity="center_horizontal" />
+
+                <company.greatapp.moneycircle.view.CashFlowView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/cfv_contact_detail" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="You can request contact for settle up. Settle up will remove all the lent and borrow items linked with this contact"
+                    android:id="@+id/tv_contact_detail_message"
+                    android:layout_margin="5dp"
+                    android:layout_gravity="center_horizontal" />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="REQUEST FOR SETTLE UP"
+                    android:id="@+id/b_contact_detail_settle_up" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="NOTIFICATIONS"
+                    android:id="@+id/textView8"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/ll_contact_detail_notification_frame">
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+        <view
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            class="android.support.design.widget.FloatingActionButton"
+            android:id="@+id/fb_contact_detail_add_new_entry"
+            android:layout_gravity="right|bottom"
+            android:src="@drawable/ic_floating_add"
+            android:layout_marginBottom="@dimen/fab_margin_bottom"
+            android:layout_marginEnd="@dimen/fab_margin_right"
+            android:layout_marginRight="@dimen/fab_margin_right"
+            android:elevation="0dp"/>
+    </FrameLayout>
+
+</LinearLayout>

@@ -41,7 +41,7 @@ public class CashFlowView extends LinearLayout {
             civ_cash_in = (CircleItemView)viewGroup.findViewById(R.id.civ_cash_in);
             civ_cash_out = (CircleItemView)viewGroup.findViewById(R.id.civ_cash_out);
 
-            civ_cash_net.setItemName("NET CASH FLOW");
+            civ_cash_net.setItemName("NET CASH IN");
             civ_cash_in.setItemName("TOTAL CASH IN");
             civ_cash_out.setItemName("TOTAL CASH OUT");
 
@@ -62,5 +62,27 @@ public class CashFlowView extends LinearLayout {
 
     public void setCashNet(String cash) {
         civ_cash_net.setItemValue(cash);
+    }
+
+    public void setResultTitle(String title) {
+        civ_cash_net.setItemName(title);
+    }
+
+    public void setFirstItemTitle(String title) {
+        civ_cash_in.setItemName(title);
+    }
+
+    public void setSecondItemTitle(String title){
+        civ_cash_out.setItemName(title);
+    }
+
+    public void setResultValue(String value) {
+        civ_cash_net.setItemValue(value);
+    }
+    public void setFirstItemValue(String value){
+        civ_cash_in.setItemValue(value);
+    }
+    public void setSecondItemValue(String value){
+        civ_cash_out.setItemValue(value);
     }
 }

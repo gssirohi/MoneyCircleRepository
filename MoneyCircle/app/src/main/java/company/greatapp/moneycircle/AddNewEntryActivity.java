@@ -53,7 +53,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
     private TextView tv_new_type;
     private TextView tv_new_after_type;
     private TextView tv_new_item_title_text;
-    private TextView tv_new_member_add;
+//    private TextView tv_new_member_add;
     private TextView tv_new_note_text;
 
     private EditText et_new_amount;
@@ -65,11 +65,10 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
 
     private Contact mMember;
     private TopSegmentItemView tsiv_new_category;
-    private TextView tv_new_category_text;
-    private TextView tv_new_date_text;
+//    private TextView tv_new_date_text;
     private TopSegmentItemView tsiv_new_date;
     private TopSegmentItemView tsiv_new_member_add;
-    private TextView tv_new_due_date_text;
+//    private TextView tv_new_due_date_text;
     private TopSegmentItemView tsiv_new_due_date;
 
     private String mDateString;
@@ -86,8 +85,9 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        int entryType = intent.getIntExtra(C.ENTRY_TYPE,C.ENTRY_TYPE_INPUT);
+        int entryType = intent.getIntExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
         this.mEntryType = entryType;
+
         mModelType = intent.getIntExtra(C.MODEL_TYPE, Model.MODEL_TYPE_INCOME);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -113,16 +113,16 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         tv_new_item_title_text = (TextView)findViewById(R.id.tv_new_item_title_text);
         et_new_item = (EditText)findViewById(R.id.et_new_item_title);
 
-        tv_new_category_text = (TextView)findViewById(R.id.tv_new_category_text);
+        //tv_new_category_text = (TextView)findViewById(R.id.tv_new_category_text);
         tsiv_new_category = (TopSegmentItemView)findViewById(R.id.tsiv_new_category);
 
-        tv_new_date_text = (TextView)findViewById(R.id.tv_new_date_text);
+     //   tv_new_date_text = (TextView)findViewById(R.id.tv_new_date_text);
         tsiv_new_date = (TopSegmentItemView)findViewById(R.id.tsiv_new_date);
 
-        tv_new_member_add = (TextView)findViewById(R.id.tv_new_member_add);
+     //   tv_new_member_add = (TextView)findViewById(R.id.tv_new_member_add);
         tsiv_new_member_add = (TopSegmentItemView)findViewById(R.id.tsiv_new_member_add);
 
-        tv_new_due_date_text = (TextView)findViewById(R.id.tv_new_due_date_text);
+       // tv_new_due_date_text = (TextView)findViewById(R.id.tv_new_due_date_text);
         tsiv_new_due_date = (TopSegmentItemView)findViewById(R.id.tsiv_new_due_date);
 
         tv_new_note_text = (TextView)findViewById(R.id.tv_new_note_text);
@@ -205,6 +205,9 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         setDefaultDueDate();
         //setTextColor();
         setButtonColor();
+
+        String contactUid = intent.getStringExtra(C.CONTACT_UID);
+        addMember(contactUid);
     }
 
     private void setButtonColor() {
@@ -226,14 +229,14 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         tv_new_before_type.setTextColor(color);
         tv_new_type.setTextColor(color);
         tv_new_after_type.setTextColor(color);
-        tv_new_category_text.setTextColor(color);
+        //tv_new_category_text.setTextColor(color);
         tv_new_item_title_text.setTextColor(color);
         //tv_new_due_date.setTextColor(color);
-        tv_new_member_add.setTextColor(color);
+       // tv_new_member_add.setTextColor(color);
         tv_new_note_text.setTextColor(color);
 
-        tv_new_date_text.setTextColor(color);
-        tv_new_due_date_text.setTextColor(color);
+        ///tv_new_date_text.setTextColor(color);
+        //tv_new_due_date_text.setTextColor(color);
     }
 
     private void createBorrowLayout() {
@@ -241,9 +244,9 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         tv_new_before_type.setText("I have ");
         tv_new_type.setText("BORROWED ");
         tv_new_after_type.setText("an amount of");
-        tv_new_category_text.setText("of type ");
+        //tv_new_category_text.setText("of type ");
         tv_new_item_title_text.setText("for ");                               //<---CHANGED
-        tv_new_member_add.setText("from ");                      // CHANGED and NOT HIDDEN
+        //tv_new_member_add.setText("from ");                      // CHANGED and NOT HIDDEN
         tv_new_note_text.setText("more details:");
 
         et_new_amount.setHint("00.00");
@@ -254,8 +257,8 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         b_new_split.setText("SPLIT THIS WITH OTHER MEMBERS");     //HIDDEN
         tsiv_new_member_add.setItemTitle("INCLUDE MEMBER");              //NOT HIDDEN
 
-        tv_new_member_add.setVisibility(View.VISIBLE);    //NOT HIDDEN
-        tv_new_due_date_text.setVisibility(View.VISIBLE);    //NOT HIDDEN
+        //tv_new_member_add.setVisibility(View.VISIBLE);    //NOT HIDDEN
+        //tv_new_due_date_text.setVisibility(View.VISIBLE);    //NOT HIDDEN
         b_new_split.setVisibility(View.GONE);             //HIDDEN
         tsiv_new_member_add.setVisibility(View.VISIBLE);     //NOT HIDDEN
         tsiv_new_due_date.setVisibility(View.VISIBLE);     //NOT HIDDEN
@@ -266,9 +269,9 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         tv_new_before_type.setText("I have ");
         tv_new_type.setText("LENDED ");
         tv_new_after_type.setText("an amount of");
-        tv_new_category_text.setText("of type ");
+        //tv_new_category_text.setText("of type ");
         tv_new_item_title_text.setText("for ");                               //<---CHANGED
-        tv_new_member_add.setText("TO");                      // CHANGED and NOT HIDDEN
+        //tv_new_member_add.setText("TO");                      // CHANGED and NOT HIDDEN
         tv_new_note_text.setText("more details:");
 
         et_new_amount.setHint("00.00");
@@ -279,8 +282,8 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         b_new_split.setText("SPLIT THIS WITH OTHER MEMBERS");     //HIDDEN
         tsiv_new_member_add.setItemTitle("INCLUDE MEMBER");              //NOT HIDDEN
 
-        tv_new_member_add.setVisibility(View.VISIBLE);    //NOT HIDDEN
-        tv_new_due_date_text.setVisibility(View.VISIBLE);    //NOT HIDDEN
+        //tv_new_member_add.setVisibility(View.VISIBLE);    //NOT HIDDEN
+        //tv_new_due_date_text.setVisibility(View.VISIBLE);    //NOT HIDDEN
         b_new_split.setVisibility(View.GONE);             //HIDDEN
         tsiv_new_member_add.setVisibility(View.VISIBLE);     //NOT HIDDEN
         tsiv_new_due_date.setVisibility(View.VISIBLE);     //NOT HIDDEN
@@ -291,9 +294,9 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         tv_new_before_type.setText("I have a new ");
         tv_new_type.setText("EXPENSE ");
         tv_new_after_type.setText("of worth");
-        tv_new_category_text.setText("of type ");
+        //tv_new_category_text.setText("of type ");
         tv_new_item_title_text.setText("for ");                       //<---
-        tv_new_member_add.setText("FROM/TO");                      //HIDDEN
+//        tv_new_member_add.setText("FROM/TO");                      //HIDDEN
         tv_new_note_text.setText("more details:");
 
         et_new_amount.setHint("00.00");
@@ -304,8 +307,8 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         b_new_split.setText("SPLIT THIS WITH OTHER MEMBERS");     //NOT HIDDEN
         tsiv_new_member_add.setItemTitle("INCLUDE MEMBER");              //HIDDEN
 
-        tv_new_member_add.setVisibility(View.GONE);
-        tv_new_due_date_text.setVisibility(View.GONE);    //NOT HIDDEN
+  //      tv_new_member_add.setVisibility(View.GONE);
+    //    tv_new_due_date_text.setVisibility(View.GONE);    //NOT HIDDEN
         b_new_split.setVisibility(View.VISIBLE);     //NOT HIDDEN
         tsiv_new_member_add.setVisibility(View.GONE);              //HIDDEN
         tsiv_new_due_date.setVisibility(View.GONE);     //HIDDEN
@@ -316,9 +319,9 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         tv_new_before_type.setText("I have a new ");
         tv_new_type.setText("INCOME ");
         tv_new_after_type.setText("of worth");
-        tv_new_category_text.setText("of type ");
+        //tv_new_category_text.setText("of type ");
         tv_new_item_title_text.setText("from ");
-        tv_new_member_add.setText("INCLUDE MEMBER");                      //HIDDEN
+      //  tv_new_member_add.setText("INCLUDE MEMBER");                      //HIDDEN
         tv_new_note_text.setText("more details:");
 
         et_new_amount.setHint("00.00");
@@ -329,8 +332,8 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         b_new_split.setText("SPLIT THIS WITH OTHER MEMBERS");     //HIDDEN
         tsiv_new_member_add.setItemTitle("FROM");              //HIDDEN
 
-        tv_new_member_add.setVisibility(View.GONE);
-        tv_new_due_date_text.setVisibility(View.GONE);    //NOT HIDDEN
+        //tv_new_member_add.setVisibility(View.GONE);
+        //tv_new_due_date_text.setVisibility(View.GONE);    //NOT HIDDEN
         b_new_split.setVisibility(View.GONE);     // HIDDEN
         tsiv_new_due_date.setVisibility(View.GONE);              //HIDDEN
         tsiv_new_member_add.setVisibility(View.GONE);              //HIDDEN

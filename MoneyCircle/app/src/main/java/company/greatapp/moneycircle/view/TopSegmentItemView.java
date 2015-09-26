@@ -116,7 +116,7 @@ public class TopSegmentItemView extends LinearLayout {
             case Model.MODEL_TYPE_CIRCLE:
                 Circle circle = (Circle)model;
                 tv_item_title.setText(circle.getTitle());
-                tv_item_value.setText(""+circle.getMemberCount());
+                tv_item_value.setText(""+circle.getMemberCount()+" members");
                 setModeTitleAndValue();
                 break;
         }

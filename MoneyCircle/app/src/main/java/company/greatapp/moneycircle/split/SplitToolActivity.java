@@ -42,6 +42,7 @@ import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.Participant;
 import company.greatapp.moneycircle.model.Split;
 import company.greatapp.moneycircle.dialogs.DatePickerFragment;
+import company.greatapp.moneycircle.model.User;
 import company.greatapp.moneycircle.tools.DateUtils;
 import company.greatapp.moneycircle.tools.GreatJSON;
 import company.greatapp.moneycircle.tools.Tools;
@@ -65,10 +66,6 @@ public class SplitToolActivity extends ActionBarActivity implements TagItemView.
     private TextView tv_new_type;
     private TextView tv_new_after_type;
     //private TextView tv_new_currency;
-    private TextView tv_new_category;
-    private TextView tv_new_item;
-    private TextView tv_new_member_add;
-    private TextView tv_new_note;
 
     private EditText et_new_amount;
     private EditText et_new_item;
@@ -111,10 +108,10 @@ public class SplitToolActivity extends ActionBarActivity implements TagItemView.
         tv_new_before_type = (TextView)findViewById(R.id.tv_new_before_type);
         tv_new_type = (TextView)findViewById(R.id.tv_new_type);
         tv_new_after_type = (TextView)findViewById(R.id.tv_new_after_type);
-        tv_new_category = (TextView)findViewById(R.id.tv_new_category);
-        tv_new_item = (TextView)findViewById(R.id.tv_new_item);
-        tv_new_member_add = (TextView)findViewById(R.id.tv_new_member_add);
-        tv_new_note = (TextView)findViewById(R.id.tv_new_note_text);
+//        tv_new_category = (TextView)findViewById(R.id.tv_new_category);
+//        tv_new_item = (TextView)findViewById(R.id.tv_new_item);
+//        tv_new_member_add = (TextView)findViewById(R.id.tv_new_member_add);
+//        tv_new_note = (TextView)findViewById(R.id.tv_new_note_text);
         cb_include_me = (CheckBox)findViewById(R.id.cb_new_include_me);
         isUserIncluded = cb_include_me.isChecked();
         et_new_amount = (EditText)findViewById(R.id.et_new_amount);
@@ -215,6 +212,10 @@ public class SplitToolActivity extends ActionBarActivity implements TagItemView.
         setDefaultCategory();
         setDefaultDate();
         setDefaultDueDate();
+        String contactUid = getIntent().getStringExtra(C.CONTACT_UID);
+        if(!TextUtils.isEmpty(contactUid)) {
+            addInitialContact(contactUid);
+        }
     }
 
     private void handleSplitAction() {
@@ -239,11 +240,6 @@ public class SplitToolActivity extends ActionBarActivity implements TagItemView.
         for(Participant p : participants) {
             Contact c = (Contact)contactManager.getHeavyItemFromListByUID(p.memberUID);
             if(c != null) {
-                if(!c.getUID().equals(C.USER_UNIQUE_ID)) {
-                    float lent = c.getLentAmountToThis();
-                    c.setLentAmountToThis(lent + p.amount);
-                    c.updateItemInDb(this);//update contact's lent amount
-                }
                 allMembers.add(c);
             }
         }
@@ -276,12 +272,7 @@ public class SplitToolActivity extends ActionBarActivity implements TagItemView.
         }
         //TOTAL LENTS
         ArrayList<Lent> lents = insertLents();
-        for(Lent l : lents){
-            if (l != null) {
-                //change UID as in DB instance of this instance
-                l.setUID(l.getUID().replaceAll("NEW","DB"));
-            }
-        }
+
         JSONArray jArrayLents = GreatJSON.getJsonArrayForLentList(lents);
         String jsonStringLents = jArrayLents.toString();
 
@@ -324,24 +315,21 @@ public class SplitToolActivity extends ActionBarActivity implements TagItemView.
 
         //for updation original DB item is needed(dbId)
         if(expense != null) {
-            ExpenseManager em = new ExpenseManager(this);
-            Expense dbExpense = (Expense) em.getHeavyItemFromListByUID(expense.getUID());
-            dbExpense.setLinkedSplitJson(jsonStringSplit);
-            dbExpense.updateItemInDb(this);
+            expense.setLinkedSplitJson(jsonStringSplit);
+            expense.updateItemInDb(this);
 //            split.setLinkedExpense(dbExpense);
         }
 
         Transporter transporter = new Transporter(this);
 
-        LentManager lm = new LentManager(this);
-        ArrayList<Lent> dbLents = new ArrayList<Lent>();
+
+        //ArrayList<Lent> dbLents = new ArrayList<Lent>();
         for(Lent l : lents){
             if (l != null) {
-                Lent dbLent = (Lent)lm.getHeavyItemFromListByUID(l.getUID());
-                dbLent.setLinkedSplitJson(jsonStringSplit);
-                String transportId = transporter.transportItem(dbLent, Model.MODEL_TYPE_LENT);
-                dbLent.updateItemInDb(this);
-                dbLents.add(dbLent);
+                l.setLinkedSplitJson(jsonStringSplit);
+                String transportId = transporter.transportItem(l, Model.MODEL_TYPE_LENT);
+                l.updateItemInDb(this);
+          //      dbLents.add(l);
 
             }
         }
@@ -356,6 +344,7 @@ public class SplitToolActivity extends ActionBarActivity implements TagItemView.
     }
 
     private ArrayList<Lent> insertLents() {
+        User user = new User(this);
         //title
         String title = et_new_item.getText().toString();
         //category
@@ -368,7 +357,7 @@ public class SplitToolActivity extends ActionBarActivity implements TagItemView.
         boolean isSplit = true;
         // linked split
         // not yet created it will be updated after split creation in db
-
+        //------------------------------------------------------------------------
         ArrayList<Lent> lents = new ArrayList<Lent>();
         for(Participant p : participants) {
             if(p.memberUID.equals(C.USER_UNIQUE_ID))
@@ -387,8 +376,15 @@ public class SplitToolActivity extends ActionBarActivity implements TagItemView.
             lent.setIsLinkedWithSplit(true);
             lent.setCategory(mCategory);
             lent.setLinkedContact(linkedMember);
+            lent.setOwnerPhone(user.getPhoneNumber());
             lent.insertItemInDB(this);
+            lent.setUID(lent.getUID().replaceAll("NEW","DB"));
             lents.add(lent);
+            if(!linkedMember.getUID().equals(C.USER_UNIQUE_ID)) {
+                float lentAmount = linkedMember.getLentAmountToThis();
+                linkedMember.setLentAmountToThis(lentAmount + amount);
+                linkedMember.updateItemInDb(this);//update contact's lent amount
+            }
         }
         return lents;
     }
@@ -409,7 +405,7 @@ public class SplitToolActivity extends ActionBarActivity implements TagItemView.
         //title
         String title = et_new_item.getText().toString();
         //amount
-        String amount =""+ getParticipantAmountByUID(contactManager.getUser().getUID());
+        String amount =""+ getParticipantAmountByUID(C.USER_UNIQUE_ID);
         //category
             //mCategory has the value
         //desc
@@ -431,6 +427,7 @@ public class SplitToolActivity extends ActionBarActivity implements TagItemView.
         //expense.setLinkedSplitJson();
         Uri uri = expense.insertItemInDB(this);
 
+        expense.setUID(expense.getUID().replaceAll("NEW","DB"));
         Category cat = (Category)Tools.getDbInstance(this,mCategory,Model.MODEL_TYPE_CATEGORY);
         float spent = cat.getSpentAmountOnThis();
         cat.setSpentAmountOnThis(spent + Float.parseFloat(amount));
@@ -483,6 +480,12 @@ public class SplitToolActivity extends ActionBarActivity implements TagItemView.
         startActivityForResult(i, requestCode);
     }
 
+    public void addInitialContact(String contactUid) {
+        ArrayList<String> members = new ArrayList<String>();
+        members.add(contactUid);
+        addParticipants(C.TAG_CONTACTS, members);
+        addContactTagViews(C.TAG_CONTACTS);
+    }
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         Log.d("split", "onActivityResult : requestCode:" + requestCode + "  resultCode:" + resultCode);
@@ -555,7 +558,7 @@ public class SplitToolActivity extends ActionBarActivity implements TagItemView.
         }
         participants.clear();
         if(isUserIncluded) {
-            participants.add(new Participant(contactManager.getUser()));
+            participants.add(new Participant("You",C.USER_UNIQUE_ID));
         }
         for (Contact c : memberContacts) {
             participants.add(new Participant(c));
@@ -576,7 +579,7 @@ public class SplitToolActivity extends ActionBarActivity implements TagItemView.
 
         participants.clear();
         if(isUserIncluded) {
-            participants.add(new Participant("You","user"));
+            participants.add(new Participant("You",C.USER_UNIQUE_ID));
         }
         for (Contact c : memberContacts) {
             participants.add(new Participant(c));

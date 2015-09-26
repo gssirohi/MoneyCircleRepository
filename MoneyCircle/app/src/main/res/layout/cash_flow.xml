@@ -1,33 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:baselineAligned="false">
+    android:baselineAligned="false"
+    android:padding="5dp">
 
     <view
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         class="company.greatapp.moneycircle.view.CircleItemView"
         android:id="@+id/civ_cash_net_flow"
-        android:layout_margin="5dp"
         android:layout_weight="4"
-        android:padding="8dp"/>
+        android:layout_gravity="center_vertical"
+        android:gravity="center" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="="
+        android:id="@+id/textView13"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
+        android:gravity="center" />
 
     <view
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         class="company.greatapp.moneycircle.view.CircleItemView"
         android:id="@+id/civ_cash_in"
-        android:layout_margin="5dp"
         android:layout_weight="4"
-        android:padding="8dp"/>
+        android:layout_gravity="center_vertical"
+        android:gravity="center" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="-"
+        android:layout_weight="1"
+        android:id="@+id/textView14"
+        android:layout_gravity="center_vertical"
+        android:gravity="center" />
 
     <view
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         class="company.greatapp.moneycircle.view.CircleItemView"
         android:id="@+id/civ_cash_out"
-        android:layout_margin="5dp"
         android:layout_weight="4"
-        android:padding="8dp"/>
+        android:layout_gravity="center_vertical|right"
+        android:gravity="center" />
 
 </LinearLayout>
