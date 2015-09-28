@@ -1,13 +1,18 @@
 package company.greatapp.moneycircle;
 
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +20,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.constants.S;
@@ -30,14 +36,19 @@ import company.greatapp.moneycircle.view.CashFlowView;
 import company.greatapp.moneycircle.view.CircleItemView;
 import company.greatapp.moneycircle.view.NotificationItemView;
 
+
+
 public class ContactDetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
     private static final int CONTACT_LODER_ID = 33;
     private static final int NOTIFICATION_LODER_ID = 34;
     private ImageView iv_contact_image;
+    private ImageView iv_share;
     private TextView tv_contact_name;
     private TextView tv_contact_number;
     private TextView tv_contact_message;
+    private ImageView iv_share_temp;
+
 
     private Button b_settle_up;
     private String contactUid;
@@ -48,23 +59,43 @@ public class ContactDetailActivity extends AppCompatActivity implements LoaderMa
     private FloatingActionButton fb_add_entry;
     private Toolbar toolbar;
     private CashFlowView cfv;
+    private Context context;
+
+    public ContactDetailActivity()
+    {
+        super();
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         contactUid = getIntent().getStringExtra(DB.UID);
-        mContact = (Contact)Tools.getDbInstance(this,contactUid, Model.MODEL_TYPE_CONTACT);
+        mContact = (Contact)Tools.getDbInstance(this, contactUid, Model.MODEL_TYPE_CONTACT);
 
         setContentView(R.layout.activity_contact_detail);
 
         toolbar = (Toolbar)findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+
+        LayoutInflater inflator = (LayoutInflater) this .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inflator.inflate(R.layout.custom_share,null);
+
+        actionBar.setCustomView(v);
+        //actionBar.setCustomView(v,);
+
+
         iv_contact_image = (ImageView)findViewById(R.id.iv_contact_detail);
         tv_contact_name = (TextView)findViewById(R.id.tv_contact_detail_name);
         tv_contact_number = (TextView)findViewById(R.id.tv_contact_detail_number);
         tv_contact_message = (TextView)findViewById(R.id.tv_contact_detail_message);
+        iv_share =(ImageView)findViewById(R.id.iv_share);
+        iv_share_temp = (ImageView)findViewById(R.id.iv_share_temp);
+
 
         cfv = (CashFlowView)findViewById(R.id.cfv_contact_detail);
 
@@ -85,8 +116,32 @@ public class ContactDetailActivity extends AppCompatActivity implements LoaderMa
                 handleSettleUpClicked();
             }
         });
-        //initView(mContact);
+
+        iv_share_temp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleShareClick();
+            }
+        });
+
     }
+
+    private void handleShareClick() {
+
+        Toast.makeText(this,"Share Image Clicked",Toast.LENGTH_SHORT).show();
+
+
+//        Intent intent = new Intent(Intent.ACTION_SEND);
+//        intent.setType("text/plain");
+//        String msg = "";
+//        msg = msg + "Hey,\n "+mContact.getContactName()+"\n"+tv_contact_message;
+//        msg = msg + "Your pending Amount"
+//                + "@Money_Circle";
+//        intent.putExtra(Intent.EXTRA_TEXT, msg);
+//        startActivity(Intent.createChooser(intent, "send Via"));
+       // getCon.startActivity(Intent.createChooser(intent, "send Via"));
+    }
+
 
     private void handleNewEntryButton() {
         AddNewEntryDialog dialog = new AddNewEntryDialog(this,mContact);
@@ -183,7 +238,8 @@ public class ContactDetailActivity extends AppCompatActivity implements LoaderMa
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_contact_detail, menu);
+
+       getMenuInflater().inflate(R.menu.menu_contact_detail, menu);
         return true;
     }
 
