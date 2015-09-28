@@ -38,6 +38,7 @@ import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.NavDrawerItem;
 import company.greatapp.moneycircle.services.PendingPackageTransportService;
 import company.greatapp.moneycircle.dialogs.ContactInfoDialog;
+import company.greatapp.moneycircle.tools.Tools;
 import company.greatapp.moneycircle.view.DrawerView;
 import company.greatapp.moneycircle.view.TagItemView;
 
@@ -126,7 +127,12 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
         // Photos
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
         // Communities, Will add a counter here
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, "22+"));
+        int count = Tools.getUnSeenAndUnRespondedNotificationCount(this);
+        boolean counterVisibility = false;
+        if (count != 0) {
+            counterVisibility = true;
+        }
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), counterVisibility, ""+count));
         // Pages
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
         // What's hot, We  will add a counter here

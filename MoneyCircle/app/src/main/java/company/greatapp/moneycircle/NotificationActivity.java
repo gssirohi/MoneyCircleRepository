@@ -17,9 +17,11 @@ import company.greatapp.moneycircle.adapters.NotificationCursorAdapter;
 import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.dialogs.ContactInfoDialog;
+import company.greatapp.moneycircle.manager.AppController;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.Period;
+import company.greatapp.moneycircle.tools.Tools;
 import company.greatapp.moneycircle.view.TagItemView;
 
 
@@ -45,6 +47,27 @@ public class NotificationActivity extends ActionBarActivity implements LoaderMan
         adapter = new NotificationCursorAdapter(this, null, false);
         lv_notification.setAdapter(adapter);
         getLoaderManager().initLoader(LODER_ID, null, this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        AppController.setIsNotificationActivityVisible(true);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        AppController.setIsNotificationActivityVisible(false);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        Tools.updateInPackageItemState(this);
     }
 
     @Override

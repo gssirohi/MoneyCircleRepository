@@ -48,6 +48,15 @@
                         android:text="You owe 5000.70 to Ashish"
                         android:id="@+id/tv_notification_message_text"
                         android:layout_gravity="center_vertical" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(NEW)"
+                        android:textColor="@color/red"
+                        android:id="@+id/tv_notification_message_new"
+                        android:layout_gravity="center_vertical"
+                        android:visibility="gone"/>
                 </LinearLayout>
             </LinearLayout>
 

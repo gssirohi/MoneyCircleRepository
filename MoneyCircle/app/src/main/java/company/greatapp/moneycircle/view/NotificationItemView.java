@@ -46,6 +46,7 @@ public class NotificationItemView extends LinearLayout {
     private final Button b_edit_resend;
     private final Button b_clear;
     private final TextView tv_response_state_msg;
+    private final TextView tv_new_notification;
     private boolean isResponded =true;
     private InPackage mInPackage;
 
@@ -70,6 +71,7 @@ public class NotificationItemView extends LinearLayout {
         tv_amount = (TextView)viewGroup.findViewById(R.id.tv_item_amount);
         tv_date = (TextView)viewGroup.findViewById(R.id.tv_item_date);
         tv_due_date = (TextView)viewGroup.findViewById(R.id.tv_due_date);
+        tv_new_notification = (TextView)viewGroup.findViewById(R.id.tv_notification_message_new);
 
         tv_response_state_msg = (TextView)viewGroup.findViewById(R.id.tv_notification_response_state_msg);
 
@@ -182,13 +184,13 @@ public class NotificationItemView extends LinearLayout {
         tv_response_state_msg.setText(getResponseContextMsg());
         String sender = inPackage.getReqSenderName();
 
-        String msg;
-        if(reqCode != S.TRANSPORT_REQUEST_CODE_NOTIFICATION) {
+        String msg = inPackage.getMessage();;
+        /*if(reqCode != S.TRANSPORT_REQUEST_CODE_NOTIFICATION) {
             msg = inPackage.createNotificationMessage();
         } else {
             msg = inPackage.getMessage();
 
-        }
+        }*/
 
         String moneyItemTitle = inPackage.getItemTitle();
         String amount = ""+ inPackage.getAmount();
@@ -205,6 +207,12 @@ public class NotificationItemView extends LinearLayout {
         tv_amount.setText(""+amount);
         tv_date.setText(dateString);
         tv_due_date.setText("due on " + dueDateString);
+
+        if (inPackage.getState() == InPackage.ITEM_STATE_UNSEEN) {
+            tv_new_notification.setVisibility(VISIBLE);
+        } else {
+            tv_new_notification.setVisibility(GONE);
+        }
 
         doNotAllowPendingAction();
 

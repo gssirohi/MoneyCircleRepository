@@ -281,6 +281,7 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
                             +DB.ITEM_DUE_DATE_STRING   + " text,"
                             +DB.IS_RESPONDABLE         + " int,"
                             +DB.RESPONSE_STATE         + " int,"
+                            +DB.ITEM_STATE             + " int,"
                             +DB.ITEM_DESCRIPTION       + " text,"
                             + DB.ITEM_BODY_JSON_STRING + " text );"
             );
