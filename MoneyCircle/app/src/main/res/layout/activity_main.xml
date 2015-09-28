@@ -96,15 +96,15 @@
     </TabHost>
     </FrameLayout>
 
-    <!-- Listview to display slider menu -->
-    <ListView
-        android:id="@+id/list_slidermenu"
-        android:layout_width="240dp"
+    <!-- Navigation Drawer -->
+
+
+
+    <view
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:choiceMode="singleChoice"
-        android:divider="@color/white"
-        android:dividerHeight="1dp"
-        android:listSelector="@drawable/list_selector"
-        android:background="@color/app_lightest"/>
+        class="company.greatapp.moneycircle.view.DrawerView"
+        android:id="@+id/navigation_drawer"
+        android:layout_gravity="start" />
+
 </android.support.v4.widget.DrawerLayout>

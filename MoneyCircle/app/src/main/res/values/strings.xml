@@ -100,11 +100,11 @@
     <!-- Keep them in order as the titles are in -->
     <array name="nav_drawer_icons">
         <item>@drawable/home_icon</item>
-        <item>@drawable/people_icon</item>
-        <item>@drawable/settings_icon</item>
-        <item>@drawable/notification</item>
-        <item>@drawable/profile</item>
-        <item>@drawable/developer</item>
+        <item>@drawable/home_icon</item>
+        <item>@drawable/home_icon</item>
+        <item>@drawable/home_icon</item>
+        <item>@drawable/home_icon</item>
+        <item>@drawable/home_icon</item>
     </array>
 
     <!-- Content Description -->

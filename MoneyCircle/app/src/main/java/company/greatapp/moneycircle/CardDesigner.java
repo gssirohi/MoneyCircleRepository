@@ -34,6 +34,8 @@ public class CardDesigner {
     private final Context mContext;
     private final LayoutInflater inflater;
     private final ViewGroup mParent;
+
+    public static final int CARD_ACCOUNT_BALANCE = 13;
     public static final int CARD_INCOME = 1;
     public static final int CARD_EXPENSE = 2;
     public static final int CARD_BORROW = 3;
@@ -48,7 +50,7 @@ public class CardDesigner {
     public static final int CARD_TOP_BORROWER = 11;
     public static final int CARD_TOP_LENDERS = 12;
 
-
+    private ViewGroup mCardAccountBalance;
     private ViewGroup mCardIncome;
     private ViewGroup mCardExpense;
     private ViewGroup mCardBorrow;
@@ -68,6 +70,7 @@ public class CardDesigner {
     private AccountRegister lentRegister;
     private AccountRegister splitRegister;
 
+
     public CardDesigner(Context context, ViewGroup parent) {
         mContext = context;
         mParent = parent;
@@ -84,6 +87,11 @@ public class CardDesigner {
     public ViewGroup getCardView(int cardType) {
 
         switch(cardType) {
+            case CARD_ACCOUNT_BALANCE:
+                if(mCardAccountBalance == null) {
+                    initCardView(mAccountant,CARD_ACCOUNT_BALANCE);
+                }
+                return mCardAccountBalance;
             case CARD_INCOME:
                 if(mCardIncome == null) {
                     initCardView(mAccountant,CARD_INCOME);
@@ -159,6 +167,8 @@ public class CardDesigner {
     public void initAllCardViews(Accountant accountant) {
         if(accountant == null) return;
         initAccountant(accountant);
+
+        initCardView(accountant, CARD_ACCOUNT_BALANCE);
         initCardView(accountant,CARD_INCOME);
         initCardView(accountant,CARD_EXPENSE);
         initCardView(accountant,CARD_BORROW);
@@ -196,6 +206,52 @@ public class CardDesigner {
 
         Intent i = null;
         switch (type){
+            case CARD_ACCOUNT_BALANCE:
+                if(mCardAccountBalance == null) {
+                    mCardAccountBalance = (ViewGroup) inflater.inflate(R.layout.card_budget, mParent, false);
+                }
+                if(mCardAccountBalance == null) return ;
+                iv_card_icon = (ImageView)mCardAccountBalance.findViewById(R.id.iv_card_icon);
+                tv_title = (TextView)mCardAccountBalance.findViewById(R.id.tv_card_title);
+
+                ProgressBar pb_account = (ProgressBar)mCardAccountBalance.findViewById(R.id.pb_card_budget);
+                no_item = (View)mCardAccountBalance.findViewById(R.id.no_item_view);
+                ll_items = (LinearLayout)mCardAccountBalance.findViewById(R.id.ll_card_content_frame);
+
+                CashFlowView cfv_account = (CashFlowView)mCardAccountBalance.findViewById(R.id.cfv_card_budget);
+
+                tv_title.setText("ACCOUNT BALANCE");
+                ll_items.setVisibility(View.VISIBLE);
+                no_item.setVisibility(View.GONE);
+                if(accountant != null) {
+
+                    float actualWorth = accountant.getActualWorthBalance();
+                    float totalAccountBalance = accountant.getTotalAccountBalance();
+                    float netBorrowedFromCircle = accountant.getTotalPendingNetBorrowFromCircle();
+
+                    cfv_account.setResultTitle("TOTAL ACTUAL WORTH");
+                    cfv_account.setResultValue(Tools.floatString(actualWorth));
+
+                    cfv_account.setFirstItemTitle("CURRENT ACCOUNT BALANCE");
+                    cfv_account.setFirstItemValue(Tools.floatString(totalAccountBalance));
+
+                    if(netBorrowedFromCircle >= 0) {
+                        cfv_account.setSecondItemTitle("NET BORROWED FROM CIRCLE");
+                        cfv_account.setSecondItemValue(Tools.floatString(netBorrowedFromCircle));
+                        cfv_account.setOperator("-");
+                    } else {
+                        cfv_account.setSecondItemTitle("NET LENT TO CIRCLE");
+                        cfv_account.setSecondItemValue(Tools.floatStringPositive(netBorrowedFromCircle));
+                        cfv_account.setOperator("+");
+                    }
+
+                    pb_account.setVisibility(View.GONE);
+//                    pb_budget.setMax((int) accountant.getBudget());
+//                    pb_budget.setProgress((int) expenseRegister.getTotalOfCurrentMonth());
+                    ll_items.setVisibility(View.VISIBLE);
+                    no_item.setVisibility(View.GONE);
+                }
+                break;
             case CARD_INCOME:
                 if(mCardIncome == null) {
                     mCardIncome = (ViewGroup) inflater.inflate(R.layout.card_money_item, mParent, false);

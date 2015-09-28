@@ -38,7 +38,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="-"
         android:layout_weight="1"
-        android:id="@+id/textView14"
+        android:id="@+id/tv_cash_flow_operator"
         android:layout_gravity="center_vertical"
         android:gravity="center" />
 
