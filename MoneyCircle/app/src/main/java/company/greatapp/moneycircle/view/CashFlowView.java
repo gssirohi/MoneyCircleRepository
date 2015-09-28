@@ -25,6 +25,7 @@ public class CashFlowView extends LinearLayout {
     private CircleItemView civ_cash_net;
     private CircleItemView civ_cash_in;
     private CircleItemView civ_cash_out;
+    private TextView operator;
 
     public CashFlowView(Context context, AttributeSet attr) {
         super(context,attr);
@@ -40,6 +41,7 @@ public class CashFlowView extends LinearLayout {
             civ_cash_net = (CircleItemView)viewGroup.findViewById(R.id.civ_cash_net_flow);
             civ_cash_in = (CircleItemView)viewGroup.findViewById(R.id.civ_cash_in);
             civ_cash_out = (CircleItemView)viewGroup.findViewById(R.id.civ_cash_out);
+            operator = (TextView)viewGroup.findViewById(R.id.tv_cash_flow_operator);
 
             civ_cash_net.setItemName("NET CASH IN");
             civ_cash_in.setItemName("TOTAL CASH IN");
@@ -84,5 +86,9 @@ public class CashFlowView extends LinearLayout {
     }
     public void setSecondItemValue(String value){
         civ_cash_out.setItemValue(value);
+    }
+
+    public void setOperator(String s) {
+        operator.setText(s);
     }
 }

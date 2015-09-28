@@ -656,6 +656,18 @@ public class Accountant {
         contact.setState(States.CONTACT_IDEAL);
         contact.updateItemInDb(context);
 
-        Tools.sendMoneyTransactionBroadCast(context,null,0);
+        Tools.sendMoneyTransactionBroadCast(context, null, 0);
+    }
+
+    public float getActualWorthBalance() {
+        return 0;
+    }
+
+    public float getTotalAccountBalance() {
+        return 0;
+    }
+
+    public float getTotalPendingNetBorrowFromCircle() {
+        return 0;
     }
 }

@@ -2,17 +2,13 @@ package company.greatapp.moneycircle;
 
 import android.app.Dialog;
 import android.app.LoaderManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.Loader;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.database.Cursor;
-import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -20,43 +16,29 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabWidget;
-import android.widget.Toast;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import company.greatapp.moneycircle.adapters.NavDrawerListAdapter;
-import company.greatapp.moneycircle.asynctask.UpdateAccountRegistersTask;
-import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.dialogs.AddNewEntryDialog;
 import company.greatapp.moneycircle.manager.Accountant;
-import company.greatapp.moneycircle.manager.CategoryManager;
-import company.greatapp.moneycircle.manager.ContactManager;
-import company.greatapp.moneycircle.manager.PreferenceManager;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.NavDrawerItem;
-import company.greatapp.moneycircle.model.Period;
-import company.greatapp.moneycircle.receiver.MoneyTransactionReceiver;
 import company.greatapp.moneycircle.services.PendingPackageTransportService;
-import company.greatapp.moneycircle.split.SplitToolActivity;
-import company.greatapp.moneycircle.tools.GreatJSON;
-import company.greatapp.moneycircle.view.CircleButton;
 import company.greatapp.moneycircle.dialogs.ContactInfoDialog;
+import company.greatapp.moneycircle.view.DrawerView;
 import company.greatapp.moneycircle.view.TagItemView;
 
 public class MainActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor>,TagItemView.TagItemViewCallBacks{
@@ -83,6 +65,7 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
     private TabWidget tabWidget;
     private CardDesigner mCardDesigner;
     private Toolbar toolbar;
+    private DrawerView mDrawerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +113,8 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
                 .obtainTypedArray(R.array.nav_drawer_icons);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.list_slidermenu);
+        mDrawerView = (DrawerView)findViewById(R.id.navigation_drawer);
+        mDrawerList = (ListView) mDrawerView.findViewById(R.id.list_slidermenu);
 
         navDrawerItems = new ArrayList<NavDrawerItem>();
 
@@ -142,11 +126,11 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
         // Photos
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
         // Communities, Will add a counter here
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, "22"));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), true, "22+"));
         // Pages
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
         // What's hot, We  will add a counter here
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1), true, "50+"));
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1)));
 
 
         // Recycle the typed array
@@ -200,6 +184,7 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
         tabDiary.removeAllViews();
         tabTrends.removeAllViews();
 
+        tabDiary.addView(mCardDesigner.getCardView(CardDesigner.CARD_ACCOUNT_BALANCE));
     tabDiary.addView(mCardDesigner.getCardView(CardDesigner.CARD_DAILY_REPORT));
     tabDiary.addView(mCardDesigner.getCardView(CardDesigner.CARD_INCOME));
     tabDiary.addView(mCardDesigner.getCardView(CardDesigner.CARD_EXPENSE));
@@ -305,7 +290,7 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // if nav drawer is opened, hide the action items
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerView);
        // menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }

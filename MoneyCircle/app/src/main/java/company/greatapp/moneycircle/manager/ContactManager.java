@@ -182,9 +182,10 @@ public class ContactManager extends BaseModelManager {
         return phones;
     }
 
-    public void updateContactsFromDevice() {
+    public boolean updateContactsFromDevice() {
         Cursor phones = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
 
+        boolean isUpdated = false;
         User user = new User(context);
         ArrayList<String> addedPhones = getPhoneNumberList();
         if (phones != null) {
@@ -200,11 +201,13 @@ public class ContactManager extends BaseModelManager {
                     if(!contact.getContactName().equals(name)) {
                         contact.setContactName(name);
                         contact.updateItemInDb(context);
+                        isUpdated = true;
                     }
                     continue;
                 }
 
                 Contact contact = new Contact(name, number);
+                isUpdated = true;
                 insertItemInDB(contact);
                 addedPhones.add(number);
                 if (phones.isLast()) {
@@ -215,6 +218,10 @@ public class ContactManager extends BaseModelManager {
 //        Contact contact = new Contact(C.USER_TITLE, C.USER_DUMMY_NUMBER);
 //        insertItemInDB(contact);
 
+        if(isUpdated) {
+            loadItemsFromDB();
+        }
+        return isUpdated;
     }
 
 

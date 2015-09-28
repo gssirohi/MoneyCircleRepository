@@ -454,4 +454,14 @@ public static String getModelName(int modelType){
         }
         return resId;
     }
+
+    public static String floatStringPositive(float amount) {
+        if(amount >= 0)
+            return floatString(amount);
+        else {
+            float convertor = 0;
+            amount = 0 - amount;
+            return floatString(amount);
+        }
+    }
 }
