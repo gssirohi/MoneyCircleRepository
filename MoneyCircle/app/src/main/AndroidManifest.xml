@@ -42,6 +42,7 @@
   application uses a custom BroadcastReceiver that redefines its name.
         -->
         <service android:name=".services.PendingPackageTransportService" />
+        <service android:name=".services.AccountantService" />
         <service android:name=".GCMIntentService" />
 
         <receiver android:name=".receiver.MoneyTransactionReceiver" >

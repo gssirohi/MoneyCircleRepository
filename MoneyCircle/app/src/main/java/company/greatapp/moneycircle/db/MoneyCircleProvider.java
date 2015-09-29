@@ -18,7 +18,8 @@ public class MoneyCircleProvider extends ContentProvider{
 	private static final String TAG = "PROVIDER";
 	private SQLiteDatabase qpinionDBinstance;
 	public static MoneyCircleDBHelper HelperInstance;
-	
+
+
 	@Override
 	public boolean onCreate() {
 		Log.d("in  cp","Creating DataBase");
@@ -27,6 +28,7 @@ public class MoneyCircleProvider extends ContentProvider{
 		HelperInstance = new MoneyCircleDBHelper(getContext(), null, null, DB.DB_VERSION);
 		//creating database
 		qpinionDBinstance = HelperInstance.getWritableDatabase();
+
 		
 		return true;
 	}

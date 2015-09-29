@@ -393,8 +393,8 @@ public static <T> void initLoader(final int loaderId, final Bundle args, final L
         Log.d("SPLIT","ACCOUNTANT LOAD FINISHED "+loader.getId() );
         if(loader.getId() == LOADER_ID_ACCOUNTANT ) {
             Log.d("SPLIT","ACCOUNTANT CURSOR " );
-           //mAccountant = new Accountant(this,data);
-            mAccountant = new Accountant(this,true);
+        //   mAccountant = new Accountant(this,data);
+          mAccountant = new Accountant(this,true);
             adapterDummy.swapCursor(data);
             mCardDesigner.initAllCardViews(mAccountant);
         }
