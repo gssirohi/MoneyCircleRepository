@@ -18,12 +18,16 @@ public class InPackage {
 
     private static final String LOG_TAG = InPackage.class.getSimpleName();
 	
+    public static final int RESPONSE_STATE_NOT_APPLICABLE           = 12;
     public static final int RESPONSE_STATE_NOT_RESPONDED            = 13;
     public static final int RESPONSE_STATE_AGREED                   = 14;
     public static final int RESPONSE_STATE_DISAGREED                = 15;
     public static final int RESPONSE_STATE_REMOVE_ITEM              = 16;
     public static final int RESPONSE_STATE_KEEP_ITEM                = 17;
     public static final int RESPONSE_STATE_RESEND                   = 18;
+
+    public static final int ITEM_STATE_UNSEEN = 5001;
+    public static final int ITEM_STATE_SEEN = 5002;
 
 
     public static final int PENDING_ACTION_TYPE_APPROVAL                   = 23;
@@ -74,6 +78,8 @@ public class InPackage {
     private boolean isRespondable;
     private int responseState;
 
+    private int state;
+
     public InPackage(){
         uid = Tools.generateUniqueId();
     }
@@ -103,6 +109,7 @@ public class InPackage {
         int responded = c.getInt(c.getColumnIndex(DB.IS_RESPONDABLE));
         setIsRespondable((responded == 1) ? true : false);
         setResponseState(c.getInt(c.getColumnIndex(DB.RESPONSE_STATE)));
+        setState(c.getInt(c.getColumnIndex(DB.ITEM_STATE)));
     }
 
     public int getResponseState() {
@@ -119,6 +126,14 @@ public class InPackage {
 
     public void setIsRespondable(boolean isRespondable) {
         this.isRespondable = isRespondable;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 
     public String getUid() {
@@ -343,6 +358,7 @@ public class InPackage {
         row.put(DB.ITEM_DESCRIPTION,getItemDescription());
         row.put(DB.IS_RESPONDABLE, isRespondable()?1:0);
         row.put(DB.RESPONSE_STATE,getResponseState());
+        row.put(DB.ITEM_STATE,getState());
         return row;
     }
 

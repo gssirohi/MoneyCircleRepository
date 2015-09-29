@@ -33,6 +33,7 @@ import company.greatapp.moneycircle.manager.SplitManager;
 import company.greatapp.moneycircle.model.Borrow;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Expense;
+import company.greatapp.moneycircle.model.InPackage;
 import company.greatapp.moneycircle.model.Income;
 import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
@@ -464,4 +465,92 @@ public static String getModelName(int modelType){
             return floatString(amount);
         }
     }
+
+    public static void updateInPackageItemState(Context context) {
+
+        String [] projection = DB.PACKAGE_FROM_SERVER_TABLE_PROJECTION;
+        String selection=DB.ITEM_STATE + "=" + InPackage.ITEM_STATE_UNSEEN;
+        Cursor cursor = context.getContentResolver().query(DB.PACKAGE_FROM_SERVER_TABLE_URI, projection, selection, null, null);
+        if(cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+
+            InPackage inPackage = null;
+            while(!cursor.isAfterLast()) {
+                inPackage =  new InPackage(cursor);
+                inPackage.setState(InPackage.ITEM_STATE_SEEN);
+
+                inPackage.updateItemInDb(context);
+                cursor.moveToNext();
+            }
+
+            cursor.close();
+        }
+    }
+
+    public static Cursor getUnSeenInPackageItemCursor(Context context) {
+        String [] projection = DB.PACKAGE_FROM_SERVER_TABLE_PROJECTION;
+        String selection=DB.ITEM_STATE + "=" + InPackage.ITEM_STATE_UNSEEN;
+        Cursor cursor = context.getContentResolver().query(DB.PACKAGE_FROM_SERVER_TABLE_URI, projection, selection, null, null);
+        if(cursor != null && cursor.getCount() > 0) {
+            return cursor;
+        }
+        return null;
+    }
+
+    public static String getUnSeenNotificationMessage(Cursor cursor) {
+
+        StringBuilder strBuilder = null;
+        if(cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+
+            strBuilder = new StringBuilder();
+            InPackage inPackage = null;
+            while(!cursor.isAfterLast()) {
+                inPackage =  new InPackage(cursor);
+                strBuilder.insert(0, "\n"+inPackage.getMessage());
+                Log.d("Prateek", "Inpackage stringbuilder :" + strBuilder.toString());
+                cursor.moveToNext();
+            }
+
+            cursor.close();
+        }
+        return strBuilder.toString();
+    }
+
+    public static void getListOfUnreadInpackage(Context context) {
+
+        String [] projection = DB.PACKAGE_FROM_SERVER_TABLE_PROJECTION;
+        String selection=DB.ITEM_STATE + "=" + InPackage.ITEM_STATE_UNSEEN;
+        Cursor cursor = context.getContentResolver().query(DB.PACKAGE_FROM_SERVER_TABLE_URI, projection, selection, null, null);
+        if(cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+
+            StringBuilder strBuilder = new StringBuilder();
+            InPackage inPackage = null;
+            while(!cursor.isAfterLast()) {
+                inPackage =  new InPackage(cursor);
+                strBuilder.insert(0, inPackage.getMessage());
+                Log.d("Prateek", "Inpackage stringbuilder :" + strBuilder.toString());
+                cursor.moveToNext();
+            }
+
+            cursor.close();
+        }
+    }
+
+    public static int getUnSeenAndUnRespondedNotificationCount(Context context) {
+
+        int count = 0;
+        String [] projection = DB.PACKAGE_FROM_SERVER_TABLE_PROJECTION;
+        String selection=DB.ITEM_STATE + " = ? OR " + DB.RESPONSE_STATE + " = ?" ;
+        String [] selArgs = new String[]{""+InPackage.ITEM_STATE_UNSEEN, ""+InPackage.RESPONSE_STATE_NOT_RESPONDED};
+        Cursor cursor = context.getContentResolver().query(DB.PACKAGE_FROM_SERVER_TABLE_URI, projection, selection, selArgs, null);
+        if(cursor != null && cursor.getCount() > 0) {
+
+            count = cursor.getCount();
+            cursor.close();
+        }
+        return count;
+    }
+
 }

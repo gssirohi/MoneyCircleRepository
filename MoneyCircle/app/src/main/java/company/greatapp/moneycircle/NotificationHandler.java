@@ -4,12 +4,14 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
 import company.greatapp.moneycircle.constants.S;
 import company.greatapp.moneycircle.constants.States;
 import company.greatapp.moneycircle.manager.Accountant;
+import company.greatapp.moneycircle.manager.AppController;
 import company.greatapp.moneycircle.model.Borrow;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.InPackage;
@@ -50,8 +52,22 @@ public class NotificationHandler {
 
 
 
-        if (isCustomNotificationRequired(packageFromServer)) {
-            showCustomNotification(packageFromServer.getItemTitle(), packageFromServer.getMessage());
+
+        if (isCustomNotificationRequired()) {
+
+            Cursor cursor = Tools.getUnSeenInPackageItemCursor(mContext);
+            String notificationTitle = packageFromServer.getItemTitle();
+            String notificationMessage = packageFromServer.getMessage();
+            if(cursor != null && cursor.getCount() > 0) {
+                int unSeenNotificationCount = cursor.getCount()+1;
+                String unSeenNotificationMessage = Tools.getUnSeenNotificationMessage(cursor);
+                if (unSeenNotificationMessage != null) {
+                    notificationTitle = ""+unSeenNotificationCount+" new Notifications";
+                    notificationMessage = notificationMessage + unSeenNotificationMessage;
+                }
+            }
+
+            showCustomNotification(notificationTitle, notificationMessage);
         }
 
 
@@ -60,8 +76,8 @@ public class NotificationHandler {
         packageFromServer.insertItemInDB(mContext);
     }
 
-    private boolean isCustomNotificationRequired(InPackage packageFromServer) {
-        return true;
+    private boolean isCustomNotificationRequired() {
+        return (!AppController.isNotificationActivityVisible());
     }
 
     private void computeReceivedPackage(InPackage inPackage) {
@@ -149,7 +165,7 @@ public class NotificationHandler {
                     contact.setState(States.CONTACT_SETTLE_REQ_APPROVAL_PENDING);
                     contact.updateItemInDb(mContext);
                 }
-                inPackage.updateItemInDb(mContext);
+//                inPackage.updateItemInDb(mContext);   // This entry is inserted in DB after this function call
                 break;
             case S.TRANSPORT_REQUEST_CODE_REMINDER:
                 break;
@@ -199,13 +215,17 @@ public class NotificationHandler {
         notificationBuilder.setSmallIcon(R.drawable.home_icon);
         notificationBuilder.setContentIntent(pIntent);
         notificationBuilder.setAutoCancel(true);
-        notificationBuilder.setSmallIcon(R.drawable.home_icon);
-        notificationBuilder.setDefaults(Notification.DEFAULT_SOUND);
+//        notificationBuilder.setDefaults(Notification.DEFAULT_SOUND);
+
+        Notification notification = notificationBuilder.build();
+        notification.defaults |= Notification.DEFAULT_SOUND;
+        notification.defaults |= Notification.DEFAULT_VIBRATE;
+        notification.defaults |= Notification.DEFAULT_LIGHTS;
 
 
         android.app.NotificationManager notificationManager = (android.app.NotificationManager)
                 mContext.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0, notificationBuilder.build());
+        notificationManager.notify(0, notification);
     }
 }

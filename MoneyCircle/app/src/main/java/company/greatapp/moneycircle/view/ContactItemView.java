@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import company.greatapp.moneycircle.ContactDetailActivity;
 import company.greatapp.moneycircle.R;
@@ -30,7 +31,7 @@ public class ContactItemView extends LinearLayout {
     private ImageView iv_contact;
     private ViewGroup viewGroup;
     private Contact mContact;
-
+    User user;
 
     public ContactItemView(Context context, AttributeSet attrs, Contact contact) {
         super(context, attrs);
@@ -72,6 +73,16 @@ public class ContactItemView extends LinearLayout {
 
     private void handleInviteButtonClicked() {
 
+        //Toast.makeText(getContext(),"Invitation_clicked",Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        String msg = "";
+        msg = msg + "Hey,\n";
+        msg = msg + "See this very Cool Android Application.\n Where u can manage all your bugdet information very easily \n"
+                + "https://play.google.com/Money_Circle";
+        intent.putExtra(Intent.EXTRA_TEXT,msg);
+        getContext().startActivity(Intent.createChooser(intent, "Share via"));
     }
 
     public void initView(Contact contact) {

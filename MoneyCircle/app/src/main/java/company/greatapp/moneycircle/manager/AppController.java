@@ -22,6 +22,8 @@ public class AppController extends Application {
 
     private static AppController mInstance;
 
+    private static boolean isNotificationActivityVisible = false;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -64,5 +66,13 @@ public class AppController extends Application {
         if (mRequestQueue != null) {
             mRequestQueue.cancelAll(tag);
         }
+    }
+
+    public static boolean isNotificationActivityVisible() {
+        return isNotificationActivityVisible;
+    }
+
+    public static void setIsNotificationActivityVisible(boolean isNotificationActivityVisible) {
+        AppController.isNotificationActivityVisible = isNotificationActivityVisible;
     }
 }

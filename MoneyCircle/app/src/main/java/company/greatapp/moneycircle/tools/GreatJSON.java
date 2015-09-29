@@ -607,8 +607,9 @@ public class GreatJSON {
             JSONObject jsonObject = new JSONObject(jsonString);
             int reqCode = Integer.parseInt(jsonObject.getString(S.TRANSPORT_REQ_CODE));
             serverPackage.setReqCode(reqCode);
-            serverPackage.setResponseState(InPackage.RESPONSE_STATE_NOT_RESPONDED);
+            serverPackage.setResponseState(InPackage.RESPONSE_STATE_NOT_APPLICABLE);
             serverPackage.setIsRespondable(false);//modify it later with reqcode
+            serverPackage.setState(InPackage.ITEM_STATE_UNSEEN);
 
             String senderphoneNo = jsonObject.getString(S.TRANSPORT_REQ_SENDER_PHONE);
             serverPackage.setReqSenderPhone(senderphoneNo);
@@ -648,8 +649,6 @@ public class GreatJSON {
             String itemBodyJsonString = jsonObject.getString(S.TRANSPORT_ITEM_BODY_JSON_STRING);
             serverPackage.setItemBodyJsonString(itemBodyJsonString);
 
-            String message = jsonObject.getString(S.TRANSPORT_MESSAGE);
-            serverPackage.setMessage(message);
 
             //String dateString = jsonObject.getString("dateString");
             serverPackage.setDateString(DateUtils.getCurrentDate());
@@ -657,6 +656,14 @@ public class GreatJSON {
             if(!ownerItemId.equals("NA") && !itemOwnerPhoneNo.equals("NA")) {
                 updateServerPackageWithItemInfo(serverPackage);
             }
+
+            String message;
+            if(reqCode == S.TRANSPORT_REQUEST_CODE_NOTIFICATION) {
+                message = jsonObject.getString(S.TRANSPORT_MESSAGE);
+            } else {
+                message = serverPackage.createNotificationMessage();
+            }
+            serverPackage.setMessage(message);
 
         } catch (JSONException e) {
             e.printStackTrace();
