@@ -8,13 +8,19 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.constants.S;
 
 
 public class MoneyCircleDBHelper extends SQLiteOpenHelper {
 
-	public MoneyCircleDBHelper(Context context, String name, CursorFactory factory,int version)
+
+    private AtomicInteger openCounter = new AtomicInteger();
+    private SQLiteDatabase mDbHelper;
+
+    public MoneyCircleDBHelper(Context context, String name, CursorFactory factory,int version)
 		{
 			
 			super(context, DB.DB_NAME, null, DB.DB_VERSION);
@@ -22,7 +28,25 @@ public class MoneyCircleDBHelper extends SQLiteOpenHelper {
 			
 		}
 
-		
+	@Override
+    public synchronized void close() {
+Log.d("DB", "closing db.. ");
+        if(openCounter.decrementAndGet() == 0) {
+            super.close();
+            Log.d("DB", "DB CLOSED");
+        }
+    }
+
+    @Override
+    public synchronized SQLiteDatabase getWritableDatabase() {
+
+        Log.d("DB", "Opening DB...");
+        if(openCounter.incrementAndGet() == 1) {
+         mDbHelper =  super.getWritableDatabase();
+            Log.d("DB", "DB Opened");
+        }
+        return mDbHelper;
+    }
 		@Override
 		public void onCreate(SQLiteDatabase db) {
 			Log.d("DBhelper", "Creating Tables...");
