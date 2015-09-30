@@ -4,4 +4,9 @@
     tools:context="company.greatapp.moneycircle.ContactDetailActivity">
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
+
+    <item android:id="@+id/action_share" android:title="SHARE"
+        android:orderInCategory="100" app:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_share"/>
+
 </menu>
