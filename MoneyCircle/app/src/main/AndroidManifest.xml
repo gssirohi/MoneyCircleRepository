@@ -156,6 +156,10 @@
             android:name=".ContactDetailActivity"
             android:label="@string/title_activity_contact_detail" >
         </activity>
+        <activity
+            android:name=".view.MoneyDetailViewActivity"
+            android:label="@string/title_activity_money_detail_view" >
+        </activity>
     </application>
 
 </manifest>
