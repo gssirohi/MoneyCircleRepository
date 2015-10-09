@@ -40,6 +40,10 @@ public class AccountRegister {
     private ArrayList<Model> upComingEventsOfMonth;
 
     private ArrayList<Model> topItems;
+    private float totalCashBorrowed;
+    private float totalCashLent;
+    private float totalBillBorrowed;
+    private float totalBillPaymentLent;
 
     public AccountRegister(int type) {
         setRegisterType(type);
@@ -240,10 +244,41 @@ public class AccountRegister {
         Log.i("SPLIT","Upcoming WEEK  : "+getUpComingEventsOfWeek());
         Log.i("SPLIT","Upcoming MONTH  : "+getUpComingEventsOfMonth());
 
-        Log.i("SPLIT","Top Items MONTH : "+ getTopItems());
+        Log.i("SPLIT", "Top Items MONTH : " + getTopItems());
 
         Log.i("SPLIT","LAST TRANSACTION : "+ getLastTransaction());
 
+    }
+
+    public void setTotalCashBorrowed(float totalCash) {
+        this.totalCashBorrowed = totalCash;
+    }
+
+    public void setTotalCashLent(float totalCash) {
+        this.totalCashLent = totalCash;
+    }
+
+    public void setTotalBillBorrowed(float totalBill) {
+        this.totalBillBorrowed = totalBill;
+    }
+    public void setTotalBillPaymentLent(float totalBill) {
+        this.totalBillPaymentLent = totalBill;
+    }
+
+    public float getTotalCashBorrowed() {
+        return totalCashBorrowed;
+    }
+
+    public float getTotalCashLent() {
+        return totalCashLent;
+    }
+
+    public float getTotalBillBorrowed() {
+        return totalBillBorrowed;
+    }
+
+    public float getTotalBillPaymentLent() {
+        return totalBillPaymentLent;
     }
 }
 

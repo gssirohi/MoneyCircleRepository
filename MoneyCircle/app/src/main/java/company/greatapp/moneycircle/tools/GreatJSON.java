@@ -357,6 +357,7 @@ public class GreatJSON {
             obj.put(DB.DESCRIPTION,lent.getDescription());
             obj.put(DB.CATEGORY,lent.getCategory());
             obj.put(DB.ITEM_OWNER_PHONE,lent.getOwnerPhone());
+            obj.put(DB.BORROW_LENT_TYPE,lent.getLentType());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -426,6 +427,7 @@ public class GreatJSON {
             obj.put(DB.DUE_DATE_STRING, borrow.getDueDateString());
             obj.put(DB.AMOUNT, borrow.getAmount());
             obj.put(DB.ITEM_OWNER_PHONE,borrow.getOwnerPhone());
+            obj.put(DB.BORROW_LENT_TYPE,borrow.getBorrowType());
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -729,6 +731,7 @@ public class GreatJSON {
                 ((Borrow) model).setState(States.BORROW_PAYMENT_PENDING);
                  String ownerPhone = object.getString(DB.ITEM_OWNER_PHONE);
                 ((Borrow) model).setOwnerPhone(ownerPhone);
+                ((Borrow) model).setBorrowType(object.getInt(DB.BORROW_LENT_TYPE));
 
             } else if (modelType == Model.MODEL_TYPE_LENT) {
                 ((Lent)model).setLinkedContactItemId(object.getString(DB.UID));       // Item Owner Id
@@ -736,11 +739,13 @@ public class GreatJSON {
                 ((Lent) model).setState(States.LENT_WAITING_FOR_PAYMENT);
                 String ownerPhone = object.getString(DB.ITEM_OWNER_PHONE);
                 ((Lent) model).setOwnerPhone(ownerPhone);
+                ((Lent) model).setLentType(object.getInt(DB.BORROW_LENT_TYPE));
             }
 
             model.setAmount(Float.parseFloat(object.getString(DB.AMOUNT)));
             model.setDateString(DateUtils.getCurrentDate());
             model.setDueDateString(object.getString(DB.DUE_DATE_STRING));
+
 
 
             Contact senderContact = Tools.getContactFromPhoneNumber(context, inPackage.getReqSenderPhone());

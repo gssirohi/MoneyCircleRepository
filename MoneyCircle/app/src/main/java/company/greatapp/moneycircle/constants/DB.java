@@ -40,6 +40,8 @@ public class DB {
     public static final String STATE = "state";
 
     public static final String ITEM_OWNER_PHONE                 = "itemOwnerPhone";
+
+    public static final String BORROW_LENT_TYPE = "borrowLentType";
 //-----------------------------------------------------------------//
 
 
@@ -120,7 +122,7 @@ public class DB {
             DB_ID,UID,
             TITLE,CATEGORY,DESCRIPTION,AMOUNT, STATE,
             LINKED_CONTACT_JSON,
-            DUE_DATE_STRING, ITEM_OWNER_PHONE,
+            DUE_DATE_STRING, ITEM_OWNER_PHONE,BORROW_LENT_TYPE,
             DATE_STRING,DATE, DAY_OF_MONTH, WEEK_OF_MONTH,MONTH,YEAR,
             JSON_STRING};
 //----------------------------------------------------------------//
@@ -135,7 +137,7 @@ public class DB {
             DB_ID,UID,
             TITLE,CATEGORY,DESCRIPTION,AMOUNT, STATE,
             LINKED_CONTACT_JSON,
-            DUE_DATE_STRING,ITEM_OWNER_PHONE,
+            DUE_DATE_STRING,ITEM_OWNER_PHONE,BORROW_LENT_TYPE,
             IS_LINKED_WITH_SPLIT,LINKED_SPLIT_JSON,
             DATE_STRING,DATE, DAY_OF_MONTH, WEEK_OF_MONTH,MONTH,YEAR,
             JSON_STRING};
@@ -291,6 +293,7 @@ public class DB {
             ACCOUNT_TOPITEMS,
             ACCOUNT_LAST_TRANSACTION
             };
+
 
 //----------------------------------------------------------------//
 }

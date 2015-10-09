@@ -53,4 +53,7 @@ public class C {
     public static final String DISPLAY_MESSAGE_TEXT = "messageText" ;
 
     public static final String CONTACT_UID = "contactUid";
+
+    public static final int BORROW_LENT_TYPE_CASH = 999;
+    public static final int BORROW_LENT_TYPE_BILL = 888;
 }

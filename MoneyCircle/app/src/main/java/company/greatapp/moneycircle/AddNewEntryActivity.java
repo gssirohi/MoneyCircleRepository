@@ -17,6 +17,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,6 +79,8 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
     private boolean mAddInFrequent;
 
     private Toolbar mToolbar;
+    private RadioGroup rg_type;
+    private int selectedBorrowLentType;
 
 
     @Override
@@ -113,6 +116,14 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         tv_new_item_title_text = (TextView)findViewById(R.id.tv_new_item_title_text);
         et_new_item = (EditText)findViewById(R.id.et_new_item_title);
 
+        rg_type = (RadioGroup)findViewById(R.id.rg_borrow_lent_type);
+        rg_type.setVisibility(View.GONE);
+        rg_type.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                handleTypeChanged(i);
+            }
+        });
         //tv_new_category_text = (TextView)findViewById(R.id.tv_new_category_text);
         tsiv_new_category = (TopSegmentItemView)findViewById(R.id.tsiv_new_category);
 
@@ -210,6 +221,14 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         addMember(contactUid);
     }
 
+    private void handleTypeChanged(int i) {
+        if(i == R.id.rb_cash_type) {
+            selectedBorrowLentType = C.BORROW_LENT_TYPE_CASH;
+        } else if(i == R.id.rb_bill_type) {
+            selectedBorrowLentType = C.BORROW_LENT_TYPE_BILL;
+        }
+    }
+
     private void setButtonColor() {
        // int back = Tools.getModelColor(this,mModelType);
        // int back = getResources().getColor(resId);
@@ -262,6 +281,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         b_new_split.setVisibility(View.GONE);             //HIDDEN
         tsiv_new_member_add.setVisibility(View.VISIBLE);     //NOT HIDDEN
         tsiv_new_due_date.setVisibility(View.VISIBLE);     //NOT HIDDEN
+        rg_type.setVisibility(View.VISIBLE);
     }
 
     private void createLendedLayout() {
@@ -287,6 +307,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         b_new_split.setVisibility(View.GONE);             //HIDDEN
         tsiv_new_member_add.setVisibility(View.VISIBLE);     //NOT HIDDEN
         tsiv_new_due_date.setVisibility(View.VISIBLE);     //NOT HIDDEN
+        rg_type.setVisibility(View.VISIBLE);
     }
 
     private void createExpenseLayout() {
@@ -373,6 +394,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
 
         if (mModelType == Model.MODEL_TYPE_BORROW || mModelType == Model.MODEL_TYPE_LENT) {
             if (mMember == null) return false;
+            if (selectedBorrowLentType == 0) return false;
         }
 
         String title = et_new_item.getText().toString();
@@ -437,6 +459,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
                 borrow.setAmount(amount);
                 borrow.setLinkedContact(mMember);
                 borrow.setOwnerPhone(user.getPhoneNumber());
+                borrow.setBorrowType(selectedBorrowLentType);
                 description = et_new_note.getText().toString();
                 if (!TextUtils.isEmpty(description)) {
                     borrow.setDescription(description);
@@ -465,6 +488,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
                 lent.setOwnerPhone(user.getPhoneNumber());
                 amount = Float.parseFloat(et_new_amount.getText().toString());
                 lent.setAmount(amount);
+                lent.setLentType(selectedBorrowLentType);
                 description = et_new_note.getText().toString();
                 if (!TextUtils.isEmpty(description)) {
                     lent.setDescription(description);
