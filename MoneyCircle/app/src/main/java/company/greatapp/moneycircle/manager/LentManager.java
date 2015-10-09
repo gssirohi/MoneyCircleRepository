@@ -56,6 +56,7 @@ public class LentManager extends BaseModelManager  {
         String date_string     = cursor.getString(cursor.getColumnIndex(DB.DATE_STRING));
         String owner_phone     = cursor.getString(cursor.getColumnIndex(DB.ITEM_OWNER_PHONE));
         int state              = cursor.getInt(cursor.getColumnIndex(DB.STATE));
+        int borrowLentType     = cursor.getInt(cursor.getColumnIndex(DB.BORROW_LENT_TYPE));
         int date               = cursor.getInt(cursor.getColumnIndex(DB.DATE));
         int dateOfMonth             = cursor.getInt(cursor.getColumnIndex(DB.DAY_OF_MONTH));
         int weekOfMonth             = cursor.getInt(cursor.getColumnIndex(DB.WEEK_OF_MONTH));
@@ -71,6 +72,7 @@ public class LentManager extends BaseModelManager  {
         lent.setDueDateString(dueDateString);
         lent.setLinkedContactJson(linkedContactJson);
         lent.setState(state);
+        lent.setLentType(borrowLentType);
         if(!TextUtils.isEmpty(linkedContactJson)) {
             Contact member = GreatJSON.getContactFromJsonString(linkedContactJson, context);
             lent.setLinkedContact(member);
@@ -101,6 +103,7 @@ public class LentManager extends BaseModelManager  {
         String date_string     = cursor.getString(cursor.getColumnIndex(DB.DATE_STRING));
         String owner_phone     = cursor.getString(cursor.getColumnIndex(DB.ITEM_OWNER_PHONE));
         int state              = cursor.getInt(cursor.getColumnIndex(DB.STATE));
+        int borrowLentType     = cursor.getInt(cursor.getColumnIndex(DB.BORROW_LENT_TYPE));
         int date               = cursor.getInt(cursor.getColumnIndex(DB.DATE));
         int dateOfMonth             = cursor.getInt(cursor.getColumnIndex(DB.DAY_OF_MONTH));
         int weekOfMonth             = cursor.getInt(cursor.getColumnIndex(DB.WEEK_OF_MONTH));
@@ -116,6 +119,7 @@ public class LentManager extends BaseModelManager  {
         lent.setDueDateString(dueDateString);
         lent.setLinkedContactJson(linkedContactJson);
         lent.setState(state);
+        lent.setLentType(borrowLentType);
 //        if(!TextUtils.isEmpty(linkedContactJson)) {
 //            Contact member = GreatJSON.getContactFromJsonString(linkedContactJson, mContactManager);
 //            lent.setLinkedContact(member);

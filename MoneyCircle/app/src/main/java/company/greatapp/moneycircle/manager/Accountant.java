@@ -9,6 +9,7 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import company.greatapp.moneycircle.asynctask.UpdateAccountRegistersTask;
+import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.constants.States;
 import company.greatapp.moneycircle.model.AccountRegister;
@@ -394,6 +395,9 @@ public class Accountant {
 
         float totalTillNow = 0;
 
+        float totalCash = 0;
+        float totalBill = 0;
+
         ArrayList<Model> upComingEventsOfToday = new ArrayList<Model>();
         ArrayList<Model> upComingEventsOfWeek = new ArrayList<Model>();
         ArrayList<Model> upComingEventsOfMonth = new ArrayList<Model>();
@@ -479,6 +483,11 @@ public class Accountant {
                     if (contact != null && contact.getBorrowedAmountfromThis() > 0) {
                          topItems.add(contact);
                     }
+                    if(((Borrow)model).getBorrowType() == C.BORROW_LENT_TYPE_CASH) {
+                        totalCash = totalCash + amount;
+                    } else if(((Borrow)model).getBorrowType() == C.BORROW_LENT_TYPE_BILL) {
+                        totalBill = totalBill + amount;
+                    }
                 } else if (registerType == Model.MODEL_TYPE_LENT) {
                     Log.d("SPLIT","---------GETTING TOP LENT ITEMS----------");
                     Contact contact = model.getLinkedContact();
@@ -514,6 +523,14 @@ public class Accountant {
         register.setUpComingEventsOfMonth(upComingEventsOfMonth);
 
         register.setTopItems(topItems);
+
+        if(registerType == Model.MODEL_TYPE_BORROW) {
+            register.setTotalCashBorrowed(totalCash);
+            register.setTotalBillBorrowed(totalBill);
+        } else if(registerType == Model.MODEL_TYPE_LENT){
+            register.setTotalCashLent(totalCash);
+            register.setTotalBillPaymentLent(totalBill);
+        }
         Model lastTransaction = getLastTransaction(registerType);
         if(lastTransaction != null) {
             register.setLastTransaction(lastTransaction);
@@ -660,14 +677,32 @@ public class Accountant {
     }
 
     public float getActualWorthBalance() {
-        return 0;
+        float totalIncome = mIncomeRegister.getTotalTillNow();
+        float totalBillBorrow = mBorrowRegister.getTotalBillBorrowed();
+        float totalExpense = mExpenseRegister.getTotalTillNow();
+        float totalLent = mLentRegister.getTotalTillNow();
+
+        float worthBalance = totalIncome  - totalExpense - totalBillBorrow;
+        return worthBalance;
+
     }
 
     public float getTotalAccountBalance() {
-        return 0;
+        float totalIncome = mIncomeRegister.getTotalTillNow();
+        float totalCashBorrowed = mBorrowRegister.getTotalCashBorrowed();
+        float totalExpense = mExpenseRegister.getTotalTillNow();
+        float totalLent = mLentRegister.getTotalTillNow();
+
+        float accountBalance = totalIncome + totalCashBorrowed - totalExpense - totalLent;
+        return accountBalance;
     }
 
     public float getTotalPendingNetBorrowFromCircle() {
-        return 0;
+        float totalCashBorrowed = mBorrowRegister.getTotalCashBorrowed();
+        float totalBillBorrowed = mBorrowRegister.getTotalBillBorrowed();
+        float totalLent = mLentRegister.getTotalTillNow();
+
+        float accountBalance = totalCashBorrowed + totalBillBorrowed - totalLent;
+        return accountBalance;
     }
 }

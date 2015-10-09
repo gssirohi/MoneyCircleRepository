@@ -46,6 +46,8 @@ public class Lent extends Model {
     private String linkedSplitJson;
 
     private String ownerPhone;
+
+    private int lentType;
     //---------------------------------//
 
     public Lent() {      // Empty Constructor
@@ -68,6 +70,14 @@ public class Lent extends Model {
         linkedSplit = null;
         linkedSplitJson = "NA";
         GreatJSON.updateModelFieldsFromInPackage(context, inPackage, Model.MODEL_TYPE_LENT, this);
+    }
+
+    public int getLentType() {
+        return lentType;
+    }
+
+    public void setLentType(int lentType) {
+        this.lentType = lentType;
     }
 
     public String getOwnerPhone() {
@@ -263,6 +273,7 @@ public class Lent extends Model {
         row.put(DB.DATE_STRING ,getDateString());
         row.put(DB.ITEM_OWNER_PHONE ,getOwnerPhone());
         row.put(DB.STATE, getState());
+        row.put(DB.BORROW_LENT_TYPE,getLentType());
 //        Calendar cal = Calendar.getInstance();
 //        cal.setTime(getDate());
 //

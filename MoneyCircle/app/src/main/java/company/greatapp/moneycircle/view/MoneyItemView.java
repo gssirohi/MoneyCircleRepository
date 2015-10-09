@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import company.greatapp.moneycircle.R;
+import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.constants.States;
 import company.greatapp.moneycircle.manager.Transporter;
 import company.greatapp.moneycircle.model.Borrow;
@@ -45,6 +46,7 @@ public class MoneyItemView extends LinearLayout {
     private final TextView tv_item_state;
     private final Button b_pay_receive;
     private final FrameLayout f_clear_item;
+    private final FrameLayout f_type;
     private Income income;
     private Model mModel;
 
@@ -69,6 +71,7 @@ public class MoneyItemView extends LinearLayout {
         b_pay_receive = (Button)viewGroup.findViewById(R.id.b_money_pay_receive);
         f_member = (FrameLayout)viewGroup.findViewById(R.id.f_member);
         f_split = (FrameLayout)viewGroup.findViewById(R.id.f_split);
+        f_type = (FrameLayout)viewGroup.findViewById(R.id.f_type);
 
         f_clear_item = (FrameLayout)viewGroup.findViewById(R.id.f_clear_item);
 
@@ -134,6 +137,7 @@ public class MoneyItemView extends LinearLayout {
 
         f_member.removeAllViews();
         f_split.removeAllViews();
+        f_type.removeAllViews();
         ll_split_member.removeAllViews();
 
         tv_item_state.setVisibility(View.GONE);
@@ -179,6 +183,13 @@ public class MoneyItemView extends LinearLayout {
                         Log.d("SPLIT","MoneyItemView Contact from json["+json+"] is NULL");
                     }
                 }
+
+                if(((Borrow)model).getBorrowType() == C.BORROW_LENT_TYPE_CASH) {
+                    f_split.addView(new TagItemView(getContext(),f_type,"CASH",false));
+                }else if(((Borrow)model).getBorrowType() == C.BORROW_LENT_TYPE_BILL) {
+                    f_split.addView(new TagItemView(getContext(),f_type,"BILL",false));
+                }
+
                 ll_due_date_info.setVisibility(View.VISIBLE);
                 tv_due_date.setText(""+((Borrow)model).getDueDateString());
                 break;
@@ -210,6 +221,11 @@ public class MoneyItemView extends LinearLayout {
                 }
                 if(((Lent)model).isLinkedWithSplit()){
                     f_split.addView(new TagItemView(getContext(), f_split, "SPLIT", false));
+                }
+                if(((Lent)model).getLentType() == C.BORROW_LENT_TYPE_CASH) {
+                    f_split.addView(new TagItemView(getContext(),f_type,"CASH",false));
+                }else if(((Lent)model).getLentType() == C.BORROW_LENT_TYPE_BILL) {
+                    f_split.addView(new TagItemView(getContext(),f_type,"BILL",false));
                 }
                 ll_due_date_info.setVisibility(View.VISIBLE);
                 tv_due_date.setText(""+((Lent)model).getDueDateString());

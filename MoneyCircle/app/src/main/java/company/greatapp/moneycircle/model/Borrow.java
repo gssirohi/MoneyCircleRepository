@@ -42,6 +42,7 @@ public class Borrow extends Model {
     private String linkedContactItemId;
     private int mState = States.BORROW_IDEAL;
 
+    private int borrowType;
     private String ownerPhone = "";
 
     public Borrow() {      // Empty Constructor
@@ -61,6 +62,14 @@ public class Borrow extends Model {
     public Borrow (Context context, InPackage inPackage) {
         //setUID(Tools.generateUniqueId());
         GreatJSON.updateModelFieldsFromInPackage(context, inPackage, Model.MODEL_TYPE_BORROW, this);
+    }
+
+    public int getBorrowType() {
+        return borrowType;
+    }
+
+    public void setBorrowType(int borrowType) {
+        this.borrowType = borrowType;
     }
 
     public String getOwnerPhone() {
@@ -231,6 +240,7 @@ public class Borrow extends Model {
         row.put(DB.DATE_STRING ,getDateString());
         row.put(DB.STATE, getState());
         row.put(DB.ITEM_OWNER_PHONE, getOwnerPhone());
+        row.put(DB.BORROW_LENT_TYPE,getBorrowType());
 //        Calendar cal = Calendar.getInstance();
 //        cal.setTime(getDate());
 //
