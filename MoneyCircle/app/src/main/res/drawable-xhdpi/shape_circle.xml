@@ -4,7 +4,7 @@
     <item>
         <shape
             android:shape="oval">
-            <solid android:color="@color/white" />
+            <solid android:color="@color/app_lightest" />
         </shape>
     </item>
     <item android:id="@+id/shape_circle_outer_ring_item">

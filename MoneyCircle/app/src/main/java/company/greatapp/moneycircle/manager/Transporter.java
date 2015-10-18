@@ -146,12 +146,13 @@ public class Transporter {
             if(controller == null) {
                 Log.d(TAG,"Volley Controller is NULL");
             } else {
-                new Handler().postDelayed(new Runnable() {
+                goAhead(controller, req, tag);
+/*                new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         goAhead(controller, req, tag);
                     }
-                }, 2000);
+                }, 2000);*/
 
             }
 

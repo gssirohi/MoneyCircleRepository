@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import company.greatapp.moneycircle.constants.DB;
 
+import company.greatapp.moneycircle.model.Category;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
@@ -66,7 +67,7 @@ public class LentManager extends BaseModelManager  {
 
         Lent lent =new Lent(dbId, uid);
         lent.setTitle(title);
-        lent.setCategory(category);
+        lent.setCategory(new Category(category));
         lent.setAmount(Float.parseFloat(amount));
         lent.setDescription(description);
         lent.setDueDateString(dueDateString);
@@ -113,7 +114,7 @@ public class LentManager extends BaseModelManager  {
 
         Lent lent =new Lent(dbId, uid);
         lent.setTitle(title);
-        lent.setCategory(category);
+        lent.setCategory(new Category(category));
         lent.setAmount(Float.parseFloat(amount));
         lent.setDescription(description);
         lent.setDueDateString(dueDateString);

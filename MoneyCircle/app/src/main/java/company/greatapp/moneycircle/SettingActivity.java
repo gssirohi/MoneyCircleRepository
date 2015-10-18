@@ -47,7 +47,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.tv_passwordId:
                 break;
             case R.id.tv_categoriesId:
-                intent = new Intent(this, ManageCategoriesActivity.class);
+               // intent = new Intent(this, ManageCategoriesActivity.class);
+                intent = new Intent(this, CategoryActivity.class);
                 break;
             case R.id.tv_profileId:
                 break;

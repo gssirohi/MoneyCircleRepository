@@ -281,7 +281,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         b_new_split.setVisibility(View.GONE);             //HIDDEN
         tsiv_new_member_add.setVisibility(View.VISIBLE);     //NOT HIDDEN
         tsiv_new_due_date.setVisibility(View.VISIBLE);     //NOT HIDDEN
-        rg_type.setVisibility(View.VISIBLE);
+        //rg_type.setVisibility(View.VISIBLE);
     }
 
     private void createLendedLayout() {
@@ -307,7 +307,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         b_new_split.setVisibility(View.GONE);             //HIDDEN
         tsiv_new_member_add.setVisibility(View.VISIBLE);     //NOT HIDDEN
         tsiv_new_due_date.setVisibility(View.VISIBLE);     //NOT HIDDEN
-        rg_type.setVisibility(View.VISIBLE);
+      //  rg_type.setVisibility(View.VISIBLE);
     }
 
     private void createExpenseLayout() {
@@ -408,6 +408,8 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         String transportId="";
         BaseModelManager manager = null;
         String description = null;
+        Category cat = null;
+        float spent;
         User user = new User (this);
         float amount;
         switch (mModelType) {
@@ -415,7 +417,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
                 Income income = new Income();
                 income.setDateString(mDateString);
                 income.setTitle(et_new_item.getText().toString());
-                income.setCategory(mCategory);
+                income.setCategory((Category)Tools.getDbInstance(this,mCategory,Model.MODEL_TYPE_CATEGORY));
                 amount = Float.parseFloat(et_new_amount.getText().toString());
                 income.setAmount(amount);
                 description = et_new_note.getText().toString();
@@ -424,6 +426,10 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
                 }
 
                 income.insertItemInDB(this);
+                cat = (Category) Tools.getDbInstance(this, mCategory, Model.MODEL_TYPE_CATEGORY);
+                spent = cat.getSpentAmountOnThis();
+                cat.setSpentAmountOnThis(spent + amount);
+                cat.updateItemInDb(this);
 
                 Toast.makeText(this, "Income ENTRY SAVED", Toast.LENGTH_SHORT).show();
                 Tools.sendMoneyTransactionBroadCast(this, income, Model.MODEL_TYPE_INCOME);
@@ -432,7 +438,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
                 Expense expense = new Expense();
                 expense.setDateString(mDateString);
                 expense.setTitle(et_new_item.getText().toString());
-                expense.setCategory(mCategory);
+                expense.setCategory((Category) Tools.getDbInstance(this, mCategory, Model.MODEL_TYPE_CATEGORY));
                 amount = Float.parseFloat(et_new_amount.getText().toString());
                 expense.setAmount(amount);
                 description = et_new_note.getText().toString();
@@ -442,8 +448,8 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
                 // TODO Split with other member entry needs to be included.
 
                 expense.insertItemInDB(this);
-                Category cat = (Category) Tools.getDbInstance(this, mCategory, Model.MODEL_TYPE_CATEGORY);
-                float spent = cat.getSpentAmountOnThis();
+                cat = (Category) Tools.getDbInstance(this, mCategory, Model.MODEL_TYPE_CATEGORY);
+                spent = cat.getSpentAmountOnThis();
                 cat.setSpentAmountOnThis(spent + amount);
                 cat.updateItemInDb(this);
 
@@ -454,7 +460,13 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
                 Borrow borrow = new Borrow();
                 borrow.setDateString(mDateString);
                 borrow.setTitle(et_new_item.getText().toString());
-                borrow.setCategory(mCategory);
+                cat = (Category)Tools.getDbInstance(this,mCategory,Model.MODEL_TYPE_CATEGORY);
+                if(cat.getTitle().equals("Paid by friend")) {
+                    selectedBorrowLentType = C.BORROW_LENT_TYPE_BILL;
+                } else {
+                    selectedBorrowLentType = C.BORROW_LENT_TYPE_CASH;
+                }
+                borrow.setCategory(cat);
                 amount = Float.parseFloat(et_new_amount.getText().toString());
                 borrow.setAmount(amount);
                 borrow.setLinkedContact(mMember);
@@ -470,6 +482,11 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
 
                 borrow.insertItemInDB(this);
 
+                spent = cat.getSpentAmountOnThis();
+                cat.setSpentAmountOnThis(spent + amount);
+                cat.updateItemInDb(this);
+
+
                 transportId = transporter.transportItem(borrow, Model.MODEL_TYPE_BORROW);
                 if(!mMember.getUID().equals(C.USER_UNIQUE_ID)) {
                     float borrowAmount = mMember.getBorrowedAmountfromThis();
@@ -483,7 +500,15 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
                 Lent lent = new Lent();
                 lent.setDateString(mDateString);
                 lent.setTitle(et_new_item.getText().toString());
-                lent.setCategory(mCategory);
+
+                cat = (Category)Tools.getDbInstance(this,mCategory,Model.MODEL_TYPE_CATEGORY);
+                if(cat.getTitle().equals("Paid by friend")) {
+                    selectedBorrowLentType = C.BORROW_LENT_TYPE_BILL;
+                } else {
+                    selectedBorrowLentType = C.BORROW_LENT_TYPE_CASH;
+                }
+
+                lent.setCategory(cat);
                 lent.setLinkedContact(mMember);
                 lent.setOwnerPhone(user.getPhoneNumber());
                 amount = Float.parseFloat(et_new_amount.getText().toString());
@@ -499,6 +524,11 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
 
                 lent.printModelData();
                 lent.insertItemInDB(this);
+
+                spent = cat.getSpentAmountOnThis();
+                cat.setSpentAmountOnThis(spent + amount);
+                cat.updateItemInDb(this);
+
                 transportId = transporter.transportItem(lent, Model.MODEL_TYPE_LENT);
                 if(!mMember.getUID().equals(C.USER_UNIQUE_ID)) {
                     float lentAmount = mMember.getLentAmountToThis();
@@ -548,6 +578,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
 
     public void setDefaultCategory() {
         mCategory = C.CATEGORY_NONE_UID;
+        selectedBorrowLentType = C.BORROW_LENT_TYPE_CASH;
     }
 
     public void setEntryDate(int year, int monthOfYear, int dayOfMonth) {

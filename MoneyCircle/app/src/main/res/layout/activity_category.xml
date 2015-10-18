@@ -1,0 +1,58 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="company.greatapp.moneycircle.CategoryActivity">
+
+    <include
+        android:id="@+id/tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        layout="@layout/tool_bar_layout" />
+
+
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/tool_bar"
+        android:layout_margin="10dp"
+        android:layout_height="match_parent">
+
+        <company.greatapp.moneycircle.view.TitleSelectionView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+
+            android:id="@+id/title_selection_categories"
+            android:orientation="vertical" />
+
+        <GridView
+            android:id="@+id/gv_cat"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:padding="10px"
+            android:verticalSpacing="10px"
+            android:horizontalSpacing="10px"
+            android:numColumns="3"
+            android:columnWidth="100sp"
+            android:stretchMode="spacingWidth"
+            android:gravity="center"
+            android:scrollbars="none"
+            />
+    </LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <view
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            class="android.support.design.widget.FloatingActionButton"
+            android:id="@+id/fb_add_category"
+            android:layout_gravity="right|bottom"
+            android:src="@drawable/ic_floating_add"
+            android:layout_marginBottom="@dimen/fab_margin_bottom"
+            android:layout_marginEnd="@dimen/fab_margin_right"
+            android:layout_marginRight="@dimen/fab_margin_right"
+            android:elevation="0dp"/>
+    </FrameLayout>
+</RelativeLayout>

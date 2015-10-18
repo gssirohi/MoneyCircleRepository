@@ -157,6 +157,10 @@
             android:name=".ContactDetailActivity"
             android:label="@string/title_activity_contact_detail" >
         </activity>
+        <activity
+            android:name=".CategoryActivity"
+            android:label="@string/title_activity_category" >
+        </activity>
     </application>
 
 </manifest>

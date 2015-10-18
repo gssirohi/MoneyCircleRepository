@@ -8,6 +8,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.constants.DB;
 
@@ -15,6 +16,7 @@ import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.model.Category;
 
 import company.greatapp.moneycircle.model.Model;
+import company.greatapp.moneycircle.split.SplitToolActivity;
 
 /**
  * Created by Ashish on 10-07-2015.
@@ -240,10 +242,12 @@ public class CategoryManager extends BaseModelManager  {
     private ArrayList<Model> getDefaultCategoryList() {
 
         ArrayList<Model> listI = new ArrayList<>();
-        listI.add(new Category("income 1",Category.SINGLE_MODEL));
-        listI.add(new Category("income 2",Category.SINGLE_MODEL));
-        listI.add(new Category("income 3",Category.SINGLE_MODEL));
-        listI.add(new Category("income 4",Category.SINGLE_MODEL));
+        listI.add(new Category("Salary", R.drawable.icon_cat_salary));
+        listI.add(new Category("Selling",R.drawable.icon_cat_selling));
+        listI.add(new Category("Provident Fund",R.drawable.icon_cat_providentfund));
+        listI.add(new Category("Gifts",R.drawable.icon_cat_gifts));
+        listI.add(new Category("Loan",R.drawable.icon_cat_loan));
+        listI.add(new Category("Other",R.drawable.icon_cat_other));
 
         for (Model m : listI) {
             ((Category)m).setForIncome(true);
@@ -251,49 +255,53 @@ public class CategoryManager extends BaseModelManager  {
         }
 
         ArrayList<Model> listE = new ArrayList<>();
-        listE.add(new Category("expense 1",Category.SINGLE_MODEL));
-        listE.add(new Category("expense 2",Category.SINGLE_MODEL));
-        listE.add(new Category("expense 3",Category.SINGLE_MODEL));
-        listE.add(new Category("expense 4",Category.SINGLE_MODEL));
-        listE.add(new Category("expense 5",Category.SINGLE_MODEL));
+        listE.add(new Category("Grocery",R.drawable.icon_cat_grocery));
+        listE.add(new Category("Clothes",R.drawable.icon_cat_clothes));
+        listE.add(new Category("Food",R.drawable.icon_cat_fooddrinks));
+        listE.add(new Category("Shopping",R.drawable.icon_cat_shopping));
+        listE.add(new Category("Travel",R.drawable.icon_cat_travel));
+        listE.add(new Category("Medical",R.drawable.icon_cat_healthmedical));
+        listE.add(new Category("Servant",R.drawable.icon_cat_maiddriver));
+        listE.add(new Category("Rent/Mortgage",R.drawable.icon_cat_rentmortgage));
+        listE.add(new Category("Household",R.drawable.icon_cat_household));
+        listE.add(new Category("Bills/Utilities",R.drawable.icon_cat_billsutilities));
+        listE.add(new Category("Gifts",R.drawable.icon_cat_gifts));
 
         for (Model m : listE) {
             ((Category)m).setForExpense(true);
             mAllCategories.add(m);
         }
 
+        //update these categories in AddNewEntry and Split Activity also
         ArrayList<Model> listB = new ArrayList<>();
-        listB.add(new Category("borrow 1",Category.SINGLE_MODEL));
-        listB.add(new Category("borrow 2",Category.SINGLE_MODEL));
-        listB.add(new Category("borrow 3",Category.SINGLE_MODEL));
-        listB.add(new Category("borrow 4",Category.SINGLE_MODEL));
+        listB.add(new Category("Cash borrowed",R.drawable.icon_cat_cashincome));
+        listB.add(new Category("Paid by friend",R.drawable.icon_cat_imps));
+        listB.add(new Category("Bill due",R.drawable.icon_cat_billsutilities));
 
         for (Model m : listB) {
             ((Category)m).setForBorrow(true);
             mAllCategories.add(m);
         }
 
+        //update these categories in AddNewEntry and Split Activity also
         ArrayList<Model> listL = new ArrayList<>();
-        listL.add(new Category("lent 1",Category.SINGLE_MODEL));
-        listL.add(new Category("lent 2",Category.SINGLE_MODEL));
-        listL.add(new Category("lent 3",Category.SINGLE_MODEL));
-        listL.add(new Category("lent 4",Category.SINGLE_MODEL));
+        listL.add(new Category("Cash lent",R.drawable.icon_cat_cashforward));
+        listL.add(new Category("Paid for friend",R.drawable.icon_cat_investment));
+
         for (Model m : listL) {
             ((Category)m).setForLent(true);
             mAllCategories.add(m);
         }
 
         ArrayList<Model> listS = new ArrayList<>();
-        listS.add(new Category("split 1",Category.MULTIPLE_MODEL));
-        listS.add(new Category("split 2",Category.MULTIPLE_MODEL));
-        listS.add(new Category("split 3",Category.MULTIPLE_MODEL));
+        listS.add(new Category("split 1",R.drawable.icon_cat_miscellaneous));
 
         for (Model m : listS) {
             ((Category)m).setForSplit(true);
             mAllCategories.add(m);
         }
         //add a category for the case when no category is selected
-        mAllCategories.add(new Category("No category", C.CATEGORY_NONE_UID));
+        mAllCategories.add(new Category("Unknown", R.drawable.icon_cat_unknown));
 
         return  mAllCategories;
     }
@@ -312,5 +320,17 @@ public class CategoryManager extends BaseModelManager  {
                 return mSplitCategoryList;
         }
         return null;
+    }
+
+    public static Category getCategoryByName(Context context , String s) {
+        String [] projection = DB.CATEGORY_TABLE_PROJECTION;
+        String selection=DB.CATEGORY_NAME + "=" + "?";
+        String [] selArgs = new String[]{""+s};
+        Uri tableUri = DB.CATEGORY_TABLE_URI;
+
+        Cursor cursor = context.getContentResolver().query(tableUri,projection,selection,selArgs,null);
+        Category cat =  (Category)createLightItemFromCursor(cursor);
+        return cat;
+
     }
 }

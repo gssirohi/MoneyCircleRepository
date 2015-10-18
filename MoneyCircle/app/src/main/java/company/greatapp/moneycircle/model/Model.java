@@ -46,7 +46,7 @@ public abstract class Model implements Comparable<Model>{
     public abstract void setDateString(String dateString);
     public abstract void setDueDateString(String dueDateString);
     public abstract void setLinkedContact(Contact contact);
-    public abstract void setCategory(String categoryUid);
+    public abstract void setCategory(Category category);
 
 
     public abstract String getTitle();
@@ -59,7 +59,7 @@ public abstract class Model implements Comparable<Model>{
     public abstract String getDateString();
     public abstract String getDueDateString();
     public abstract Contact getLinkedContact();
-    public abstract String getCategory();
+    public abstract Category getCategory();
 
     public abstract ContentValues getContentValues();
     protected abstract Uri getTableUri();

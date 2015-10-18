@@ -24,7 +24,7 @@ public class Split extends Model {
     //--------------------------------//
 
     //=========== SPECIFICS ==============//
-    private String category;
+    private Category category;
     private String description = "";
     private float amount;
     private String dateString="";
@@ -170,11 +170,11 @@ public class Split extends Model {
     }
 
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
@@ -258,7 +258,7 @@ public class Split extends Model {
         ContentValues row = new ContentValues();
         row.put(DB.UID , getUID());
         row.put(DB.TITLE , getTitle());
-        row.put(DB.CATEGORY , getCategory());
+        row.put(DB.CATEGORY , getCategory().getUID());
         row.put(DB.DESCRIPTION , getDescription());
         row.put(DB.AMOUNT, getAmount());
         row.put(DB.SPLIT_TOTAL_PARTICIPANTS,getTotalParticipants());

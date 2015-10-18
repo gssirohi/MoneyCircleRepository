@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import company.greatapp.moneycircle.NewHomeActivity;
 import company.greatapp.moneycircle.constants.DB;
 
+import company.greatapp.moneycircle.model.Category;
 import company.greatapp.moneycircle.model.Income;
 import company.greatapp.moneycircle.model.Model;
 
@@ -53,7 +54,7 @@ public class IncomeManager extends BaseModelManager{
 
         Income income =new Income(dbId, uid);
         income.setTitle(title);
-        income.setCategory(category);
+        income.setCategory(new Category(category));
         income.setAmount(Float.parseFloat(amount));
         income.setDescription(description);
         income.setDateString(date_string);
@@ -81,7 +82,7 @@ public class IncomeManager extends BaseModelManager{
 
         Income income =new Income(dbId, uid);
         income.setTitle(title);
-        income.setCategory(category);
+        income.setCategory(new Category(category));
         income.setAmount(Float.parseFloat(amount));
         income.setDescription(description);
         income.setDateString(date_string);

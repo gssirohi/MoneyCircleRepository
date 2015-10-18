@@ -56,4 +56,13 @@ public class C {
 
     public static final int BORROW_LENT_TYPE_CASH = 999;
     public static final int BORROW_LENT_TYPE_BILL = 888;
+
+
+
+    public static final String[] DEFAULT_CATEGORIES = new String[] {
+            "Grocery" , "Clothes" ,"Food" , "Shopping" ,"Travel",
+            "Medical" , "Servant" , "Rent/Mortgage" , "Household" ,"Bills/Utilities",
+            "Gifts" ,
+            "Salary" , "Loan" , "Selling" , "Gifts" ,""
+    };
 }

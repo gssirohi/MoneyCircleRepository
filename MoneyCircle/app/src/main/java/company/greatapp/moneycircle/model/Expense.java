@@ -22,7 +22,7 @@ public class Expense extends Model  {
 
     //==========SPECIFICS==============//
 
-    private String mCategory;
+    private Category mCategory;
     private String mDescription = "";
     private float mAmount;
     private String mDateString ="";
@@ -75,11 +75,11 @@ public class Expense extends Model  {
         this.linkedSplitJson = linkedSplitJson;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return mCategory;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.mCategory = category;
     }
 
@@ -181,7 +181,7 @@ public class Expense extends Model  {
         ContentValues row = new ContentValues();
         row.put(DB.UID , getUID());
         row.put(DB.TITLE , getTitle());
-        row.put(DB.CATEGORY , getCategory());
+        row.put(DB.CATEGORY , getCategory().getUID());
         row.put(DB.DESCRIPTION , getDescription());
         row.put(DB.AMOUNT, getAmount());
 

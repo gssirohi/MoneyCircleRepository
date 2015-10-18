@@ -8,6 +8,7 @@ import android.net.Uri;
 import java.util.ArrayList;
 
 import company.greatapp.moneycircle.constants.DB;
+import company.greatapp.moneycircle.model.Category;
 import company.greatapp.moneycircle.model.Split;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.tools.GreatJSON;
@@ -73,7 +74,7 @@ public class SplitManager extends BaseModelManager {
         split.setDbId(dbId);
         split.setUID(uid);
         split.setTitle(title);
-        split.setCategory(category);
+        split.setCategory(new Category(category));
         split.setAmount(amount);
         split.setDescription(description);
         split.setDueDateString(dueDateString);
@@ -129,7 +130,7 @@ public class SplitManager extends BaseModelManager {
         split.setDbId(dbId);
         split.setUID(uid);
         split.setTitle(title);
-        split.setCategory(category);
+        split.setCategory(new Category(category));
         split.setAmount(amount);
         split.setDescription(description);
         split.setDueDateString(dueDateString);
