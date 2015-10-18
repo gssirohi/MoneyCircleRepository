@@ -31,6 +31,7 @@ import company.greatapp.moneycircle.manager.IncomeManager;
 import company.greatapp.moneycircle.manager.LentManager;
 import company.greatapp.moneycircle.manager.SplitManager;
 import company.greatapp.moneycircle.model.Borrow;
+import company.greatapp.moneycircle.model.Category;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Expense;
 import company.greatapp.moneycircle.model.InPackage;
@@ -223,7 +224,7 @@ public class Tools {
             Income item = new Income();
             item.setTitle(s);
             item.setDateString(getRandomDate());
-            item.setCategory(incomeCategoryList.get(randInt(0, incomeCategoryList.size()-1)).getUID());
+
             item.setAmount(randInt(500, 10000));
             item.insertItemInDB(context);
         }
@@ -231,7 +232,7 @@ public class Tools {
             Expense item = new Expense();
             item.setTitle(s);
             item.setDateString(getRandomDate());
-            item.setCategory(expenseCategoryList.get(randInt(0, expenseCategoryList.size()-1)).getUID());
+
             item.setAmount(randInt(500, 10000));
             item.insertItemInDB(context);
         }
@@ -239,7 +240,7 @@ public class Tools {
             Borrow item = new Borrow();
             item.setTitle(s);
             item.setDateString(getRandomDate());
-            item.setCategory(borrowCategoryList.get(randInt(0, borrowCategoryList.size()-1)).getUID());
+
             item.setAmount(randInt(500, 10000));
             item.insertItemInDB(context);
         }
@@ -247,7 +248,7 @@ public class Tools {
             Lent item = new Lent();
             item.setTitle(s);
             item.setDateString(getRandomDate());
-            item.setCategory(lentCategoryList.get(randInt(0, lentCategoryList.size()-1)).getUID());
+
             item.setAmount(randInt(500, 10000));
             item.insertItemInDB(context);
         }
@@ -451,7 +452,7 @@ public static String getModelName(int modelType){
         } else if(gender == User.FEMALE){
             resId = R.drawable.avator_female;
         } else {
-            resId = R.drawable.ic_profilepic;
+            resId = R.drawable.profile;
         }
         return resId;
     }
@@ -553,4 +554,23 @@ public static String getModelName(int modelType){
         return count;
     }
 
+    public static Category getMappedCategory(Context context,Category cat) {
+        String mapping = "";
+        if(cat == null) {
+            return CategoryManager.getCategoryByName(context,"Unknown");
+        }
+        if(cat.getTitle().equals("Paid by friend")) {
+            mapping = "Paid for friend";
+        } else if(cat.getTitle().equals("Cash borrowed")) {
+            mapping = "Cash lent";
+        } else if(cat.getTitle().equals("Paid for friend")) {
+            mapping = "Paid by friend";
+        } else if(cat.getTitle().equals("Cash lent")) {
+            mapping = "Cash borrowed";
+        } else  {
+            mapping = "Unknown";
+        }
+        Category category = CategoryManager.getCategoryByName(context,mapping);
+        return category;
+    }
 }

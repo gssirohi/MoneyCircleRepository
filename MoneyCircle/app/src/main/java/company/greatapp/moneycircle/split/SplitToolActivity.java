@@ -282,7 +282,7 @@ public class SplitToolActivity extends ActionBarActivity implements TagItemView.
         split.setTitle(title);
         split.setAmount(amount);
         split.setDescription(desc);
-        split.setCategory(mCategory);
+        split.setCategory((Category)Tools.getDbInstance(this,mCategory,Model.MODEL_TYPE_CATEGORY));
         split.setDateString(dateString);
 
         split.setLinkedParticipantsJson(jsonStringParticipants);
@@ -374,7 +374,7 @@ public class SplitToolActivity extends ActionBarActivity implements TagItemView.
             lent.setDateString(mDateString);
             lent.setDueDateString(mDueDateString);
             lent.setIsLinkedWithSplit(true);
-            lent.setCategory(mCategory);
+            lent.setCategory(CategoryManager.getCategoryByName(this,"Paid for friend"));
             lent.setLinkedContact(linkedMember);
             lent.setOwnerPhone(user.getPhoneNumber());
             lent.insertItemInDB(this);
@@ -420,7 +420,7 @@ public class SplitToolActivity extends ActionBarActivity implements TagItemView.
         Expense expense = new Expense();
         expense.setTitle(title);
         expense.setAmount(Float.parseFloat(amount));
-        expense.setCategory(mCategory);
+        expense.setCategory((Category)Tools.getDbInstance(this,mCategory,Model.MODEL_TYPE_CATEGORY));
         expense.setDescription(desc);
         expense.setDateString(dateString);
         expense.setIsLinkedWithSplit(true);

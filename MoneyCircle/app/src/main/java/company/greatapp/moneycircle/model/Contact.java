@@ -188,7 +188,7 @@ public class Contact extends Model {
     }
 
     @Override
-    public String getCategory() {
+    public Category getCategory() {
         return null;
     }
 
@@ -218,7 +218,7 @@ public class Contact extends Model {
     }
 
     @Override
-    public void setCategory(String categoryUid) {
+    public void setCategory(Category categoryUid) {
 
     }
 

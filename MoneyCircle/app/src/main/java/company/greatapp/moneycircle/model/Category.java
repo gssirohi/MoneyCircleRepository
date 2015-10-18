@@ -15,7 +15,7 @@ public class Category extends Model  {
     public static final int MULTIPLE_MODEL = 2;
 
     private String mCategoryName;
-    private int mCategoryType;
+    private int mIconResId;
     private int mModelType;
     private int mDbId;
     private String mUId;
@@ -29,6 +29,12 @@ public class Category extends Model  {
     private boolean forSplit;
 
     private float spentAmountOnThis;
+
+    public Category(String categoryUid) {
+        mCategoryName = "NDBI";
+        mUId = categoryUid;
+    }
+
 
     public float getSpentAmountOnThis() {
         return spentAmountOnThis;
@@ -46,7 +52,7 @@ public class Category extends Model  {
         this.forSplit = forSplit;
         //this should be the part of Lent as well as expense
         if(forSplit) {
-            this.forExpense = true;
+          //  this.forExpense = true;
             this.forLent = true;
         }
     }
@@ -86,7 +92,7 @@ public class Category extends Model  {
     public Category(String categoryName, int categoryType) {
         mCategoryName = categoryName;
         setUID(Tools.generateUniqueId());
-        mCategoryType = categoryType;
+        mIconResId = categoryType;
         mModelType = Model.MODEL_TYPE_CATEGORY;
     }
 
@@ -100,7 +106,7 @@ public class Category extends Model  {
         mCategoryName = categoryName;
         mDbId = dbId;
         mUId = uid;
-        mCategoryType = categoryType;
+        mIconResId = categoryType;
         mModelType = Model.MODEL_TYPE_CATEGORY;
     }
 
@@ -144,12 +150,12 @@ public class Category extends Model  {
         return mModelType;
     }
 
-    public void setCategoryType(int categoryType) {
-        mCategoryType = categoryType;
+    public void setCategoryIconResId(int categoryType) {
+        mIconResId = categoryType;
     }
 
-    public int getCategoryType() {
-        return mCategoryType;
+    public int getCategoryIconResId() {
+        return mIconResId;
     }
 
     @Override
@@ -188,7 +194,7 @@ public class Category extends Model  {
     }
 
     @Override
-    public String getCategory() {
+    public Category getCategory() {
         return null;
     }
 
@@ -213,7 +219,7 @@ public class Category extends Model  {
     }
 
     @Override
-    public void setCategory(String categoryUid) {
+    public void setCategory(Category categoryUid) {
 
     }
 
@@ -223,7 +229,7 @@ public class Category extends Model  {
 
         values.put(DB.UID, getUID());
         values.put(DB.CATEGORY_NAME, getTitle());
-        values.put(DB.CATEGORY_TYPE, getCategoryType());
+        values.put(DB.CATEGORY_TYPE, getCategoryIconResId());
 
         values.put(DB.CATEGORY_FOR_INCOME, isForIncome()?1:0);
         values.put(DB.CATEGORY_FOR_EXPENSE, isForExpense()?1:0);

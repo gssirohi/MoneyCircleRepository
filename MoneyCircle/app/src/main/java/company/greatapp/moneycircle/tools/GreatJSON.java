@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.constants.S;
 import company.greatapp.moneycircle.constants.States;
+import company.greatapp.moneycircle.manager.CategoryManager;
 import company.greatapp.moneycircle.model.Borrow;
+import company.greatapp.moneycircle.model.Category;
 import company.greatapp.moneycircle.model.Circle;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Expense;
@@ -355,7 +357,7 @@ public class GreatJSON {
             obj.put(DB.DATE_STRING,lent.getDateString());
             obj.put(DB.DUE_DATE_STRING,lent.getDueDateString());
             obj.put(DB.DESCRIPTION,lent.getDescription());
-            obj.put(DB.CATEGORY,lent.getCategory());
+            obj.put(DB.CATEGORY,lent.getCategory().getTitle());
             obj.put(DB.ITEM_OWNER_PHONE,lent.getOwnerPhone());
             obj.put(DB.BORROW_LENT_TYPE,lent.getLentType());
         } catch (JSONException e) {
@@ -421,7 +423,7 @@ public class GreatJSON {
             obj.put(DB.TITLE, borrow.getTitle());
             obj.put(DB.UID, borrow.getUID());
             obj.put(DB.DB_ID, borrow.getDbId());
-            obj.put(DB.CATEGORY, borrow.getCategory());
+            obj.put(DB.CATEGORY, borrow.getCategory().getTitle());
             obj.put(DB.DESCRIPTION, borrow.getDescription());
             obj.put(DB.DATE_STRING, borrow.getDateString());
             obj.put(DB.DUE_DATE_STRING, borrow.getDueDateString());
@@ -723,7 +725,8 @@ public class GreatJSON {
             model.setUID(inPackage.getOwnerItemId());
             model.setTitle(object.getString(DB.TITLE));                         // Title
             model.setModelType(modelType);
-            model.setCategory(object.getString(DB.CATEGORY));
+            Category cat = (Category)Tools.getDbInstance(context,object.getString(DB.CATEGORY),Model.MODEL_TYPE_CATEGORY);
+            model.setCategory(Tools.getMappedCategory(context,cat));
 
             if (modelType == Model.MODEL_TYPE_BORROW) {
                 ((Borrow)model).setLinkedContactItemId(object.getString(DB.UID));       // Item Owner Id
@@ -732,6 +735,7 @@ public class GreatJSON {
                  String ownerPhone = object.getString(DB.ITEM_OWNER_PHONE);
                 ((Borrow) model).setOwnerPhone(ownerPhone);
                 ((Borrow) model).setBorrowType(object.getInt(DB.BORROW_LENT_TYPE));
+
 
             } else if (modelType == Model.MODEL_TYPE_LENT) {
                 ((Lent)model).setLinkedContactItemId(object.getString(DB.UID));       // Item Owner Id

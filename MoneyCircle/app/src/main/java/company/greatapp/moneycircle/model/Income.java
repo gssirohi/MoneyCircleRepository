@@ -21,7 +21,7 @@ public class Income extends Model {
     //--------------------------------//
 
     //=========== SPECIFICS ==============//
-    private String mCategory;
+    private Category mCategory;
     private String mDescription = "";
     private float mAmount;
     private String mDateString ="";
@@ -43,7 +43,7 @@ public class Income extends Model {
     }
 
     // TODO Need to update this constructor implementation properly
-    public Income(String title, int amount, String category, String date) {
+    public Income(String title, int amount, Category category, String date) {
 
         mTitle = title;
         mAmount = amount;
@@ -53,11 +53,11 @@ public class Income extends Model {
         modelType = Model.MODEL_TYPE_INCOME;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return mCategory;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.mCategory = category;
     }
 
@@ -160,7 +160,7 @@ public class Income extends Model {
         ContentValues row = new ContentValues();
         row.put(DB.UID , getUID());
         row.put(DB.TITLE , getTitle());
-        row.put(DB.CATEGORY , getCategory());
+        row.put(DB.CATEGORY , getCategory().getUID());
         row.put(DB.DESCRIPTION , getDescription());
         row.put(DB.AMOUNT, ""+getAmount());
 

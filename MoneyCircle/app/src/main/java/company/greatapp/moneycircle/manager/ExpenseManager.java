@@ -10,8 +10,10 @@ import java.util.ArrayList;
 
 import company.greatapp.moneycircle.constants.DB;
 
+import company.greatapp.moneycircle.model.Category;
 import company.greatapp.moneycircle.model.Expense;
 import company.greatapp.moneycircle.model.Model;
+import company.greatapp.moneycircle.tools.Tools;
 
 /**
  * Created by Ashish on 09-07-2015.
@@ -58,7 +60,7 @@ public class ExpenseManager extends BaseModelManager  {
 
         Expense expense =new Expense(dbId, uid);
         expense.setTitle(title);
-        expense.setCategory(category);
+        expense.setCategory((Category) Tools.getDbInstance(context, category, Model.MODEL_TYPE_CATEGORY));
         expense.setAmount(Float.parseFloat(amount));
         expense.setDescription(description);
         expense.setIsLinkedWithSplit((isLinked == 1)?true:false);
@@ -91,7 +93,7 @@ public class ExpenseManager extends BaseModelManager  {
 
         Expense expense =new Expense(dbId, uid);
         expense.setTitle(title);
-        expense.setCategory(category);
+        expense.setCategory(new Category(category));
         expense.setAmount(Float.parseFloat(amount));
         expense.setDescription(description);
         expense.setIsLinkedWithSplit((isLinked == 1)?true:false);

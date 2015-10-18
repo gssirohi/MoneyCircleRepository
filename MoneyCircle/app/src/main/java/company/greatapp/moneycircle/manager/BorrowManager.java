@@ -12,6 +12,7 @@ import company.greatapp.moneycircle.NewHomeActivity;
 import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.model.Borrow;
 
+import company.greatapp.moneycircle.model.Category;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.tools.GreatJSON;
@@ -62,7 +63,7 @@ public class BorrowManager extends BaseModelManager  {
 
         Borrow borrow = new Borrow(dbId, uid);
         borrow.setTitle(title);
-        borrow.setCategory(category);
+        borrow.setCategory(new Category(category));
         borrow.setAmount(Float.parseFloat(amount));
         borrow.setDescription(description);
         borrow.setDueDateString(dueDateString);
@@ -104,7 +105,7 @@ public class BorrowManager extends BaseModelManager  {
 
         Borrow borrow = new Borrow(dbId, uid);
         borrow.setTitle(title);
-        borrow.setCategory(category);
+        borrow.setCategory(new Category(category));
         borrow.setAmount(Float.parseFloat(amount));
         borrow.setDescription(description);
         borrow.setDueDateString(dueDateString);

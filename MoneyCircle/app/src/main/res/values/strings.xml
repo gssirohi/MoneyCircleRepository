@@ -131,5 +131,6 @@
     <string name="title_activity_money_circle_welcome">Money Circle</string>
     <string name="title_activity_notification">Notifications</string>
     <string name="title_activity_contact_detail">ContactDetailActivity                </string>
+    <string name="title_activity_category">CategoryActivity</string>
 
 </resources>

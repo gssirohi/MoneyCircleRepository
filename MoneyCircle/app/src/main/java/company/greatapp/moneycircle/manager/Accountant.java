@@ -496,7 +496,7 @@ public class Accountant {
                     }
                 } else if (registerType == Model.MODEL_TYPE_EXPENSE) {
                     Log.d("SPLIT","--------- GETTING TOP SPEND AREAS ----------");
-                    Category category = (Category) Tools.getDbInstance(mContext, model.getCategory(), Model.MODEL_TYPE_CATEGORY);
+                    Category category = model.getCategory();
                     if (category != null && category.getSpentAmountOnThis() > 0) {
                         topItems.add(category);
                     }
