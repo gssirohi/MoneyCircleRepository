@@ -20,6 +20,8 @@ android {
     }
 }
 
+repositories { mavenCentral() }
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:22.2.0'
@@ -28,4 +30,5 @@ dependencies {
     compile 'com.android.support:design:22.2.0'
     compile project(':volleymodule')
     compile files('/home/gyanendra/AndroidStudioProjects/GIT_HUB/FIX1/MoneyCircleRepository/MoneyCircle/libs/gcm.jar')
+    compile project(':facebook')
 }

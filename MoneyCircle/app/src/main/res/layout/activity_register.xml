@@ -50,7 +50,7 @@
         android:inputType="textEmailAddress"
         android:ems="10"
         android:id="@+id/et_register_email"
-        android:text="email"
+        android:hint="email"
         android:layout_below="@+id/tv_register_email_text"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp" />
@@ -73,7 +73,7 @@
         android:layout_below="@+id/tv_register_phone_text"
         android:layout_alignRight="@+id/et_register_email"
         android:layout_alignEnd="@+id/et_register_email"
-        android:text="phone" />
+        android:hint="phone" />
 
     <TextView
         android:layout_width="wrap_content"

@@ -15,10 +15,14 @@ public class S {
     public static final String FROM = "comingfrom";
     public static final String EMAIL_TO = "emailTo";
     public static final String USER_NAME = "userName";
+    public static final String USER_FIRST_NAME = "userFirstName";
+    public static final String USER_LAST_NAME = "userLastName";
     public static final String PHONE_NUMBER = "ph";
     public static final String GENDER = "gender";
     public static final String AVATOR = "avator";
-
+    public static final String FACEBOOK_ACCOUNT_ID = "facebookAccountId";
+    public static final String BIRTHDAY = "birthday";
+    public static final String LOGIN_FROM = "login_from";
 
 
     public static final String VALUE_CONTENT_TYPE_JSON_OBJECT_STRING ="jsonObjectString";
@@ -111,19 +115,28 @@ public class S {
     public static final short TRANSPORT_REQUEST_CODE_RECEIVE = 44;
     public static final short TRANSPORT_REQUEST_CODE_SETTLE = 55;
     public static final short TRANSPORT_REQUEST_CODE_REMINDER = 66;
+    public static final short TRANSPORT_REQUEST_CODE_MODIFIED_LENT = 77;
+    public static final short TRANSPORT_REQUEST_CODE_MODIFIED_BORROW = 88;
 
 
-    public static final short TRANSPORT_REQUEST_CODE_SETTLE_AGREE = 57;
-    public static final short TRANSPORT_REQUEST_CODE_SETTLE_DISAGREE = 58;
+    public static final short TRANSPORT_REQUEST_CODE_SETTLE_AGREE = 111;
+    public static final short TRANSPORT_REQUEST_CODE_SETTLE_DISAGREE = 222;
 
-    public static final short TRANSPORT_REQUEST_CODE_DELETE_LENT = 88;
-    public static final short TRANSPORT_REQUEST_CODE_DELETE_BORROW = 89;
+    public static final short TRANSPORT_REQUEST_CODE_DELETE_LENT = 333;
+    public static final short TRANSPORT_REQUEST_CODE_DELETE_BORROW = 444;
 
 
-    public static final short TRANSPORT_REQUEST_CODE_NOTIFICATION = 119;
+    public static final short TRANSPORT_REQUEST_CODE_NOTIFICATION = 555;
+
+    public static final short REQUEST_CODE_EXPENSE_MESSAGE = 5555;
+    public static final short REQUEST_CODE_INCOME_MESSAGE = 6666;
+    public static final short REQUEST_CODE_BILL_MESSAGE = 7777;
 
     //---------------------------------------------------------------------------------------//
 
+    public static final int NORMAL_LOGIN = 5001;
+    public static final int FACEBOOK_LOGIN = 5002;
+    public static final int GOOGLE_LOGIN = 5003;
 
 
 }

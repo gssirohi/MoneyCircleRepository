@@ -2,204 +2,341 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="1dp"
     android:layout_margin="5dp"
-    >
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:padding="1dp">
+
+    <FrameLayout
+        android:id="@+id/fl_received_transaction_notification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:layout_weight="90">
+            android:layout_weight="90"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/app_secondary">
+                android:background="@color/app_secondary"
+                android:orientation="vertical">
 
                 <ImageView
+                    android:id="@+id/iv_notification_contact_image"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/iv_notification_contact_image"
-                    android:src="@mipmap/ic_launcher"
-                    android:layout_gravity="center_horizontal" />
+                    android:layout_gravity="center_horizontal"
+                    android:src="@mipmap/ic_launcher" />
 
                 <TextView
+                    android:id="@+id/tv_notification_contact_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_gravity="center_horizontal"
                     android:text="Ashish"
-                    android:id="@+id/tv_notification_contact_name"
-                    android:layout_gravity="center_horizontal" />
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="5dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="5dp">
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="You owe 5000.70 to Ashish"
                         android:id="@+id/tv_notification_message_text"
-                        android:layout_gravity="center_vertical" />
-
-                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="You owe 5000.70 to Ashish" />
+
+                    <TextView
+                        android:id="@+id/tv_notification_message_new"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:text="(NEW)"
                         android:textColor="@color/red"
-                        android:id="@+id/tv_notification_message_new"
-                        android:layout_gravity="center_vertical"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
                 </LinearLayout>
             </LinearLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:layout_marginTop="10dp"
-        android:id="@+id/ll_notification_money_item_frame">
             <LinearLayout
-                android:orientation="horizontal"
+                android:id="@+id/ll_notification_money_item_frame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
 
+                    <TextView
+                        android:id="@+id/tv_item_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="7"
+                        android:text="Big Basket"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/app_darkest" />
+
+                    <TextView
+                        android:id="@+id/tv_item_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text="13 July 2015"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/app_dark" />
+                </LinearLayout>
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Big Basket"
-                    android:id="@+id/tv_item_title"
-                    android:layout_weight="7"
-                    android:textColor="@color/app_darkest"
-                    android:layout_gravity="center_vertical" />
+                    android:id="@+id/textView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:layout_margin="5dp"
+                    android:background="@color/app_lighter" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="13 July 2015"
-                    android:id="@+id/tv_item_date"
-                    android:textColor="@color/app_dark"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_item_amount"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="5000.70"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/app_dark" />
+
+                    <TextView
+                        android:id="@+id/tv_due_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="due on 25 July 2015"
+                        android:textColor="@color/app_secondary" />
+
+                </LinearLayout>
             </LinearLayout>
 
             <TextView
-                android:layout_width="fill_parent"
-                android:layout_margin="5dp"
-                android:layout_height="1dip"
-                android:background="@color/app_lighter"
-                android:id="@+id/textView" />
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="5000.70"
-                    android:id="@+id/tv_item_amount"
-                    android:textColor="@color/app_dark"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="due on 25 July 2015"
-                    android:id="@+id/tv_due_date"
-                    android:textColor="@color/app_secondary" />
-
-            </LinearLayout>
-    </LinearLayout>
-
-            <TextView
+                android:id="@+id/tv_notification_response_state_msg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Response State Message"
-                android:id="@+id/tv_notification_response_state_msg"
                 android:layout_gravity="center_horizontal"
-                android:layout_margin="10dp" />
+                android:layout_margin="10dp"
+                android:text="Response State Message" />
 
             <LinearLayout
-                android:orientation="horizontal"
+                android:id="@+id/ll_notification_agree_disagree_frame"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:id="@+id/ll_notification_agree_disagree_frame">
+                android:orientation="horizontal">
 
                 <Button
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="AGREE"
                     android:id="@+id/b_notification_agree"
-                    android:layout_weight="1" />
-
-                <Button
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="DISAGREE"
+                    android:layout_weight="1"
+                    android:text="AGREE" />
+
+                <Button
                     android:id="@+id/b_notification_disagree"
-                    android:layout_weight="1" />
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="DISAGREE" />
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
+                android:id="@+id/ll_notification_remove_entry_frame"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
-                android:id="@+id/ll_notification_remove_entry_frame">
+                android:orientation="horizontal">
 
                 <Button
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="REMOVE ENTRY"
                     android:id="@+id/b_notification_remove_entry"
-                    android:layout_weight="1" />
-
-                <Button
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="ADD ENTRY IN EXPENSE"
+                    android:layout_weight="1"
+                    android:text="REMOVE ENTRY" />
+
+                <Button
                     android:id="@+id/b_notification_add_entry_expense"
-                    android:layout_weight="1" />
-
-                <Button
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="EDIT AND RESEND"
+                    android:layout_weight="1"
+                    android:text="ADD ENTRY IN EXPENSE" />
+
+                <Button
                     android:id="@+id/b_notification_edit_resend"
-                    android:layout_weight="1" />
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="EDIT AND RESEND" />
             </LinearLayout>
-
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="CLEAR"
-                android:id="@+id/b_notification_clear" />
-
 
         </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fl_transaction_found_notification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_transaction_found_notification_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="New Transaction Found"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/dull_white"
+                android:background="@drawable/counter_bg"
+                android:gravity="center"/>
+
+            <FrameLayout
+                android:id="@+id/fl_transaction_found_notification_money_item_frame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_margin="5dp"
+                android:paddingLeft="5dp"/>
+
+            <!--<LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:orientation="vertical"
+
+                android:background="@drawable/shape_rounded_corner">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_item_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="7"
+                        android:text="Big Basket"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/app_darkest" />
+
+                    <TextView
+                        android:id="@+id/tv_item_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text="13 July 2015"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@color/app_dark" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:layout_margin="5dp"
+                    android:background="@color/app_lighter" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_item_amount"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="5000.70"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@color/app_dark" />
+
+                </LinearLayout>
+            </LinearLayout>-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/ll_transaction_found_notification_response_frame"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Do you want to add it to expense"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/lent_dark" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="AGREE"
+                        android:id="@+id/bt_transaction_found_notification_agree"
+                        android:layout_weight="1" />
+
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="DISAGREE"
+                        android:id="@+id/bt_transaction_found_notification_disagree"
+                        android:layout_weight="1" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/b_notification_clear"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CLEAR" />
 
 </LinearLayout>

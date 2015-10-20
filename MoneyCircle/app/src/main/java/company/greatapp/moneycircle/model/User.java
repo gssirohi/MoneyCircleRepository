@@ -14,6 +14,8 @@ public class User {
 
     private String regId;
     private String name;
+    private String first_name;
+    private String last_name;
     private String phone;
     private String email;
     private int gender;
@@ -21,6 +23,8 @@ public class User {
     private String sid;
     private boolean gcm_is_registered;
     private boolean qpinion_is_registered;
+    private String facebook_account_id;
+    private String birthday;
 
     public static final int U_REGID = 10;
     public static final int U_NAME = 11;
@@ -44,6 +48,10 @@ public class User {
     public static final String PREFS_GENDER = "gender";
     public static final String PREFS_AVATOR = "avator";
     public static final String PREFS_SID = "sid";
+    public static final String PREFS_FACEBOOK_ACCOUNT_ID = "facebook_account_id";
+    public static final String PREFS_FIRST_NAME = "first_name";
+    public static final String PREFS_LAST_NAME = "last_name";
+    public static final String PREFS_BIRTHDAY = "birthday";
 
     private SharedPreferences userPrefs;
     private Context mContext;
@@ -53,11 +61,15 @@ public class User {
         userPrefs = mContext.getSharedPreferences(C.USER_PREFERENCES, mContext.MODE_PRIVATE);
         regId = userPrefs.getString(PREFS_REG_ID, "NA");
         name = userPrefs.getString(PREFS_USER_NAME, "Unnammed");
+        first_name = userPrefs.getString(PREFS_FIRST_NAME, "Unnammed");
+        last_name = userPrefs.getString(PREFS_LAST_NAME, "Unnammed");
         phone = userPrefs.getString(PREFS_PHONE_NUMBER, "0101010101");
         email = userPrefs.getString(PREFS_EMAIL_ID, "abcd@qpinion.com");
         gender = userPrefs.getInt(PREFS_GENDER, MALE);
         avator = userPrefs.getInt(PREFS_AVATOR, 0);
         sid = userPrefs.getString(PREFS_SID, "000000");
+        birthday = userPrefs.getString(PREFS_BIRTHDAY, "NA");
+        facebook_account_id = userPrefs.getString(PREFS_FACEBOOK_ACCOUNT_ID, "NA");
         gcm_is_registered = userPrefs.getBoolean(PREFS_IS_REGISTERED_ON_GCM, false);
         qpinion_is_registered = userPrefs.getBoolean(PREFS_IS_REGISTERED_ON_QPINION, false);
     }
@@ -116,12 +128,16 @@ public class User {
 
     public void printUser() {
         Log.d(TAG,"user name : "+getName());
+        Log.d(TAG,"user first name : "+getFirstName());
+        Log.d(TAG,"user last name : "+getLastName());
         Log.d(TAG,"user phone : "+getPhoneNumber());
         Log.d(TAG,"user email : "+getEmail());
         Log.d(TAG,"user gender: "+getGender());
         Log.d(TAG, "user GCM: " + isRegisteredOnGCM());
         Log.d(TAG, "user Qpinion: " + isRegisteredOnMoneyCircle());
         Log.d(TAG, "user regId: " + getRegId());
+        Log.d(TAG, "user facebookId: " + getFacebookAccountId());
+        Log.d(TAG, "user birthday: " + getBirthday());
     }
 
     public String getRegId() {
@@ -180,13 +196,49 @@ public class User {
         JSONObject json = new JSONObject();
         try{
             json.put(S.USER_NAME, getName());
+            json.put(S.USER_FIRST_NAME, getFirstName());
+            json.put(S.USER_LAST_NAME, getLastName());
             json.put(S.PHONE_NUMBER , getPhoneNumber());
             json.put(S.EMAIL_ID, getEmail());
             json.put(S.REG_ID, getRegId());
             json.put(S.GENDER,""+ getGender());//sending it as a string
+            json.put(S.FACEBOOK_ACCOUNT_ID, getFacebookAccountId());
+            json.put(S.BIRTHDAY, getBirthday());
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return json;
+    }
+
+    public String getFirstName() {
+        return first_name;
+    }
+
+    public void setFirstName(String first_name) {
+        this.first_name = first_name;
+    }
+
+    public String getLastName() {
+        return last_name;
+    }
+
+    public void setLastName(String last_name) {
+        this.last_name = last_name;
+    }
+
+    public String getFacebookAccountId() {
+        return facebook_account_id;
+    }
+
+    public void setFacebookAccountId(String facebook_account_id) {
+        this.facebook_account_id = facebook_account_id;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 }

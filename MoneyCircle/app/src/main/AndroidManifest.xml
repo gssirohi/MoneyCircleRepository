@@ -20,13 +20,6 @@
     <!-- To retrieve the account name (email) as part of sign-in: -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
-    <!-- Receivers -->
-    <receiver android:name=".receiver.TransactionalSmsListener" >
-        <intent-filter>
-            <action android:name="android.provider.Telephony.SMS_RECEIVED" />
-        </intent-filter>
-    </receiver>
-
     <application
         android:name=".manager.AppController"
         android:allowBackup="true"
@@ -34,6 +27,14 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.MoneyCircle" >
 
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
+        
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
         <!--
   Application-specific subclass of GCMBaseIntentService that will
   handle received messages.
@@ -45,6 +46,7 @@
         <service android:name=".services.AccountantService" />
         <service android:name=".GCMIntentService" />
 
+        <!-- Receivers -->
         <receiver android:name=".receiver.MoneyTransactionReceiver" >
             <intent-filter>
                 <action android:name="MONEY_TRANSACTION" />
@@ -63,7 +65,11 @@
                 <category android:name="company.greatapp.moneycircle" />
             </intent-filter>
         </receiver>
-
+        <receiver android:name=".receiver.TransactionalSmsListener" >
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >

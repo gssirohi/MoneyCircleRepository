@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -12,21 +12,23 @@
         android:gravity="center"
         android:layout_marginBottom="16dp"/>
 
-    <!--TODO Remove those 2 dummy buttons and make the original button visible-->
     <Button
-        android:id="@+id/dummyGooglePlusLoginButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Google+"
+        android:id="@+id/sign_up_button"
+        android:layout_width="248dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center_horizontal"
+        android:text="Sign Up"
         android:gravity="center"
-        android:layout_above="@+id/dummyFacebookLoginButton"/>
+        android:onClick="signUp"/>
 
-    <Button
-        android:id="@+id/dummyFacebookLoginButton"
-        android:layout_width="match_parent"
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/facebook_login_button"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
-        android:text="Facebook"
-        android:gravity="center"
-        android:layout_alignParentBottom="true"/>
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"/>
 
-</RelativeLayout>
+</LinearLayout>

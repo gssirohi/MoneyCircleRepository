@@ -26,15 +26,15 @@ public class MoneyCircleWelcomeActivity extends ActionBarActivity {
 
     private void goAhead() {
         PreferenceManager pf = new PreferenceManager(this);
+        Intent i = null;
         if(pf.isRegistrationProcessCompleted()) {
-            Intent i = new Intent(this,MainActivity.class);
-            startActivity(i);;
-            finish();
+            i = new Intent(this,MainActivity.class);
         } else {
-            Intent i = new Intent(this,RegisterActivity.class);
-            startActivity(i);;
-            finish();
+//            Intent i = new Intent(this,RegisterActivity.class);
+            i = new Intent(this,RegisterAndSignInActivity.class);
         }
+        startActivity(i);;
+        finish();
     }
 
     @Override

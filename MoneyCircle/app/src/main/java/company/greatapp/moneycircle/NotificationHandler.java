@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
+import android.util.Log;
 
 import company.greatapp.moneycircle.constants.S;
 import company.greatapp.moneycircle.constants.States;
@@ -17,7 +18,9 @@ import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.InPackage;
 import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
+import company.greatapp.moneycircle.model.TransactionalMessage;
 import company.greatapp.moneycircle.model.User;
+import company.greatapp.moneycircle.tools.DateUtils;
 import company.greatapp.moneycircle.tools.GreatJSON;
 import company.greatapp.moneycircle.tools.Tools;
 
@@ -50,8 +53,9 @@ public class NotificationHandler {
 
         InPackage packageFromServer = GreatJSON.getServerPackageFromJson(mContext, messageJsonString);
 
-
-
+        if (packageFromServer == null) {
+            return;
+        }
 
         if (isCustomNotificationRequired()) {
 
@@ -74,6 +78,54 @@ public class NotificationHandler {
         computeReceivedPackage(packageFromServer);
 
         packageFromServer.insertItemInDB(mContext);
+    }
+
+    public void handleTransactionMessage(TransactionalMessage messageItem) {
+
+        InPackage inPackage = getInPackageFromTransactionalMessage(messageItem);
+
+        if (inPackage == null) {
+            return;
+        }
+
+        if (isCustomNotificationRequired()) {
+            showCustomNotification(inPackage.getItemTitle(), inPackage.getMessage());
+        }
+
+        inPackage.insertItemInDB(mContext);
+    }
+
+    public InPackage getInPackageFromTransactionalMessage(TransactionalMessage messageItem) {
+
+        if (messageItem == null) {
+         return null;
+        }
+        InPackage inPackage = new InPackage();
+        switch (messageItem.getType()) {
+            case TransactionalMessage.MESSAGE_TYPE_EXPENSE:
+                inPackage.setReqCode(S.REQUEST_CODE_EXPENSE_MESSAGE);
+                break;
+            case TransactionalMessage.MESSAGE_TYPE_INCOME:
+                inPackage.setReqCode(S.REQUEST_CODE_INCOME_MESSAGE);
+                break;
+            case TransactionalMessage.MESSAGE_TYPE_BILL:
+                inPackage.setReqCode(S.REQUEST_CODE_BILL_MESSAGE);
+                break;
+            default:
+                break;
+        }
+
+        inPackage.setDateString(DateUtils.getCurrentDate());
+        inPackage.setItemDateString(DateUtils.getCurrentDate());
+        inPackage.setState(InPackage.ITEM_STATE_UNSEEN);
+        inPackage.setAmount("" + messageItem.getAmount());
+        inPackage.setItemTitle(messageItem.getTitle());
+        inPackage.setMessage(messageItem.getDescription());
+        inPackage.setItemBodyJsonString(messageItem.getJsonString());
+        inPackage.setIsRespondable(true);
+        inPackage.setResponseState(InPackage.RESPONSE_STATE_NOT_RESPONDED);
+
+        return inPackage;
     }
 
     private boolean isCustomNotificationRequired() {
@@ -105,6 +157,26 @@ public class NotificationHandler {
                     Tools.sendMoneyTransactionBroadCast(mContext,borrow,Model.MODEL_TYPE_BORROW);
                 }
                 break;
+            case S.TRANSPORT_REQUEST_CODE_MODIFIED_LENT:
+                borrow = new Borrow(mContext,inPackage);
+                if(borrow != null) {
+                    float previousAmount = Tools.getAmountForParticularUID(mContext, Model.MODEL_TYPE_BORROW, borrow.getUID());
+                    borrow.updateItemInDb(mContext);
+                    /*float amountToUpdateInContact = 0;
+                    if (previousAmount < borrow.getAmount()) {
+                        amountToUpdateInContact = borrow.getAmount() - previousAmount;
+                    } else if (previousAmount > borrow.getAmount()) {
+                        amountToUpdateInContact = previousAmount - borrow.getAmount();
+                    }*/
+                    float amountToUpdateInContact = borrow.getAmount() - previousAmount;
+                    contact = borrow.getLinkedContact();
+                    if(contact != null) {
+                        contact.setBorrowedAmountfromThis(contact.getBorrowedAmountfromThis() + amountToUpdateInContact);
+                        contact.updateItemInDb(mContext);
+                    }
+                    Tools.sendMoneyTransactionBroadCast(mContext,borrow,Model.MODEL_TYPE_BORROW);
+                }
+                break;
             case S.TRANSPORT_REQUEST_CODE_BORROW:
                 lent = new Lent(mContext,inPackage);
                 if(lent != null) {
@@ -115,6 +187,21 @@ public class NotificationHandler {
                         contact.updateItemInDb(mContext);
                     }
                     Tools.sendMoneyTransactionBroadCast(mContext,lent,Model.MODEL_TYPE_LENT);
+                }
+                break;
+            case S.TRANSPORT_REQUEST_CODE_MODIFIED_BORROW:
+                lent = new Lent(mContext,inPackage);
+                if(lent != null) {
+                    float previousAmount = Tools.getAmountForParticularUID(mContext, Model.MODEL_TYPE_LENT, lent.getUID());
+                    lent.updateItemInDb(mContext);
+
+                    float amountToUpdateInContact = lent.getAmount() - previousAmount;
+                    contact = lent.getLinkedContact();
+                    if(contact != null) {
+                        contact.setLentAmountToThis(contact.getLentAmountToThis() +  amountToUpdateInContact);
+                        contact.updateItemInDb(mContext);
+                    }
+                    Tools.sendMoneyTransactionBroadCast(mContext,lent,Model.MODEL_TYPE_BORROW);
                 }
                 break;
             case S.TRANSPORT_REQUEST_CODE_PAY:
