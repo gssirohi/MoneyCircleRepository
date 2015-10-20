@@ -19,7 +19,6 @@ public class MoneyCircleProvider extends ContentProvider{
 	private SQLiteDatabase qpinionDBinstance;
 	public static MoneyCircleDBHelper HelperInstance;
 
-
 	@Override
 	public boolean onCreate() {
 		Log.d("in  cp","Creating DataBase");
@@ -28,7 +27,6 @@ public class MoneyCircleProvider extends ContentProvider{
 		HelperInstance = new MoneyCircleDBHelper(getContext(), null, null, DB.DB_VERSION);
 		//creating database
 		qpinionDBinstance = HelperInstance.getWritableDatabase();
-
 		
 		return true;
 	}
@@ -558,7 +556,6 @@ public class MoneyCircleProvider extends ContentProvider{
 
             }
 
-
 		default:
 			Log.e("in cp","URI NOT MATCHED for Updating data!!!");
 		
@@ -723,6 +720,20 @@ public class MoneyCircleProvider extends ContentProvider{
             }
             return 0;
         }
+
+        case PACKAGE_FROM_SERVER_TABLE_INDEX:
+        {
+            Log.d("in cp","Deleting data from "+DB.PACKAGE_FROM_SERVER_TABLE_NAME);
+            long rowId = qpinionDBinstance.delete(DB.PACKAGE_FROM_SERVER_TABLE_NAME, selection, selectionArgs);
+
+            if(rowId > 0) {
+                Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                getContext().getContentResolver().notifyChange(objUri, null);
+                Log.d("in CP", "item deleted from db");
+            }
+            return 0;
+        }
+
 	default:
 		Log.e("in cp","URI NOT MATCHED for Deleting data!!!");
 	

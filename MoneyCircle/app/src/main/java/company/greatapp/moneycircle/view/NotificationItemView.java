@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,17 +18,20 @@ import company.greatapp.moneycircle.constants.States;
 import company.greatapp.moneycircle.manager.Accountant;
 import company.greatapp.moneycircle.manager.Transporter;
 import company.greatapp.moneycircle.model.Contact;
+import company.greatapp.moneycircle.model.Expense;
 import company.greatapp.moneycircle.model.InPackage;
+import company.greatapp.moneycircle.model.Model;
+import company.greatapp.moneycircle.model.TransactionalMessage;
+import company.greatapp.moneycircle.tools.GreatJSON;
 import company.greatapp.moneycircle.tools.Tools;
-
-import static android.widget.Toast.makeText;
-
 
 /**
  * Created by Gyanendrasingh on 9/6/2015.
  */
 public class NotificationItemView extends LinearLayout {
 
+    private final FrameLayout fl_received_transaction_notification;
+    private final FrameLayout fl_new_transaction_found_notification;
     private final ViewGroup viewGroup;
     private final TextView tv_title;
     private final TextView tv_amount;
@@ -47,8 +51,14 @@ public class NotificationItemView extends LinearLayout {
     private final Button b_clear;
     private final TextView tv_response_state_msg;
     private final TextView tv_new_notification;
+    private final Context mContext;
     private boolean isResponded =true;
     private InPackage mInPackage;
+    private final TextView tv_transaction_found_title;
+    private final FrameLayout miv_new_transaction_found;
+    private final LinearLayout ll_new_transaction_found_response_frame;
+    private final Button bt_new_transaction_found_agree;
+    private final Button bt_new_transaction_found_disagree;
 
     public NotificationItemView(Context context, AttributeSet attrs) {
 
@@ -58,9 +68,13 @@ public class NotificationItemView extends LinearLayout {
         setOrientation(LinearLayout.VERTICAL);
         // setGravity(Gravity.CENTER_VERTICAL);
 
+        mContext = context;
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         viewGroup = (ViewGroup) inflater.inflate(R.layout.notification_item_layout, this, true);
+
+        //--------------------------------Received Transaction Notification View Initialization-----------------------------------
+        fl_received_transaction_notification = (FrameLayout)viewGroup.findViewById(R.id.fl_received_transaction_notification);
 
         iv_contact_image = (ImageView)viewGroup.findViewById(R.id.iv_notification_contact_image);
         tv_contact_name = (TextView)viewGroup.findViewById(R.id.tv_notification_contact_name);
@@ -85,8 +99,6 @@ public class NotificationItemView extends LinearLayout {
         b_remove_entry = (Button)viewGroup.findViewById(R.id.b_notification_remove_entry);
         b_add_expense_entry = (Button)viewGroup.findViewById(R.id.b_notification_add_entry_expense);
         b_edit_resend = (Button)viewGroup.findViewById(R.id.b_notification_edit_resend);
-
-        b_clear = (Button)viewGroup.findViewById(R.id.b_notification_clear);
 
         b_agree.setOnClickListener(new OnClickListener() {
             @Override
@@ -119,6 +131,34 @@ public class NotificationItemView extends LinearLayout {
                 handleEditAndResendClicked();
             }
         });
+
+        //--------------------------------Received Transaction Notification View Initialization-----------------------------------
+
+        fl_new_transaction_found_notification = (FrameLayout)viewGroup.findViewById(R.id.fl_transaction_found_notification);
+
+        tv_transaction_found_title = (TextView)viewGroup.findViewById(R.id.tv_transaction_found_notification_title);
+        miv_new_transaction_found = (FrameLayout)viewGroup.findViewById(R.id.fl_transaction_found_notification_money_item_frame);
+        ll_new_transaction_found_response_frame = (LinearLayout)viewGroup.findViewById(R.id.ll_transaction_found_notification_response_frame);
+        bt_new_transaction_found_agree = (Button)viewGroup.findViewById(R.id.bt_transaction_found_notification_agree);
+        bt_new_transaction_found_disagree = (Button)viewGroup.findViewById(R.id.bt_transaction_found_notification_disagree);
+
+        bt_new_transaction_found_agree.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleAgreeClicked();
+            }
+        });
+
+        bt_new_transaction_found_disagree.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleDisagreeClicked();
+            }
+        });
+
+        //------------------------------------------------------------------------------------------------------------------------
+
+        b_clear = (Button)viewGroup.findViewById(R.id.b_notification_clear);
         b_clear.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,11 +166,10 @@ public class NotificationItemView extends LinearLayout {
             }
         });
 
-
     }
 
     private void handleClearClicked() {
-
+        mInPackage.deleteFromDb(getContext());
     }
 
     private void handleEditAndResendClicked() {
@@ -147,30 +186,55 @@ public class NotificationItemView extends LinearLayout {
 
     private void handleDisagreeClicked() {
 
-        Contact contact;
-        if(mInPackage.getReqCode() == S.TRANSPORT_REQUEST_CODE_SETTLE) {
-            contact = Tools.getContactFromPhoneNumber(getContext(),mInPackage.getReqSenderPhone());
-            if(contact != null) {
-                contact.setState(States.CONTACT_IDEAL);
-                contact.updateItemInDb(getContext());
-                Transporter transporter = new Transporter(getContext());
-                String transportId = transporter.transportSettleUpApproval(mInPackage,false);
-            }
+        switch (mInPackage.getReqCode()) {
+            case S.TRANSPORT_REQUEST_CODE_SETTLE:
+                Contact contact;
+                contact = Tools.getContactFromPhoneNumber(getContext(),mInPackage.getReqSenderPhone());
+                if(contact != null) {
+                    contact.setState(States.CONTACT_IDEAL);
+                    contact.updateItemInDb(getContext());
+                    Transporter transporter = new Transporter(getContext());
+                    String transportId = transporter.transportSettleUpApproval(mInPackage,false);
+                }
+                break;
+            case S.REQUEST_CODE_EXPENSE_MESSAGE:
+                break;
+            default:
+                break;
         }
+
         mInPackage.setResponseState(InPackage.RESPONSE_STATE_DISAGREED);
         mInPackage.updateItemInDb(getContext());
     }
 
     private void handleAgreeClicked() {
 
-        Contact contact;
-        if(mInPackage.getReqCode() == S.TRANSPORT_REQUEST_CODE_SETTLE) {
-            contact = Tools.getContactFromPhoneNumber(getContext(),mInPackage.getReqSenderPhone());
-            if(contact != null) {
-                Accountant.performSettleUpWithContact(getContext(),contact);
-                Transporter transporter = new Transporter(getContext());
-                String transportId = transporter.transportSettleUpApproval(mInPackage,true);
-            }
+        switch (mInPackage.getReqCode()) {
+            case S.TRANSPORT_REQUEST_CODE_SETTLE:
+                Contact contact;
+                contact = Tools.getContactFromPhoneNumber(getContext(),mInPackage.getReqSenderPhone());
+                if(contact != null) {
+                    Accountant.performSettleUpWithContact(getContext(), contact);
+                    Transporter transporter = new Transporter(getContext());
+                    String transportId = transporter.transportSettleUpApproval(mInPackage,true);
+                }
+                break;
+            case S.REQUEST_CODE_EXPENSE_MESSAGE:
+                Expense expense = new Expense();
+                TransactionalMessage messageItem = GreatJSON.getTransactionalMessageObjectFromJsonString(mInPackage.getItemBodyJsonString());
+                if (messageItem == null) {
+                    break;
+                }
+                expense.setTitle(messageItem.getOutlet());
+                expense.setAmount(messageItem.getAmount());
+//            expense.setCategory(); //TODO Need to add Category to the Expense
+                expense.setDateString(messageItem.getDateString());
+                expense.setDescription(messageItem.getDescription());
+                expense.insertItemInDB(getContext());
+                Tools.sendMoneyTransactionBroadCast(getContext(), expense, Model.MODEL_TYPE_EXPENSE);
+                break;
+            default:
+                break;
         }
         mInPackage.setResponseState(InPackage.RESPONSE_STATE_AGREED);
         mInPackage.updateItemInDb(getContext());
@@ -181,21 +245,37 @@ public class NotificationItemView extends LinearLayout {
         this.mInPackage = inPackage;
        int reqCode = inPackage.getReqCode();
 
-        tv_response_state_msg.setText(getResponseContextMsg());
-        String sender = inPackage.getReqSenderName();
+        switch(reqCode){
+            case S.REQUEST_CODE_EXPENSE_MESSAGE:
+                fl_received_transaction_notification.setVisibility(GONE);
+                fl_new_transaction_found_notification.setVisibility(VISIBLE);
+                initViewForNewTransactionFoundNotification(reqCode);
+                break;
+            default:
+                fl_received_transaction_notification.setVisibility(VISIBLE);
+                fl_new_transaction_found_notification.setVisibility(GONE);
+                initViewForReceivedTransactionNotification(reqCode);
+                break;
+        }
 
-        String msg = inPackage.getMessage();;
+    }
+
+    private void initViewForReceivedTransactionNotification(int reqCode) {
+        tv_response_state_msg.setText(getResponseContextMsg());
+        String sender = mInPackage.getReqSenderName();
+
+        String msg = mInPackage.getMessage();;
         /*if(reqCode != S.TRANSPORT_REQUEST_CODE_NOTIFICATION) {
-            msg = inPackage.createNotificationMessage();
+            msg = mInPackage.createNotificationMessage();
         } else {
-            msg = inPackage.getMessage();
+            msg = mInPackage.getMessage();
 
         }*/
 
-        String moneyItemTitle = inPackage.getItemTitle();
-        String amount = ""+ inPackage.getAmount();
-        String dateString = ""+ inPackage.getItemDateString();
-        String dueDateString = ""+ inPackage.getItemDueDateString();
+        String moneyItemTitle = mInPackage.getItemTitle();
+        String amount = ""+ mInPackage.getAmount();
+        String dateString = ""+ mInPackage.getItemDateString();
+        String dueDateString = ""+ mInPackage.getItemDueDateString();
 
         ll_money_item_frame.setVisibility(View.GONE);
         ll_agree_frame.setVisibility(View.GONE);
@@ -208,7 +288,7 @@ public class NotificationItemView extends LinearLayout {
         tv_date.setText(dateString);
         tv_due_date.setText("due on " + dueDateString);
 
-        if (inPackage.getState() == InPackage.ITEM_STATE_UNSEEN) {
+        if (mInPackage.getState() == InPackage.ITEM_STATE_UNSEEN) {
             tv_new_notification.setVisibility(VISIBLE);
         } else {
             tv_new_notification.setVisibility(GONE);
@@ -227,7 +307,7 @@ public class NotificationItemView extends LinearLayout {
             case S.TRANSPORT_REQUEST_CODE_RECEIVE:
                 break;
             case S.TRANSPORT_REQUEST_CODE_SETTLE:
-                if(inPackage.getResponseState() == InPackage.RESPONSE_STATE_NOT_RESPONDED) {
+                if(mInPackage.getResponseState() == InPackage.RESPONSE_STATE_NOT_RESPONDED) {
                     allowPendingAction(true, InPackage.PENDING_ACTION_TYPE_APPROVAL);
                 } else {
 
@@ -246,6 +326,37 @@ public class NotificationItemView extends LinearLayout {
             case S.TRANSPORT_REQUEST_CODE_SETTLE_DISAGREE:
                 break;
             default:
+        }
+    }
+
+    private void initViewForNewTransactionFoundNotification(int reqcode) {
+
+        if (miv_new_transaction_found != null) {
+            MoneyItemView moneyItemView = new MoneyItemView(mContext, null, Model.MODEL_TYPE_EXPENSE);
+            miv_new_transaction_found.addView(moneyItemView);
+            miv_new_transaction_found.setBackgroundResource(R.drawable.shape_rounded_corner);
+
+            Expense expense = new Expense();
+            TransactionalMessage messageItem = GreatJSON.getTransactionalMessageObjectFromJsonString(mInPackage.getItemBodyJsonString());
+            if (messageItem == null) {
+                return;
+            }
+            expense.setTitle(messageItem.getOutlet());
+            expense.setAmount(messageItem.getAmount());
+//            expense.setCategory(); //TODO Need to add Category to the Expense
+            expense.setDateString(messageItem.getDateString());
+            expense.setDescription(messageItem.getDescription());
+
+            moneyItemView.initView(expense);
+
+            if(mInPackage.getResponseState() == InPackage.RESPONSE_STATE_NOT_RESPONDED) {
+                b_clear.setVisibility(GONE);
+                ll_new_transaction_found_response_frame.setVisibility(VISIBLE);
+            } else {
+                ll_new_transaction_found_response_frame.setVisibility(GONE);
+                b_clear.setVisibility(VISIBLE);
+            }
+
         }
 
     }

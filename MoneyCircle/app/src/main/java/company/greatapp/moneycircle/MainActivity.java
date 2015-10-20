@@ -127,12 +127,12 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
         // Photos
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
         // Communities, Will add a counter here
-        int count = Tools.getUnSeenAndUnRespondedNotificationCount(this);
+        /*int count = Tools.getUnSeenAndUnRespondedNotificationCount(this);
         boolean counterVisibility = false;
         if (count != 0) {
             counterVisibility = true;
-        }
-        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1), counterVisibility, ""+count));
+        }*/
+        navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)/*, counterVisibility, ""+count*/));
         // Pages
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
         // What's hot, We  will add a counter here
@@ -393,8 +393,8 @@ public static <T> void initLoader(final int loaderId, final Bundle args, final L
         Log.d("SPLIT","ACCOUNTANT LOAD FINISHED "+loader.getId() );
         if(loader.getId() == LOADER_ID_ACCOUNTANT ) {
             Log.d("SPLIT","ACCOUNTANT CURSOR " );
-        //   mAccountant = new Accountant(this,data);
-          mAccountant = new Accountant(this,true);
+           //mAccountant = new Accountant(this,data);
+            mAccountant = new Accountant(this,true);
             adapterDummy.swapCursor(data);
             mCardDesigner.initAllCardViews(mAccountant);
         }

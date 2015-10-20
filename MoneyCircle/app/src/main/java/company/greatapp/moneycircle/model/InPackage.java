@@ -103,6 +103,7 @@ public class InPackage {
         setMessage(c.getString(c.getColumnIndex(DB.MESSAGE)));
         setItemTitle(c.getString(c.getColumnIndex(DB.ITEM_TITLE)));
         setAmount(c.getString(c.getColumnIndex(DB.AMOUNT)));
+        setDateString(c.getString(c.getColumnIndex(DB.DATE_STRING)));
         setItemDateString(c.getString(c.getColumnIndex(DB.ITEM_DATE_STRING)));
         setItemDueDateString(c.getString(c.getColumnIndex(DB.ITEM_DUE_DATE_STRING)));
         setItemDescription(c.getString(c.getColumnIndex(DB.ITEM_DESCRIPTION)));
@@ -353,6 +354,7 @@ public class InPackage {
         row.put(DB.MESSAGE,getMessage());
         row.put(DB.ITEM_TITLE,getItemTitle());
         row.put(DB.AMOUNT,""+getAmount());
+        row.put(DB.DATE_STRING, getDateString());
         row.put(DB.ITEM_DATE_STRING,getItemDateString());
         row.put(DB.ITEM_DUE_DATE_STRING,getItemDueDateString());
         row.put(DB.ITEM_DESCRIPTION,getItemDescription());

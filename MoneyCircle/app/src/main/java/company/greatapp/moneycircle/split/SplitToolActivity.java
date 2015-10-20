@@ -327,7 +327,7 @@ public class SplitToolActivity extends ActionBarActivity implements TagItemView.
         for(Lent l : lents){
             if (l != null) {
                 l.setLinkedSplitJson(jsonStringSplit);
-                String transportId = transporter.transportItem(l, Model.MODEL_TYPE_LENT);
+                String transportId = transporter.transportItem(l, Model.MODEL_TYPE_LENT, false);
                 l.updateItemInDb(this);
           //      dbLents.add(l);
 

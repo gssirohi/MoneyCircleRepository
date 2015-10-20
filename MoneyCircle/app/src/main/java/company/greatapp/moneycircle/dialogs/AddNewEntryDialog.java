@@ -17,7 +17,6 @@ import company.greatapp.moneycircle.AddNewEntryActivity;
 import company.greatapp.moneycircle.ManageCircleActivity;
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.constants.C;
-import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.split.SplitToolActivity;
@@ -207,25 +206,25 @@ public class AddNewEntryDialog extends Dialog {
             case 3:
                 msg = "income";
                 i = new Intent(mContext,AddNewEntryActivity.class);
-                i.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
+                i.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_NEW);
                 i.putExtra(C.MODEL_TYPE, Model.MODEL_TYPE_INCOME);
                 break;
             case 4:
                 msg = "expense";
                 i = new Intent(mContext,AddNewEntryActivity.class);
-                i.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
+                i.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_NEW);
                 i.putExtra(C.MODEL_TYPE, Model.MODEL_TYPE_EXPENSE);
                 break;
             case 5:
                 msg = "lent";
                 i = new Intent(mContext,AddNewEntryActivity.class);
-                i.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
+                i.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_NEW);
                 i.putExtra(C.MODEL_TYPE, Model.MODEL_TYPE_LENT);
                 break;
             case 6:
                 msg = "borrow";
                 i = new Intent(mContext,AddNewEntryActivity.class);
-                i.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
+                i.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_NEW);
                 i.putExtra(C.MODEL_TYPE, Model.MODEL_TYPE_BORROW);
                 break;
             case 7:
