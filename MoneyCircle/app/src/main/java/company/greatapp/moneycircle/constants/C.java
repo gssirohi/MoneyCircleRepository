@@ -32,15 +32,16 @@ public class C {
     public static final String ENTRY_TYPE = "entryType";
     public static final String MODEL_TYPE = "modelType";
 
+    public static final String MODEL_UID = "uid";
+
     // TODO This constant has to be removed after removing dependency
     public static final int ENTRY_TYPE_INCOME = 1;
     public static final int ENTRY_TYPE_EXPENSE = 2;
     public static final int ENTRY_TYPE_BORROW = 3;
     public static final int ENTRY_TYPE_LENDED = 4;
 
-    public static final int ENTRY_TYPE_INPUT = 100;
-    public static final int ENTRY_TYPE_DISPLAY = 101;
-
+    public static final int ENTRY_TYPE_NEW = 100;
+    public static final int ENTRY_TYPE_EDIT = 101;
 
     public static final String CATEGORY_NONE_UID = "noCat";
 
@@ -54,10 +55,15 @@ public class C {
 
     public static final String CONTACT_UID = "contactUid";
 
+    public static final String MESSAGE_ITEM_TYPE = "messageItemType";
+    public static final String MESSAGE_ITEM_OUTLET = "outlet";
+
+    public static final String MESSAGE_ITEM_MERCHANT = "merchant";
+    public static final String MESSAGE_ITEM_TRANSACTION_MODE = "transactionMode";
+    public static final String MESSAGE_ITEM_ACTUAL_MESSAGE = "actualMessage";
+
     public static final int BORROW_LENT_TYPE_CASH = 999;
     public static final int BORROW_LENT_TYPE_BILL = 888;
-
-
 
     public static final String[] DEFAULT_CATEGORIES = new String[] {
             "Grocery" , "Clothes" ,"Food" , "Shopping" ,"Travel",

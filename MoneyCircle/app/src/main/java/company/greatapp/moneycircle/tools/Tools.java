@@ -189,7 +189,37 @@ public class Tools {
         return model;
     }
 
+    public static float getAmountForParticularUID(Context context, int modelType, String uid) {
 
+        Uri uri = null;
+        String [] projection = null;
+        float amount = 0;
+        switch (modelType) {
+            case Model.MODEL_TYPE_BORROW:
+                uri = DB.BORROW_TABLE_URI;
+                projection = DB.BORROW_TABLE_PROJECTION;
+                break;
+            case Model.MODEL_TYPE_LENT:
+                uri = DB.LENT_TABLE_URI;
+                projection = DB.LENT_TABLE_PROJECTION;
+                break;
+            default:
+                break;
+        }
+
+        String selection=DB.UID + "= ?";
+        String [] selArgs = new String[]{""+uid};
+        Cursor c = context.getContentResolver().query(uri, projection, selection, selArgs, null);
+        if(c != null && c.getCount() > 0) {
+            c.moveToFirst();
+            String  strAmount = c.getString(c.getColumnIndex(DB.AMOUNT));
+            if (!TextUtils.isEmpty(strAmount)) {
+                amount = Float.parseFloat(strAmount);
+            }
+            c.close();
+        }
+        return amount;
+    }
 
     public static void addDummyEntries(Context context, CategoryManager categoryManager) {
         String[] incomes = new String[]{"LGSI Salary","Gambling on Dewali",
@@ -263,7 +293,7 @@ public class Tools {
 //        }
 
     }
-    
+
     private void demoMethod(int modelType) {
         switch (modelType) {
             case Model.MODEL_TYPE_INCOME:
@@ -452,7 +482,7 @@ public static String getModelName(int modelType){
         } else if(gender == User.FEMALE){
             resId = R.drawable.avator_female;
         } else {
-            resId = R.drawable.profile;
+            resId = R.drawable.ic_profilepic;
         }
         return resId;
     }

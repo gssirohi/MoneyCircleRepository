@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import company.greatapp.moneycircle.adapters.NotificationCursorAdapter;
 import company.greatapp.moneycircle.constants.C;
@@ -54,6 +55,8 @@ public class NotificationActivity extends ActionBarActivity implements LoaderMan
         super.onResume();
 
         AppController.setIsNotificationActivityVisible(true);
+        int count = Tools.getUnSeenAndUnRespondedNotificationCount(this);
+        Toast.makeText(this, ""+count, Toast.LENGTH_LONG).show();
     }
 
     @Override

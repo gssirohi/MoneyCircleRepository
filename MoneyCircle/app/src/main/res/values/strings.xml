@@ -133,4 +133,6 @@
     <string name="title_activity_contact_detail">ContactDetailActivity                </string>
     <string name="title_activity_category">CategoryActivity</string>
 
+    <string name="facebook_app_id">395952043947470</string>
+
 </resources>

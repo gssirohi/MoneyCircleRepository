@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.constants.S;
 import company.greatapp.moneycircle.constants.States;
@@ -24,6 +25,7 @@ import company.greatapp.moneycircle.model.InPackage;
 import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.Split;
+import company.greatapp.moneycircle.model.TransactionalMessage;
 
 /**
  * Created by gyanendra.sirohi on 7/14/2015.
@@ -736,7 +738,6 @@ public class GreatJSON {
                 ((Borrow) model).setOwnerPhone(ownerPhone);
                 ((Borrow) model).setBorrowType(object.getInt(DB.BORROW_LENT_TYPE));
 
-
             } else if (modelType == Model.MODEL_TYPE_LENT) {
                 ((Lent)model).setLinkedContactItemId(object.getString(DB.UID));       // Item Owner Id
                 ((Lent) model).setDescription(object.getString(DB.DESCRIPTION));
@@ -751,7 +752,6 @@ public class GreatJSON {
             model.setDueDateString(object.getString(DB.DUE_DATE_STRING));
 
 
-
             Contact senderContact = Tools.getContactFromPhoneNumber(context, inPackage.getReqSenderPhone());
             model.setLinkedContact(senderContact);
 
@@ -760,6 +760,57 @@ public class GreatJSON {
             e.printStackTrace();
         }
 
+    }
+
+    public static JSONObject getJSONObjectForTransactionalMessage(TransactionalMessage messageItem) {
+
+        if(messageItem == null) return null;
+        String jsonString = "";
+        JSONObject obj = new JSONObject();
+        try{
+            obj.put(DB.TITLE, messageItem.getTitle());
+            obj.put(DB.AMOUNT,messageItem.getAmount());
+            obj.put(C.MESSAGE_ITEM_TYPE, messageItem.getType());
+            obj.put(DB.DATE_STRING, messageItem.getDateString());
+            obj.put(DB.DUE_DATE_STRING, messageItem.getDuedateString());
+            obj.put(DB.DESCRIPTION, messageItem.getDescription());
+            obj.put(C.MESSAGE_ITEM_OUTLET, messageItem.getOutlet());
+            obj.put(C.MESSAGE_ITEM_MERCHANT, messageItem.getMerchant());
+            obj.put(C.MESSAGE_ITEM_TRANSACTION_MODE, messageItem.getTransactionMode());
+            obj.put(C.MESSAGE_ITEM_ACTUAL_MESSAGE, messageItem.getActualMessage());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        jsonString = obj.toString();
+        Log.d("GreatJson", "TransactionalMessage JSON OBJECT : " + jsonString);
+        return obj;
+    }
+
+    public static TransactionalMessage getTransactionalMessageObjectFromJsonString(String itemJsonString) {
+
+        if (itemJsonString == null || TextUtils.isEmpty(itemJsonString)) {
+            return null;
+        }
+
+        TransactionalMessage messageItem = null;
+        try {
+            JSONObject jsonObject = new JSONObject(itemJsonString);
+            int messageType = jsonObject.getInt(C.MESSAGE_ITEM_TYPE);
+            messageItem = new TransactionalMessage(messageType);
+            messageItem.setTitle(jsonObject.getString(DB.TITLE));
+            messageItem.setAmount(Float.parseFloat(jsonObject.getString(DB.AMOUNT)));
+            messageItem.setDateString(jsonObject.getString(DB.DATE_STRING));
+            messageItem.setDuedateString(jsonObject.getString(DB.DUE_DATE_STRING));
+            messageItem.setDescription(jsonObject.getString(DB.DESCRIPTION));
+            messageItem.setOutlet(jsonObject.getString(C.MESSAGE_ITEM_OUTLET));
+            messageItem.setMerchant(jsonObject.getString(C.MESSAGE_ITEM_MERCHANT));
+            messageItem.setTransactionMode(jsonObject.getString(C.MESSAGE_ITEM_TRANSACTION_MODE));
+            messageItem.setActualMessage(jsonObject.getString(C.MESSAGE_ITEM_ACTUAL_MESSAGE));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return messageItem;
     }
 
 

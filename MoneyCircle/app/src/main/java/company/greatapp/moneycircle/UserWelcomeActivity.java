@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,9 +21,11 @@ public class UserWelcomeActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_welcome_screen);
         TextView tv_name = (TextView)findViewById(R.id.tv_welcome_name);
+        ImageView iv_profile_pic = (ImageView)findViewById(R.id.ivProfilePicId);
         Button b_continue = (Button)findViewById(R.id.b_welcome_continue);
         User user = new User(this);
         tv_name.setText(user.getName());
+        iv_profile_pic.setImageResource(user.getAvator());
         b_continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -43,11 +43,11 @@ public class AuthenticationFragment extends Fragment implements View.OnClickList
         Log.d(TAG, "--> [onCreateView]");
         View view = inflater.inflate(R.layout.authentication_screen, container, false);
 
-        Button dummyGooglePlusButton = (Button)view.findViewById(R.id.dummyGooglePlusLoginButton);
+        /*Button dummyGooglePlusButton = (Button)view.findViewById(R.id.dummyGooglePlusLoginButton);
         dummyGooglePlusButton.setOnClickListener(this);
 
         Button dummyFacebookButton = (Button)view.findViewById(R.id.dummyFacebookLoginButton);
-        dummyFacebookButton.setOnClickListener(this);
+        dummyFacebookButton.setOnClickListener(this);*/
 
         return view;
     }
@@ -93,19 +93,19 @@ public class AuthenticationFragment extends Fragment implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
+        /*switch (v.getId()) {
             case R.id.dummyFacebookLoginButton:
             case R.id.dummyGooglePlusLoginButton:
                 launchRegistrationScreen();
                 break;
-            /*case R.id.tvDobId :
+            *//*case R.id.tvDobId :
                 showDatePickerDialog();
                 break;
             case R.id.btGooglePlusId:
-                signInWithGooglePlus();*/
+                signInWithGooglePlus();*//*
             default:
                 break;
-        }
+        }*/
     }
 
     private void launchRegistrationScreen() {

@@ -36,6 +36,7 @@ import company.greatapp.moneycircle.model.Slot;
 import company.greatapp.moneycircle.model.User;
 import company.greatapp.moneycircle.tools.GreatJSON;
 import company.greatapp.moneycircle.tools.RegistrationUtils;
+import company.greatapp.moneycircle.tools.Tools;
 
 
 public class RegisterActivity extends ActionBarActivity {
@@ -51,11 +52,24 @@ public class RegisterActivity extends ActionBarActivity {
     private RadioGroup rGroup;
     private int mGender;
 
+    private String name;
+    private String first_name;
+    private String last_name;
+    private String email;
+    private String facebookId;
+    private String birthday;
+    private String phone;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         init();
+        Intent intent = getIntent();
+        if (intent.getIntExtra(S.LOGIN_FROM, S.NORMAL_LOGIN) != S.NORMAL_LOGIN) {
+
+            setDataFromIntent(getIntent());
+        }
         IntentFilter IF = new IntentFilter();
         IF.addAction(S.ACTION_APP_SERVER_REGISTRATION_RESULT);
         IF.addAction(C.ACTION_DISPLAY_MESSAGE);
@@ -67,14 +81,14 @@ public class RegisterActivity extends ActionBarActivity {
 
     private void init() {
         setContentView(R.layout.activity_register);
-        et_email = (EditText)findViewById(R.id.et_register_email);
-        et_name = (EditText)findViewById(R.id.et_register_name);
-        et_phone = (EditText)findViewById(R.id.et_register_phone);
-        tv_phone = (TextView)findViewById(R.id.tv_register_phone_text);
-        tv_fail = (TextView)findViewById(R.id.tv_register_fail);
+        et_email = (EditText) findViewById(R.id.et_register_email);
+        et_name = (EditText) findViewById(R.id.et_register_name);
+        et_phone = (EditText) findViewById(R.id.et_register_phone);
+        tv_phone = (TextView) findViewById(R.id.tv_register_phone_text);
+        tv_fail = (TextView) findViewById(R.id.tv_register_fail);
         tv_fail.setVisibility(View.GONE);
 
-        rGroup = (RadioGroup)findViewById(R.id.rg_register_gender);
+        rGroup = (RadioGroup) findViewById(R.id.rg_register_gender);
         mGender = User.MALE;
         rGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -82,7 +96,7 @@ public class RegisterActivity extends ActionBarActivity {
                 handleGenderButton(checkedId);
             }
         });
-        b_register = (Button)findViewById(R.id.b_register_register_action);
+        b_register = (Button) findViewById(R.id.b_register_register_action);
 
         b_register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,8 +106,35 @@ public class RegisterActivity extends ActionBarActivity {
         });
     }
 
+    public void setDataFromIntent(Intent intent) {
+
+        name = intent.getStringExtra(S.USER_NAME);
+        if (!name.equals("NA")) {
+            et_name.setText(name);
+        }
+        first_name = intent.getStringExtra(S.USER_FIRST_NAME);
+        last_name = intent.getStringExtra(S.USER_LAST_NAME);
+        email = intent.getStringExtra(S.EMAIL_ID);
+        if (!email.equals("NA")) {
+            et_email.setText(email);
+        }
+        facebookId = intent.getStringExtra(S.FACEBOOK_ACCOUNT_ID);
+        if ((intent.getStringExtra(S.GENDER)).equals("Female")) {
+            mGender = User.FEMALE;
+            rGroup.check(R.id.rb_female);
+        } else {
+            mGender = User.MALE;
+            rGroup.check(R.id.rb_male);
+        }
+        birthday = intent.getStringExtra(S.BIRTHDAY);
+        phone = intent.getStringExtra(S.PHONE_NUMBER);
+        if (!phone.equals("NA")) {
+            et_phone.setText(phone);
+        }
+    }
+
     private void handleGenderButton(int checkedId) {
-        if(checkedId == R.id.rb_male) {
+        if (checkedId == R.id.rb_male) {
             mGender = User.MALE;
         } else {
             mGender = User.FEMALE;
@@ -101,20 +142,23 @@ public class RegisterActivity extends ActionBarActivity {
     }
 
     private void handleRegisterButtonClick() {
-        if(validateFields()) {
+        if (validateFields()) {
             setContentView(R.layout.loading_splash_layout);
-            tv_progress = (TextView)findViewById(R.id.tv_loading_splash_progress);
-            pb_progress = (ProgressBar)findViewById(R.id.pb_loading_splash);
+            tv_progress = (TextView) findViewById(R.id.tv_loading_splash_progress);
+            pb_progress = (ProgressBar) findViewById(R.id.pb_loading_splash);
             tv_progress.setText("Registering profile to Server .........");
-            String name = et_name.getText().toString();
-            String phone = et_phone.getText().toString();
-            String email = et_email.getText().toString();
-            int gender = mGender;
-            int avator =  0;
+            name = et_name.getText().toString();
+            phone = et_phone.getText().toString();
+            email = et_email.getText().toString();
+            int avator = Tools.getContactAvatorResId(mGender);
 
-            User user = new User(this, name, phone, email, gender, avator);
+            User user = new User(this, name, phone, email, mGender, avator);
+            user.setFacebookAccountId(facebookId);
+            user.setFirstName(first_name);
+            user.setLastName(last_name);
+            user.setBirthday(birthday);
             user.printUser();
-            if(!user.isRegisteredOnGCM() ) {
+            if (!user.isRegisteredOnGCM()) {
                 RegistrationUtils.registerUserOnGCM(this);
                 //Once GCM registration is done app will try to register on Server automatically
             } else {
@@ -124,7 +168,7 @@ public class RegisterActivity extends ActionBarActivity {
     }
 
     private boolean validateFields() {
-        if(TextUtils.isEmpty(et_email.getText()) || TextUtils.isEmpty(et_name.getText())
+        if (TextUtils.isEmpty(et_email.getText()) || TextUtils.isEmpty(et_name.getText())
                 || TextUtils.isEmpty(et_phone.getText()))
             return false;
         else
@@ -137,11 +181,13 @@ public class RegisterActivity extends ActionBarActivity {
         getMenuInflater().inflate(R.menu.menu_register, menu);
         return true;
     }
+
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mRegistrationResponseReceiver);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -162,15 +208,15 @@ public class RegisterActivity extends ActionBarActivity {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     String action = intent.getAction();
-                    Log.d("REGISTER","VOLLEY RECEIVER : intent received ["+action+"]");
+                    Log.d("REGISTER", "VOLLEY RECEIVER : intent received [" + action + "]");
 
-                    if(action.equals(S.ACTION_APP_SERVER_REGISTRATION_RESULT)) {
+                    if (action.equals(S.ACTION_APP_SERVER_REGISTRATION_RESULT)) {
                         handleAppServerRegistrationResult(intent);
                     } else if (action.equals(S.ACTION_GCM_REGISTRATION_RESULT)) {
                         handleGCMRegistrationResult(intent);
-                    }  else if(action.equals(C.ACTION_DISPLAY_MESSAGE )){
+                    } else if (action.equals(C.ACTION_DISPLAY_MESSAGE)) {
                         displayMessage(intent);
-                    }   else if(action.equals(S.ACTION_CHECK_REGISTERED_CONTACTS_RESULT )){
+                    } else if (action.equals(S.ACTION_CHECK_REGISTERED_CONTACTS_RESULT)) {
                         handleRegisteredContactsCheckResult(intent);
                     }
 
@@ -183,15 +229,15 @@ public class RegisterActivity extends ActionBarActivity {
         ContactManager cm = new ContactManager(this);
         try {
             JSONArray jsonArray = new JSONArray(registeredContactsJsonArrayString);
-            if(jsonArray != null){
+            if (jsonArray != null) {
                 int length = jsonArray.length();
-                for (int i = 0; i<length;i++) {
-                    JSONObject obj = (JSONObject)jsonArray.get(i);
-                    if(obj != null) {
+                for (int i = 0; i < length; i++) {
+                    JSONObject obj = (JSONObject) jsonArray.get(i);
+                    if (obj != null) {
                         String registeredPhoneNumber = obj.getString(S.PHONE_NUMBER);
                         int gender = obj.getInt(S.GENDER);
                         Contact contact = cm.getContactByPhoneNumber(registeredPhoneNumber);
-                        if(contact != null) {
+                        if (contact != null) {
                             contact.setRegistered(true);
                             contact.setGender(gender);
                             contact.updateItemInDb(this);
@@ -200,12 +246,11 @@ public class RegisterActivity extends ActionBarActivity {
                 }
 
             } else {
-                Toast.makeText(this,"contacts sync error!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "contacts sync error!", Toast.LENGTH_SHORT).show();
             }
         } catch (JSONException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             displayMessage("Slot [" + slot.getSlotCounter() + "] result received, sending next..");
             sendContactSlot();
         }
@@ -218,14 +263,14 @@ public class RegisterActivity extends ActionBarActivity {
         et.putBoolean(C.PREF_REGISTRATION_PROCESS_COMPLETED, true);
         et.commit();
 
-        Intent intent = new Intent(this,UserWelcomeActivity.class);
+        Intent intent = new Intent(this, UserWelcomeActivity.class);
         startActivity(intent);
         finish();
     }
 
     private void handleGCMRegistrationResult(Intent intent) {
-        boolean success = intent.getBooleanExtra(S.KEY_GCM_REGISTRATION,false);
-        if(success) {
+        boolean success = intent.getBooleanExtra(S.KEY_GCM_REGISTRATION, false);
+        if (success) {
             updateProgressBy(20);
             tv_progress.setText("Registering profile to Server ...");
             displayMessage("GCM Registraion successfull!");
@@ -239,10 +284,10 @@ public class RegisterActivity extends ActionBarActivity {
     }
 
     private void handleAppServerRegistrationResult(Intent intent) {
-        boolean success = intent.getBooleanExtra(S.KEY_APP_SERVER_REGISTRATION,false);
-        if(success) {
+        boolean success = intent.getBooleanExtra(S.KEY_APP_SERVER_REGISTRATION, false);
+        if (success) {
             User user = new User(this);
-            user.updateInfo(User.U_APP_SERVER_IS_REGISTERED,""+true);
+            user.updateInfo(User.U_APP_SERVER_IS_REGISTERED, "" + true);
             updateProgressBy(30);
             tv_progress.setText("Registering profile to Server .........");
             displayMessage("App Server Registraion successfull!");
@@ -263,7 +308,7 @@ public class RegisterActivity extends ActionBarActivity {
         initApp();
     }
 
-    private void initApp(){
+    private void initApp() {
 
         PreferenceManager pm = new PreferenceManager(this);
         if (!pm.isDefaultCategoriesLoadedInDB()) {
@@ -273,14 +318,14 @@ public class RegisterActivity extends ActionBarActivity {
             et.putBoolean(C.PREF_DEFAULT_CATEGORIES_LOADED, true);
             et.commit();
 
-            Accountant accountant = new Accountant(this,false);
+            Accountant accountant = new Accountant(this, false);
             accountant.initializeDb();
 
 //            Tools.sendMoneyTransactionBroadCast(this);
         }
     }
 
-    private  ContactManager cm;
+    private ContactManager cm;
     private Slot slot;
 
     private void checkContactsInAppServer() {
@@ -292,10 +337,10 @@ public class RegisterActivity extends ActionBarActivity {
     }
 
     public void sendContactSlot() {
-        if(slot == null) {
+        if (slot == null) {
             slot = new Slot(cm.getItemList().size());
         } else {
-            if(slot.isNextAvailable()) {
+            if (slot.isNextAvailable()) {
                 slot.nextSlot();
 
             } else {//all slot checked
@@ -305,13 +350,13 @@ public class RegisterActivity extends ActionBarActivity {
             }
         }
         ArrayList<Contact> contactSlot = new ArrayList<Contact>();
-        for(int i = slot.getStart(); i <= slot.getEnd(); i++) {
-            Contact contact = (Contact)cm.getItemList().get(i);
+        for (int i = slot.getStart(); i <= slot.getEnd(); i++) {
+            Contact contact = (Contact) cm.getItemList().get(i);
             contactSlot.add(contact);
         }
         JSONArray phoneNumberJsonArray = GreatJSON.getPhoneNumberArrayForContactList(contactSlot);
         RegistrationUtils.checkRegisteredContactsInAppServer(this, phoneNumberJsonArray);
-        displayMessage("Slot ["+slot.getSlotCounter()+"] sent to server");
+        displayMessage("Slot [" + slot.getSlotCounter() + "] sent to server");
 
     }
 
@@ -320,11 +365,11 @@ public class RegisterActivity extends ActionBarActivity {
         tv_progress.setText("Retriving phone contacts...");
         displayMessage("Retriving phone contacts....");
         PreferenceManager pm = new PreferenceManager(this);
-        if(!pm.isDeviceContactsRetrived()) {
+        if (!pm.isDeviceContactsRetrived()) {
             ContactManager contactManager = new ContactManager(this);
             contactManager.retriveContactsFromDevice();//contact initialization
             //Tools.addDummyEntries(this);
-            SharedPreferences.Editor et =  pm.getEditor();
+            SharedPreferences.Editor et = pm.getEditor();
             et.putBoolean(C.PREF_CONTACTS_RETRIVED, true);
             et.commit();
         }
@@ -333,7 +378,7 @@ public class RegisterActivity extends ActionBarActivity {
     }
 
     private void displayMessage(String message) {
-        tv_progress.append("\n"+message);
+        tv_progress.append("\n" + message);
     }
 
     private void displayMessage(Intent intent) {
@@ -341,11 +386,12 @@ public class RegisterActivity extends ActionBarActivity {
     }
 
     private void handleRegistrationResponse(boolean success) {
-        Toast.makeText(this,"RESPONSE : "+success,Toast.LENGTH_SHORT).show();
-        displayMessage("response : "+success);
+        Toast.makeText(this, "RESPONSE : " + success, Toast.LENGTH_SHORT).show();
+        displayMessage("response : " + success);
     }
 
     int mProgress = 0;
+
     private void updateProgressBy(int progress) {
         mProgress = mProgress + progress;
         pb_progress.setProgress(mProgress);

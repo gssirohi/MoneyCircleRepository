@@ -63,7 +63,6 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
 
     private Button b_new_split;
 
-
     private Contact mMember;
     private TopSegmentItemView tsiv_new_category;
 //    private TextView tv_new_date_text;
@@ -82,13 +81,15 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
     private RadioGroup rg_type;
     private int selectedBorrowLentType;
 
+    private Model editingModel = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        int entryType = intent.getIntExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
+        int entryType = intent.getIntExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_NEW);
         this.mEntryType = entryType;
 
         mModelType = intent.getIntExtra(C.MODEL_TYPE, Model.MODEL_TYPE_INCOME);
@@ -106,6 +107,25 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
 
         mToolbar = (Toolbar)findViewById(R.id.tool_bar);
         setSupportActionBar(mToolbar);
+
+        initView();
+
+        // TODO Don't start this activity if entry type is not ENTRY_TYPE_NEW
+
+        String uid = intent.getStringExtra(C.MODEL_UID);
+        if (mEntryType != C.ENTRY_TYPE_NEW && (!TextUtils.isEmpty(uid))) {
+
+            setValueFromItem(uid);
+        } else {
+            setDefaultValues();
+        }
+
+        String contactUid = intent.getStringExtra(C.CONTACT_UID);
+        addMember(contactUid);
+    }
+
+    private void initView() {
+
         //tv_new_title = (TextView)findViewById(R.id.tv_new_title);
         tv_new_before_type = (TextView)findViewById(R.id.tv_new_before_type);
         tv_new_type = (TextView)findViewById(R.id.tv_new_type);
@@ -127,22 +147,22 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         //tv_new_category_text = (TextView)findViewById(R.id.tv_new_category_text);
         tsiv_new_category = (TopSegmentItemView)findViewById(R.id.tsiv_new_category);
 
-     //   tv_new_date_text = (TextView)findViewById(R.id.tv_new_date_text);
+        //   tv_new_date_text = (TextView)findViewById(R.id.tv_new_date_text);
         tsiv_new_date = (TopSegmentItemView)findViewById(R.id.tsiv_new_date);
 
-     //   tv_new_member_add = (TextView)findViewById(R.id.tv_new_member_add);
+        //   tv_new_member_add = (TextView)findViewById(R.id.tv_new_member_add);
         tsiv_new_member_add = (TopSegmentItemView)findViewById(R.id.tsiv_new_member_add);
 
-       // tv_new_due_date_text = (TextView)findViewById(R.id.tv_new_due_date_text);
+        // tv_new_due_date_text = (TextView)findViewById(R.id.tv_new_due_date_text);
         tsiv_new_due_date = (TopSegmentItemView)findViewById(R.id.tsiv_new_due_date);
 
         tv_new_note_text = (TextView)findViewById(R.id.tv_new_note_text);
         et_new_note = (EditText)findViewById(R.id.et_new_note);
 
         cb_new_add_in_frequent = (CheckBox)findViewById(R.id.cb_new_add_in_frequent);
-        
+
         b_new_split = (Button)findViewById(R.id.b_new_split);
-      ///----------------------------------------------------------------------------//
+        ///----------------------------------------------------------------------------//
         tsiv_new_category.setModeOnlyTitle();
         tsiv_new_category.setItemTitle("SELECT CATEGORY");
 
@@ -192,10 +212,6 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         tsiv_new_due_date.setModeOnlyTitle();
 
 
-
-        mCategory = C.CATEGORY_NONE_UID;
-        // TODO Don't start this activity if entry type is not ENTRY_TYPE_INPUT
-
         switch(mModelType) {
             case Model.MODEL_TYPE_INCOME:
                 createIncomeLayout();
@@ -211,14 +227,9 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
                 break;
         }
 
-        setDefaultCategory();
-        setDefaultDate();
-        setDefaultDueDate();
         //setTextColor();
         setButtonColor();
 
-        String contactUid = intent.getStringExtra(C.CONTACT_UID);
-        addMember(contactUid);
     }
 
     private void handleTypeChanged(int i) {
@@ -238,6 +249,67 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
        // b_new_member_add.setBackgroundColor(back);
        // b_new_date.setBackgroundColor(back);
        // b_due_date.setBackgroundColor(back);
+    }
+
+    private void setDefaultValues() {
+
+        setDefaultCategory();
+        setDefaultDate();
+        setDefaultDueDate();
+    }
+
+    private void setValueFromItem(String uid) {
+
+        editingModel = Tools.getDbInstance(this, uid, mModelType);
+
+        addCategory(editingModel.getCategory().getUID());
+        et_new_item.setText(editingModel.getTitle());
+        et_new_amount.setText(Float.toString(editingModel.getAmount()));
+        mDateString = editingModel.getDateString();
+        tsiv_new_date.setItemTitle(mDateString);
+        String description = null;
+        switch (mModelType) {
+            case Model.MODEL_TYPE_INCOME:
+                description = ((Income) editingModel).getDescription();
+                break;
+            case Model.MODEL_TYPE_EXPENSE:
+                description = ((Expense) editingModel).getDescription();
+
+                // TODO handle for frequent item
+                // TODO Handling amount in category if user edit the item
+
+                break;
+            case Model.MODEL_TYPE_BORROW:
+                mMember = editingModel.getLinkedContact();
+                tsiv_new_member_add.setModel(mMember, Model.MODEL_TYPE_CONTACT);
+
+                // TODO Need to handle duedate if due date is passed.
+                mDueDateString = editingModel.getDueDateString();
+                tsiv_new_due_date.setItemTitle(mDueDateString);
+                ((Borrow) editingModel).getOwnerPhone();
+                description = ((Borrow) editingModel).getDescription();
+
+                // TODO Need to handle contact amount updation
+                break;
+            case Model.MODEL_TYPE_LENT:
+
+                mMember = editingModel.getLinkedContact();
+                tsiv_new_member_add.setModel(mMember, Model.MODEL_TYPE_CONTACT);
+
+                mDueDateString = editingModel.getDueDateString();
+                tsiv_new_due_date.setItemTitle(mDueDateString);
+                ((Lent) editingModel).getOwnerPhone();
+                description = ((Lent) editingModel).getDescription();
+
+                // TODO Need to handle contact amount updation
+                break;
+            default:
+                break;
+        }
+        if (!TextUtils.isEmpty(description)) {
+            et_new_note.setText(description);
+        }
+
     }
 
     private void setTextColor() {
@@ -410,11 +482,20 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         String description = null;
         Category cat = null;
         float spent;
+        boolean isEditedModel = false;
         User user = new User (this);
         float amount;
+        float amountToUpdateInContact;
         switch (mModelType) {
             case Model.MODEL_TYPE_INCOME:
-                Income income = new Income();
+                Income income = null;
+
+                if (editingModel != null) {
+                    income = (Income)editingModel;
+                } else {
+                    income = new Income();
+                }
+
                 income.setDateString(mDateString);
                 income.setTitle(et_new_item.getText().toString());
                 income.setCategory((Category)Tools.getDbInstance(this,mCategory,Model.MODEL_TYPE_CATEGORY));
@@ -425,7 +506,12 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
                     income.setDescription(description);
                 }
 
-                income.insertItemInDB(this);
+                if (editingModel != null) {
+                    income.updateItemInDb(this);
+                } else {
+                    income.insertItemInDB(this);
+                }
+
                 cat = (Category) Tools.getDbInstance(this, mCategory, Model.MODEL_TYPE_CATEGORY);
                 spent = cat.getSpentAmountOnThis();
                 cat.setSpentAmountOnThis(spent + amount);
@@ -435,7 +521,15 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
                 Tools.sendMoneyTransactionBroadCast(this, income, Model.MODEL_TYPE_INCOME);
                 break;
             case Model.MODEL_TYPE_EXPENSE:
-                Expense expense = new Expense();
+
+                Expense expense = null;
+
+                if (editingModel != null) {
+                    expense = (Expense)editingModel;
+                } else {
+                    expense = new Expense();
+                }
+
                 expense.setDateString(mDateString);
                 expense.setTitle(et_new_item.getText().toString());
                 expense.setCategory((Category) Tools.getDbInstance(this, mCategory, Model.MODEL_TYPE_CATEGORY));
@@ -446,8 +540,12 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
                     expense.setDescription(description);
                 }
                 // TODO Split with other member entry needs to be included.
+                if (editingModel != null) {
+                    expense.updateItemInDb(this);
+                } else {
+                    expense.insertItemInDB(this);
+                }
 
-                expense.insertItemInDB(this);
                 cat = (Category) Tools.getDbInstance(this, mCategory, Model.MODEL_TYPE_CATEGORY);
                 spent = cat.getSpentAmountOnThis();
                 cat.setSpentAmountOnThis(spent + amount);
@@ -457,7 +555,13 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
                 Tools.sendMoneyTransactionBroadCast(this, expense, Model.MODEL_TYPE_EXPENSE);
                 break;
             case Model.MODEL_TYPE_BORROW:
-                Borrow borrow = new Borrow();
+                Borrow borrow = null;
+
+                if (editingModel != null) {
+                    borrow = (Borrow)editingModel;
+                } else {
+                    borrow = new Borrow();
+                }
                 borrow.setDateString(mDateString);
                 borrow.setTitle(et_new_item.getText().toString());
                 cat = (Category)Tools.getDbInstance(this,mCategory,Model.MODEL_TYPE_CATEGORY);
@@ -479,25 +583,38 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
 
                 // TODO Include member field need to be handled
                 //borrow.setLinkedContact(b_new_member_add.getText());
-
-                borrow.insertItemInDB(this);
+                if (editingModel != null) {
+                    float previousAmount = Tools.getAmountForParticularUID(this, Model.MODEL_TYPE_BORROW, borrow.getUID());
+                    borrow.updateItemInDb(this);
+                    amountToUpdateInContact = borrow.getAmount() - previousAmount;
+                    isEditedModel = true;
+                } else {
+                    borrow.insertItemInDB(this);
+                    amountToUpdateInContact = borrow.getAmount();
+                    isEditedModel = false;
+                }
 
                 spent = cat.getSpentAmountOnThis();
-                cat.setSpentAmountOnThis(spent + amount);
+                cat.setSpentAmountOnThis(spent + amountToUpdateInContact);
                 cat.updateItemInDb(this);
 
-
-                transportId = transporter.transportItem(borrow, Model.MODEL_TYPE_BORROW);
+                transportId = transporter.transportItem(borrow, Model.MODEL_TYPE_BORROW, isEditedModel);
                 if(!mMember.getUID().equals(C.USER_UNIQUE_ID)) {
                     float borrowAmount = mMember.getBorrowedAmountfromThis();
-                    mMember.setBorrowedAmountfromThis(borrowAmount + amount);
+                    mMember.setBorrowedAmountfromThis(borrowAmount + amountToUpdateInContact);
                     mMember.updateItemInDb(this);//update contact's borrow amount
                 }
                 Toast.makeText(this, "Borrow ENTRY SAVED", Toast.LENGTH_SHORT).show();
                 Tools.sendMoneyTransactionBroadCast(this, borrow, Model.MODEL_TYPE_BORROW);
                 break;
             case Model.MODEL_TYPE_LENT:
-                Lent lent = new Lent();
+                Lent lent = null;
+
+                if (editingModel != null) {
+                    lent = (Lent)editingModel;
+                } else {
+                    lent = new Lent();
+                }
                 lent.setDateString(mDateString);
                 lent.setTitle(et_new_item.getText().toString());
 
@@ -523,16 +640,26 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
 //                lent.setLinkedContact(b_new_member_add.getText());
 
                 lent.printModelData();
-                lent.insertItemInDB(this);
+
+                if (editingModel != null) {
+                    float previousAmount = Tools.getAmountForParticularUID(this, Model.MODEL_TYPE_LENT, lent.getUID());
+                    lent.updateItemInDb(this);
+                    amountToUpdateInContact = lent.getAmount() - previousAmount;
+                    isEditedModel = true;
+                } else {
+                    lent.insertItemInDB(this);
+                    amountToUpdateInContact = lent.getAmount();
+                    isEditedModel = false;
+                }
 
                 spent = cat.getSpentAmountOnThis();
-                cat.setSpentAmountOnThis(spent + amount);
+                cat.setSpentAmountOnThis(spent + amountToUpdateInContact);
                 cat.updateItemInDb(this);
 
-                transportId = transporter.transportItem(lent, Model.MODEL_TYPE_LENT);
+                transportId = transporter.transportItem(lent, Model.MODEL_TYPE_LENT, isEditedModel);
                 if(!mMember.getUID().equals(C.USER_UNIQUE_ID)) {
                     float lentAmount = mMember.getLentAmountToThis();
-                    mMember.setLentAmountToThis(lentAmount + amount);
+                    mMember.setLentAmountToThis(lentAmount + amountToUpdateInContact);
                     mMember.updateItemInDb(this);//update contact's lent amount
                 }
                 Toast.makeText(this, "Lent ENTRY SAVED", Toast.LENGTH_SHORT).show();

@@ -417,7 +417,7 @@ public class NewHomeActivity extends ActionBarActivity implements LoaderManager.
             intent = new Intent(this, SplitToolActivity.class);
         } else {
             intent = new Intent(this, AddNewEntryActivity.class);
-            intent.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
+            intent.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_NEW);
             intent.putExtra(C.MODEL_TYPE, mModelType);
         }
         startActivity(intent);

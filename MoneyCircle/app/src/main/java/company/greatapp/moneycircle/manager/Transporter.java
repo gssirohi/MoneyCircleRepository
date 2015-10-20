@@ -329,7 +329,7 @@ public class Transporter {
         return outPackage.getTransportId();
     }
 
-    public  String transportItem(Model model, int modelType) {
+    public  String transportItem(Model model, int modelType, boolean isEditedModel) {
          String ownerItemId;
          String itemBodyJsonString;
          User user = new User(mContext);
@@ -353,7 +353,11 @@ public class Transporter {
                 outPackage.setAttemptCounter(0);
                 outPackage.setReqResponseType(S.RESPONSE_TYPE_STRING);
                 outPackage.setReqType(Request.Method.POST);
-                outPackage.setReqCode(S.TRANSPORT_REQUEST_CODE_LENT);
+                if(isEditedModel) {
+                    outPackage.setReqCode(S.TRANSPORT_REQUEST_CODE_MODIFIED_LENT);
+                } else {
+                    outPackage.setReqCode(S.TRANSPORT_REQUEST_CODE_LENT);
+                }
                 outPackage.setReqSenderPhone(user.getPhoneNumber());
                 outPackage.setReqReceiverPhone(lent.getLinkedContact().getPhone());
                 outPackage.setItemOwnerPhone(user.getPhoneNumber());
@@ -395,7 +399,12 @@ public class Transporter {
                 outPackage.setAttemptCounter(0);
                 outPackage.setReqResponseType(S.RESPONSE_TYPE_STRING);
                 outPackage.setReqType(Request.Method.POST);
-                outPackage.setReqCode(S.TRANSPORT_REQUEST_CODE_BORROW);
+                if(isEditedModel) {
+                    outPackage.setReqCode(S.TRANSPORT_REQUEST_CODE_MODIFIED_BORROW);
+                } else {
+                    outPackage.setReqCode(S.TRANSPORT_REQUEST_CODE_BORROW);
+                }
+
                 outPackage.setReqSenderPhone(user.getPhoneNumber());
                 outPackage.setReqReceiverPhone(item.getLinkedContact().getPhone());
                 outPackage.setItemOwnerPhone(user.getPhoneNumber());

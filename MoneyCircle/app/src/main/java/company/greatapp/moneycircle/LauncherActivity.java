@@ -97,7 +97,7 @@ public class LauncherActivity extends ActionBarActivity {
                 break;
             case 8:
                 Intent intent = new Intent(this,AddNewEntryActivity.class);
-                intent.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
+                intent.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_NEW);
                 intent.putExtra(C.MODEL_TYPE, Model.MODEL_TYPE_INCOME);
                 startActivity(intent);
                 break;
@@ -126,19 +126,19 @@ public class LauncherActivity extends ActionBarActivity {
                 break;
             case 18:
                  intent = new Intent(this,AddNewEntryActivity.class);
-                intent.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
+                intent.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_NEW);
                 intent.putExtra(C.MODEL_TYPE, Model.MODEL_TYPE_EXPENSE);
                 startActivity(intent);
                 break;
             case 19:
                  intent = new Intent(this,AddNewEntryActivity.class);
-                intent.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
+                intent.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_NEW);
                 intent.putExtra(C.MODEL_TYPE, Model.MODEL_TYPE_BORROW);
                 startActivity(intent);
                 break;
             case 20:
                  intent = new Intent(this,AddNewEntryActivity.class);
-                intent.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_INPUT);
+                intent.putExtra(C.ENTRY_TYPE, C.ENTRY_TYPE_NEW);
                 intent.putExtra(C.MODEL_TYPE, Model.MODEL_TYPE_LENT);
                 startActivity(intent);
                 break;
