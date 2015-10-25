@@ -33,6 +33,7 @@ import company.greatapp.moneycircle.model.Borrow;
 import company.greatapp.moneycircle.model.Category;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Expense;
+import company.greatapp.moneycircle.model.FrequentItem;
 import company.greatapp.moneycircle.model.Income;
 import company.greatapp.moneycircle.model.Lent;
 import company.greatapp.moneycircle.model.Model;
@@ -354,6 +355,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         tsiv_new_member_add.setVisibility(View.VISIBLE);     //NOT HIDDEN
         tsiv_new_due_date.setVisibility(View.VISIBLE);     //NOT HIDDEN
         //rg_type.setVisibility(View.VISIBLE);
+        cb_new_add_in_frequent.setVisibility(View.GONE);
     }
 
     private void createLendedLayout() {
@@ -380,6 +382,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         tsiv_new_member_add.setVisibility(View.VISIBLE);     //NOT HIDDEN
         tsiv_new_due_date.setVisibility(View.VISIBLE);     //NOT HIDDEN
       //  rg_type.setVisibility(View.VISIBLE);
+        cb_new_add_in_frequent.setVisibility(View.GONE);
     }
 
     private void createExpenseLayout() {
@@ -430,6 +433,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         b_new_split.setVisibility(View.GONE);     // HIDDEN
         tsiv_new_due_date.setVisibility(View.GONE);              //HIDDEN
         tsiv_new_member_add.setVisibility(View.GONE);              //HIDDEN
+        cb_new_add_in_frequent.setVisibility(View.GONE);
     }
 
     @Override
@@ -530,12 +534,14 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
                     expense = new Expense();
                 }
 
-                expense.setDateString(mDateString);
-                expense.setTitle(et_new_item.getText().toString());
-                expense.setCategory((Category) Tools.getDbInstance(this, mCategory, Model.MODEL_TYPE_CATEGORY));
+                String title = et_new_item.getText().toString();
+                cat = (Category) Tools.getDbInstance(this, mCategory, Model.MODEL_TYPE_CATEGORY);
                 amount = Float.parseFloat(et_new_amount.getText().toString());
-                expense.setAmount(amount);
                 description = et_new_note.getText().toString();
+                expense.setDateString(mDateString);
+                expense.setTitle(title);
+                expense.setCategory(cat);
+                expense.setAmount(amount);
                 if (!TextUtils.isEmpty(description)) {
                     expense.setDescription(description);
                 }
@@ -546,7 +552,10 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
                     expense.insertItemInDB(this);
                 }
 
-                cat = (Category) Tools.getDbInstance(this, mCategory, Model.MODEL_TYPE_CATEGORY);
+                if (mAddInFrequent) {
+                    addFrequentItems(title,cat, amount, description, mDateString);
+                }
+//                cat = (Category) Tools.getDbInstance(this, mCategory, Model.MODEL_TYPE_CATEGORY);
                 spent = cat.getSpentAmountOnThis();
                 cat.setSpentAmountOnThis(spent + amount);
                 cat.updateItemInDb(this);
@@ -776,6 +785,20 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
         i.putExtra(C.CHOOSER_CHOICE_MODE,mode);
         i.putExtra(C.CHOOSER_MODEL, mModelType);
         startActivityForResult(i, requestCode);
+    }
+
+    private void addFrequentItems(String title, Category cat, float amount, String description, String dateString) {
+
+        FrequentItem frequentItem = new FrequentItem();
+
+        frequentItem.setTitle(title);
+        frequentItem.setCategory(cat);
+        frequentItem.setAmount(amount);
+        frequentItem.setDescription(description);
+        frequentItem.setDateString(dateString);
+
+        frequentItem.insertItemInDB(this);
+
     }
 
     @Override

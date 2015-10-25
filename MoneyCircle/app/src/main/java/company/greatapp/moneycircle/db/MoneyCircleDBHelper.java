@@ -314,7 +314,19 @@ Log.d("DB", "closing db.. ");
             );
             Log.d("DBhelper","query sent for"+DB.PACKAGE_FROM_SERVER_TABLE_NAME);
             //=========================================================================//
+            db.execSQL("create table " + DB.FREQUENT_ITEM_TABLE_NAME + "("
 
+                            + DB.DB_ID + " Integer primary key ,"
+                            + DB.UID + " text,"
+                            + DB.TITLE + " text,"
+                            + DB.CATEGORY + " text,"
+                            + DB.DESCRIPTION + " text,"
+                            + DB.AMOUNT + " text, "
+                            + DB.DATE_STRING + " text, "
+                            + DB.JSON_STRING + " text );"
+
+            );
+            Log.d("DBhelper", "query sent for" + DB.FREQUENT_ITEM_TABLE_NAME);
 
         }
 

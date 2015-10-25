@@ -27,6 +27,9 @@ import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
+
 import java.util.ArrayList;
 
 import company.greatapp.moneycircle.adapters.NavDrawerListAdapter;
@@ -38,7 +41,6 @@ import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.NavDrawerItem;
 import company.greatapp.moneycircle.services.PendingPackageTransportService;
 import company.greatapp.moneycircle.dialogs.ContactInfoDialog;
-import company.greatapp.moneycircle.tools.Tools;
 import company.greatapp.moneycircle.view.DrawerView;
 import company.greatapp.moneycircle.view.TagItemView;
 
@@ -67,6 +69,7 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
     private CardDesigner mCardDesigner;
     private Toolbar toolbar;
     private DrawerView mDrawerView;
+    private ShowcaseView sv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +90,19 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
                 showAddOptionsScreen();
             }
         });
+
+        /*ViewTarget target = new ViewTarget(R.id.fb_add_new_entry, this);
+        sv = new ShowcaseView.Builder(this)
+                .withMaterialShowcase()
+                .setTarget(target)
+                .setContentTitle("New Entry Button")
+                .setContentText("Add All New Entry From Here")
+//                .setStyle(R.style.CustomShowcaseTheme2)
+                .setShowcaseEventListener(this)
+                .replaceEndButton(R.layout.view_custom_button)
+                .build();
+        sv.setButtonPosition(lps);*/
+
         tabHost = (TabHost)findViewById(R.id.tabHost);
         initialiseTabHost();
         tabWidget = (TabWidget)findViewById(android.R.id.tabs);

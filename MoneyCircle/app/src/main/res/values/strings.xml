@@ -132,6 +132,7 @@
     <string name="title_activity_notification">Notifications</string>
     <string name="title_activity_contact_detail">ContactDetailActivity                </string>
     <string name="title_activity_category">CategoryActivity</string>
+    <string name="title_activity_frequent_items">Frequent Items</string>
 
     <string name="facebook_app_id">395952043947470</string>
 
