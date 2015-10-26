@@ -27,9 +27,6 @@ import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.ViewTarget;
-
 import java.util.ArrayList;
 
 import company.greatapp.moneycircle.adapters.NavDrawerListAdapter;
@@ -69,7 +66,6 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
     private CardDesigner mCardDesigner;
     private Toolbar toolbar;
     private DrawerView mDrawerView;
-    private ShowcaseView sv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -3,6 +3,7 @@ package company.greatapp.moneycircle.view;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import company.greatapp.moneycircle.model.FrequentItem;
  */
 public class FrequentItemView extends CardView {
 
+    private static final String LOG_TAG = "Prateek";//FrequentItemView.class.getSimpleName();
+
     private final Context mContext;
     private ViewGroup mViewGroup;
     private CategoryItemView mCategoryItemView;
@@ -26,6 +29,9 @@ public class FrequentItemView extends CardView {
     private TextView mTv_Currency;
     private EditText mEt_amount;
     private ImageView mIb_selectItem;
+
+    private int mIndex;
+    private FrequentItemViewCallback mCallback;
 
     public FrequentItemView(Context context) {
         super(context);
@@ -64,9 +70,11 @@ public class FrequentItemView extends CardView {
         mIb_selectItem.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (((ImageView)v).)
+//                if (((ImageView)v).)
+                mCallback.onItemSelected(mIndex);
             }
         });
+        setFrequentItemViewCallback((FrequentItemViewCallback)mContext);
     }
 
     public void initView(FrequentItem frequentItem) {
@@ -75,9 +83,19 @@ public class FrequentItemView extends CardView {
             return;
         }
 
+        mIndex = (Integer)getTag();
+        Log.d(LOG_TAG, "FrequentItemView initView mIndex : "+ mIndex);
         mTv_title.setText(frequentItem.getTitle());
         mEt_amount.setText(Float.toString(frequentItem.getAmount()));
         mCategoryItemView.initView(frequentItem.getCategory());
 
+    }
+
+    private void setFrequentItemViewCallback(FrequentItemViewCallback callback) {
+        mCallback = callback;
+    }
+
+    public interface FrequentItemViewCallback {
+        void onItemSelected(int index);
     }
 }

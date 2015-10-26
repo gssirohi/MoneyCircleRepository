@@ -2,6 +2,7 @@ package company.greatapp.moneycircle.model;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 
@@ -29,6 +30,18 @@ public class FrequentItem extends Model{
     public FrequentItem(int dbId, String uid) {
         this.dbId = dbId;
         this.UID = uid;
+    }
+
+    public FrequentItem(Context context, Cursor cursor) {
+        dbId  =cursor.getInt(cursor.getColumnIndex(DB.DB_ID));
+        UID = cursor.getString(cursor.getColumnIndex(DB.UID));
+        title = cursor.getString(cursor.getColumnIndex(DB.TITLE));
+        String categoryUid = cursor.getString(cursor.getColumnIndex(DB.CATEGORY));
+        category = (Category) Tools.getDbInstance(context, categoryUid, Model.MODEL_TYPE_CATEGORY);
+        amount = Float.parseFloat(cursor.getString(cursor.getColumnIndex(DB.AMOUNT)));
+        description = cursor.getString(cursor.getColumnIndex(DB.DESCRIPTION));
+        jsonString = cursor.getString(cursor.getColumnIndex(DB.JSON_STRING));
+        dateString = cursor.getString(cursor.getColumnIndex(DB.DATE_STRING));
     }
 
     public int getDbId() {
