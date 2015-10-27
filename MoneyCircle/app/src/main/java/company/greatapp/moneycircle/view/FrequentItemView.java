@@ -2,6 +2,8 @@ package company.greatapp.moneycircle.view;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.model.FrequentItem;
@@ -74,19 +77,49 @@ public class FrequentItemView extends CardView {
                 mCallback.onItemSelected(mIndex);
             }
         });
-        setFrequentItemViewCallback((FrequentItemViewCallback)mContext);
+        setFrequentItemViewCallback((FrequentItemViewCallback) mContext);
     }
 
-    public void initView(FrequentItem frequentItem) {
+    public void initView(final FrequentItem frequentItem) {
 
         if (frequentItem == null) {
             return;
         }
 
         mIndex = (Integer)getTag();
-        Log.d(LOG_TAG, "FrequentItemView initView mIndex : "+ mIndex);
+        Log.d(LOG_TAG, "FrequentItemView initView mIndex : " + mIndex);
         mTv_title.setText(frequentItem.getTitle());
-        mEt_amount.setText(Float.toString(frequentItem.getAmount()));
+        final String amount = Float.toString(frequentItem.getAmount());
+        mEt_amount.setText(amount);
+        mEt_amount.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!amount.equals(mEt_amount.getText().toString())) {
+                    Toast.makeText(mContext, "Amount change", Toast.LENGTH_LONG).show();
+                    Log.d(LOG_TAG, "FrequentItemView Amount change");
+                }
+            }
+        });
+        /*mEt_amount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                Toast.makeText(mContext, "beforeTextChanged", Toast.LENGTH_LONG).show();
+                Log.d(LOG_TAG, "FrequentItemView beforeTextChanged");
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Toast.makeText(mContext, "onTextChanged", Toast.LENGTH_LONG).show();
+                Log.d(LOG_TAG, "FrequentItemView onTextChanged");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Toast.makeText(mContext, "afterTextChanged", Toast.LENGTH_LONG).show();
+                Log.d(LOG_TAG, "FrequentItemView afterTextChanged");
+            }
+        });*/
+
         mCategoryItemView.initView(frequentItem.getCategory());
 
     }

@@ -101,7 +101,7 @@ public class FrequentItemActivity extends AppCompatActivity implements LoaderMan
             Log.d(LOG_TAG, "onCreateLoader FrequentItem loader");
             return new CursorLoader(this, DB.FREQUENT_ITEM_TABLE_URI,
                     DB.FREQUENT_ITEM_TABLE_PROJECTION, null, null,
-                    "data DESC");
+                    null);
         }
         return null;
     }
@@ -113,11 +113,14 @@ public class FrequentItemActivity extends AppCompatActivity implements LoaderMan
             adapter.swapCursor(data);
         }
         if (mSelectedItems == null) {
-            Log.d(LOG_TAG, "onLoadFinished Creation of SparseArray capacity :"+data.getCount());
-            mSelectedItems = new SparseBooleanArray(data.getCount());
-            for (int i = 0; i < mSelectedItems.size(); i++) {
+            int itemCount = data.getCount();
+            Log.d(LOG_TAG, "onLoadFinished Creation of SparseArray capacity :"+itemCount);
+            mSelectedItems = new SparseBooleanArray(itemCount);
+            for (int i = 0; i < itemCount; i++) {
                 mSelectedItems.put(i, false);
+                Log.d(LOG_TAG, "onLoadFinished mSelectedItems Loop :" + mSelectedItems);
             }
+            Log.d(LOG_TAG, "onLoadFinished mSelectedItems intialization :"+mSelectedItems);
         }
     }
 
