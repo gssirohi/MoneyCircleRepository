@@ -14,11 +14,13 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.adapters.FrequentItemAdapter;
 import company.greatapp.moneycircle.constants.DB;
+import company.greatapp.moneycircle.manager.FrequentItemManager;
 import company.greatapp.moneycircle.model.Expense;
 import company.greatapp.moneycircle.model.FrequentItem;
 import company.greatapp.moneycircle.tools.DateUtils;
@@ -28,7 +30,7 @@ import company.greatapp.moneycircle.view.FrequentItemView;
 /**
  * Created by Prateek on 25-10-2015.
  */
-public class FrequentItemActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, FrequentItemView.FrequentItemViewCallback{
+public class FrequentItemActivity extends AppCompatActivity implements FrequentItemView.FrequentItemViewCallback{
 
     private static final String LOG_TAG = "Prateek";//FrequentItemActivity.class.getSimpleName();
 
@@ -36,6 +38,7 @@ public class FrequentItemActivity extends AppCompatActivity implements LoaderMan
     private FrequentItemAdapter adapter;
 
     private SparseBooleanArray mSelectedItems;
+    private ArrayList<FrequentItem> mFrequentItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +50,14 @@ public class FrequentItemActivity extends AppCompatActivity implements LoaderMan
         setSupportActionBar(toolbar);
 
         ListView lv_frequentList = (ListView)findViewById(R.id.lv_frequent_item);
-        adapter = new FrequentItemAdapter(this, null, false);
+        FrequentItemManager manager = new FrequentItemManager(this);
+        mFrequentItems = manager.getFrequentItemList();
+        adapter = new FrequentItemAdapter(this, mFrequentItems);
         lv_frequentList.setAdapter(adapter);
 
-        getLoaderManager().initLoader(FREQUENT_ITEM_LOADER_ID, null, this);
+        initializeSpareArray();
+
+//        getLoaderManager().initLoader(FREQUENT_ITEM_LOADER_ID, null, this);
     }
 
     @Override
@@ -67,14 +74,12 @@ public class FrequentItemActivity extends AppCompatActivity implements LoaderMan
 
         if(id == R.id.action_done) {
             if (mSelectedItems != null) {
-                Cursor cursor = null;
                 FrequentItem frequentItem = null;
                 Expense expense = null;
                 boolean expenseNotCreated = false;
                 for (int i = 0; i < mSelectedItems.size(); i++) {
                     if (mSelectedItems.valueAt(i)) {
-                        cursor = (Cursor)adapter.getItem(i);
-                        frequentItem = new FrequentItem(this, cursor);
+                        frequentItem = (FrequentItem)adapter.getItem(i);
                         expense = Tools.createExpenseFromFrequentItem(frequentItem);
                         if (expense != null) {
                             expense.setDateString(DateUtils.getCurrentDate());
@@ -90,12 +95,23 @@ public class FrequentItemActivity extends AppCompatActivity implements LoaderMan
                 }
             }
             finish();
-//                adapter.getItem()
         }
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
+    private void initializeSpareArray() {
+        if (mSelectedItems == null && mFrequentItems != null && mFrequentItems.size() > 0) {
+            int itemCount = mFrequentItems.size();
+            Log.d(LOG_TAG, "initializeSpareArray Creation of SparseArray capacity :"+itemCount);
+            mSelectedItems = new SparseBooleanArray(itemCount);
+            for (int i = 0; i < itemCount; i++) {
+                mSelectedItems.put(i, false);
+                Log.d(LOG_TAG, "initializeSpareArray mSelectedItems Loop :" + mSelectedItems);
+            }
+            Log.d(LOG_TAG, "initializeSpareArray mSelectedItems intialization :"+mSelectedItems);
+        }
+    }
+    /*@Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if(id == FREQUENT_ITEM_LOADER_ID) {
             Log.d(LOG_TAG, "onCreateLoader FrequentItem loader");
@@ -130,7 +146,7 @@ public class FrequentItemActivity extends AppCompatActivity implements LoaderMan
             Log.d(LOG_TAG, "onLoaderReset FrequentItem loader");
             adapter.swapCursor(null);
         }
-    }
+    }*/
 
     @Override
     public void onItemSelected(int index) {
@@ -140,6 +156,23 @@ public class FrequentItemActivity extends AppCompatActivity implements LoaderMan
             Log.d(LOG_TAG, "FrequentItemActivity onItemSelected before value : " + mSelectedItems);
             mSelectedItems.put(index, !mSelectedItems.valueAt(index));
             Log.d(LOG_TAG, "FrequentItemActivity onItemSelected after value : " + mSelectedItems);
+            boolean previousValue = mFrequentItems.get(index).isSelected();
+            mFrequentItems.get(index).setIsSelected(!previousValue);
+            adapter.notifyDataSetChanged();
         }
+    }
+
+    @Override
+    public void onItemDeleted(int index) {
+
+        mFrequentItems.get(index).deleteItemInDb(this);
+        mFrequentItems.remove(index);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onAmountChange(int index, float amount) {
+        Log.d(LOG_TAG, "FrequentItemActivity onAmountChange amount : " + amount);
+        mFrequentItems.get(index).setAmount(amount);
     }
 }

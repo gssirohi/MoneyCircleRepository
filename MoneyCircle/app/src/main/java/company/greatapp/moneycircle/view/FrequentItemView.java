@@ -2,8 +2,6 @@ package company.greatapp.moneycircle.view;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,7 +29,8 @@ public class FrequentItemView extends CardView {
     private TextView mTv_title;
     private TextView mTv_Currency;
     private EditText mEt_amount;
-    private ImageView mIb_selectItem;
+    private ImageView mIv_selectItem;
+    private ImageView mIv_deleteItem;
 
     private int mIndex;
     private FrequentItemViewCallback mCallback;
@@ -69,14 +68,22 @@ public class FrequentItemView extends CardView {
 
         mEt_amount = (EditText)mViewGroup.findViewById(R.id.et_amount);
 
-        mIb_selectItem = (ImageView)mViewGroup.findViewById(R.id.ib_select_item);
-        mIb_selectItem.setOnClickListener(new OnClickListener() {
+        mIv_selectItem = (ImageView)mViewGroup.findViewById(R.id.iv_select_item);
+        mIv_selectItem.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
 //                if (((ImageView)v).)
                 mCallback.onItemSelected(mIndex);
             }
         });
+        mIv_deleteItem = (ImageView)mViewGroup.findViewById(R.id.iv_delete_item);
+        mIv_deleteItem.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.onItemDeleted(mIndex);
+            }
+        });
+
         setFrequentItemViewCallback((FrequentItemViewCallback) mContext);
     }
 
@@ -94,7 +101,11 @@ public class FrequentItemView extends CardView {
         mEt_amount.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (!amount.equals(mEt_amount.getText().toString())) {
+                Log.d(LOG_TAG, "FrequentItemView onFocusChange");
+                float amountInEditText = Float.parseFloat(mEt_amount.getText().toString());
+                if (frequentItem.getAmount() != amountInEditText) {
+//                if (!amount.equals(mEt_amount.getText().toString())) {
+                    mCallback.onAmountChange(mIndex, amountInEditText);
                     Toast.makeText(mContext, "Amount change", Toast.LENGTH_LONG).show();
                     Log.d(LOG_TAG, "FrequentItemView Amount change");
                 }
@@ -120,6 +131,12 @@ public class FrequentItemView extends CardView {
             }
         });*/
 
+        if (frequentItem.isSelected()) {
+            mIv_selectItem.setImageResource(R.drawable.ic_ok_selected);
+        } else {
+            mIv_selectItem.setImageResource(R.drawable.ic_ok_unselected);
+        }
+
         mCategoryItemView.initView(frequentItem.getCategory());
 
     }
@@ -130,5 +147,7 @@ public class FrequentItemView extends CardView {
 
     public interface FrequentItemViewCallback {
         void onItemSelected(int index);
+        void onItemDeleted(int index);
+        void onAmountChange(int index, float amount);
     }
 }

@@ -18,10 +18,11 @@ import company.greatapp.moneycircle.tools.Tools;
 public class FrequentItemManager{
 
     private final Context mContext;
-    ArrayList<Model> frequentItems = new ArrayList<Model>();
+    private ArrayList<FrequentItem> frequentItems = new ArrayList<FrequentItem>();
 
     public FrequentItemManager(Context context) {
         mContext = context;
+        loadItemsFromDB();
     }
 
     public Model createHeavyItemFromCursor(Cursor cursor) {
@@ -78,13 +79,17 @@ public class FrequentItemManager{
         if(c != null && c.getCount() > 0) {
             c.moveToFirst();
             while(!c.isAfterLast()) {
-                Model model = createHeavyItemFromCursor(c);
-                if(model != null) {
-                    Log.d("SPLIT", "LOADING EXPENSE[" + model.getTitle() + "] : " + model.getUID());
+                FrequentItem frequentItem = (FrequentItem)createHeavyItemFromCursor(c);
+                if(frequentItem != null) {
+                    Log.d("SPLIT", "LOADING EXPENSE[" + frequentItem.getTitle() + "] : " + frequentItem.getUID());
                 }
-                frequentItems.add(model);
+                frequentItems.add(frequentItem);
                 c.moveToNext();
             }
             c.close();
         }}
+
+    public ArrayList<FrequentItem> getFrequentItemList() {
+        return frequentItems;
+    }
 }

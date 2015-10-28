@@ -22,6 +22,7 @@ public class FrequentItem extends Model{
     private String description = "";
     private String dateString ="";
     private String jsonString = "";
+    private boolean isSelected = false;
 
     public FrequentItem() {
         setUID(Tools.generateUniqueId());
@@ -104,6 +105,14 @@ public class FrequentItem extends Model{
 
     public String getDateString() {
         return dateString;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setIsSelected(boolean isSelected) {
+        this.isSelected = isSelected;
     }
 
     @Override
