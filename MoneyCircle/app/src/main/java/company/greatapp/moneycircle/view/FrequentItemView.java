@@ -2,6 +2,8 @@ package company.greatapp.moneycircle.view;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,7 +23,7 @@ import company.greatapp.moneycircle.model.FrequentItem;
  */
 public class FrequentItemView extends CardView {
 
-    private static final String LOG_TAG = "Prateek";//FrequentItemView.class.getSimpleName();
+    private static final String LOG_TAG = FrequentItemView.class.getSimpleName();
 
     private final Context mContext;
     private ViewGroup mViewGroup;
@@ -72,7 +74,6 @@ public class FrequentItemView extends CardView {
         mIv_selectItem.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (((ImageView)v).)
                 mCallback.onItemSelected(mIndex);
             }
         });
@@ -97,39 +98,38 @@ public class FrequentItemView extends CardView {
         Log.d(LOG_TAG, "FrequentItemView initView mIndex : " + mIndex);
         mTv_title.setText(frequentItem.getTitle());
         final String amount = Float.toString(frequentItem.getAmount());
+
         mEt_amount.setText(amount);
-        mEt_amount.setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                Log.d(LOG_TAG, "FrequentItemView onFocusChange");
-                float amountInEditText = Float.parseFloat(mEt_amount.getText().toString());
-                if (frequentItem.getAmount() != amountInEditText) {
-//                if (!amount.equals(mEt_amount.getText().toString())) {
-                    mCallback.onAmountChange(mIndex, amountInEditText);
-                    Toast.makeText(mContext, "Amount change", Toast.LENGTH_LONG).show();
-                    Log.d(LOG_TAG, "FrequentItemView Amount change");
-                }
-            }
-        });
-        /*mEt_amount.addTextChangedListener(new TextWatcher() {
+        mEt_amount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                Toast.makeText(mContext, "beforeTextChanged", Toast.LENGTH_LONG).show();
-                Log.d(LOG_TAG, "FrequentItemView beforeTextChanged");
+                Log.d(LOG_TAG, "FrequentItemView beforeTextChanged mIndex["+mIndex+"] s["+s+"] start["+start+"] after["+after+"] count["+count+"]");
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                Toast.makeText(mContext, "onTextChanged", Toast.LENGTH_LONG).show();
-                Log.d(LOG_TAG, "FrequentItemView onTextChanged");
+                Log.d(LOG_TAG, "FrequentItemView onTextChanged mIndex["+mIndex+"] s["+s+"] start["+start+"] before["+before+"] count["+count+"]");
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                Toast.makeText(mContext, "afterTextChanged", Toast.LENGTH_LONG).show();
-                Log.d(LOG_TAG, "FrequentItemView afterTextChanged");
+                Log.d(LOG_TAG, "FrequentItemView afterTextChanged mIndex["+mIndex+"] editable["+s+"]");
+                float amountInEditText = 0f;
+                if (s.toString().length() > 0) {
+                    amountInEditText = Float.parseFloat(s.toString());
+                }
+                Log.d(LOG_TAG, "FrequentItemView afterTextChanged mIndex["+mIndex+"] amountInEditText["+amountInEditText+"]");
+                if (frequentItem.getAmount() != amountInEditText) {
+                    mCallback.onAmountChange(mIndex, amountInEditText);
+                    Log.d(LOG_TAG, "FrequentItemView Amount change");
+                }
+
+                if (amountInEditText == 0 && frequentItem.isSelected()) {
+                    Toast.makeText(mContext, "Please add amount to select item", Toast.LENGTH_SHORT).show();
+                    mCallback.onItemSelected(mIndex);
+                }
             }
-        });*/
+        });
 
         if (frequentItem.isSelected()) {
             mIv_selectItem.setImageResource(R.drawable.ic_ok_selected);

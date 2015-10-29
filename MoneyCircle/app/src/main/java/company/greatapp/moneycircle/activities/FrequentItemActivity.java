@@ -21,8 +21,10 @@ import company.greatapp.moneycircle.R;
 import company.greatapp.moneycircle.adapters.FrequentItemAdapter;
 import company.greatapp.moneycircle.constants.DB;
 import company.greatapp.moneycircle.manager.FrequentItemManager;
+import company.greatapp.moneycircle.model.Category;
 import company.greatapp.moneycircle.model.Expense;
 import company.greatapp.moneycircle.model.FrequentItem;
+import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.tools.DateUtils;
 import company.greatapp.moneycircle.tools.Tools;
 import company.greatapp.moneycircle.view.FrequentItemView;
@@ -32,9 +34,8 @@ import company.greatapp.moneycircle.view.FrequentItemView;
  */
 public class FrequentItemActivity extends AppCompatActivity implements FrequentItemView.FrequentItemViewCallback{
 
-    private static final String LOG_TAG = "Prateek";//FrequentItemActivity.class.getSimpleName();
+    private static final String LOG_TAG = FrequentItemActivity.class.getSimpleName();
 
-    private static final int FREQUENT_ITEM_LOADER_ID = 122;
     private FrequentItemAdapter adapter;
 
     private SparseBooleanArray mSelectedItems;
@@ -57,7 +58,6 @@ public class FrequentItemActivity extends AppCompatActivity implements FrequentI
 
         initializeSpareArray();
 
-//        getLoaderManager().initLoader(FREQUENT_ITEM_LOADER_ID, null, this);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class FrequentItemActivity extends AppCompatActivity implements FrequentI
             if (mSelectedItems != null) {
                 FrequentItem frequentItem = null;
                 Expense expense = null;
-                boolean expenseNotCreated = false;
+                boolean expenseCreated = false;
                 for (int i = 0; i < mSelectedItems.size(); i++) {
                     if (mSelectedItems.valueAt(i)) {
                         frequentItem = (FrequentItem)adapter.getItem(i);
@@ -84,13 +84,19 @@ public class FrequentItemActivity extends AppCompatActivity implements FrequentI
                         if (expense != null) {
                             expense.setDateString(DateUtils.getCurrentDate());
                             expense.insertItemInDB(this);
-                        } else {
-                            expenseNotCreated = true;
+                            expenseCreated = true;
 
+                            Category cat = expense.getCategory();
+                            cat.setSpentAmountOnThis(cat.getSpentAmountOnThis() + expense.getAmount());
+                            cat.updateItemInDb(this);
+
+                            Tools.sendMoneyTransactionBroadCast(this, expense, Model.MODEL_TYPE_EXPENSE);
+                        } else {
+                            expenseCreated =false;
                         }
                     }
                 }
-                if (expenseNotCreated) {
+                if (!expenseCreated) {
                     Toast.makeText(this,"Expense Not Created", Toast.LENGTH_LONG).show();
                 }
             }
@@ -111,42 +117,6 @@ public class FrequentItemActivity extends AppCompatActivity implements FrequentI
             Log.d(LOG_TAG, "initializeSpareArray mSelectedItems intialization :"+mSelectedItems);
         }
     }
-    /*@Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        if(id == FREQUENT_ITEM_LOADER_ID) {
-            Log.d(LOG_TAG, "onCreateLoader FrequentItem loader");
-            return new CursorLoader(this, DB.FREQUENT_ITEM_TABLE_URI,
-                    DB.FREQUENT_ITEM_TABLE_PROJECTION, null, null,
-                    null);
-        }
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if(loader.getId() == FREQUENT_ITEM_LOADER_ID) {
-            Log.d(LOG_TAG, "onLoadFinished FrequentItem loader");
-            adapter.swapCursor(data);
-        }
-        if (mSelectedItems == null) {
-            int itemCount = data.getCount();
-            Log.d(LOG_TAG, "onLoadFinished Creation of SparseArray capacity :"+itemCount);
-            mSelectedItems = new SparseBooleanArray(itemCount);
-            for (int i = 0; i < itemCount; i++) {
-                mSelectedItems.put(i, false);
-                Log.d(LOG_TAG, "onLoadFinished mSelectedItems Loop :" + mSelectedItems);
-            }
-            Log.d(LOG_TAG, "onLoadFinished mSelectedItems intialization :"+mSelectedItems);
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        if(loader.getId() == FREQUENT_ITEM_LOADER_ID) {
-            Log.d(LOG_TAG, "onLoaderReset FrequentItem loader");
-            adapter.swapCursor(null);
-        }
-    }*/
 
     @Override
     public void onItemSelected(int index) {
