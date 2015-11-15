@@ -167,6 +167,9 @@
             android:name=".CategoryActivity"
             android:label="@string/title_activity_category" >
         </activity>
+        <activity android:name=".activities.FrequentItemActivity"
+            android:label="@string/title_activity_frequent_items"
+            android:windowSoftInputMode="adjustPan"/>
     </application>
 
 </manifest>

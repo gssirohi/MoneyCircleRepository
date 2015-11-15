@@ -16,6 +16,7 @@ import android.widget.Toast;
 import company.greatapp.moneycircle.AddNewEntryActivity;
 import company.greatapp.moneycircle.ManageCircleActivity;
 import company.greatapp.moneycircle.R;
+import company.greatapp.moneycircle.activities.FrequentItemActivity;
 import company.greatapp.moneycircle.constants.C;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Model;
@@ -198,6 +199,7 @@ public class AddNewEntryDialog extends Dialog {
         switch(type) {
             case 1:
                 msg = "daily expense";
+                i = new Intent(mContext, FrequentItemActivity.class);
                 break;
             case 2:
                 msg = "split";
