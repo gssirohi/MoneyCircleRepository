@@ -2,20 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@color/activity_background_opacity"
+
     tools:context="company.greatapp.moneycircle.chooser.ChooserActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_centerInParent="true"
-        android:background="@android:color/white"
-        android:gravity="center">
+        >
 
         <TextView
             android:id="@+id/tv_chooser_item_title"
@@ -29,16 +23,28 @@
 
         <SearchView
             android:id="@+id/searchView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="@color/button_material_light"
             android:searchIcon="@drawable/ic_search"
             android:iconifiedByDefault="false"
             android:queryHint="@string/action_search_hint"
             android:visibility="gone"/>
+        <GridView
+            android:id="@+id/gv_chooser_items"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:verticalSpacing="5dp"
+            android:horizontalSpacing="2dp"
+            android:numColumns="auto_fit"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:scrollbars="none"
 
+            />
         <ListView
+            android:visibility="gone"
             android:id="@+id/lv_chooser_items"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

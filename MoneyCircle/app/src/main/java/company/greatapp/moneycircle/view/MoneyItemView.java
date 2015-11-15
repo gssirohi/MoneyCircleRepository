@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -47,6 +48,7 @@ public class MoneyItemView extends LinearLayout {
     private final Button b_pay_receive;
     private final FrameLayout f_clear_item;
     private final FrameLayout f_type;
+    private final ImageView iv_category;
     private Income income;
     private Model mModel;
 
@@ -69,6 +71,7 @@ public class MoneyItemView extends LinearLayout {
         tv_item_state = (TextView)viewGroup.findViewById(R.id.tv_money_item_state);
 
         b_pay_receive = (Button)viewGroup.findViewById(R.id.b_money_pay_receive);
+        iv_category = (ImageView)viewGroup.findViewById(R.id.iv_category);
         f_member = (FrameLayout)viewGroup.findViewById(R.id.f_member);
         f_split = (FrameLayout)viewGroup.findViewById(R.id.f_split);
         f_type = (FrameLayout)viewGroup.findViewById(R.id.f_type);
@@ -144,6 +147,8 @@ public class MoneyItemView extends LinearLayout {
 
         tv_title.setText(model.getTitle());
 
+        iv_category.setImageResource(model.getCategory().getCategoryIconResId());
+
         switch(mType) {
             case Model.MODEL_TYPE_INCOME:
 
@@ -168,7 +173,7 @@ public class MoneyItemView extends LinearLayout {
                 tv_item_state.setText(States.getStateString(state));
                 if(state == States.BORROW_PAYMENT_PENDING) {
                     b_pay_receive.setVisibility(View.VISIBLE);
-                    b_pay_receive.setText("MAKE PAYMENT");
+                    b_pay_receive.setText("PAY");
                 } else if(state == States.BORROW_PAYMENT_CLEARED){
                     f_clear_item.setVisibility(View.VISIBLE);
                 }

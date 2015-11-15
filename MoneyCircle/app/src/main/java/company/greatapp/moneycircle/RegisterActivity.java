@@ -59,6 +59,7 @@ public class RegisterActivity extends ActionBarActivity {
     private String facebookId;
     private String birthday;
     private String phone;
+    private int regRetryRemaining = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -294,10 +295,16 @@ public class RegisterActivity extends ActionBarActivity {
             initializeApp();
         } else {
 
-            displayMessage("App Server Registraion Failed!");
-            init();
-            tv_fail.setVisibility(View.VISIBLE);
-            tv_fail.append("[APP_SERVER]");
+            if(regRetryRemaining > 0) {
+                RegistrationUtils.registerUserOnAppServer(this);
+                regRetryRemaining--;
+                displayMessage("Opps something went wrong! we are retrying..");
+            } else {
+                displayMessage("App Server Registraion Failed!");
+                init();
+                tv_fail.setVisibility(View.VISIBLE);
+                tv_fail.append("[APP_SERVER]");
+            }
         }
     }
 

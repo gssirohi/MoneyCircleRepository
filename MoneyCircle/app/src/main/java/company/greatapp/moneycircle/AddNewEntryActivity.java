@@ -565,11 +565,8 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
                 borrow.setDateString(mDateString);
                 borrow.setTitle(et_new_item.getText().toString());
                 cat = (Category)Tools.getDbInstance(this,mCategory,Model.MODEL_TYPE_CATEGORY);
-                if(cat.getTitle().equals("Paid by friend")) {
-                    selectedBorrowLentType = C.BORROW_LENT_TYPE_BILL;
-                } else {
-                    selectedBorrowLentType = C.BORROW_LENT_TYPE_CASH;
-                }
+
+                selectedBorrowLentType = CategoryManager.getBorrowLentType(cat.getTitle());
                 borrow.setCategory(cat);
                 amount = Float.parseFloat(et_new_amount.getText().toString());
                 borrow.setAmount(amount);
@@ -619,12 +616,7 @@ public class AddNewEntryActivity extends ActionBarActivity implements TagItemVie
                 lent.setTitle(et_new_item.getText().toString());
 
                 cat = (Category)Tools.getDbInstance(this,mCategory,Model.MODEL_TYPE_CATEGORY);
-                if(cat.getTitle().equals("Paid by friend")) {
-                    selectedBorrowLentType = C.BORROW_LENT_TYPE_BILL;
-                } else {
-                    selectedBorrowLentType = C.BORROW_LENT_TYPE_CASH;
-                }
-
+                selectedBorrowLentType = CategoryManager.getBorrowLentType(cat.getTitle());
                 lent.setCategory(cat);
                 lent.setLinkedContact(mMember);
                 lent.setOwnerPhone(user.getPhoneNumber());

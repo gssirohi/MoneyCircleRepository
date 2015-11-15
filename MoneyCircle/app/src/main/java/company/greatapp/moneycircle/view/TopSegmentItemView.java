@@ -105,12 +105,14 @@ public class TopSegmentItemView extends LinearLayout {
                 }
                 tv_item_value.setText(msg);
                 tv_item_title.setText(contact.getContactName());
+                iv_item_icon.setImageResource(Tools.getContactAvatorResId(contact.getGender()));
                 setModeTitleValueAndIcon();
                 break;
             case Model.MODEL_TYPE_CATEGORY:
                 Category category = (Category)model;
                 tv_item_title.setText(category.getTitle());
                 tv_item_value.setText(Tools.floatString(category.getSpentAmountOnThis()));
+                iv_item_icon.setImageResource(((Category)model).getCategoryIconResId());
                 setModeTitleValueAndIcon();
                 break;
             case Model.MODEL_TYPE_CIRCLE:
@@ -123,4 +125,7 @@ public class TopSegmentItemView extends LinearLayout {
     }
 
 
+    public void setItemIconResId(int resId) {
+        iv_item_icon.setImageResource(resId);
+    }
 }

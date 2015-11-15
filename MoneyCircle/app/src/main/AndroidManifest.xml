@@ -113,8 +113,7 @@
         </activity>
         <activity
             android:name=".chooser.ChooserActivity"
-            android:label="@string/title_activity_chooser"
-            android:theme="@android:style/Theme.Translucent" >
+            android:label="@string/title_activity_chooser">
         </activity>
         <activity
             android:name=".ContactAndCircleActivity"
