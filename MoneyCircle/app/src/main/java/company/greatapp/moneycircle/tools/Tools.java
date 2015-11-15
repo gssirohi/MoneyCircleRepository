@@ -34,6 +34,7 @@ import company.greatapp.moneycircle.model.Borrow;
 import company.greatapp.moneycircle.model.Category;
 import company.greatapp.moneycircle.model.Contact;
 import company.greatapp.moneycircle.model.Expense;
+import company.greatapp.moneycircle.model.FrequentItem;
 import company.greatapp.moneycircle.model.InPackage;
 import company.greatapp.moneycircle.model.Income;
 import company.greatapp.moneycircle.model.Lent;
@@ -602,5 +603,21 @@ public static String getModelName(int modelType){
         }
         Category category = CategoryManager.getCategoryByName(context,mapping);
         return category;
+    }
+
+    public static Expense createExpenseFromFrequentItem(FrequentItem item) {
+
+        if (item == null) {
+            return  null;
+        }
+
+        Expense expense = new Expense();
+        expense.setTitle(item.getTitle());
+        expense.setAmount(item.getAmount());
+        expense.setCategory(item.getCategory());
+        expense.setDescription(item.getDescription());
+        expense.setJsonString(item.getJsonString());
+
+        return expense;
     }
 }

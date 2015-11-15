@@ -38,7 +38,6 @@ import company.greatapp.moneycircle.model.Model;
 import company.greatapp.moneycircle.model.NavDrawerItem;
 import company.greatapp.moneycircle.services.PendingPackageTransportService;
 import company.greatapp.moneycircle.dialogs.ContactInfoDialog;
-import company.greatapp.moneycircle.tools.Tools;
 import company.greatapp.moneycircle.view.DrawerView;
 import company.greatapp.moneycircle.view.TagItemView;
 
@@ -87,6 +86,19 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
                 showAddOptionsScreen();
             }
         });
+
+        /*ViewTarget target = new ViewTarget(R.id.fb_add_new_entry, this);
+        sv = new ShowcaseView.Builder(this)
+                .withMaterialShowcase()
+                .setTarget(target)
+                .setContentTitle("New Entry Button")
+                .setContentText("Add All New Entry From Here")
+//                .setStyle(R.style.CustomShowcaseTheme2)
+                .setShowcaseEventListener(this)
+                .replaceEndButton(R.layout.view_custom_button)
+                .build();
+        sv.setButtonPosition(lps);*/
+
         tabHost = (TabHost)findViewById(R.id.tabHost);
         initialiseTabHost();
         tabWidget = (TabWidget)findViewById(android.R.id.tabs);

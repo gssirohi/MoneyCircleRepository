@@ -295,4 +295,14 @@ public class DB {
             };
 
 //----------------------------------------------------------------//
+    public static final String FREQUENT_ITEM_TABLE_NAME = "frequentItemTable";
+
+    public static final Uri FREQUENT_ITEM_TABLE_URI = Uri.parse("content://"+DB_AUTHORITY+"/" + FREQUENT_ITEM_TABLE_NAME);
+
+    public static final String[] FREQUENT_ITEM_TABLE_PROJECTION = new String[]{
+            DB_ID, UID,
+            TITLE, CATEGORY, DESCRIPTION, AMOUNT,
+            DATE_STRING, JSON_STRING};
+
+//----------------------------------------------------------------//
 }

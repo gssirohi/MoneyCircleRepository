@@ -44,6 +44,7 @@ public class MoneyCircleProvider extends ContentProvider{
     static final int COMMON_TABLE_INDEX       = 10;
     static final int ACCOUNT_TABLE_INDEX       = 11;
     static final int PACKAGE_FROM_SERVER_TABLE_INDEX =12;
+    static final int FREQUENT_ITEM_TABLE_INDEX = 13;
 
 	static {
 	    uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -60,6 +61,7 @@ public class MoneyCircleProvider extends ContentProvider{
         uriMatcher.addURI(DB.DB_AUTHORITY,DB.COMMON_TABLE_NAME, COMMON_TABLE_INDEX);
         uriMatcher.addURI(DB.DB_AUTHORITY,DB.ACCOUNT_TABLE_NAME, ACCOUNT_TABLE_INDEX);
         uriMatcher.addURI(DB.DB_AUTHORITY,DB.PACKAGE_FROM_SERVER_TABLE_NAME, PACKAGE_FROM_SERVER_TABLE_INDEX);
+        uriMatcher.addURI(DB.DB_AUTHORITY,DB.FREQUENT_ITEM_TABLE_NAME, FREQUENT_ITEM_TABLE_INDEX);
 
 	}
 	
@@ -227,8 +229,17 @@ public class MoneyCircleProvider extends ContentProvider{
                 }
                 break;
             }
+            case FREQUENT_ITEM_TABLE_INDEX:
+            {
+                long rowId = qpinionDBinstance.insert(DB.FREQUENT_ITEM_TABLE_NAME, null, newRow);
 
-
+                if (rowId > 0) {
+                    Log.d("in cp","inserted in "+DB.FREQUENT_ITEM_TABLE_NAME);
+                    Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                    getContext().getContentResolver().notifyChange(objUri, null);
+                }
+                break;
+            }
 		default:
 			Log.e("in cp","URI NOT MATCHED for Inserting!!!");
 		
@@ -362,7 +373,15 @@ public class MoneyCircleProvider extends ContentProvider{
                 c.setNotificationUri(getContext().getContentResolver(),uri);
                 return c;
             }
+            case FREQUENT_ITEM_TABLE_INDEX:
+            {
+                Log.d("in cp","Quering data from "+DB.FREQUENT_ITEM_TABLE_NAME);
+                c = qpinionDBinstance.query(DB.FREQUENT_ITEM_TABLE_NAME, projection, selection, selectionArgs, null, null, null);
+                Log.d("in CP", "cursor returned from " + DB.FREQUENT_ITEM_TABLE_NAME);
+                c.setNotificationUri(getContext().getContentResolver(),uri);
 
+                return c;
+            }
             default:
 			Log.e("in cp","URI NOT MATCHED for Quering data!!!");
 		
@@ -555,6 +574,19 @@ public class MoneyCircleProvider extends ContentProvider{
                 break;
 
             }
+            case FREQUENT_ITEM_TABLE_INDEX:
+            {
+                long rowId = qpinionDBinstance.update(DB.FREQUENT_ITEM_TABLE_NAME, values, selection, selectionArgs);
+
+                if(rowId > 0) {
+
+                    Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                    getContext().getContentResolver().notifyChange(objUri , null);
+                    Log.d("in cp","updated :"+DB.FREQUENT_ITEM_TABLE_NAME);
+                }
+                break;
+
+            }
 
 		default:
 			Log.e("in cp","URI NOT MATCHED for Updating data!!!");
@@ -732,6 +764,19 @@ public class MoneyCircleProvider extends ContentProvider{
                 Log.d("in CP", "item deleted from db");
             }
             return 0;
+        }
+        case FREQUENT_ITEM_TABLE_INDEX:
+        {
+            Log.d("in cp","Deleting data from "+DB.FREQUENT_ITEM_TABLE_NAME);
+            long rowId = qpinionDBinstance.delete(DB.FREQUENT_ITEM_TABLE_NAME, selection, selectionArgs);
+
+            if(rowId > 0) {
+                Uri objUri = ContentUris.withAppendedId(uri, rowId);
+                getContext().getContentResolver().notifyChange(objUri, null);
+                Log.d("in CP", "item deleted from db");
+            }
+            return 0;
+
         }
 
 	default:

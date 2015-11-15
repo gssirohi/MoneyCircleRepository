@@ -173,7 +173,7 @@ public class RegisterAndSignInActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        Log.v(TAG, "email :" +  response.toString());
+                        Log.v(TAG, "facebook response :" +  response.toString());
                         startRegistrationActiviyWithFacebookContent();
                     }
                 });
