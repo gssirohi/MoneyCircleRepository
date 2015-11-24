@@ -43,6 +43,7 @@ public class Contact extends Model {
     public Contact(String name, String number) {
         setContactName(name);
         setPhone(number);
+        setModelType(MODEL_TYPE_CONTACT);
         if(name.equals(C.USER_TITLE) && number.equals(C.USER_DUMMY_NUMBER))
             setUID(C.USER_UNIQUE_ID);
         else
@@ -54,12 +55,14 @@ public class Contact extends Model {
         setContactName(name);
         setPhone("na");
         setUID(Tools.generateUniqueId());
+        setModelType(MODEL_TYPE_CONTACT);
     }
 
     public Contact() {
         setContactName("unnamed");
         setPhone("na");
         setUID(Tools.generateUniqueId());
+        setModelType(MODEL_TYPE_CONTACT);
     }
 
     public int getState() {

@@ -9,6 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -34,12 +36,15 @@ public class ChooserActivity extends Activity {
     private boolean isDonePressed;
 
     private ActionMode mActionMode;
+    private GridView mGridView;
+    private ChooserGridAdapter mGridAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chooser);
         mChooserList = (ListView)findViewById(R.id.lv_chooser_items);
+        mGridView = (GridView)findViewById(R.id.gv_chooser_items);
         TextView title = (TextView)findViewById(R.id.tv_chooser_item_title);
 
         int requestCode  = getIntent().getIntExtra(C.CHOOSER_REQUEST,C.TAG_CONTACTS);
@@ -79,10 +84,24 @@ public class ChooserActivity extends Activity {
 
         title.setText(getChooserTitle(requestCode));
         mAdapter = new ChooserAdapter(this, getItemList(requestCode, modelTypeForCategory), choiceMode);
+        mGridAdapter = new ChooserGridAdapter(this, getItemList(requestCode, modelTypeForCategory), choiceMode);
         mChooserList.setChoiceMode(choiceMode);
+        mGridView.setChoiceMode(choiceMode);
         Log.d(LOGTAG, "onCreate choiceMode" + choiceMode);
         mChooserList.setAdapter(mAdapter);
+        mGridView.setAdapter(mGridAdapter);
 
+
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(LOGTAG, "setOnItemClickListener onItemClick");
+                if (mActionModeCallBack == null) {
+                    mGridView.startActionMode(getActionModeCallBack());
+                }
+                onClickListItem(parent, view, position, id);
+            }
+        });
         mChooserList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -113,6 +132,7 @@ public class ChooserActivity extends Activity {
 //        mChooserList.setMultiChoiceModeListener(actionMultiModeCallBack);
 //        mAdapter.notifyDataSetChanged();
         mChooserList.setItemsCanFocus(false);
+
     }
 
     private String getChooserTitle(int requestCode) {
@@ -182,7 +202,9 @@ public class ChooserActivity extends Activity {
             public void onDestroyActionMode(ActionMode mode) {
                 Log.d(LOGTAG,"onDestroyActionMode");
                 mAdapter.removeSelection();
+                mGridAdapter.removeSelection();
                 mChooserList.clearChoices();
+                mGridView.clearChoices();
                 if (mActionModeCallBack != null) {
                     mActionModeCallBack = null;
                     mActionMode = null;
@@ -240,13 +262,31 @@ public class ChooserActivity extends Activity {
     private void onClickListItem(AdapterView<?> parent, View view, int position, long id) {
         Log.d(LOGTAG, "onClickListItem position:" + position);
         mAdapter.toggleSelection(position);
+        mGridAdapter.toggleSelection(position);
         if (mChooserList.getChoiceMode() == ListView.CHOICE_MODE_MULTIPLE) {
             Log.d(LOGTAG, "onClickListItem Multiple");
 
-            int checkedCount = mAdapter.getSelectedItemCount();
+           // int checkedCount = mAdapter.getSelectedItemCount();
+            int checkedCount = mGridAdapter.getSelectedItemCount();
             if (mActionMode != null) {
                 // Set the CAB title according to total checked items
                 mActionMode.setTitle(checkedCount + " Selected");
+            }
+        }
+        if (mGridView.getChoiceMode() == ListView.CHOICE_MODE_MULTIPLE) {
+            Log.d(LOGTAG, "onClickListItem Multiple");
+
+            //int checkedCount = mAdapter.getSelectedItemCount();
+            int checkedCount = mGridAdapter.getSelectedItemCount();
+            if (mActionMode != null) {
+                // Set the CAB title according to total checked items
+                mActionMode.setTitle(checkedCount + " Selected");
+            }
+            CheckBox cb = (CheckBox)view.findViewById(R.id.cb_chooser_grid_item);
+            if(cb.isChecked()) {
+                 cb.setChecked(false);
+            } else {
+                 cb.setChecked(true);
             }
         }
 
@@ -254,7 +294,9 @@ public class ChooserActivity extends Activity {
 
     private void onClickDone() {
         Log.d(LOGTAG, "onClickDone");
-        ArrayList<String> selectedItems = mAdapter.getSelectedItems();
+        //ArrayList<String> selectedItems = mAdapter.getSelectedItems();
+        ArrayList<String> selectedItems = mGridAdapter.getSelectedItems();
+
         /*SparseBooleanArray checked = mChooserList.getCheckedItemPositions();
         ArrayList<String> selectedItems = new ArrayList<String>();
         for (int i = 0; i < checked.size(); i++) {
@@ -331,6 +373,7 @@ public class ChooserActivity extends Activity {
 
     private void onQueryChange(String newText) {
         mAdapter.filter(newText);
+        mGridAdapter.filter(newText);
     }
 
 //    private void onClickSelectAll(View v) {

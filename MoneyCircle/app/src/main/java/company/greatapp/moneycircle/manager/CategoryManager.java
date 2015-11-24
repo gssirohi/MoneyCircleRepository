@@ -83,6 +83,7 @@ public class CategoryManager extends BaseModelManager  {
         category.setForLent(forLent);
         category.setForSplit(forSplit);
         category.setSpentAmountOnThis(spent);
+        category.setModelType(Model.MODEL_TYPE_CATEGORY);
         return category;
     }
 
@@ -110,6 +111,7 @@ public class CategoryManager extends BaseModelManager  {
         category.setForLent(forLent);
         category.setForSplit(forSplit);
         category.setSpentAmountOnThis(spent);
+        category.setModelType(Model.MODEL_TYPE_CATEGORY);
         return category;
     }
 
@@ -328,9 +330,20 @@ public class CategoryManager extends BaseModelManager  {
         String [] selArgs = new String[]{""+s};
         Uri tableUri = DB.CATEGORY_TABLE_URI;
 
+        Category cat = null;
         Cursor cursor = context.getContentResolver().query(tableUri,projection,selection,selArgs,null);
-        Category cat =  (Category)createLightItemFromCursor(cursor);
+        if(cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
+            cat =  (Category)createLightItemFromCursor(cursor);
+        }
+
         return cat;
 
+    }
+
+    public static int getBorrowLentType(String title) {
+        if(title.contains("Cash") || title.contains("cash")) {
+            return C.BORROW_LENT_TYPE_CASH;
+        } else
+        return C.BORROW_LENT_TYPE_BILL;
     }
 }

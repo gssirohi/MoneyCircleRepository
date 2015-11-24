@@ -61,6 +61,7 @@ public class Transporter {
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
 
+                handleError(reqCode,error);
             }
         }){
 
@@ -76,6 +77,13 @@ public class Transporter {
 
         };
         return strReq;
+    }
+
+    private void handleError(int reqCode, VolleyError error) {
+        if(reqCode == REQ_CODE_REGISTRATION) {
+
+            RegistrationUtils.sendAppServerRegistrationResult(mContext,false);
+        }
     }
 
 

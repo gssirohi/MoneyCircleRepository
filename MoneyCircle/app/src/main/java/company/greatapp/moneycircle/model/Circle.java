@@ -31,6 +31,7 @@ public class Circle extends Model  {
         mCircleName = circleName;
         mTitle = circleName;
         mUid = Tools.generateUniqueId();
+        setModelType(MODEL_TYPE_CIRCLE);
     }
 
     /**
@@ -42,6 +43,7 @@ public class Circle extends Model  {
         mCircleName = circleName;
         mTitle = circleName;
         mUid = uid;
+        setModelType(MODEL_TYPE_CIRCLE);
     }
 
     public int getMemberCount() {

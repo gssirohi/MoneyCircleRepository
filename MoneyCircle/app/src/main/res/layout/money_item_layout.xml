@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:padding="1dp"
     android:layout_margin="5dp"
+    android:background="@color/app_lightest"
     >
 
     <FrameLayout
@@ -14,17 +15,8 @@
         android:layout_width="match_parent" android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="2dp"
-        android:background="#FFFFFF">
+        >
 
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/imageView2"
-            android:src="@android:drawable/ic_dialog_info"
-            android:layout_weight="1"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp" />
 
         <LinearLayout
             android:orientation="vertical"
@@ -37,6 +29,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/iv_category"
+                android:src="@android:drawable/ic_dialog_info"
+                android:background="@color/app_lightest"
+                android:layout_margin = "2dp" />
 
 
             <TextView
@@ -70,7 +70,8 @@
             <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+                android:layout_marginLeft="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -113,6 +114,13 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                >
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
                 android:id="@+id/ll_due_date_info">
 
                 <TextView
@@ -120,16 +128,25 @@
                     android:layout_height="wrap_content"
                     android:text="Due On : "
                     android:id="@+id/textView10"
-                    android:textColor="@color/app_secondary" />
+                    android:textColor="@color/app_secondary"
+                    android:layout_gravity="center_vertical" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="25 July 2015"
                     android:id="@+id/tv_due_date"
-                    android:textColor="@color/app_secondary" />
+                    android:textColor="@color/app_secondary"
+                    android:layout_gravity="center_vertical" />
+
             </LinearLayout>
 
+                <Button
+                    style="@style/Theme.MoneyCircle.ContextButton"
+                    android:text="PAY"
+                    android:id="@+id/b_money_pay_receive"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
             <HorizontalScrollView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -152,13 +169,6 @@
                 android:id="@+id/tv_money_item_state"
                 android:layout_gravity="center_horizontal" />
 
-            <Button
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="PAY"
-                android:id="@+id/b_money_pay_receive"
-                android:layout_gravity="center_horizontal" />
         </LinearLayout>
 
     </LinearLayout>

@@ -143,7 +143,7 @@ public class Tools {
         if (context == null || TextUtils.isEmpty(phoneNumber)) {
             return null;
         }
-        Contact contact = null;
+        Contact contact = new Contact("Unknown",phoneNumber);
 
         String [] projection = DB.CONTACT_TABLE_PROJECTION;
         String selection=DB.PHONE_NUMBER + "=" + "?";

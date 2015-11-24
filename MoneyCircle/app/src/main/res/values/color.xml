@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="app_primary">#26c6da</color>
-    <color name="app_primary_dark">#0097a7</color>
+    <color name="app_primary">#4db6ac</color>
+    <color name="app_primary_dark">#26a69a</color>
     <color name="app_text_primary">#004d40</color>
     <color name="app_background">#e0f7fa</color>
-    <color name="app_accent">#ffd54f</color>
+    <color name="app_accent">#26a69a</color>
     <color name="app_text_secondary">#ff4081</color>
 
 
@@ -15,16 +15,16 @@
     <color name="white">#ffffffff</color>
     <color name="dull_white">#ffefebeb</color>
     <color name="red">#ffff0000</color>
-    <color name="app_basic">#26c6da</color>
-    <color name="app_secondary">#ffd54f</color>
+    <color name="app_basic">#4db6ac</color>
+    <color name="app_secondary">#26a69a</color>
 
-    <color name="app_light">#4dd0e1</color>
-    <color name="app_lighter">#80deea</color>
-    <color name="app_lightest">#b2ebf2</color>
+    <color name="app_light">#80cbc4</color>
+    <color name="app_lighter">#b2dfdb</color>
+    <color name="app_lightest">#e0f2f1</color>
 
-    <color name="app_dark">#00acc1</color>
-    <color name="app_darker">#00838f</color>
-    <color name="app_darkest">#006064</color>
+    <color name="app_dark">#26a69a</color>
+    <color name="app_darker">#00897b</color>
+    <color name="app_darkest">#00796b</color>
 
 
     <color name="income">#8bc34a</color>
